@@ -10,6 +10,7 @@ const DrawerNavigator = () => {
     <Drawer.Navigator
       drawerContent={(props: any) => <CustomDrawer {...props} />}
       screenOptions={{
+        headerShown: false,
         drawerStyle: {
           width: Dimensions.get("screen").width,
         },
