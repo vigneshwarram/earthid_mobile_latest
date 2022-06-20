@@ -3,18 +3,25 @@ export const Apptheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    primary: "#01b56e",
-    labelTextColor: "#000",
-    sublabelTextColor: "#d7d7d7",
-    backgroundColor: "#fff",
-    plusMenuColor: "#e7af05",
-    headerBarColor: "#fff",
-    subheader: "#badacb",
-    danger: "red",
-    lightText: "#c1c1c1",
-    lightTheme: "#f0f1f3",
-    lightBackground: "#fbfcfc",
-    warningColor: "rgba(0,0,0,0.6)",
-    ligthPrimary: "rgba(1,181,110,0.2)",
+    primary: "#2AA2DE",
+    background: "#000",
+  },
+};
+export const Screens = {
+  black: "#000",
+
+  colors: {
+    background: "#F5F5F5",
+    ScanButton: {
+      startColor: "#8319FF",
+      middleColor: "#8319FF",
+      endColor: "#2AA2DE",
+    },
+    bottomFocusedBackground: {
+      color: "#EDF1F4",
+    },
+    customDrawer: {
+      headerBackground: "#D9E3EC",
+    },
   },
 };
