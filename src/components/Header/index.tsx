@@ -1,6 +1,9 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { LocalImages } from "../../constants/imageUrlConstants";
+import { SCREENS } from "../../constants/Labels";
 import { Screens } from "../../themes";
+import Avatar from "../Avatar";
 import LinearGradients from "../GradientsPanel/LinearGradient";
 import { IHeaderProps } from "./IHeaderProps";
 
@@ -9,15 +12,61 @@ import { IHeaderProps } from "./IHeaderProps";
  * @description This is a base component for the implementation of Icon.
  */
 
-const Header = ({ containerStyle = {}, linearStyle = {} }: IHeaderProps) => (
+const Header = ({
+  containerStyle = {},
+  linearStyle = {},
+  onpress,
+}: IHeaderProps) => (
   <View style={containerStyle}>
     <LinearGradients
-      horizontalGradient
-      endColor={Screens.colors.ScanButton.endColor}
-      middleColor={Screens.colors.ScanButton.middleColor}
-      startColor={Screens.colors.ScanButton.startColor}
+      horizontalGradient={false}
+      endColor={Screens.colors.header.endColor}
+      middleColor={Screens.colors.header.middleColor}
+      startColor={Screens.colors.header.startColor}
       style={linearStyle}
-    ></LinearGradients>
+    >
+      <View>
+        <View style={styles.sectionHeaderContainer}>
+          <Image
+            resizeMode="contain"
+            style={styles.logoContainer}
+            source={LocalImages.logoImage}
+          ></Image>
+          <View
+            style={{
+              flexDirection: "row",
+              flex: 0.4,
+              justifyContent: "space-around",
+            }}
+          >
+            <TouchableOpacity style={styles.closeContainer} onPress={onpress}>
+              <Image
+                resizeMode="contain"
+                style={styles.close}
+                source={LocalImages.giftBoxImage}
+              ></Image>
+            </TouchableOpacity>
+            <View style={{ justifyContent: "center", alignItems: "center" }}>
+              <Text style={{ fontWeight: "bold", marginLeft: -5 }}>50</Text>
+            </View>
+
+            <TouchableOpacity style={styles.closeContainer} onPress={onpress}>
+              <Image
+                resizeMode="contain"
+                style={styles.close}
+                source={LocalImages.humbergerImage}
+              ></Image>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
+          <Avatar
+            text={SCREENS.HOMESCREEN.avatarName}
+            iconSource={LocalImages.avatarImage}
+          ></Avatar>
+        </View>
+      </View>
+    </LinearGradients>
   </View>
 );
 
@@ -28,8 +77,29 @@ const styles = StyleSheet.create({
     height: 20,
     width: 20,
   },
+  closeContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
   container: {
     justifyContent: "center",
     alignItems: "center",
+  },
+  sectionHeaderContainer: {
+    flexDirection: "row",
+    height: 120,
+    backgroundColor: Screens.colors.customDrawer.headerBackground,
+    borderBottomRightRadius: 25,
+    borderBottomLeftRadius: 25,
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+  },
+  logoContainer: {
+    width: 130,
+    height: 120,
+  },
+  close: {
+    width: 25,
+    height: 25,
   },
 });

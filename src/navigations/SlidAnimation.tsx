@@ -1,5 +1,4 @@
 import {
-  createStackNavigator,
   TransitionSpecs,
   HeaderStyleInterpolators,
 } from "@react-navigation/stack";

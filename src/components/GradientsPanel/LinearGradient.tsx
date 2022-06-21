@@ -13,8 +13,8 @@ const LinearGradients = ({
 }: ILinearGradientProps) => {
   const letfToRightX = { x: 0, y: 0 };
   const letfToRightY = { x: 1, y: 0 };
-  const topToBottomX = { x: 1, y: 0 };
-  const topToBottomY = { x: 0, y: 0 };
+  const topToBottomX = { x: 0, y: 0 };
+  const topToBottomY = { x: 0, y: 1 };
   return (
     <LinearGradient
       start={horizontalGradient ? letfToRightX : topToBottomX}

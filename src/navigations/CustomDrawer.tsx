@@ -10,7 +10,7 @@ import { Screens } from "../themes/index";
 import { values } from "lodash";
 import { LocalImages } from "../constants/imageUrlConstants";
 import Card from "../components/Card";
-import { ABOUT_ROUTES } from "../constants/DrawerRoute";
+import { ABOUT_ROUTES } from "../constants/Routes";
 
 const CustomDrawer = (props: any) => {
   const aboutList = values(ABOUT_ROUTES).map(
@@ -28,11 +28,11 @@ const CustomDrawer = (props: any) => {
       rightUri,
     })
   );
-  const _renderItem = ({ item, index }: { item: any; index: number }) => (
+  const _renderItem = ({ item }: { item: any }) => (
     <Card
       title={item.title}
       leftIconSrc={item.uri}
-      rightIconSrc={index === 0 && item.rightUri}
+      rightIconSrc={item.rightUri}
       style={styles.cardContainer}
     />
   );

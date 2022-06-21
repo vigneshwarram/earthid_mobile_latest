@@ -9,13 +9,20 @@ export const Apptheme = {
 };
 export const Screens = {
   black: "#000",
-
+  headingtextColor: "#4A4A4A",
+  grayShadeColor: "#7F7F7F",
   colors: {
     background: "#F5F5F5",
+    primary: "#50A0D9",
     ScanButton: {
       startColor: "#8319FF",
       middleColor: "#8319FF",
       endColor: "#2AA2DE",
+    },
+    header: {
+      startColor: "#f0f4f7",
+      middleColor: "#dbe4ee",
+      endColor: "#c0cfdd",
     },
     bottomFocusedBackground: {
       color: "#EDF1F4",

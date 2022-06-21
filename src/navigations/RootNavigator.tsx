@@ -7,8 +7,7 @@ import { enableScreens } from "react-native-screens";
 import DrawerNavigator from "../navigations/DrawerNavigator";
 // Before rendering any navigation stack
 
-export default function App() {
-  const Stack = createStackNavigator();
+export default function RootNavigator() {
   enableScreens();
 
   return (

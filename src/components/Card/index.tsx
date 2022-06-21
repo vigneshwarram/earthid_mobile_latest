@@ -26,37 +26,40 @@ const Card = ({
   isSelected,
   onPress,
   style = {},
-}: ICardProps) => (
-  <TouchableOpacity onPress={onPress}>
-    <View style={[styles.container, style]}>
-      {leftIconSrc && (
-        <Icon
-          src={leftIconSrc}
+}: ICardProps) => {
+  console.log("style", style);
+  return (
+    <TouchableOpacity onPress={onPress}>
+      <View style={[styles.container, style]}>
+        {leftIconSrc && (
+          <Icon
+            src={leftIconSrc}
+            style={{
+              container: styles.leftIconContainer,
+            }}
+          />
+        )}
+        <Info
+          title={title}
+          subtitle={subtitle}
           style={{
-            container: styles.leftIconContainer,
+            title: style.title,
+            subtitle: style.subtitle,
           }}
         />
-      )}
-      <Info
-        title={title}
-        subtitle={subtitle}
-        style={{
-          title: isSelected ? style.selectedTitle : style.title,
-          subtitle: style.subtitle,
-        }}
-      />
-      {rightIconSrc && (
-        <Icon
-          src={rightIconSrc}
-          style={{
-            container: styles.rightIconContainer,
-            image: { width: 15, height: 15 },
-          }}
-        />
-      )}
-    </View>
-  </TouchableOpacity>
-);
+        {rightIconSrc && (
+          <Icon
+            src={rightIconSrc}
+            style={{
+              container: styles.rightIconContainer,
+              image: { width: 15, height: 15 },
+            }}
+          />
+        )}
+      </View>
+    </TouchableOpacity>
+  );
+};
 
 export default Card;
 
