@@ -6,6 +6,7 @@ export const SCREENS = {
     appName: "Global ID",
     category: "CATEGORIES",
     documentLabel: "BY MOST FREQUENTLY USED DOCUMENTS",
+    upload: "UPLOADED DOCUMENTS",
     DocumentList: [
       {
         TITLE: "Passport",
@@ -36,6 +37,50 @@ export const SCREENS = {
       },
       {
         TITLE: "Travel",
+        URI: LocalImages.CATEGORIES.travelImage,
+        COLOR: "#F5BCE8",
+      },
+    ],
+    documentsDetailsList: [
+      {
+        ID: 1,
+        TITLE: "RobertD_passport",
+        SUBTITLE: "Uploaded: 21/05/2022",
+        URI: LocalImages.CATEGORIES.personalcardImage,
+        COLOR: "#D7EFFB",
+      },
+      {
+        ID: 2,
+        TITLE: "GBAMembership",
+        SUBTITLE: "Uploaded: 21/05/2022",
+        URI: LocalImages.CATEGORIES.educationImage,
+        COLOR: "#FFDD9B",
+      },
+      {
+        ID: 3,
+        TITLE: "GBAMembership",
+        SUBTITLE: "Uploaded: 21/05/2022",
+        URI: LocalImages.CATEGORIES.insuranceImage,
+        COLOR: "#C5BDF6",
+      },
+      {
+        ID: 4,
+        TITLE: "GBAMembership",
+        SUBTITLE: "Uploaded: 21/05/2022",
+        URI: LocalImages.CATEGORIES.travelImage,
+        COLOR: "#F5BCE8",
+      },
+      {
+        ID: 5,
+        TITLE: "GBAMembership",
+        SUBTITLE: "Uploaded: 21/05/2022",
+        URI: LocalImages.CATEGORIES.travelImage,
+        COLOR: "#F5BCE8",
+      },
+      {
+        ID: 6,
+        TITLE: "GBAMembership",
+        SUBTITLE: "Uploaded: 21/05/2022",
         URI: LocalImages.CATEGORIES.travelImage,
         COLOR: "#F5BCE8",
       },

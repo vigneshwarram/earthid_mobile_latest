@@ -16,6 +16,9 @@ const Header = ({
   containerStyle = {},
   linearStyle = {},
   onpress,
+  isAvatar,
+  rightIconSource,
+  rewardPoints,
 }: IHeaderProps) => (
   <View style={containerStyle}>
     <LinearGradients
@@ -43,12 +46,16 @@ const Header = ({
               <Image
                 resizeMode="contain"
                 style={styles.close}
-                source={LocalImages.giftBoxImage}
+                source={rightIconSource}
               ></Image>
             </TouchableOpacity>
-            <View style={{ justifyContent: "center", alignItems: "center" }}>
-              <Text style={{ fontWeight: "bold", marginLeft: -5 }}>50</Text>
-            </View>
+            {rewardPoints !== "" && (
+              <View style={{ justifyContent: "center", alignItems: "center" }}>
+                <Text style={{ fontWeight: "bold", marginLeft: -5 }}>
+                  {rewardPoints}
+                </Text>
+              </View>
+            )}
 
             <TouchableOpacity style={styles.closeContainer} onPress={onpress}>
               <Image
@@ -59,12 +66,15 @@ const Header = ({
             </TouchableOpacity>
           </View>
         </View>
-        <View style={{ justifyContent: "center", alignItems: "center" }}>
-          <Avatar
-            text={SCREENS.HOMESCREEN.avatarName}
-            iconSource={LocalImages.avatarImage}
-          ></Avatar>
-        </View>
+        {isAvatar && (
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <Avatar
+              isUploaded={false}
+              text={SCREENS.HOMESCREEN.avatarName}
+              iconSource={LocalImages.avatarImage}
+            ></Avatar>
+          </View>
+        )}
       </View>
     </LinearGradients>
   </View>

@@ -6,7 +6,7 @@ import { useTheme } from "@react-navigation/native";
 import { LocalImages } from "../constants/imageUrlConstants";
 import LinearGradients from "../components/GradientsPanel/LinearGradient";
 import { Screens } from "../themes/index";
-import { MainStackNavigator } from "../navigations/Stacks";
+import { HomeScreenStack, DocumentScreenStack } from "../navigations/Stacks";
 
 const Tab = createBottomTabNavigator();
 
@@ -23,7 +23,7 @@ export const BottomMenus = () => {
     >
       <Tab.Screen
         name="Home"
-        component={MainStackNavigator}
+        component={HomeScreenStack}
         options={{
           tabBarLabelStyle: styles.tabBarLabelStyle,
           tabBarIcon: ({ focused }: any) => (
@@ -48,7 +48,7 @@ export const BottomMenus = () => {
       />
       <Tab.Screen
         name="Document"
-        component={MainStackNavigator}
+        component={DocumentScreenStack}
         options={{
           tabBarLabelStyle: styles.tabBarLabelStyle,
           tabBarIcon: ({ focused }: any) => (
@@ -73,7 +73,7 @@ export const BottomMenus = () => {
       />
       <Tab.Screen
         name="s"
-        component={MainStackNavigator}
+        component={DocumentScreenStack}
         options={{
           tabBarLabelStyle: {
             color: "transparent",
@@ -101,7 +101,7 @@ export const BottomMenus = () => {
       />
       <Tab.Screen
         name="History"
-        component={MainStackNavigator}
+        component={DocumentScreenStack}
         options={{
           tabBarLabelStyle: styles.tabBarLabelStyle,
           tabBarIcon: ({ focused }: any) => (
@@ -130,7 +130,7 @@ export const BottomMenus = () => {
       />
       <Tab.Screen
         name="More"
-        component={MainStackNavigator}
+        component={DocumentScreenStack}
         options={{
           tabBarLabelStyle: styles.tabBarLabelStyle,
           tabBarIcon: ({ focused }: any) => (

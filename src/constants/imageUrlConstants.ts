@@ -10,6 +10,11 @@ export const LocalImages = {
   giftBoxImage: require("../../resources/images/gift-box.png"),
   humbergerImage: require("../../resources/images/humburger.png"),
   avatarImage: require("../../resources/images/avatar.png"),
+  addImage: require("../../resources/images/add.png"),
+  searchImage: require("../../resources/images/search.png"),
+  menuImage: require("../../resources/images/menu.png"),
+  filter: require("../../resources/images/filter.png"),
+  upImage: require("../../resources/images/go-up.png"),
   //categories
   CATEGORIES: {
     travelImage: require("../../resources/images/travel.png"),

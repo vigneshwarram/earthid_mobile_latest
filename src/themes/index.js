@@ -10,6 +10,8 @@ export const Apptheme = {
 export const Screens = {
   black: "#000",
   headingtextColor: "#4A4A4A",
+  pureWhite: "#ffffff",
+  red: "red",
   grayShadeColor: "#7F7F7F",
   colors: {
     background: "#F5F5F5",

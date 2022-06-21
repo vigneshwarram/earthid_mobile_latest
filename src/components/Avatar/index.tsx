@@ -8,9 +8,10 @@ import { IAvatarProps } from "./IAvatarProps";
  * @description This is a base component for the implementation of Avatar.
  */
 
-const Avatar = ({ text, style = {}, iconSource }: IAvatarProps) => (
+const Avatar = ({ text, style = {}, iconSource, isUploaded }: IAvatarProps) => (
   <View>
     <Icon
+      isUploaded={isUploaded}
       src={iconSource}
       style={{
         container: [styles.container, style.container],

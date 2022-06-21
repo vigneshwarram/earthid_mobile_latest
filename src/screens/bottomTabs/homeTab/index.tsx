@@ -36,6 +36,7 @@ const HomeScreen = ({ navigation }: IHomeScreenProps) => {
   const _renderItem = ({ item }: any) => {
     return (
       <Avatar
+        isUploaded={false}
         text={item.title}
         iconSource={item.uri}
         style={{
@@ -49,15 +50,7 @@ const HomeScreen = ({ navigation }: IHomeScreenProps) => {
 
   const _renderItemDocuments = ({ item }: any) => {
     return (
-      <View
-        style={{
-          borderColor: Screens.colors.primary,
-          borderWidth: 0.5,
-          marginHorizontal: 20,
-          marginVertical: 5,
-          borderRadius: 20,
-        }}
-      >
+      <View style={styles.documentContainer}>
         <Card
           title={item.title}
           leftIconSrc={item.uri}
@@ -70,7 +63,13 @@ const HomeScreen = ({ navigation }: IHomeScreenProps) => {
   const _keyExtractor = ({ title }: any) => title.toString();
   return (
     <View style={styles.sectionContainer}>
-      <Header onpress={_toggleDrawer} linearStyle={styles.linearStyle}></Header>
+      <Header
+        rewardPoints={"50"}
+        rightIconSource={LocalImages.giftBoxImage}
+        isAvatar
+        onpress={_toggleDrawer}
+        linearStyle={styles.linearStyle}
+      ></Header>
       <View style={styles.flatPanel}>
         <View style={styles.alignCenter}>
           <Text style={[styles.label, { fontSize: 12 }]}>
@@ -166,6 +165,13 @@ const styles = StyleSheet.create({
     title: {
       color: Screens.grayShadeColor,
     },
+  },
+  documentContainer: {
+    borderColor: Screens.colors.primary,
+    borderWidth: 0.5,
+    marginHorizontal: 20,
+    marginVertical: 5,
+    borderRadius: 20,
   },
 });
 

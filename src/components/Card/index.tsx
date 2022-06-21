@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, View, TouchableOpacity, Image } from "react-native";
+import Avatar from "../Avatar";
 import Icon from "../Icon";
 import Info from "../Info";
 
@@ -16,6 +17,7 @@ interface ICardProps {
   isSelected?: boolean;
   onPress?: (e: any) => void;
   style?: any; // Overriding options for styling.
+  leftAvatar?: any;
 }
 
 const Card = ({
@@ -23,14 +25,23 @@ const Card = ({
   rightIconSrc,
   title,
   subtitle,
-  isSelected,
+  leftAvatar,
   onPress,
   style = {},
 }: ICardProps) => {
-  console.log("style", style);
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={[styles.container, style]}>
+        {leftAvatar && (
+          <Avatar
+            isUploaded={true}
+            iconSource={leftAvatar}
+            style={{
+              container: [style.avatarContainer],
+              imgContainer: style.avatarImageContainer,
+            }}
+          />
+        )}
         {leftIconSrc && (
           <Icon
             src={leftIconSrc}
@@ -45,6 +56,7 @@ const Card = ({
           style={{
             title: style.title,
             subtitle: style.subtitle,
+            container: style.textContainer,
           }}
         />
         {rightIconSrc && (
@@ -76,9 +88,12 @@ const styles = StyleSheet.create({
   },
   rightIconContainer: {
     position: "absolute",
-    right: 30,
-    top: 25,
+    right: 20,
+    top: 0,
+    left: 0,
+    bottom: 0,
     justifyContent: "center",
+    alignItems: "flex-end",
   },
   rightIconImage: {
     height: 20,
