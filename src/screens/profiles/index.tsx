@@ -44,6 +44,9 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
   return (
     <View style={styles.sectionContainer}>
       <Header
+        absoluteCircleInnerImage={LocalImages.cameraImage}
+        isProfileAvatar={true}
+        isUploaded={true}
         letfIconPress={_letfIconPress}
         rewardPoints={"50"}
         leftIconSource={LocalImages.backImage}

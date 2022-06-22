@@ -8,4 +8,7 @@ export interface IHeaderProps {
   avatarClick?: any;
   leftIconSource?: any;
   letfIconPress?: any;
+  isUploaded?: boolean;
+  isProfileAvatar?: boolean;
+  absoluteCircleInnerImage?: any;
 }

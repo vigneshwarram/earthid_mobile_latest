@@ -16,7 +16,10 @@ const Header = ({
   containerStyle = {},
   linearStyle = {},
   onpress,
+  isUploaded = false,
   isAvatar,
+  isProfileAvatar = false,
+  absoluteCircleInnerImage,
   letfIconPress,
   rightIconSource,
   rewardPoints,
@@ -48,26 +51,39 @@ const Header = ({
           <View
             style={{
               flexDirection: "row",
-              flex: 0.4,
-              justifyContent: "space-around",
             }}
           >
-            <TouchableOpacity style={styles.closeContainer} onPress={onpress}>
-              <Image
-                resizeMode="contain"
-                style={styles.close}
-                source={rightIconSource}
-              ></Image>
-            </TouchableOpacity>
-            {rewardPoints !== "" && (
-              <View style={{ justifyContent: "center", alignItems: "center" }}>
-                <Text style={{ fontWeight: "bold", marginLeft: -5 }}>
-                  {rewardPoints}
-                </Text>
-              </View>
-            )}
+            <View
+              style={{
+                flexDirection: "row",
+              }}
+            >
+              <TouchableOpacity style={styles.closeContainer} onPress={onpress}>
+                <Image
+                  resizeMode="contain"
+                  style={styles.close}
+                  source={rightIconSource}
+                ></Image>
+              </TouchableOpacity>
+              {rewardPoints !== "" && (
+                <View
+                  style={{
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginLeft: 10,
+                  }}
+                >
+                  <Text style={{ fontWeight: "bold", marginLeft: -5 }}>
+                    {rewardPoints}
+                  </Text>
+                </View>
+              )}
+            </View>
 
-            <TouchableOpacity style={styles.closeContainer} onPress={onpress}>
+            <TouchableOpacity
+              style={[styles.closeContainer, { marginLeft: 10 }]}
+              onPress={onpress}
+            >
               <Image
                 resizeMode="contain"
                 style={styles.close}
@@ -83,7 +99,9 @@ const Header = ({
           >
             <View>
               <Avatar
-                isUploaded={false}
+                absoluteCircleInnerImage={absoluteCircleInnerImage}
+                isProfileAvatar={isProfileAvatar}
+                isUploaded={isUploaded}
                 text={SCREENS.HOMESCREEN.avatarName}
                 iconSource={LocalImages.avatarImage}
               ></Avatar>

@@ -20,6 +20,7 @@ interface ICardProps {
   leftAvatar?: any;
   titleIcon?: any;
   rightIconOnPress?: any;
+  absoluteCircleInnerImage?: any;
 }
 
 const Card = ({
@@ -28,6 +29,7 @@ const Card = ({
   title,
   subtitle,
   leftAvatar,
+  absoluteCircleInnerImage,
   onPress,
   titleIcon,
   rightIconOnPress,
@@ -38,6 +40,7 @@ const Card = ({
       {leftAvatar && (
         <Avatar
           isUploaded={true}
+          absoluteCircleInnerImage={absoluteCircleInnerImage}
           iconSource={leftAvatar}
           style={{
             container: [style.avatarContainer],

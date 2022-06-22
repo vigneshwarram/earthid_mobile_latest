@@ -10,13 +10,26 @@ import { IIconProps } from "./IIconProps";
  * @description This is a base component for the implementation of Icon.
  */
 
-const Icon = ({ src, style = {}, isUploaded, onPress }: IIconProps) => (
+const Icon = ({
+  src,
+  style = {},
+  isUploaded,
+  onPress,
+  isProfileAvatar = false,
+  absoluteCircleInnerImage,
+}: IIconProps) => (
   <View style={[styles.container, style.container]}>
     {isUploaded && (
-      <View style={styles.uploadContainer}>
+      <View
+        style={
+          isProfileAvatar
+            ? [styles.uploadContainer, { ...styles.profileAvatar }]
+            : styles.uploadContainer
+        }
+      >
         <Image
-          source={LocalImages.upImage}
-          style={[styles.uploadImage]}
+          source={absoluteCircleInnerImage}
+          style={[isProfileAvatar ? styles.profileUpload : styles.uploadImage]}
           resizeMode="contain"
         />
       </View>
@@ -54,6 +67,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderWidth: 2,
     borderColor: "#fff",
+  },
+  profileAvatar: {
+    right: 30,
+    backgroundColor: "#fff",
+    zIndex: 100,
+  },
+  profileUpload: {
+    width: 12,
+    height: 12,
+    tintColor: Screens.black,
   },
   uploadImage: {
     width: 10,

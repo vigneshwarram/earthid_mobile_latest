@@ -60,6 +60,7 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
   const _renderItem = ({ item }: any) => {
     return (
       <Card
+        absoluteCircleInnerImage={LocalImages.upImage}
         rightIconOnPress={_rightIconOnPress}
         titleIcon={LocalImages.vcImage}
         rightIconSrc={LocalImages.menuImage}
