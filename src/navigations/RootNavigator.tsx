@@ -9,10 +9,12 @@ import DrawerNavigator from "../navigations/DrawerNavigator";
 
 export default function RootNavigator() {
   enableScreens();
-
+  const Stack = createStackNavigator();
   return (
     <NavigationContainer theme={Apptheme}>
-      <DrawerNavigator />
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name={"DrawerNavigator"} component={DrawerNavigator} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }

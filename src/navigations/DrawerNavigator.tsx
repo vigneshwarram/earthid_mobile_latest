@@ -3,7 +3,11 @@ import { BottomMenus } from "../navigations/BottomTabs";
 import * as React from "react";
 import { Dimensions } from "react-native";
 import CustomDrawer from "../navigations/CustomDrawer";
+import { createStackNavigator } from "@react-navigation/stack";
+import ProfileScreen from "../screens/profiles";
+
 const Drawer = createDrawerNavigator();
+const Stack = createStackNavigator();
 
 const DrawerNavigator = () => {
   return (
@@ -17,8 +21,17 @@ const DrawerNavigator = () => {
         drawerPosition: "right",
       }}
     >
-      <Drawer.Screen name="authenticatedStack" component={BottomMenus} />
+      <Drawer.Screen name="bottomMenuStacks" component={BottomMenus} />
+      <Drawer.Screen name="DrawerStacks" component={HomeScreenStack} />
     </Drawer.Navigator>
   );
 };
 export default DrawerNavigator;
+
+export const HomeScreenStack = () => {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+    </Stack.Navigator>
+  );
+};

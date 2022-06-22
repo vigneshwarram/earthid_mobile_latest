@@ -5,4 +5,7 @@ export interface IHeaderProps {
   isAvatar?: boolean;
   rightIconSource?: any;
   rewardPoints?: string;
+  avatarClick?: any;
+  leftIconSource?: any;
+  letfIconPress?: any;
 }

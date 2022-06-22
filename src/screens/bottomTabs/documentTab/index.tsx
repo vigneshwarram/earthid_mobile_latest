@@ -114,6 +114,7 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
   return (
     <View style={styles.sectionContainer}>
       <Header
+        leftIconSource={LocalImages.logoImage}
         rightIconSource={LocalImages.addImage}
         onpress={_toggleDrawer}
         linearStyle={styles.linearStyle}

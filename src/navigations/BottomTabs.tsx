@@ -6,11 +6,10 @@ import { useTheme } from "@react-navigation/native";
 import { LocalImages } from "../constants/imageUrlConstants";
 import LinearGradients from "../components/GradientsPanel/LinearGradient";
 import { Screens } from "../themes/index";
-import {
-  HomeScreenStack,
-  DocumentScreenStack,
-  HistoryStack,
-} from "../navigations/Stacks";
+
+import HomeScreen from "../screens/bottomTabs/homeTab/index";
+import DocumentScreen from "../screens/bottomTabs/documentTab";
+import HistoryScreen from "../screens/bottomTabs/historyTab";
 
 const Tab = createBottomTabNavigator();
 
@@ -27,7 +26,7 @@ export const BottomMenus = () => {
     >
       <Tab.Screen
         name="Home"
-        component={HomeScreenStack}
+        component={HomeScreen}
         options={{
           tabBarLabelStyle: styles.tabBarLabelStyle,
           tabBarIcon: ({ focused }: any) => (
@@ -52,7 +51,7 @@ export const BottomMenus = () => {
       />
       <Tab.Screen
         name="Document"
-        component={DocumentScreenStack}
+        component={DocumentScreen}
         options={{
           tabBarLabelStyle: styles.tabBarLabelStyle,
           tabBarIcon: ({ focused }: any) => (
@@ -77,7 +76,7 @@ export const BottomMenus = () => {
       />
       <Tab.Screen
         name="s"
-        component={DocumentScreenStack}
+        component={DocumentScreen}
         options={{
           tabBarLabelStyle: {
             color: "transparent",
@@ -105,7 +104,7 @@ export const BottomMenus = () => {
       />
       <Tab.Screen
         name="History"
-        component={HistoryStack}
+        component={HistoryScreen}
         options={{
           tabBarLabelStyle: styles.tabBarLabelStyle,
           tabBarIcon: ({ focused }: any) => (
@@ -134,7 +133,7 @@ export const BottomMenus = () => {
       />
       <Tab.Screen
         name="More"
-        component={DocumentScreenStack}
+        component={HistoryScreen}
         options={{
           tabBarLabelStyle: styles.tabBarLabelStyle,
           tabBarIcon: ({ focused }: any) => (

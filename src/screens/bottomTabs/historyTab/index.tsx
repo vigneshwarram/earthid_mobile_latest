@@ -61,7 +61,11 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
   const _keyExtractor = ({ id }: any) => id.toString();
   return (
     <View style={styles.sectionContainer}>
-      <Header onpress={_toggleDrawer} linearStyle={styles.linearStyle}></Header>
+      <Header
+        leftIconSource={LocalImages.logoImage}
+        onpress={_toggleDrawer}
+        linearStyle={styles.linearStyle}
+      ></Header>
       <Text style={[styles.categoryHeaderText, { fontSize: 13 }]}>
         {SCREENS.HOMESCREEN.History}
       </Text>

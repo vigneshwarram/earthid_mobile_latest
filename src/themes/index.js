@@ -13,6 +13,7 @@ export const Screens = {
   pureWhite: "#ffffff",
   red: "red",
   grayShadeColor: "#7F7F7F",
+  success: "#25cc25",
   colors: {
     background: "#F5F5F5",
     primary: "#50A0D9",

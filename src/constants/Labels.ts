@@ -8,6 +8,32 @@ export const SCREENS = {
     documentLabel: "BY MOST FREQUENTLY USED DOCUMENTS",
     upload: "UPLOADED DOCUMENTS",
     History: "HISTORY",
+    SocialMedialList: [
+      {
+        TITLE: "web",
+        URI: LocalImages.SOCIAL_MEDIA_.webImage,
+      },
+      {
+        TITLE: "facebook",
+        URI: LocalImages.SOCIAL_MEDIA_.facebookImage,
+      },
+      {
+        TITLE: "twitter",
+        URI: LocalImages.SOCIAL_MEDIA_.twitterImage,
+      },
+      {
+        TITLE: "instagram",
+        URI: LocalImages.SOCIAL_MEDIA_.instagramImage,
+      },
+      {
+        TITLE: "linkeid",
+        URI: LocalImages.SOCIAL_MEDIA_.linkdInImage,
+      },
+      {
+        TITLE: "telegram",
+        URI: LocalImages.SOCIAL_MEDIA_.telegramImage,
+      },
+    ],
     DocumentList: [
       {
         TITLE: "Passport",

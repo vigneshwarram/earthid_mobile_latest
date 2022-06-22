@@ -19,11 +19,21 @@ export const LocalImages = {
   vcImage: require("../../resources/images/VC.png"),
   shareImage: require("../../resources/images/share.png"),
   deleteImage: require("../../resources/images/delete.png"),
+  backImage: require("../../resources/images/back.png"),
+  successTikImage: require("../../resources/images/sucessTik.png"),
   //categories
   CATEGORIES: {
     travelImage: require("../../resources/images/travel.png"),
     educationImage: require("../../resources/images/education.png"),
     insuranceImage: require("../../resources/images/Insurence.png"),
     personalcardImage: require("../../resources/images/personalcard.png"),
+  },
+  SOCIAL_MEDIA_: {
+    facebookImage: require("../../resources/images/facebook.png"),
+    instagramImage: require("../../resources/images/instagram.png"),
+    webImage: require("../../resources/images/world.png"),
+    telegramImage: require("../../resources/images/telegram.png"),
+    linkdInImage: require("../../resources/images/linkedIn.png"),
+    twitterImage: require("../../resources/images/twitter.png"),
   },
 };

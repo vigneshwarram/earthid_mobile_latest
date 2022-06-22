@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
+import { LocalImages } from "../../constants/imageUrlConstants";
 import { Screens } from "../../themes";
 
 import { IInfoProps } from "./IInfoProps";
@@ -9,7 +10,13 @@ import { IInfoProps } from "./IInfoProps";
  * @description This is a base component for the implementation of Info.
  */
 
-const Info = ({ title, subtitle, style = {}, titleIcon }: IInfoProps) => (
+const Info = ({
+  title,
+  subtitle,
+  style = {},
+  titleIcon,
+  subtitleRowText,
+}: IInfoProps) => (
   <View style={[styles.container, style.container]}>
     {title && (
       <View style={styles.titleTextContainer}>
@@ -26,7 +33,29 @@ const Info = ({ title, subtitle, style = {}, titleIcon }: IInfoProps) => (
       </View>
     )}
     {subtitle && (
-      <Text style={[styles.subtitle, style.subtitle]}>{subtitle}</Text>
+      <View style={styles.titleTextContainer}>
+        <Text style={[styles.subtitle, style.subtitle]}>{subtitle}</Text>
+        {subtitleRowText && (
+          <View style={styles.titleTextContainer}>
+            <View
+              style={{
+                paddingHorizontal: 10,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Image
+                resizeMode="contain"
+                style={styles.sublogoContainers}
+                source={LocalImages.successTikImage}
+              ></Image>
+            </View>
+            <Text style={[styles.subtitle, style.subtitleNearText]}>
+              {"verified"}
+            </Text>
+          </View>
+        )}
+      </View>
     )}
   </View>
 );
@@ -35,8 +64,13 @@ export default Info;
 
 const styles = StyleSheet.create({
   logoContainers: {
-    width: 30,
-    height: 30,
+    width: 20,
+    height: 20,
+  },
+  sublogoContainers: {
+    width: 15,
+    height: 15,
+    marginRight: 8,
   },
   titleTextContainer: {
     flexDirection: "row",

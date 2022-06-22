@@ -3,4 +3,5 @@ export interface IInfoProps {
   subtitle?: string | null;
   style?: any; // Overriding options for styling.
   titleIcon?: any;
+  subtitleRowText?: string;
 }

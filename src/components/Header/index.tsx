@@ -17,8 +17,11 @@ const Header = ({
   linearStyle = {},
   onpress,
   isAvatar,
+  letfIconPress,
   rightIconSource,
   rewardPoints,
+  leftIconSource,
+  avatarClick,
 }: IHeaderProps) => (
   <View style={containerStyle}>
     <LinearGradients
@@ -30,11 +33,18 @@ const Header = ({
     >
       <View>
         <View style={styles.sectionHeaderContainer}>
-          <Image
-            resizeMode="contain"
-            style={styles.logoContainer}
-            source={LocalImages.logoImage}
-          ></Image>
+          <TouchableOpacity
+            style={containerStyle.iconContainer}
+            disabled={letfIconPress ? false : true}
+            onPress={letfIconPress}
+          >
+            <Image
+              resizeMode="contain"
+              style={[styles.logoContainer, containerStyle.iconStyle]}
+              source={leftIconSource}
+            ></Image>
+          </TouchableOpacity>
+
           <View
             style={{
               flexDirection: "row",
@@ -67,13 +77,18 @@ const Header = ({
           </View>
         </View>
         {isAvatar && (
-          <View style={{ justifyContent: "center", alignItems: "center" }}>
-            <Avatar
-              isUploaded={false}
-              text={SCREENS.HOMESCREEN.avatarName}
-              iconSource={LocalImages.avatarImage}
-            ></Avatar>
-          </View>
+          <TouchableOpacity
+            style={{ justifyContent: "center", alignItems: "center" }}
+            onPress={avatarClick}
+          >
+            <View>
+              <Avatar
+                isUploaded={false}
+                text={SCREENS.HOMESCREEN.avatarName}
+                iconSource={LocalImages.avatarImage}
+              ></Avatar>
+            </View>
+          </TouchableOpacity>
         )}
       </View>
     </LinearGradients>

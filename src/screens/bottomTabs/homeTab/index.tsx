@@ -60,13 +60,19 @@ const HomeScreen = ({ navigation }: IHomeScreenProps) => {
     );
   };
 
+  const _avatarClick = () => {
+    navigation.navigate("DrawerStacks");
+  };
+
   const _keyExtractor = ({ title }: any) => title.toString();
   return (
     <View style={styles.sectionContainer}>
       <Header
+        leftIconSource={LocalImages.logoImage}
         rewardPoints={"50"}
         rightIconSource={LocalImages.giftBoxImage}
         isAvatar
+        avatarClick={_avatarClick}
         onpress={_toggleDrawer}
         linearStyle={styles.linearStyle}
       ></Header>
