@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     flex: 1,
-    paddingVertical: 9,
+    paddingVertical: 5,
   },
   sectionHeaderContainer: {
     flexDirection: "row",

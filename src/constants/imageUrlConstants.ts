@@ -26,6 +26,10 @@ export const LocalImages = {
   galleryImage: require("../../resources/images/gallery.png"),
   calendarImage: require("../../resources/images/calendar.png"),
   tikImage: require("../../resources/images/tik.png"),
+  settingsImage: require("../../resources/images/settings.png"),
+  termsImage: require("../../resources/images/terms.png"),
+  profileImage: require("../../resources/images/profile.png"),
+
   //categories
   CATEGORIES: {
     travelImage: require("../../resources/images/travel.png"),

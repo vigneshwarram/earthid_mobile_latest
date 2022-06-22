@@ -25,6 +25,7 @@ const Avatar = ({
       style={{
         container: [styles.container, style.container],
         image: [styles.avatar, style.imgContainer],
+        uploadImageStyle: style.uploadImageStyle,
       }}
     />
     {text !== "" && <Text style={[styles.text, style.text]}>{text}</Text>}

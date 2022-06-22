@@ -77,6 +77,9 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
               borderRadius: 20,
               marginTop: 25,
             },
+            uploadImageStyle: {
+              backgroundColor: item.color,
+            },
           },
         }}
       />

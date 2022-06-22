@@ -45,6 +45,7 @@ const Card = ({
           style={{
             container: [style.avatarContainer],
             imgContainer: style.avatarImageContainer,
+            uploadImageStyle: style.uploadImageStyle,
           }}
         />
       )}

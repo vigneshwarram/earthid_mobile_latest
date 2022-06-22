@@ -3,7 +3,7 @@ export const ABOUT_ROUTES = {
   MY_PROFILE: {
     CARD: "myProfile",
     TITLE: "My Profile",
-    URI: LocalImages.historyImage,
+    URI: LocalImages.profileImage,
     RIGHT_ICON: LocalImages.sideArrowImage,
     SCREEN: "profile",
   },
@@ -14,7 +14,7 @@ export const ABOUT_ROUTES = {
     SCREEN: "home",
   },
   DOCUMENT: {
-    URI: LocalImages.homeImage,
+    URI: LocalImages.documentsImage,
     CARD: "MerchantAgreement",
     TITLE: "Document",
     SCREEN: "document",
@@ -23,6 +23,38 @@ export const ABOUT_ROUTES = {
     URI: LocalImages.historyImage,
     CARD: "AcceptableUsePolicy",
     TITLE: "History",
+    SCREEN: "history",
+  },
+  SETTINGS: {
+    RIGHT_ICON: LocalImages.sideArrowImage,
+    URI: LocalImages.settingsImage,
+    CARD: "AcceptableUsePolicy",
+    TITLE: "Setting",
+    SCREEN: "history",
+  },
+  ABOUT: {
+    URI: LocalImages.documentsImage,
+    CARD: "AcceptableUsePolicy",
+    TITLE: "About Us",
+    SCREEN: "history",
+  },
+  TERMS: {
+    URI: LocalImages.termsImage,
+    CARD: "AcceptableUsePolicy",
+    TITLE: "Term & condition",
+    SCREEN: "history",
+  },
+  IDENTITY: {
+    RIGHT_ICON: LocalImages.sideArrowImage,
+    URI: LocalImages.historyImage,
+    CARD: "AcceptableUsePolicy",
+    TITLE: "Bachup Identity",
+    SCREEN: "history",
+  },
+  DELETE: {
+    URI: LocalImages.deleteImage,
+    CARD: "AcceptableUsePolicy",
+    TITLE: "Delete Your Identity",
     SCREEN: "history",
   },
   LOGOUT: {

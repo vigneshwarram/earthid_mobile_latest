@@ -21,11 +21,12 @@ const Icon = ({
   <View style={[styles.container, style.container]}>
     {isUploaded && (
       <View
-        style={
+        style={[
           isProfileAvatar
             ? [styles.uploadContainer, { ...styles.profileAvatar }]
-            : styles.uploadContainer
-        }
+            : styles.uploadContainer,
+          style.uploadImageStyle,
+        ]}
       >
         <Image
           source={absoluteCircleInnerImage}
