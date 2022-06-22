@@ -6,6 +6,7 @@ import CustomDrawer from "../navigations/CustomDrawer";
 import { createStackNavigator } from "@react-navigation/stack";
 import ProfileScreen from "../screens/profiles";
 import EditProfileScreen from "../screens/profiles/EditProfile";
+import settings from "../screens/settings";
 import { SlidAnimation } from "./SlidAnimation";
 
 const Drawer = createDrawerNavigator();
@@ -58,6 +59,13 @@ export const HomeScreenStack = () => {
         }}
         name="EditProfileScreen"
         component={EditProfileScreen}
+      />
+      <Stack.Screen
+        options={{
+          ...animations,
+        }}
+        name="settings"
+        component={settings}
       />
     </Stack.Navigator>
   );

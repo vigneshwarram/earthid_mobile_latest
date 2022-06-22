@@ -6,11 +6,11 @@ import {
   Image,
   FlatList,
 } from "react-native";
-import { Screens } from "../themes/index";
+import { Screens } from "../../themes/index";
 import { values } from "lodash";
-import { LocalImages } from "../constants/imageUrlConstants";
-import Card from "../components/Card";
-import { ABOUT_ROUTES } from "../constants/Routes";
+import { LocalImages } from "../../constants/imageUrlConstants";
+import Card from "../../components/Card";
+import { ABOUT_ROUTES } from "../../constants/Routes";
 
 const CustomDrawer = (props: any) => {
   const aboutList = values(ABOUT_ROUTES).map(
@@ -30,6 +30,7 @@ const CustomDrawer = (props: any) => {
   );
 
   const _navigateAction = (item: any) => {
+    console.log("item", item);
     props.navigation.navigate(item.route);
   };
   const _renderItem = ({ item }: { item: any }) => (
