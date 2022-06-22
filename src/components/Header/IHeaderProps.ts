@@ -11,4 +11,5 @@ export interface IHeaderProps {
   isUploaded?: boolean;
   isProfileAvatar?: boolean;
   absoluteCircleInnerImage?: any;
+  actionIcon?: any;
 }

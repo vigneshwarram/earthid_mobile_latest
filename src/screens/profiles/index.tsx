@@ -1,7 +1,9 @@
 import { values } from "lodash";
-import React from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, Text, FlatList, Image } from "react-native";
 import CircularProgress from "react-native-circular-progress-indicator";
+import Avatar from "../../components/Avatar";
+import BottomSheet from "../../components/Bottomsheet";
 import Header from "../../components/Header";
 import Info from "../../components/Info";
 import { LocalImages } from "../../constants/imageUrlConstants";
@@ -13,6 +15,8 @@ interface IHomeScreenProps {
 }
 
 const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
+  const [isCameraOptionVisible, setisCameraOptionVisible] =
+    useState<boolean>(false);
   const _toggleDrawer = () => {
     navigation.toggleDrawer();
   };
@@ -39,11 +43,33 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
     );
   };
 
+  const ColoumnOption = ({ icon, title }: any) => (
+    <View>
+      <Avatar
+        isUploaded={false}
+        iconSource={icon}
+        style={{
+          container: [styles.avatarContainer],
+          imgContainer: styles.avatarImageContainer,
+        }}
+      />
+      <Text style={[styles.label, { fontSize: 12, textAlign: "center" }]}>
+        {title}
+      </Text>
+    </View>
+  );
+
   const _keyExtractor = ({ title }: any) => title.toString();
+
+  const _avatarClick = () => {
+    setisCameraOptionVisible(true);
+  };
 
   return (
     <View style={styles.sectionContainer}>
       <Header
+        actionIcon={LocalImages.editImage}
+        avatarClick={_avatarClick}
         absoluteCircleInnerImage={LocalImages.cameraImage}
         isProfileAvatar={true}
         isUploaded={true}
@@ -127,6 +153,28 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
           keyExtractor={_keyExtractor}
         />
       </View>
+      <BottomSheet
+        onClose={() => setisCameraOptionVisible(false)}
+        height={150}
+        isVisible={isCameraOptionVisible}
+      >
+        <View
+          style={{
+            height: 100,
+            width: "100%",
+            paddingHorizontal: 50,
+            flexDirection: "row",
+            justifyContent: "space-around",
+          }}
+        >
+          <ColoumnOption
+            title={"Remove phone"}
+            icon={LocalImages.deleteImage}
+          />
+          <ColoumnOption title={"Camera"} icon={LocalImages.cameraImage} />
+          <ColoumnOption title={"Gallery"} icon={LocalImages.galleryImage} />
+        </View>
+      </BottomSheet>
     </View>
   );
 };
@@ -204,8 +252,10 @@ const styles = StyleSheet.create({
   avatarContainer: {
     width: 60,
     height: 60,
-    borderRadius: 20,
+    borderRadius: 30,
     marginHorizontal: 8,
+    flexDirection: "row",
+    backgroundColor: Screens.lightGray,
   },
   avatarImageContainer: {
     width: 25,

@@ -14,6 +14,7 @@ export const Screens = {
   red: "red",
   grayShadeColor: "#7F7F7F",
   success: "#25cc25",
+  lightGray: "#F8F8F8",
   colors: {
     background: "#F5F5F5",
     primary: "#50A0D9",

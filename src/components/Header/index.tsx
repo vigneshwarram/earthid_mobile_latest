@@ -22,6 +22,7 @@ const Header = ({
   absoluteCircleInnerImage,
   letfIconPress,
   rightIconSource,
+  actionIcon = LocalImages.humbergerImage,
   rewardPoints,
   leftIconSource,
   avatarClick,
@@ -87,7 +88,7 @@ const Header = ({
               <Image
                 resizeMode="contain"
                 style={styles.close}
-                source={LocalImages.humbergerImage}
+                source={actionIcon}
               ></Image>
             </TouchableOpacity>
           </View>
