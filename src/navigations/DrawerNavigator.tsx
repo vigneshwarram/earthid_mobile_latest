@@ -6,10 +6,11 @@ import CustomDrawer from "../navigations/CustomDrawer";
 import { createStackNavigator } from "@react-navigation/stack";
 import ProfileScreen from "../screens/profiles";
 import EditProfileScreen from "../screens/profiles/EditProfile";
+import { SlidAnimation } from "./SlidAnimation";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
-
+const animations: any = SlidAnimation;
 const DrawerNavigator = () => {
   return (
     <Drawer.Navigator
@@ -22,8 +23,20 @@ const DrawerNavigator = () => {
         drawerPosition: "right",
       }}
     >
-      <Drawer.Screen name="bottomMenuStacks" component={BottomMenus} />
-      <Drawer.Screen name="DrawerStacks" component={HomeScreenStack} />
+      <Drawer.Screen
+        options={{
+          ...animations,
+        }}
+        name="bottomMenuStacks"
+        component={BottomMenus}
+      />
+      <Drawer.Screen
+        options={{
+          ...animations,
+        }}
+        name="DrawerStacks"
+        component={HomeScreenStack}
+      />
     </Drawer.Navigator>
   );
 };
@@ -32,8 +45,20 @@ export default DrawerNavigator;
 export const HomeScreenStack = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
-      <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
+      <Stack.Screen
+        options={{
+          ...animations,
+        }}
+        name="ProfileScreen"
+        component={ProfileScreen}
+      />
+      <Stack.Screen
+        options={{
+          ...animations,
+        }}
+        name="EditProfileScreen"
+        component={EditProfileScreen}
+      />
     </Stack.Navigator>
   );
 };
