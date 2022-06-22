@@ -1,8 +1,14 @@
 import { values } from "lodash";
 import React, { useState } from "react";
-import { View, StyleSheet, Text, FlatList, Image } from "react-native";
-import CircularProgress from "react-native-circular-progress-indicator";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import {
+  View,
+  StyleSheet,
+  Text,
+  FlatList,
+  Image,
+  TouchableOpacity,
+} from "react-native";
+
 import Avatar from "../../../components/Avatar";
 import BottomSheet from "../../../components/Bottomsheet";
 import Card from "../../../components/Card";
@@ -79,7 +85,6 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
     <View
       style={{
         flexDirection: "row",
-
         alignItems: "center",
       }}
     >
@@ -137,9 +142,10 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
           {`press & hold`}
         </Text>
         <TouchableOpacity
+          style={{ justifyContent: "center", alignItems: "center" }}
           onPress={() => setisBottomSheetForFilterVisible(true)}
         >
-          <View style={{ justifyContent: "center", alignItems: "center" }}>
+          <View>
             <Image
               resizeMode="contain"
               style={styles.logoContainer}

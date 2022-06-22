@@ -3,6 +3,6 @@ export interface IHeaderProps {
   linearStyle?: any;
   onpress?: any;
   isAvatar?: boolean;
-  rightIconSource: any;
+  rightIconSource?: any;
   rewardPoints?: string;
 }

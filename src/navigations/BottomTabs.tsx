@@ -6,7 +6,11 @@ import { useTheme } from "@react-navigation/native";
 import { LocalImages } from "../constants/imageUrlConstants";
 import LinearGradients from "../components/GradientsPanel/LinearGradient";
 import { Screens } from "../themes/index";
-import { HomeScreenStack, DocumentScreenStack } from "../navigations/Stacks";
+import {
+  HomeScreenStack,
+  DocumentScreenStack,
+  HistoryStack,
+} from "../navigations/Stacks";
 
 const Tab = createBottomTabNavigator();
 
@@ -65,7 +69,7 @@ export const BottomMenus = () => {
                     tintColor: focused ? colors.primary : colors.background,
                   },
                 ]}
-                source={LocalImages.homeImage}
+                source={LocalImages.documentsImage}
               />
             </View>
           ),
@@ -101,7 +105,7 @@ export const BottomMenus = () => {
       />
       <Tab.Screen
         name="History"
-        component={DocumentScreenStack}
+        component={HistoryStack}
         options={{
           tabBarLabelStyle: styles.tabBarLabelStyle,
           tabBarIcon: ({ focused }: any) => (

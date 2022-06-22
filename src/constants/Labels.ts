@@ -7,6 +7,7 @@ export const SCREENS = {
     category: "CATEGORIES",
     documentLabel: "BY MOST FREQUENTLY USED DOCUMENTS",
     upload: "UPLOADED DOCUMENTS",
+    History: "HISTORY",
     DocumentList: [
       {
         TITLE: "Passport",
