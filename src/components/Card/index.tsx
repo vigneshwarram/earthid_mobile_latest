@@ -18,6 +18,8 @@ interface ICardProps {
   onPress?: (e: any) => void;
   style?: any; // Overriding options for styling.
   leftAvatar?: any;
+  titleIcon?: any;
+  rightIconOnPress?: any;
 }
 
 const Card = ({
@@ -27,49 +29,51 @@ const Card = ({
   subtitle,
   leftAvatar,
   onPress,
+  titleIcon,
+  rightIconOnPress,
   style = {},
 }: ICardProps) => {
   return (
-    <TouchableOpacity onPress={onPress}>
-      <View style={[styles.container, style]}>
-        {leftAvatar && (
-          <Avatar
-            isUploaded={true}
-            iconSource={leftAvatar}
-            style={{
-              container: [style.avatarContainer],
-              imgContainer: style.avatarImageContainer,
-            }}
-          />
-        )}
-        {leftIconSrc && (
-          <Icon
-            src={leftIconSrc}
-            style={{
-              container: styles.leftIconContainer,
-            }}
-          />
-        )}
-        <Info
-          title={title}
-          subtitle={subtitle}
+    <View style={[styles.container, style]}>
+      {leftAvatar && (
+        <Avatar
+          isUploaded={true}
+          iconSource={leftAvatar}
           style={{
-            title: style.title,
-            subtitle: style.subtitle,
-            container: style.textContainer,
+            container: [style.avatarContainer],
+            imgContainer: style.avatarImageContainer,
           }}
         />
-        {rightIconSrc && (
-          <Icon
-            src={rightIconSrc}
-            style={{
-              container: styles.rightIconContainer,
-              image: { width: 15, height: 15 },
-            }}
-          />
-        )}
-      </View>
-    </TouchableOpacity>
+      )}
+      {leftIconSrc && (
+        <Icon
+          src={leftIconSrc}
+          style={{
+            container: styles.leftIconContainer,
+          }}
+        />
+      )}
+      <Info
+        titleIcon={titleIcon}
+        title={title}
+        subtitle={subtitle}
+        style={{
+          title: style.title,
+          subtitle: style.subtitle,
+          container: style.textContainer,
+        }}
+      />
+      {rightIconSrc && (
+        <Icon
+          onPress={rightIconOnPress}
+          src={rightIconSrc}
+          style={{
+            container: styles.rightIconContainer,
+            image: { width: 15, height: 15 },
+          }}
+        />
+      )}
+    </View>
   );
 };
 

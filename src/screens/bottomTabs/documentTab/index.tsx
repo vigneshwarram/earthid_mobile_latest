@@ -1,8 +1,10 @@
 import { values } from "lodash";
-import React from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, Text, FlatList, Image } from "react-native";
 import CircularProgress from "react-native-circular-progress-indicator";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import Avatar from "../../../components/Avatar";
+import BottomSheet from "../../../components/Bottomsheet";
 import Card from "../../../components/Card";
 import Header from "../../../components/Header";
 import TextInput from "../../../components/TextInput";
@@ -18,6 +20,14 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
   const _toggleDrawer = () => {
     navigation.toggleDrawer();
   };
+
+  const [
+    isBottomSheetForSideOptionVisible,
+    setisBottomSheetForSideOptionVisible,
+  ] = useState<boolean>(false);
+
+  const [isBottomSheetForFilterVisible, setisBottomSheetForFilterVisible] =
+    useState<boolean>(false);
 
   const documentsDetailsList = values(
     SCREENS.HOMESCREEN.documentsDetailsList
@@ -37,11 +47,17 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
     })
   );
 
+  const _rightIconOnPress = () => {
+    setisBottomSheetForSideOptionVisible(true);
+  };
+
   const _renderItem = ({ item }: any) => {
     return (
       <Card
+        rightIconOnPress={_rightIconOnPress}
+        titleIcon={LocalImages.vcImage}
         rightIconSrc={LocalImages.menuImage}
-        leftAvatar={LocalImages.CATEGORIES.insuranceImage}
+        leftAvatar={item.uri}
         title={item.title}
         subtitle={item.subtitle}
         style={{
@@ -59,6 +75,34 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
       />
     );
   };
+  const RowOption = ({ icon, title }: any) => (
+    <View
+      style={{
+        flexDirection: "row",
+
+        alignItems: "center",
+      }}
+    >
+      {icon && (
+        <Image
+          resizeMode="contain"
+          style={styles.logoContainer}
+          source={icon}
+        ></Image>
+      )}
+
+      <View style={{ justifyContent: "center", alignItems: "center" }}>
+        <Text
+          style={[
+            styles.categoryHeaderText,
+            { fontSize: 13, marginHorizontal: 10, marginVertical: 15 },
+          ]}
+        >
+          {title}
+        </Text>
+      </View>
+    </View>
+  );
 
   const onChangeHandler = () => {};
   const _keyExtractor = ({ id }: any) => id.toString();
@@ -92,13 +136,17 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
         >
           {`press & hold`}
         </Text>
-        <View style={{ justifyContent: "center", alignItems: "center" }}>
-          <Image
-            resizeMode="contain"
-            style={styles.logoContainer}
-            source={LocalImages.filter}
-          ></Image>
-        </View>
+        <TouchableOpacity
+          onPress={() => setisBottomSheetForFilterVisible(true)}
+        >
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <Image
+              resizeMode="contain"
+              style={styles.logoContainer}
+              source={LocalImages.filter}
+            ></Image>
+          </View>
+        </TouchableOpacity>
       </View>
 
       <FlatList<any>
@@ -107,6 +155,27 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
         renderItem={_renderItem}
         keyExtractor={_keyExtractor}
       />
+      <BottomSheet
+        onClose={() => setisBottomSheetForSideOptionVisible(false)}
+        height={150}
+        isVisible={isBottomSheetForSideOptionVisible}
+      >
+        <View style={{ height: 100, width: "100%", paddingHorizontal: 30 }}>
+          <RowOption title={"Share"} icon={LocalImages.shareImage} />
+          <RowOption title={"Delete"} icon={LocalImages.deleteImage} />
+        </View>
+      </BottomSheet>
+      <BottomSheet
+        onClose={() => setisBottomSheetForFilterVisible(false)}
+        height={150}
+        isVisible={isBottomSheetForFilterVisible}
+      >
+        <View style={{ height: 150, width: "100%", paddingHorizontal: 30 }}>
+          <RowOption title={"By Category"} />
+          <RowOption title={"By Date"} />
+          <RowOption title={"By Frequency"} />
+        </View>
+      </BottomSheet>
     </View>
   );
 };
@@ -160,7 +229,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: Screens.pureWhite,
     title: {
-      color: Screens.grayShadeColor,
+      color: Screens.black,
     },
     textContainer: {
       justifyContent: "center",

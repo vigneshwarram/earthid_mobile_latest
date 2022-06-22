@@ -1,5 +1,6 @@
 import React from "react";
-import { Image, StyleSheet, View } from "react-native";
+import { Image, StyleSheet, View, TouchableOpacity } from "react-native";
+
 import { LocalImages } from "../../constants/imageUrlConstants";
 import { Screens } from "../../themes";
 import { IIconProps } from "./IIconProps";
@@ -9,7 +10,7 @@ import { IIconProps } from "./IIconProps";
  * @description This is a base component for the implementation of Icon.
  */
 
-const Icon = ({ src, style = {}, isUploaded }: IIconProps) => (
+const Icon = ({ src, style = {}, isUploaded, onPress }: IIconProps) => (
   <View style={[styles.container, style.container]}>
     {isUploaded && (
       <View style={styles.uploadContainer}>
@@ -20,11 +21,13 @@ const Icon = ({ src, style = {}, isUploaded }: IIconProps) => (
         />
       </View>
     )}
-    <Image
-      source={src}
-      style={[styles.image, style.image]}
-      resizeMode="contain"
-    />
+    <TouchableOpacity onPress={onPress}>
+      <Image
+        source={src}
+        style={[styles.image, style.image]}
+        resizeMode="contain"
+      />
+    </TouchableOpacity>
   </View>
 );
 
@@ -40,8 +43,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   uploadContainer: {
-    width: 15,
-    height: 15,
+    width: 20,
+    height: 20,
     borderRadius: 15 / 2,
     backgroundColor: "#25cc25",
     position: "absolute",
@@ -49,6 +52,8 @@ const styles = StyleSheet.create({
     bottom: 0,
     alignItems: "center",
     justifyContent: "center",
+    borderWidth: 2,
+    borderColor: "#fff",
   },
   uploadImage: {
     width: 10,

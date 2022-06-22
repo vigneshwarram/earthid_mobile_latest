@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, Image } from "react-native";
 import { Screens } from "../../themes";
 
 import { IInfoProps } from "./IInfoProps";
@@ -9,9 +9,22 @@ import { IInfoProps } from "./IInfoProps";
  * @description This is a base component for the implementation of Info.
  */
 
-const Info = ({ title, subtitle, style = {} }: IInfoProps) => (
+const Info = ({ title, subtitle, style = {}, titleIcon }: IInfoProps) => (
   <View style={[styles.container, style.container]}>
-    {title && <Text style={[styles.title, style.title]}>{title}</Text>}
+    {title && (
+      <View style={styles.titleTextContainer}>
+        <Text style={[styles.title, style.title]}>{title}</Text>
+        {titleIcon && (
+          <View style={styles.imageContainer}>
+            <Image
+              resizeMode="contain"
+              style={styles.logoContainers}
+              source={titleIcon}
+            ></Image>
+          </View>
+        )}
+      </View>
+    )}
     {subtitle && (
       <Text style={[styles.subtitle, style.subtitle]}>{subtitle}</Text>
     )}
@@ -21,9 +34,21 @@ const Info = ({ title, subtitle, style = {} }: IInfoProps) => (
 export default Info;
 
 const styles = StyleSheet.create({
+  logoContainers: {
+    width: 30,
+    height: 30,
+  },
+  titleTextContainer: {
+    flexDirection: "row",
+  },
+  imageContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginLeft: 10,
+  },
   container: {
-    paddingVertical: 12.5,
-    paddingHorizontal: 15,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
@@ -39,5 +64,6 @@ const styles = StyleSheet.create({
     opacity: 0.4,
     fontSize: 12,
     paddingVertical: 1.5,
+    marginLeft: -20,
   },
 });
