@@ -10,28 +10,34 @@ export const SCREENS = {
     History: "HISTORY",
     SocialMedialList: [
       {
-        TITLE: "web",
+        TITLE: "website",
         URI: LocalImages.SOCIAL_MEDIA_.webImage,
+        DOMAIN: "https://yourdomain.com",
       },
       {
         TITLE: "facebook",
         URI: LocalImages.SOCIAL_MEDIA_.facebookImage,
+        DOMAIN: "https://yourdomain.com",
       },
       {
         TITLE: "twitter",
         URI: LocalImages.SOCIAL_MEDIA_.twitterImage,
+        DOMAIN: "https://yourdomain.com",
       },
       {
         TITLE: "instagram",
         URI: LocalImages.SOCIAL_MEDIA_.instagramImage,
+        DOMAIN: "https://yourdomain.com",
       },
       {
         TITLE: "linkeid",
         URI: LocalImages.SOCIAL_MEDIA_.linkdInImage,
+        DOMAIN: "https://yourdomain.com",
       },
       {
         TITLE: "telegram",
         URI: LocalImages.SOCIAL_MEDIA_.telegramImage,
+        DOMAIN: "https://yourdomain.com",
       },
     ],
     DocumentList: [

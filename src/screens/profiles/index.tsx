@@ -17,8 +17,8 @@ interface IHomeScreenProps {
 const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
   const [isCameraOptionVisible, setisCameraOptionVisible] =
     useState<boolean>(false);
-  const _toggleDrawer = () => {
-    navigation.toggleDrawer();
+  const _navigateAction = () => {
+    navigation.navigate("EditProfileScreen");
   };
   const _letfIconPress = () => {
     navigation.goBack();
@@ -78,7 +78,7 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
         leftIconSource={LocalImages.backImage}
         rightIconSource={LocalImages.giftBoxImage}
         isAvatar
-        onpress={_toggleDrawer}
+        onpress={_navigateAction}
         linearStyle={styles.linearStyle}
         containerStyle={{
           iconStyle: {

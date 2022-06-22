@@ -53,6 +53,7 @@ const Card = ({
           src={leftIconSrc}
           style={{
             container: styles.leftIconContainer,
+            image: style.imageStyle,
           }}
         />
       )}

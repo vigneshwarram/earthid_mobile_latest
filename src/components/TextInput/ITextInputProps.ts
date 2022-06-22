@@ -6,6 +6,7 @@ export interface ITextInputProps {
   isFocused?: boolean;
   isEditable?: boolean;
   isNumeric?: boolean;
+  rightIcon?: any;
   maxLength?: number;
   isError?: boolean;
   errorText?: string;

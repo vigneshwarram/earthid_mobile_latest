@@ -24,6 +24,7 @@ const TextInputBox = ({
   testId,
   leftIcon,
   placeholder,
+  rightIcon,
   style = {},
 }: ITextInputProps) => (
   <View>
@@ -31,8 +32,17 @@ const TextInputBox = ({
       <View style={{ position: "absolute", left: 30, top: 25, zIndex: 100 }}>
         <Image
           resizeMode="contain"
-          style={styles.leftIconContainer}
+          style={[styles.leftIconContainer, style.leftIconStyle]}
           source={leftIcon}
+        ></Image>
+      </View>
+    )}
+    {rightIcon && (
+      <View style={{ position: "absolute", right: 30, top: 15, zIndex: 100 }}>
+        <Image
+          resizeMode="contain"
+          style={styles.leftIconContainer}
+          source={rightIcon}
         ></Image>
       </View>
     )}

@@ -5,6 +5,7 @@ import { Dimensions } from "react-native";
 import CustomDrawer from "../navigations/CustomDrawer";
 import { createStackNavigator } from "@react-navigation/stack";
 import ProfileScreen from "../screens/profiles";
+import EditProfileScreen from "../screens/profiles/EditProfile";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -32,6 +33,7 @@ export const HomeScreenStack = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+      <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
     </Stack.Navigator>
   );
 };
