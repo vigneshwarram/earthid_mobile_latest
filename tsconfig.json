@@ -102,5 +102,9 @@
   },
   "exclude": [
     "node_modules", "babel.config.js", "metro.config.js", "jest.config.js"
-  ]
+  ],
+  "typeRoots": [
+  "../node_modules/@types",
+  "../@types"
+]
 }

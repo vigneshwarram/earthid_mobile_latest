@@ -132,5 +132,10 @@ export const SCREENS = {
     instruction: "Locking this app is required for added security ",
     instructions:
       "To keep your data secure, we store your  personal data on your device, not on the  centralised servers.",
+    passcordInstruction:
+      "To keep your data secure, we store your  personal data on your device, not on the  centralised servers.",
+    passcordInstructions:
+      "Secure Global ID with 6 - digit code that will remember.",
+    confirmInstruction: "Please confirm your 6 - digit passcode for go further",
   },
 };

@@ -1,24 +1,28 @@
 import React, { useRef, useState } from "react";
 import { View, StyleSheet, Text, ScrollView, Image } from "react-native";
-import Header from "../../../components/Header";
-import { SCREENS } from "../../../constants/Labels";
-import { Screens } from "../../../themes";
-import Loader from "../../../components/Loader";
-import QRCode from "react-native-qrcode-svg";
-import Button from "../../../components/Button";
-import { LocalImages } from "../../../constants/imageUrlConstants";
+import Header from "../../../../components/Header";
+import { SCREENS } from "../../../../constants/Labels";
+import { Screens } from "../../../../themes";
+import Button from "../../../../components/Button";
+import SmoothPinCodeInput from "react-native-smooth-pincode-input";
+import { LocalImages } from "../../../../constants/imageUrlConstants";
 
 interface IHomeScreenProps {
   navigation?: any;
 }
 
 const Register = ({ navigation }: IHomeScreenProps) => {
+  const _navigateAction = () => {};
+  const [code, setCode] = useState();
+  const onPinCodeChange = (code: any) => {
+    setCode(code);
+  };
   return (
     <View style={styles.sectionContainer}>
       <ScrollView contentContainerStyle={styles.sectionContainer}>
         <Header
           isLogoAlone={true}
-          headingText={"Add Security"}
+          headingText={"Confirm Passcord"}
           linearStyle={styles.linearStyle}
           containerStyle={{
             iconStyle: {
@@ -41,23 +45,10 @@ const Register = ({ navigation }: IHomeScreenProps) => {
               <Image
                 resizeMode="contain"
                 style={[styles.logoContainer]}
-                source={LocalImages.securityImage}
+                source={LocalImages.passcordImage}
               ></Image>
             </View>
 
-            <Text
-              style={[
-                styles.categoryHeaderText,
-                {
-                  fontSize: 14,
-                  fontWeight: "bold",
-                  textAlign: "center",
-                  color: Screens.black,
-                },
-              ]}
-            >
-              {SCREENS.SECURITYSCREEN.instruction}
-            </Text>
             <Text
               style={[
                 styles.categoryHeaderText,
@@ -69,48 +60,40 @@ const Register = ({ navigation }: IHomeScreenProps) => {
                 },
               ]}
             >
-              {SCREENS.SECURITYSCREEN.instructions}
+              {SCREENS.SECURITYSCREEN.confirmInstruction}
             </Text>
-            <Button
-              onPress={() => navigation.navigate("RegisterScreen")}
-              style={{
-                buttonContainer: {
-                  backgroundColor: Screens.pureWhite,
-                  elevation: 5,
-                },
-                iconStyle: {
-                  tintColor: Screens.colors.primary,
-                },
-              }}
-              leftIcon={LocalImages.touchImage}
-              title={"USE TOUCH ID"}
-            ></Button>
-            <Button
-              onPress={() => navigation.navigate("RegisterScreen")}
-              style={{
-                buttonContainer: {
-                  backgroundColor: Screens.pureWhite,
-                  elevation: 5,
-                },
-                iconStyle: {
-                  tintColor: Screens.colors.primary,
-                },
-              }}
-              leftIcon={LocalImages.faceImage}
-              title={"USE FACE ID"}
-            ></Button>
-            <Button
-              onPress={() => navigation.navigate("SetPin")}
-              style={{
-                buttonContainer: {
-                  backgroundColor: Screens.pureWhite,
-                  elevation: 5,
-                },
-              }}
-              leftIcon={LocalImages.passcordImage}
-              title={"USE PASSCORD"}
-            ></Button>
           </View>
+          <SmoothPinCodeInput
+            cellStyle={{
+              borderWidth: 0.5,
+              borderColor: Screens.grayShadeColor,
+              borderRadius: 5,
+            }}
+            cellStyleFocused={{
+              borderWidth: 2,
+              borderColor: Screens.colors.primary,
+            }}
+            password
+            cellSize={50}
+            codeLength={6}
+            value={code}
+            onTextChange={onPinCodeChange}
+          />
+          <Button
+            onPress={_navigateAction}
+            style={{
+              buttonContainer: {
+                elevation: 5,
+              },
+              text: {
+                color: Screens.pureWhite,
+              },
+              iconStyle: {
+                tintColor: Screens.pureWhite,
+              },
+            }}
+            title={"CREATE PASSCODE"}
+          ></Button>
         </View>
       </ScrollView>
     </View>
@@ -190,7 +173,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     elevation: 5,
     borderRadius: 10,
-    flex: 0.5,
+    flex: 0.1,
     justifyContent: "space-between",
   },
   avatarContainer: {
