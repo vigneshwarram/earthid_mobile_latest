@@ -119,4 +119,8 @@ export const SCREENS = {
       },
     ],
   },
+  LANDINGSCREEN: {
+    setUpId: "Set Up Your GlobaliD",
+    instruction: "Setup with one of our available registration options",
+  },
 };

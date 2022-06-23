@@ -29,6 +29,8 @@ export const LocalImages = {
   settingsImage: require("../../resources/images/settings.png"),
   termsImage: require("../../resources/images/terms.png"),
   profileImage: require("../../resources/images/profile.png"),
+  registerdocumentImage: require("../../resources/images/registerdocument.png"),
+  qrcodeImage: require("../../resources/images/qr-code.png"),
 
   //categories
   CATEGORIES: {

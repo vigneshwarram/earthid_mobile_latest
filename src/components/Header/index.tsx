@@ -26,6 +26,7 @@ const Header = ({
   rewardPoints,
   leftIconSource,
   avatarClick,
+  isLogoAlone,
 }: IHeaderProps) => (
   <View style={containerStyle}>
     <LinearGradients
@@ -35,81 +36,94 @@ const Header = ({
       startColor={Screens.colors.header.startColor}
       style={linearStyle}
     >
-      <View>
-        <View style={styles.sectionHeaderContainer}>
-          <TouchableOpacity
-            style={containerStyle.iconContainer}
-            disabled={letfIconPress ? false : true}
-            onPress={letfIconPress}
-          >
-            <Image
-              resizeMode="contain"
-              style={[styles.logoContainer, containerStyle.iconStyle]}
-              source={leftIconSource}
-            ></Image>
-          </TouchableOpacity>
+      {isLogoAlone ? (
+        <View style={{ alignItems: "center" }}>
+          <Image
+            resizeMode="contain"
+            style={[styles.logoContainer, containerStyle.iconStyle]}
+            source={LocalImages.logoImage}
+          ></Image>
+        </View>
+      ) : (
+        <View>
+          <View style={styles.sectionHeaderContainer}>
+            <TouchableOpacity
+              style={containerStyle.iconContainer}
+              disabled={letfIconPress ? false : true}
+              onPress={letfIconPress}
+            >
+              <Image
+                resizeMode="contain"
+                style={[styles.logoContainer, containerStyle.iconStyle]}
+                source={leftIconSource}
+              ></Image>
+            </TouchableOpacity>
 
-          <View
-            style={{
-              flexDirection: "row",
-            }}
-          >
             <View
               style={{
                 flexDirection: "row",
               }}
             >
-              <TouchableOpacity style={styles.closeContainer} onPress={onpress}>
+              <View
+                style={{
+                  flexDirection: "row",
+                }}
+              >
+                <TouchableOpacity
+                  style={styles.closeContainer}
+                  onPress={onpress}
+                >
+                  <Image
+                    resizeMode="contain"
+                    style={styles.close}
+                    source={rightIconSource}
+                  ></Image>
+                </TouchableOpacity>
+                {rewardPoints !== "" && (
+                  <View
+                    style={{
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginLeft: 10,
+                    }}
+                  >
+                    <Text style={{ fontWeight: "bold", marginLeft: -5 }}>
+                      {rewardPoints}
+                    </Text>
+                  </View>
+                )}
+              </View>
+
+              <TouchableOpacity
+                style={[styles.closeContainer, { marginLeft: 10 }]}
+                onPress={onpress}
+              >
                 <Image
                   resizeMode="contain"
                   style={styles.close}
-                  source={rightIconSource}
+                  source={actionIcon}
                 ></Image>
               </TouchableOpacity>
-              {rewardPoints !== "" && (
-                <View
-                  style={{
-                    justifyContent: "center",
-                    alignItems: "center",
-                    marginLeft: 10,
-                  }}
-                >
-                  <Text style={{ fontWeight: "bold", marginLeft: -5 }}>
-                    {rewardPoints}
-                  </Text>
-                </View>
-              )}
             </View>
-
-            <TouchableOpacity
-              style={[styles.closeContainer, { marginLeft: 10 }]}
-              onPress={onpress}
-            >
-              <Image
-                resizeMode="contain"
-                style={styles.close}
-                source={actionIcon}
-              ></Image>
-            </TouchableOpacity>
           </View>
+          {isAvatar && (
+            <TouchableOpacity
+              style={{ justifyContent: "center", alignItems: "center" }}
+              onPress={avatarClick}
+            >
+              <View>
+                <Avatar
+                  absoluteCircleInnerImage={absoluteCircleInnerImage}
+                  isProfileAvatar={isProfileAvatar}
+                  isUploaded={isUploaded}
+                  text={SCREENS.HOMESCREEN.avatarName}
+                  iconSource={LocalImages.avatarImage}
+                ></Avatar>
+              </View>
+            </TouchableOpacity>
+          )}
         </View>
-        {isAvatar && (
-          <TouchableOpacity
-            style={{ justifyContent: "center", alignItems: "center" }}
-            onPress={avatarClick}
-          >
-            <View>
-              <Avatar
-                absoluteCircleInnerImage={absoluteCircleInnerImage}
-                isProfileAvatar={isProfileAvatar}
-                isUploaded={isUploaded}
-                text={SCREENS.HOMESCREEN.avatarName}
-                iconSource={LocalImages.avatarImage}
-              ></Avatar>
-            </View>
-          </TouchableOpacity>
-        )}
-      </View>
+      )}
     </LinearGradients>
   </View>
 );
