@@ -1,13 +1,6 @@
 import { values } from "lodash";
 import React, { useRef, useState } from "react";
-import {
-  View,
-  StyleSheet,
-  Text,
-  FlatList,
-  Image,
-  ScrollView,
-} from "react-native";
+import { View, StyleSheet, Text, FlatList, ScrollView } from "react-native";
 import PhoneInput from "react-native-phone-number-input";
 import Avatar from "../../components/Avatar";
 import BottomSheet from "../../components/Bottomsheet";
@@ -19,8 +12,6 @@ import { Screens } from "../../themes";
 import useFormInput from "../../hooks/use-text-input";
 import { nameValidator } from "../../utils/inputValidations";
 import TextInput from "../../components/TextInput";
-import { Screen } from "react-native-screens";
-import Card from "../../components/Card";
 
 interface IHomeScreenProps {
   navigation?: any;

@@ -16,14 +16,16 @@ const Button = ({
   secondary,
   style = {},
 }: IButtonProps) => (
-  <Pressable>
+  <Pressable onPress={onPress}>
     <View style={[styles.primary, style.buttonContainer]}>
       <View style={{ justifyContent: "center", alignItems: "center" }}>
-        <Image
-          resizeMode="contain"
-          style={[styles.logoContainer, style.iconStyle]}
-          source={leftIcon}
-        ></Image>
+        {leftIcon && (
+          <Image
+            resizeMode="contain"
+            style={[styles.logoContainer, style.iconStyle]}
+            source={leftIcon}
+          ></Image>
+        )}
       </View>
       <View style={{ justifyContent: "center", alignItems: "center" }}>
         <Text style={[styles.common, style.text]}>{title}</Text>

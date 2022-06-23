@@ -65,6 +65,7 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
               title={"REGISTER WITH DOCUMENT"}
             ></Button>
             <Button
+              onPress={() => navigation.navigate("RegisterScreen")}
               style={{
                 buttonContainer: {
                   backgroundColor: Screens.pureWhite,
@@ -104,24 +105,23 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
               leftIcon={LocalImages.qrcodeImage}
               title={"Upload QR COde"}
             ></Button>
-            <View style={{ flexDirection: "row" }}>
-              <Text
-                style={[
-                  styles.categoryHeaderText,
-                  {
-                    fontSize: 13,
-                    fontWeight: "500",
-                    textAlign: "center",
-                    color: Screens.black,
-                  },
-                ]}
-              >
-                {"By continuing you agree to our "}
-                <Text style={{ color: Screens.colors.primary }}>
-                  {"Terms & Condition and Privacy Policy"}
-                </Text>
+
+            <Text
+              style={[
+                styles.categoryHeaderText,
+                {
+                  fontSize: 13,
+                  fontWeight: "500",
+                  textAlign: "center",
+                  color: Screens.black,
+                },
+              ]}
+            >
+              {"By continuing you agree to our "}
+              <Text style={{ color: Screens.colors.primary }}>
+                {"Terms & Condition and Privacy Policy"}
               </Text>
-            </View>
+            </Text>
           </View>
         </View>
       </ScrollView>

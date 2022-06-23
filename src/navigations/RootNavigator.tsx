@@ -7,6 +7,7 @@ import { enableScreens } from "react-native-screens";
 import DrawerNavigator from "../navigations/DrawerNavigator";
 import { SlidAnimation } from "./SlidAnimation";
 import LandingScreen from "../screens/onboarding/landingPage";
+import RegisterScreen from "../screens/onboarding/register";
 // Before rendering any navigation stack
 const animations: any = SlidAnimation;
 export default function RootNavigator() {
@@ -15,6 +16,7 @@ export default function RootNavigator() {
 
   const beforeLoggedIn = {
     LandingScreen: LandingScreen,
+    RegisterScreen: RegisterScreen,
   };
 
   function AuthStack() {
