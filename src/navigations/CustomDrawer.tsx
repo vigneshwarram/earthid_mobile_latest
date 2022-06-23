@@ -11,6 +11,7 @@ import { values } from "lodash";
 import { LocalImages } from "../constants/imageUrlConstants";
 import Card from "../components/Card";
 import { ABOUT_ROUTES } from "../constants/Routes";
+import { StackActions } from "@react-navigation/native";
 
 const CustomDrawer = (props: any) => {
   const aboutList = values(ABOUT_ROUTES).map(
@@ -30,7 +31,11 @@ const CustomDrawer = (props: any) => {
   );
 
   const _navigateAction = (item: any) => {
-    props.navigation.navigate(item.route);
+    if (item.route === "Logout") {
+      props.navigation.dispatch(StackActions.replace("AuthStack"));
+    } else {
+      props.navigation.navigate(item.route);
+    }
   };
   const _renderItem = ({ item }: { item: any }) => (
     <TouchableOpacity onPress={() => _navigateAction(item)}>

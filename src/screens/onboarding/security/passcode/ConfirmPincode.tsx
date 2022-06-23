@@ -6,13 +6,22 @@ import { Screens } from "../../../../themes";
 import Button from "../../../../components/Button";
 import SmoothPinCodeInput from "react-native-smooth-pincode-input";
 import { LocalImages } from "../../../../constants/imageUrlConstants";
+import Loader from "../../../../components/Loader";
+import { StackActions } from "@react-navigation/native";
 
 interface IHomeScreenProps {
   navigation?: any;
 }
 
 const Register = ({ navigation }: IHomeScreenProps) => {
-  const _navigateAction = () => {};
+  const _navigateAction = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+      navigation.dispatch(StackActions.replace("DrawerNavigator"));
+    }, 5000);
+  };
+  const [isLoading, setIsLoading] = useState(false);
   const [code, setCode] = useState();
   const onPinCodeChange = (code: any) => {
     setCode(code);
@@ -94,6 +103,11 @@ const Register = ({ navigation }: IHomeScreenProps) => {
             }}
             title={"CREATE PASSCODE"}
           ></Button>
+          <Loader
+            loadingText="Passcord Generated successfully !"
+            Status="Success !"
+            isLoaderVisible={isLoading}
+          ></Loader>
         </View>
       </ScrollView>
     </View>

@@ -61,6 +61,6 @@ export const ABOUT_ROUTES = {
     URI: LocalImages.logoutImage,
     CARD: "AcceptableUsePolicy",
     TITLE: "Logout",
-    SCREEN: "history",
+    SCREEN: "Logout",
   },
 };
