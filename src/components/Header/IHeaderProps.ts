@@ -13,4 +13,5 @@ export interface IHeaderProps {
   absoluteCircleInnerImage?: any;
   actionIcon?: any;
   isLogoAlone?: boolean;
+  headingText?: string;
 }

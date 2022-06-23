@@ -27,6 +27,7 @@ const Header = ({
   leftIconSource,
   avatarClick,
   isLogoAlone,
+  headingText,
 }: IHeaderProps) => (
   <View style={containerStyle}>
     <LinearGradients
@@ -36,7 +37,19 @@ const Header = ({
       startColor={Screens.colors.header.startColor}
       style={linearStyle}
     >
-      {isLogoAlone ? (
+      {headingText ? (
+        <Text
+          style={{
+            fontWeight: "bold",
+            textAlign: "center",
+            fontSize: 20,
+            color: Screens.black,
+            marginTop: 30,
+          }}
+        >
+          {headingText}
+        </Text>
+      ) : isLogoAlone ? (
         <View style={{ alignItems: "center" }}>
           <Image
             resizeMode="contain"

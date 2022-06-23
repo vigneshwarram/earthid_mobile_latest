@@ -8,6 +8,8 @@ import DrawerNavigator from "../navigations/DrawerNavigator";
 import { SlidAnimation } from "./SlidAnimation";
 import LandingScreen from "../screens/onboarding/landingPage";
 import RegisterScreen from "../screens/onboarding/register";
+import BackupIdentity from "../screens/onboarding/backupIdentity";
+import Security from "../screens/onboarding/security";
 // Before rendering any navigation stack
 const animations: any = SlidAnimation;
 export default function RootNavigator() {
@@ -17,6 +19,8 @@ export default function RootNavigator() {
   const beforeLoggedIn = {
     LandingScreen: LandingScreen,
     RegisterScreen: RegisterScreen,
+    BackupIdentity: BackupIdentity,
+    Security: Security,
   };
 
   function AuthStack() {

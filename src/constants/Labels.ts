@@ -123,4 +123,14 @@ export const SCREENS = {
     setUpId: "Set Up Your GlobaliD",
     instruction: "Setup with one of our available registration options",
   },
+  BACKUPIDENTYSCREEN: {
+    instruction:
+      "We strongly recommend to save this QR code at a secure location, at it will be needed to recover or port your Global Id in future.",
+    instructions: "Save it like, millions of dollar it may one day may worth.",
+  },
+  SECURITYSCREEN: {
+    instruction: "Locking this app is required for added security ",
+    instructions:
+      "To keep your data secure, we store your  personal data on your device, not on the  centralised servers.",
+  },
 };

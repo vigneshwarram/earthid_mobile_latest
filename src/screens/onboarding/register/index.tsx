@@ -48,7 +48,8 @@ const Register = ({ navigation }: IHomeScreenProps) => {
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
-    }, 3000);
+      navigation.navigate("BackupIdentity");
+    }, 5000);
   };
 
   return (

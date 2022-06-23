@@ -20,54 +20,52 @@ const Button = ({
   Status,
   loadingText,
 }: ILoaderProps) => (
-  <View style={[styles.primary, style.buttonContainer]}>
-    <Modal style={{ marginLeft: deviceWidth / 6 }} isVisible={isLoaderVisible}>
-      <View
-        style={{
-          backgroundColor: "#fff",
-          width: deviceWidth / 1.5,
-          height: 200,
-          justifyContent: "center",
-          alignItems: "center",
-          borderRadius: 20,
-        }}
+  <Modal style={{ marginLeft: deviceWidth / 6 }} isVisible={isLoaderVisible}>
+    <View
+      style={{
+        backgroundColor: "#fff",
+        width: deviceWidth / 1.5,
+        height: 200,
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 20,
+      }}
+    >
+      {/* <ActivityIndicator size="small" color={Screens.colors.primary} /> */}
+      <LottieView
+        style={{ width: 90, height: 90 }}
+        source={LocalImages.LOTTIEICONS.success}
+        autoPlay
+        loop
+      />
+      <Text
+        style={[
+          styles.categoryHeaderText,
+          {
+            fontSize: 16,
+            fontWeight: "bold",
+            textAlign: "center",
+            color: Screens.black,
+          },
+        ]}
       >
-        {/* <ActivityIndicator size="small" color={Screens.colors.primary} /> */}
-        <LottieView
-          style={{ width: 90, height: 90 }}
-          source={LocalImages.LOTTIEICONS.success}
-          autoPlay
-          loop
-        />
-        <Text
-          style={[
-            styles.categoryHeaderText,
-            {
-              fontSize: 16,
-              fontWeight: "bold",
-              textAlign: "center",
-              color: Screens.black,
-            },
-          ]}
-        >
-          {Status}
-        </Text>
-        <Text
-          style={[
-            styles.categoryHeaderText,
-            {
-              fontSize: 14,
-              fontWeight: "500",
-              textAlign: "center",
-              color: Screens.black,
-            },
-          ]}
-        >
-          {loadingText}
-        </Text>
-      </View>
-    </Modal>
-  </View>
+        {Status}
+      </Text>
+      <Text
+        style={[
+          styles.categoryHeaderText,
+          {
+            fontSize: 14,
+            fontWeight: "500",
+            textAlign: "center",
+            color: Screens.black,
+          },
+        ]}
+      >
+        {loadingText}
+      </Text>
+    </View>
+  </Modal>
 );
 export default Button;
 
