@@ -47,4 +47,7 @@ export const LocalImages = {
     linkdInImage: require("../../resources/images/linkedIn.png"),
     twitterImage: require("../../resources/images/twitter.png"),
   },
+  LOTTIEICONS: {
+    success: require("../../resources/lottie/31973-success-message.json"),
+  },
 };

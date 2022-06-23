@@ -10,6 +10,7 @@ import TextInput from "../../../components/TextInput";
 import PhoneInput from "react-native-phone-number-input";
 import useFormInput from "../../../hooks/use-text-input";
 import { nameValidator } from "../../../utils/inputValidations";
+import Loader from "../../../components/Loader";
 
 interface IHomeScreenProps {
   navigation?: any;
@@ -18,6 +19,7 @@ interface IHomeScreenProps {
 const Register = ({ navigation }: IHomeScreenProps) => {
   const phoneInput: any = useRef();
   const [mobileNumber, setmobileNumber] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   const {
     value: fullName,
     isFocused: fullNameFocus,
@@ -41,6 +43,13 @@ const Register = ({ navigation }: IHomeScreenProps) => {
     inputFocusHandler: dateOfBirthocusHandlur,
     inputBlurHandler: dateOfBirthlurHandler,
   } = useFormInput("22/02/1995", true, nameValidator);
+
+  const _navigateAction = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
+  };
 
   return (
     <View style={styles.sectionContainer}>
@@ -194,6 +203,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
             />
           </View>
           <Button
+            onPress={_navigateAction}
             style={{
               buttonContainer: {
                 elevation: 5,
@@ -221,6 +231,11 @@ const Register = ({ navigation }: IHomeScreenProps) => {
             {"I Already have my "}
             <Text style={{ color: Screens.colors.primary }}>{"GlobaliD"}</Text>
           </Text>
+          <Loader
+            loadingText="Your Global ID is generated successfully."
+            Status="Success !"
+            isLoaderVisible={isLoading}
+          ></Loader>
         </View>
       </ScrollView>
     </View>
