@@ -81,6 +81,7 @@ export const SCREENS = {
         SUBTITLE: "Uploaded: 21/05/2022",
         URI: LocalImages.documentsImage,
         COLOR: "#D7EFFB",
+        UPLOADIMAGECOLOR: "#94c0d6",
       },
       {
         ID: 2,
@@ -88,6 +89,7 @@ export const SCREENS = {
         SUBTITLE: "Uploaded: 21/05/2022",
         URI: LocalImages.documentsImage,
         COLOR: "#FFDD9B",
+        UPLOADIMAGECOLOR: "#e2b96a",
       },
       {
         ID: 3,
@@ -95,6 +97,7 @@ export const SCREENS = {
         SUBTITLE: "Uploaded: 21/05/2022",
         URI: LocalImages.documentsImage,
         COLOR: "#C5BDF6",
+        UPLOADIMAGECOLOR: "#8881b6",
       },
       {
         ID: 4,
@@ -102,6 +105,7 @@ export const SCREENS = {
         SUBTITLE: "Uploaded: 21/05/2022",
         URI: LocalImages.documentsImage,
         COLOR: "#F5BCE8",
+        UPLOADIMAGECOLOR: "#aa6d9c",
       },
       {
         ID: 5,
@@ -109,6 +113,7 @@ export const SCREENS = {
         SUBTITLE: "Uploaded: 21/05/2022",
         URI: LocalImages.CATEGORIES.travelImage,
         COLOR: "#F5BCE8",
+        UPLOADIMAGECOLOR: "#94c0d6",
       },
       {
         ID: 6,
@@ -116,6 +121,7 @@ export const SCREENS = {
         SUBTITLE: "Uploaded: 21/05/2022",
         URI: LocalImages.CATEGORIES.travelImage,
         COLOR: "#F5BCE8",
+        UPLOADIMAGECOLOR: "#8881b6",
       },
     ],
   },

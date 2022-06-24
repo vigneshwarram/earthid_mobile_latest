@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
+  Text,
 } from "react-native";
 import { Screens } from "../themes/index";
 import { values } from "lodash";
@@ -19,6 +20,7 @@ const CustomDrawer = (props: any) => {
       CARD: card,
       TITLE: title,
       SCREEN: route,
+      COLOR: color,
       URI: uri,
       RIGHT_ICON: rightUri,
     }: any) => ({
@@ -27,6 +29,7 @@ const CustomDrawer = (props: any) => {
       route,
       uri,
       rightUri,
+      color,
     })
   );
 
@@ -39,12 +42,48 @@ const CustomDrawer = (props: any) => {
   };
   const _renderItem = ({ item }: { item: any }) => (
     <TouchableOpacity onPress={() => _navigateAction(item)}>
-      <Card
-        title={item.title}
-        leftIconSrc={item.uri}
-        rightIconSrc={item.rightUri}
-        style={styles.cardContainer}
-      />
+      <View
+        style={{
+          flexDirection: "row",
+          flex: 1,
+          margin: 10,
+          justifyContent: "space-between",
+        }}
+      >
+        <View style={{ flexDirection: "row" }}>
+          <View
+            style={[styles.avatarContainer, { backgroundColor: item.color }]}
+          >
+            <Image
+              resizeMode="contain"
+              style={styles.avatarImageContainer}
+              source={item.uri}
+            ></Image>
+          </View>
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <Text
+              style={[
+                {
+                  fontSize: 14,
+                  marginHorizontal: 10,
+
+                  color: Screens.black,
+                  fontWeight: "500",
+                },
+              ]}
+            >
+              {item.title}
+            </Text>
+          </View>
+        </View>
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
+          <Image
+            resizeMode="contain"
+            style={styles.avatarImageContainer}
+            source={item.rightUri}
+          ></Image>
+        </View>
+      </View>
     </TouchableOpacity>
   );
   const _keyExtractor = ({ title }: any) => title.toString();
@@ -83,7 +122,19 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     flex: 1,
-    paddingVertical: 5,
+    margin: 10,
+  },
+  avatarImageContainer: {
+    width: 20,
+    height: 20,
+  },
+  avatarContainer: {
+    backgroundColor: "red",
+    width: 40,
+    height: 40,
+    borderRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
   },
   sectionHeaderContainer: {
     flexDirection: "row",

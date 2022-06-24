@@ -43,6 +43,7 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
       URI: uri,
       COLOR: color,
       SUBTITLE: subtitle,
+      UPLOADIMAGECOLOR: sub_color,
       ID: id,
     }: any) => ({
       title,
@@ -50,6 +51,7 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
       color,
       subtitle,
       id,
+      sub_color,
     })
   );
 
@@ -78,7 +80,7 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
               marginTop: 25,
             },
             uploadImageStyle: {
-              backgroundColor: item.color,
+              backgroundColor: item.sub_color,
             },
           },
         }}

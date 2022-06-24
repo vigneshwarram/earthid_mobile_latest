@@ -26,12 +26,14 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
       COLOR: color,
       SUBTITLE: subtitle,
       ID: id,
+      UPLOADIMAGECOLOR: sub_color,
     }: any) => ({
       title,
       uri,
       color,
       subtitle,
       id,
+      sub_color,
     })
   );
 
@@ -40,6 +42,7 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
       <Card
         titleIcon={LocalImages.vcImage}
         leftAvatar={item.uri}
+        absoluteCircleInnerImage={LocalImages.upImage}
         title={item.title}
         subtitle={item.subtitle}
         style={{
@@ -53,7 +56,7 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
               marginTop: 25,
             },
             uploadImageStyle: {
-              backgroundColor: item.color,
+              backgroundColor: item.sub_color,
             },
           },
         }}

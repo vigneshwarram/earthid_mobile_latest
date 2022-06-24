@@ -21,6 +21,7 @@ interface ICardProps {
   titleIcon?: any;
   rightIconOnPress?: any;
   absoluteCircleInnerImage?: any;
+  isUploaded?: boolean;
 }
 
 const Card = ({
@@ -33,13 +34,14 @@ const Card = ({
   onPress,
   titleIcon,
   rightIconOnPress,
+  isUploaded = true,
   style = {},
 }: ICardProps) => {
   return (
     <View style={[styles.container, style]}>
       {leftAvatar && (
         <Avatar
-          isUploaded={true}
+          isUploaded={isUploaded}
           absoluteCircleInnerImage={absoluteCircleInnerImage}
           iconSource={leftAvatar}
           style={{

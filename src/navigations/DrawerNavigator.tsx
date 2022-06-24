@@ -7,6 +7,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import ProfileScreen from "../screens/profiles";
 import EditProfileScreen from "../screens/profiles/EditProfile";
 import settings from "../screens/settings";
+import ShowQrScreen from "../screens/Camera/ShowQrCodeScreen";
 import { SlidAnimation } from "./SlidAnimation";
 
 const Drawer = createDrawerNavigator();
@@ -66,6 +67,13 @@ export const HomeScreenStack = () => {
         }}
         name="settings"
         component={settings}
+      />
+      <Stack.Screen
+        options={{
+          ...animations,
+        }}
+        name="ShowQrScreen"
+        component={ShowQrScreen}
       />
     </Stack.Navigator>
   );

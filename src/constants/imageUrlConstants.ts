@@ -35,6 +35,7 @@ export const LocalImages = {
   faceImage: require("../../resources/images/face-id.png"),
   touchImage: require("../../resources/images/touch.png"),
   passcordImage: require("../../resources/images/passcord.png"),
+  scanbarImage: require("../../resources/images/scanbarcode.png"),
 
   //categories
   CATEGORIES: {

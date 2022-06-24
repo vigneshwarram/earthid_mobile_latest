@@ -10,6 +10,7 @@ import { Screens } from "../themes/index";
 import HomeScreen from "../screens/bottomTabs/homeTab/index";
 import DocumentScreen from "../screens/bottomTabs/documentTab";
 import HistoryScreen from "../screens/bottomTabs/historyTab";
+import CameraScreen from "../screens/Camera";
 
 const Tab = createBottomTabNavigator();
 
@@ -75,8 +76,8 @@ export const BottomMenus = () => {
         }}
       />
       <Tab.Screen
-        name="s"
-        component={DocumentScreen}
+        name="Camera"
+        component={CameraScreen}
         options={{
           tabBarLabelStyle: {
             color: "transparent",

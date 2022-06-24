@@ -1,3 +1,4 @@
+import { Screens } from "../themes";
 import { LocalImages } from "./imageUrlConstants";
 export const ABOUT_ROUTES = {
   MY_PROFILE: {
@@ -6,24 +7,28 @@ export const ABOUT_ROUTES = {
     URI: LocalImages.profileImage,
     RIGHT_ICON: LocalImages.sideArrowImage,
     SCREEN: "DrawerStacks",
+    COLOR: "#D7EFFB",
   },
   HOME: {
     CARD: "UserAgreement",
     TITLE: "Home",
     URI: LocalImages.homeImage,
     SCREEN: "Home",
+    COLOR: "#FFDD9B",
   },
   DOCUMENT: {
     URI: LocalImages.documentsImage,
     CARD: "MerchantAgreement",
     TITLE: "Document",
     SCREEN: "Document",
+    COLOR: "#C5BDF6",
   },
   HISTORY: {
     URI: LocalImages.historyImage,
     CARD: "AcceptableUsePolicy",
     TITLE: "History",
     SCREEN: "History",
+    COLOR: "#F6BDE9",
   },
   SETTINGS: {
     RIGHT_ICON: LocalImages.sideArrowImage,
@@ -31,18 +36,21 @@ export const ABOUT_ROUTES = {
     CARD: "AcceptableUsePolicy",
     TITLE: "Setting",
     SCREEN: "settings",
+    COLOR: "#BFF5CE",
   },
   ABOUT: {
     URI: LocalImages.documentsImage,
     CARD: "AcceptableUsePolicy",
     TITLE: "About Us",
     SCREEN: "history",
+    COLOR: "#FFAFAF",
   },
   TERMS: {
     URI: LocalImages.termsImage,
     CARD: "AcceptableUsePolicy",
     TITLE: "Term & condition",
     SCREEN: "history",
+    COLOR: "#D7EFFB",
   },
   IDENTITY: {
     RIGHT_ICON: LocalImages.sideArrowImage,
@@ -50,17 +58,20 @@ export const ABOUT_ROUTES = {
     CARD: "AcceptableUsePolicy",
     TITLE: "Bachup Identity",
     SCREEN: "history",
+    COLOR: "#FFDD9B",
   },
   DELETE: {
     URI: LocalImages.deleteImage,
     CARD: "AcceptableUsePolicy",
     TITLE: "Delete Your Identity",
     SCREEN: "history",
+    COLOR: "#C5BDF6",
   },
   LOGOUT: {
     URI: LocalImages.logoutImage,
     CARD: "AcceptableUsePolicy",
     TITLE: "Logout",
     SCREEN: "Logout",
+    COLOR: "#F6BDE9",
   },
 };

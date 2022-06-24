@@ -23,6 +23,8 @@ target 'earthidnew' do
 
   pod 'RNSVG', :path => '../node_modules/react-native-svg'
 
+  pod 'react-native-camera', :path => '../node_modules/react-native-camera'
+
   target 'earthidnewTests' do
     inherit! :complete
     # Pods for testing
