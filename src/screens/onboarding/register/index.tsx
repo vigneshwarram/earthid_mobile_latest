@@ -312,7 +312,7 @@ const styles = StyleSheet.create({
     marginTop: -100,
     marginHorizontal: 15,
     elevation: 5,
-    borderRadius: 10,
+    borderRadius: 30,
     flex: 0.95,
     justifyContent: "space-between",
   },

@@ -76,7 +76,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
               style={{
                 buttonContainer: {
                   backgroundColor: Screens.pureWhite,
-                  elevation: 5,
+                  elevation: 2,
                 },
                 iconStyle: {
                   tintColor: Screens.colors.primary,
@@ -90,7 +90,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
               style={{
                 buttonContainer: {
                   backgroundColor: Screens.pureWhite,
-                  elevation: 5,
+                  elevation: 2,
                 },
                 iconStyle: {
                   tintColor: Screens.colors.primary,
@@ -104,7 +104,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
               style={{
                 buttonContainer: {
                   backgroundColor: Screens.pureWhite,
-                  elevation: 5,
+                  elevation: 2,
                 },
               }}
               leftIcon={LocalImages.passcordImage}

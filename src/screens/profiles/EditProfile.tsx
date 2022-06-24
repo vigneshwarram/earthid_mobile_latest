@@ -12,6 +12,7 @@ import { Screens } from "../../themes";
 import useFormInput from "../../hooks/use-text-input";
 import { nameValidator } from "../../utils/inputValidations";
 import TextInput from "../../components/TextInput";
+import Loader from "../../components/Loader";
 
 interface IHomeScreenProps {
   navigation?: any;
@@ -21,12 +22,20 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
   const [isCameraOptionVisible, setisCameraOptionVisible] =
     useState<boolean>(false);
   const [mobileNumber, setmobileNumber] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   const phoneInput: any = useRef();
   const _toggleDrawer = () => {
     navigation.toggleDrawer();
   };
   const _letfIconPress = () => {
     navigation.goBack();
+  };
+  const _navigateAction = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+      navigation.goBack();
+    }, 5000);
   };
   const {
     value: fullName,
@@ -73,7 +82,7 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
             leftIconStyle: {
               width: 15,
               height: 15,
-              marginTop: 13,
+              marginTop: 3,
               tintColor: Screens.grayShadeColor,
             },
           }}
@@ -119,7 +128,7 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
           letfIconPress={_letfIconPress}
           leftIconSource={LocalImages.backImage}
           isAvatar
-          onpress={_toggleDrawer}
+          onpress={_navigateAction}
           linearStyle={styles.linearStyle}
           containerStyle={{
             iconStyle: {
@@ -263,6 +272,11 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
             keyExtractor={_keyExtractor}
           />
         </View>
+        <Loader
+          loadingText="Your Profile Details Updated successfully."
+          Status="Success !"
+          isLoaderVisible={isLoading}
+        ></Loader>
       </ScrollView>
     </View>
   );

@@ -144,4 +144,7 @@ export const SCREENS = {
       "Secure Global ID with 6 - digit code that will remember.",
     confirmInstruction: "Please confirm your 6 - digit passcode for go further",
   },
+  SHOWQRSCREEN: {
+    instruction: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the`,
+  },
 };

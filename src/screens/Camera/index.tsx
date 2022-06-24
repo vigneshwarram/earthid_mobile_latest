@@ -12,7 +12,11 @@ const CameraScreen = (props: any) => {
     <View style={styles.sectionContainer}>
       <View style={{ position: "absolute", top: 20, left: 20, zIndex: 100 }}>
         <TouchableOpacity
-          onPress={() => props.navigation.navigate("ShowQrScreen")}
+          onPress={() =>
+            props.navigation.navigate("DrawerStacks", {
+              screen: "ShowQrScreen",
+            })
+          }
         >
           <Image
             resizeMode="contain"

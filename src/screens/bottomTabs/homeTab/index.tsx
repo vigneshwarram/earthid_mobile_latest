@@ -61,7 +61,9 @@ const HomeScreen = ({ navigation }: IHomeScreenProps) => {
   };
 
   const _avatarClick = () => {
-    navigation.navigate("DrawerStacks");
+    navigation.navigate("DrawerStacks", {
+      screen: "ProfileScreen",
+    });
   };
 
   const _keyExtractor = ({ title }: any) => title.toString();
