@@ -91,6 +91,7 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
               {"I already have my GlobaliD"}
             </Text>
             <Button
+              onPress={() => navigation.navigate("uploadDocumentsScreen")}
               style={{
                 buttonContainer: {
                   elevation: 5,

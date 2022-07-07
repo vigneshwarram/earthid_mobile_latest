@@ -12,6 +12,7 @@ import BackupIdentity from "../screens/onboarding/backupIdentity";
 import Security from "../screens/onboarding/security";
 import SetPin from "../screens/onboarding/security/passcode/SetPincode";
 import ConfirmPincode from "../screens/onboarding/security/passcode/ConfirmPincode";
+import uploadDocumentsScreen from "../screens/uploadDocuments";
 // Before rendering any navigation stack
 const animations: any = SlidAnimation;
 export default function RootNavigator() {
@@ -25,6 +26,7 @@ export default function RootNavigator() {
     Security: Security,
     SetPin: SetPin,
     ConfirmPincode: ConfirmPincode,
+    uploadDocumentsScreen: uploadDocumentsScreen,
   };
 
   function AuthStack() {

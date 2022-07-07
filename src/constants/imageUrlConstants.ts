@@ -15,6 +15,7 @@ export const LocalImages = {
   menuImage: require("../../resources/images/menu.png"),
   filter: require("../../resources/images/filter.png"),
   upImage: require("../../resources/images/go-up.png"),
+  upload: require("../../resources/images/upload.png"),
   documentsImage: require("../../resources/images/documents.png"),
   vcImage: require("../../resources/images/VC.png"),
   shareImage: require("../../resources/images/share.png"),
