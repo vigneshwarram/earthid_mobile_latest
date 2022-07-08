@@ -15,7 +15,7 @@ const TextInputBox = ({
   onBlur,
   onChangeText,
   value,
-  isFocused,
+  isFocused = false,
   isError = false,
   isNumeric = false,
   isEditable = true,
@@ -84,8 +84,7 @@ const styles = StyleSheet.create({
   },
   focus: {
     borderColor: Screens.colors.primary,
-    borderWidth: 2.2,
-    elevation: 1,
+    borderWidth: 3,
   },
   error: {
     borderColor: Screens.red,

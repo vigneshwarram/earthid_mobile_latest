@@ -22,7 +22,6 @@ export const GeneratedKeysAction =
       dispatch({
         type: ACTION_TYPES.GENERATED_KEYS_RESPONSE,
         payload: {
-          isLoading: false,
           responseData,
         },
       });
@@ -37,16 +36,13 @@ export const createAccount =
     try {
       dispatch({
         type: ACTION_TYPES.CREATEDACCOUNT,
-        payload: {
-          isGeneratedKeysLoading: true,
-        },
       });
       const response = await postCall(createAccountUrl, requestPayload);
       const responseData = _responseHandler(response);
+      console.log("responseData===>", responseData);
       dispatch({
         type: ACTION_TYPES.CREATED_ACCOUNT_RESPONSE,
         payload: {
-          isLoading: false,
           responseData,
         },
       });
@@ -59,9 +55,6 @@ export const contractCall = (requestPayload: any) => async (dispatch: any) => {
   try {
     dispatch({
       type: ACTION_TYPES.CONTRACT_CALL,
-      payload: {
-        isGeneratedKeysLoading: true,
-      },
     });
     const response = await postCall(contractUrl, requestPayload);
     const responseData = _responseHandler(response);

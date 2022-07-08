@@ -47,7 +47,7 @@ const useTextInput = (
     value,
   });
   const valueIsValid = validateValue(inputState.value, isRequired);
-  const hasError = valueIsValid.hasError && !inputState.isFocused;
+  const hasError = valueIsValid.hasError && inputState.isFocused;
   const errorMessage = valueIsValid.errorMessage;
   const validationResult: IInputValidationResult = { hasError, errorMessage };
   const valueChangeHandler = (event: any) => {

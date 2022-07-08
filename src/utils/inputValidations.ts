@@ -14,7 +14,7 @@ export const nameValidator = (
   if (isEmpty(value) && isRequired) {
     return {
       hasError: true,
-      errorMessage: "Please enter the Full Name",
+      errorMessage: "Please fill the details",
     };
   }
   if (REGEX.ADDRESS_LINE.test(value)) {

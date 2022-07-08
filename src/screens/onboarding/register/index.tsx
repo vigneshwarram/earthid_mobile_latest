@@ -17,12 +17,14 @@ import {
 } from "../../../redux/actions/authenticationAction";
 import { ICreateAccount } from "../../../typings/AccountCreation/ICreateAccount";
 import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
+import { IContractRequest } from "../../../typings/AccountCreation/IContractRequest";
 
 const Register = () => {
   const phoneInput: any = useRef();
   const dispatch = useAppDispatch();
   const [mobileNumber, setmobileNumber] = useState();
   const getGeneratedKeys = useAppSelector((state) => state.user);
+  const accountDetails = useAppSelector((state) => state.account);
   const [isLoading, setIsLoading] = useState(false);
   const {
     value: fullName,
@@ -34,7 +36,18 @@ const Register = () => {
     valueChangeHandler: fullNameChangeHandler,
     inputFocusHandler: fullNameFocusHandlur,
     inputBlurHandler: fullNameBlurHandler,
-  } = useFormInput("RobertDowney", true, nameValidator);
+  } = useFormInput("", true, nameValidator);
+  const {
+    value: lastName,
+    isFocused: lastNameFocus,
+    validationResult: {
+      hasError: isLastNameError,
+      errorMessage: isLastNameErrorMessahe,
+    },
+    valueChangeHandler: lastNameChangeHandler,
+    inputFocusHandler: lastNameFocusHandlur,
+    inputBlurHandler: lastNameBlurHandler,
+  } = useFormInput("", true, nameValidator);
 
   const {
     value: dateOfBirth,
@@ -46,17 +59,21 @@ const Register = () => {
     valueChangeHandler: dateOfBirthChangeHandler,
     inputFocusHandler: dateOfBirthocusHandlur,
     inputBlurHandler: dateOfBirthlurHandler,
-  } = useFormInput("22/02/1995", true, nameValidator);
+  } = useFormInput("", true, nameValidator);
 
   const _navigateAction = () => {
-    dispatch(GeneratedKeysAction());
+    if (!getGeneratedKeys.responseData) {
+      dispatch(GeneratedKeysAction());
+    }
   };
 
   useEffect(() => {
-    if (getGeneratedKeys.result) {
+    console.log("accountDetails", accountDetails);
+    if (!accountDetails.responseData && getGeneratedKeys.responseData) {
+      // const { publicKey } = getGeneratedKeys.responseData.result;
       let payLoad: ICreateAccount = {
-        publicKeyHex: getGeneratedKeys.result.publicKey,
-        versionName: "",
+        publicKeyHex: "publicKey",
+        versionName: "2.0",
         deviceId: "",
         encryptedEmail: "",
         accountStatus: "",
@@ -68,19 +85,19 @@ const Register = () => {
   }, [getGeneratedKeys]);
 
   useEffect(() => {
-    if (getGeneratedKeys.result) {
-      let payLoad: ICreateAccount = {
-        publicKeyHex: getGeneratedKeys.result.publicKey,
-        versionName: "",
-        deviceId: "",
-        encryptedEmail: "",
-        accountStatus: "",
-        testnet: false,
+    // console.log("getGeneratedKeys", JSON.stringify(getGeneratedKeys));
+    // console.log("accountDetails", JSON.stringify(accountDetails));
+    if (accountDetails.result) {
+      let payLoad: IContractRequest = {
+        accountId: "",
+        privateKey: "",
+        publicKey: "",
+        functionName: "",
+        functionParams: [],
+        isViewOnly: false,
       };
-
-      dispatch(createAccount(payLoad));
     }
-  }, [getGeneratedKeys]);
+  }, [accountDetails]);
 
   return (
     <View style={styles.sectionContainer}>
@@ -145,14 +162,14 @@ const Register = () => {
               style={{
                 container: styles.textInputContainer,
               }}
-              isError={isfullNameError}
-              errorText={isfullNameErrorMessage}
-              onFocus={fullNameFocusHandlur}
-              onBlur={fullNameBlurHandler}
+              isError={isLastNameError}
+              errorText={isLastNameErrorMessahe}
+              onFocus={lastNameFocusHandlur}
+              onBlur={lastNameBlurHandler}
               maxLength={60}
-              isFocused={fullNameFocus}
-              value={fullName}
-              onChangeText={fullNameChangeHandler}
+              isFocused={lastNameFocus}
+              value={lastName}
+              onChangeText={lastNameChangeHandler}
             />
             <Info
               title={"Date of Birth"}
@@ -185,6 +202,7 @@ const Register = () => {
               }}
             />
             <PhoneInput
+              autoFocus={false}
               ref={phoneInput}
               defaultValue={"0000000"}
               defaultCode="IN"
@@ -193,7 +211,7 @@ const Register = () => {
                 setmobileNumber(text);
               }}
               containerStyle={{
-                borderColor: Screens.colors.primary,
+                borderColor: Screens.darkGray,
                 width: 320,
                 borderWidth: 2.2,
                 borderRadius: 5,
@@ -209,7 +227,6 @@ const Register = () => {
                 margin: 0,
               }}
               withShadow
-              autoFocus
             />
             <Info
               title={"Email"}
@@ -279,7 +296,9 @@ const styles = StyleSheet.create({
     backgroundColor: Screens.colors.background,
   },
   title: {
-    color: Screens.grayShadeColor,
+    color: Screens.black,
+    fontWeight: "400",
+    fontSize: 13,
   },
   subtitle: {
     color: Screens.black,
@@ -372,7 +391,7 @@ const styles = StyleSheet.create({
   },
   textInputContainer: {
     borderRadius: 10,
-    borderColor: Screens.colors.primary,
+    borderColor: Screens.darkGray,
     borderWidth: 2,
     marginLeft: 10,
     marginTop: -2,
