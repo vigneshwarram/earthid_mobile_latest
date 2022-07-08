@@ -76,8 +76,7 @@ const styles = StyleSheet.create({
     borderColor: Screens.black,
     marginTop: 10,
     borderRadius: 3,
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
+    height: 50,
   },
   disabledTextInput: {
     backgroundColor: Screens.grayShadeColor,

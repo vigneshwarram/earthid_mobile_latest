@@ -9,6 +9,7 @@
  */
 
 import React from "react";
+import { SafeAreaView, StyleSheet } from "react-native";
 import { Provider } from "react-redux";
 import RootNavigator from "./src/navigations/RootNavigator";
 import { store } from "./src/redux/store";
@@ -16,9 +17,17 @@ import { store } from "./src/redux/store";
 const App = () => {
   return (
     <Provider store={store}>
-      <RootNavigator />
+      <SafeAreaView style={styles.container}>
+        <RootNavigator />
+      </SafeAreaView>
     </Provider>
   );
 };
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "rgba(191, 208, 224, 0.3)",
+  },
+});
 
 export default App;

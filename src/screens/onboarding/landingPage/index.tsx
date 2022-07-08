@@ -202,6 +202,10 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     flex: 0.95,
     justifyContent: "space-between",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 2,
   },
   avatarContainer: {
     width: 60,

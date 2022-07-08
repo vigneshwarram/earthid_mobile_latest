@@ -171,8 +171,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     shadowColor: "gray",
-    shadowOpacity: 0.8,
-    shadowRadius: 15,
   },
   Innercircle: {
     elevation: 10,

@@ -129,6 +129,10 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
     elevation: 4,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 2,
+    shadowColor: "#000",
   },
   flatPanel: {
     marginHorizontal: 25,
@@ -141,6 +145,10 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 20,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 2,
+    shadowColor: "#000",
   },
   alignCenter: { justifyContent: "center", alignItems: "center" },
   label: {

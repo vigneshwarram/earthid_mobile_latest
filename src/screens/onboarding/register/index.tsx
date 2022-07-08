@@ -19,7 +19,7 @@ import { ICreateAccount } from "../../../typings/AccountCreation/ICreateAccount"
 import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
 import { IContractRequest } from "../../../typings/AccountCreation/IContractRequest";
 
-const Register = () => {
+const Register = ({ navigation }: props) => {
   const phoneInput: any = useRef();
   const dispatch = useAppDispatch();
   const [mobileNumber, setmobileNumber] = useState();
@@ -62,9 +62,15 @@ const Register = () => {
   } = useFormInput("", true, nameValidator);
 
   const _navigateAction = () => {
-    if (!getGeneratedKeys.responseData) {
-      dispatch(GeneratedKeysAction());
-    }
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+      navigation.navigate("BackupIdentity");
+    }, 5000);
+
+    // if (!getGeneratedKeys.responseData) {
+    //   dispatch(GeneratedKeysAction());
+    // }
   };
 
   useEffect(() => {
