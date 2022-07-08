@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { View, StyleSheet, Text, ScrollView } from "react-native";
 import Header from "../../../components/Header";
 import { LocalImages } from "../../../constants/imageUrlConstants";
@@ -11,14 +11,18 @@ import PhoneInput from "react-native-phone-number-input";
 import useFormInput from "../../../hooks/use-text-input";
 import { nameValidator } from "../../../utils/inputValidations";
 import Loader from "../../../components/Loader";
+import {
+  GeneratedKeysAction,
+  createAccount,
+} from "../../../redux/actions/authenticationAction";
+import { ICreateAccount } from "../../../typings/AccountCreation/ICreateAccount";
+import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
 
-interface IHomeScreenProps {
-  navigation?: any;
-}
-
-const Register = ({ navigation }: IHomeScreenProps) => {
+const Register = () => {
   const phoneInput: any = useRef();
+  const dispatch = useAppDispatch();
   const [mobileNumber, setmobileNumber] = useState();
+  const getGeneratedKeys = useAppSelector((state) => state.user);
   const [isLoading, setIsLoading] = useState(false);
   const {
     value: fullName,
@@ -45,12 +49,38 @@ const Register = ({ navigation }: IHomeScreenProps) => {
   } = useFormInput("22/02/1995", true, nameValidator);
 
   const _navigateAction = () => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      navigation.navigate("BackupIdentity");
-    }, 5000);
+    dispatch(GeneratedKeysAction());
   };
+
+  useEffect(() => {
+    if (getGeneratedKeys.result) {
+      let payLoad: ICreateAccount = {
+        publicKeyHex: getGeneratedKeys.result.publicKey,
+        versionName: "",
+        deviceId: "",
+        encryptedEmail: "",
+        accountStatus: "",
+        testnet: false,
+      };
+
+      dispatch(createAccount(payLoad));
+    }
+  }, [getGeneratedKeys]);
+
+  useEffect(() => {
+    if (getGeneratedKeys.result) {
+      let payLoad: ICreateAccount = {
+        publicKeyHex: getGeneratedKeys.result.publicKey,
+        versionName: "",
+        deviceId: "",
+        encryptedEmail: "",
+        accountStatus: "",
+        testnet: false,
+      };
+
+      dispatch(createAccount(payLoad));
+    }
+  }, [getGeneratedKeys]);
 
   return (
     <View style={styles.sectionContainer}>
