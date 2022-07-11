@@ -29,9 +29,14 @@ import {
   encrptedEmail,
   getDeviceId,
   getEncrptedUserDetais,
+  getUserDetails,
 } from "../../../utils/encryption";
+import { StackActions } from "@react-navigation/native";
+interface IRegister {
+  navigation: any;
+}
 
-const Register = () => {
+const Register = ({ navigation }: IRegister) => {
   const phoneInput: any = useRef();
   const dispatch = useAppDispatch();
   const [mobileNumber, setmobileNumber] = useState();
@@ -90,9 +95,10 @@ const Register = () => {
 
   useEffect(() => {
     const deviceId = getDeviceId();
-    if (getGeneratedKeys?.responseData?.result) {
+    console.log("getGeneratedKeys", getGeneratedKeys);
+    if (getGeneratedKeys?.responseData) {
       let payLoad: ICreateAccount = {
-        publicKeyHex: getGeneratedKeys?.responseData.result.publicKey,
+        publicKeyHex: getGeneratedKeys?.responseData.publicKey,
         versionName: "2.0",
         deviceId: deviceId.toString(),
         encryptedEmail: encrptedEmail(email),
@@ -105,11 +111,9 @@ const Register = () => {
   }, [getGeneratedKeys]);
 
   useEffect(() => {
-    if (
-      accountDetails?.responseData?.result &&
-      !contractDetails?.responseData?.result
-    ) {
-      console.log("contractDetails", contractDetails);
+    console.log("accountDetails", accountDetails);
+    console.log("contractDetails", contractDetails);
+    if (accountDetails?.responseData) {
       const encrptedUserDetails = getEncrptedUserDetais({
         fullName: firstName + lastName,
         mobileNumber,
@@ -117,11 +121,9 @@ const Register = () => {
         dateOfBirth,
       });
       let payLoad: IContractRequest = {
-        accountId: accountDetails?.responseData?.result
-          .toString()
-          .split(".")[2],
-        privateKey: getGeneratedKeys?.responseData.result.privateKey,
-        publicKey: getGeneratedKeys?.responseData.result.publicKey,
+        accountId: accountDetails?.responseData.toString().split(".")[2],
+        privateKey: getGeneratedKeys?.responseData.privateKey,
+        publicKey: getGeneratedKeys?.responseData.publicKey,
         functionName: "createIdentity",
         functionParams: encrptedUserDetails,
         isViewOnly: false,
@@ -132,9 +134,13 @@ const Register = () => {
   }, [accountDetails]);
 
   useEffect(() => {
-    if (contractDetails?.responseData?.result) {
+    if (contractDetails?.responseData) {
+      const userDetails = getUserDetails(contractDetails?.responseData);
       setIsLoading(true);
-      setTimeout(() => setIsLoading(false), 1500);
+      setTimeout(() => {
+        setIsLoading(false);
+        navigation.dispatch(StackActions.replace("DrawerNavigator"));
+      }, 3000);
     }
   }, [contractDetails]);
 

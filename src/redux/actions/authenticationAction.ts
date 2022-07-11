@@ -3,6 +3,7 @@ import { ACTION_TYPES } from "./types";
 import { URI } from "../../constants/URLContstants";
 import { ICreateAccount } from "../../typings/AccountCreation/ICreateAccount";
 import { SnackBar } from "../../components/SnackBar";
+import { getUserDetails } from "../../utils/encryption";
 const {
   ACCOUNT: {
     CREATE_ACCOUNT: createAccountUrl,
@@ -26,7 +27,6 @@ export const GeneratedKeysAction =
         indicationMessage: "Retry",
         actionMessage: "Internal Server Error",
       });
-      console.log("GeneratedKeysAction API===>", error);
     }
     dispatch({
       type: ACTION_TYPES.GENERATED_KEYS_RESPONSE,
@@ -50,7 +50,6 @@ export const createAccount =
       SnackBar({
         indicationMessage: "Internal Server Error",
       });
-      console.log("GeneratedKeysAction API===>", error);
     }
     dispatch({
       type: ACTION_TYPES.CREATED_ACCOUNT_RESPONSE,
@@ -71,11 +70,7 @@ export const contractCall =
       });
       const response = await postCall(contractUrl, requestPayload);
       responseData = await _responseHandler(response);
-      console.log("responseData API===>", responseData);
     } catch (error) {
-      SnackBar({
-        indicationMessage: "Internal Server Error",
-      });
       console.log("GeneratedKeysAction API===>", error);
     }
     dispatch({
@@ -87,15 +82,16 @@ export const contractCall =
     });
   };
 
-const _responseHandler = async (response: any) => {
+const _responseHandler = async (response: any): Promise<any> => {
   const responseData = await response.json();
-  if (responseData.code === 200) {
-    return responseData;
-  } else {
-    console.log("responseData", JSON.stringify(responseData));
-    SnackBar({
-      indicationMessage: responseData.message,
-    });
-    return (responseData["message"] = "Internal Server Error");
-  }
+  return new Promise((resolve, reject) => {
+    if (responseData.code === 200) {
+      return resolve(responseData?.result);
+    } else {
+      SnackBar({
+        indicationMessage: responseData?.message,
+      });
+      reject(responseData.message);
+    }
+  });
 };

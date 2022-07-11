@@ -1,7 +1,6 @@
 import { ACTION_TYPES } from "../actions/types";
 const initialState = {
   isLoading: false,
-  responseData: {},
 };
 
 export const userReducer = (state = initialState, { type, payload }: any) => {
