@@ -25,6 +25,10 @@ target 'earthidnew' do
 
   pod 'react-native-camera', :path => '../node_modules/react-native-camera'
 
+  pod 'RNSnackbar', :path => '../node_modules/react-native-snackbar'
+
+  pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
+
   target 'earthidnewTests' do
     inherit! :complete
     # Pods for testing

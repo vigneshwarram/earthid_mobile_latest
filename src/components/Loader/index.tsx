@@ -1,11 +1,10 @@
 import React from "react";
-import { Dimensions, Platform, StyleSheet, Text, View } from "react-native";
+import { Dimensions, StyleSheet, Text, View } from "react-native";
 import { Screens } from "../../themes";
 import Modal from "react-native-modal";
 import { ILoaderProps } from "./ILoaderProps";
 import LottieView from "lottie-react-native";
 import { LocalImages } from "../../constants/imageUrlConstants";
-import { ActivityIndicator } from "react-native";
 const deviceWidth = Dimensions.get("window").width;
 const deviceHeight = Dimensions.get("window").height;
 
@@ -15,10 +14,11 @@ const deviceHeight = Dimensions.get("window").height;
  */
 
 const Button = ({
-  isLoaderVisible,
+  isLoaderVisible = false,
   style = {},
   Status,
   loadingText,
+  type = "success",
 }: ILoaderProps) => (
   <Modal style={{ marginLeft: deviceWidth / 6 }} isVisible={isLoaderVisible}>
     <View
@@ -34,7 +34,11 @@ const Button = ({
       {/* <ActivityIndicator size="small" color={Screens.colors.primary} /> */}
       <LottieView
         style={{ width: 90, height: 90 }}
-        source={LocalImages.LOTTIEICONS.success}
+        source={
+          type === "success"
+            ? LocalImages.LOTTIEICONS.success
+            : LocalImages.LOTTIEICONS.loader
+        }
         autoPlay
         loop
       />

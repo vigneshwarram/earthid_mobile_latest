@@ -34,8 +34,6 @@ export const iccaPostApi = "https://icca.flexsin.org/api/user_key_data";
 export const verifierWebsite = "https://verifier.icca.flexsin.org/";
 //firebaseAnalytics
 
-}
-
 //Scan QR always on mainnet only
 export const serviceProviderApi =
   "https://api.myearth.id/authorize/serviceProvider/";

@@ -1,5 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import { View, StyleSheet, Text, ScrollView } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  ScrollView,
+  ActivityIndicator,
+} from "react-native";
 import Header from "../../../components/Header";
 import { LocalImages } from "../../../constants/imageUrlConstants";
 import { SCREENS } from "../../../constants/Labels";
@@ -14,28 +20,35 @@ import Loader from "../../../components/Loader";
 import {
   GeneratedKeysAction,
   createAccount,
+  contractCall,
 } from "../../../redux/actions/authenticationAction";
 import { ICreateAccount } from "../../../typings/AccountCreation/ICreateAccount";
 import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
 import { IContractRequest } from "../../../typings/AccountCreation/IContractRequest";
+import {
+  encrptedEmail,
+  getDeviceId,
+  getEncrptedUserDetais,
+} from "../../../utils/encryption";
 
-const Register = ({ navigation }: props) => {
+const Register = () => {
   const phoneInput: any = useRef();
   const dispatch = useAppDispatch();
   const [mobileNumber, setmobileNumber] = useState();
   const getGeneratedKeys = useAppSelector((state) => state.user);
   const accountDetails = useAppSelector((state) => state.account);
+  const contractDetails = useAppSelector((state) => state.contract);
   const [isLoading, setIsLoading] = useState(false);
   const {
-    value: fullName,
-    isFocused: fullNameFocus,
+    value: firstName,
+    isFocused: firstNameFocus,
     validationResult: {
-      hasError: isfullNameError,
-      errorMessage: isfullNameErrorMessage,
+      hasError: isfirstNameError,
+      errorMessage: isfirstNameErrorMessage,
     },
-    valueChangeHandler: fullNameChangeHandler,
-    inputFocusHandler: fullNameFocusHandlur,
-    inputBlurHandler: fullNameBlurHandler,
+    valueChangeHandler: firstNameChangeHandler,
+    inputFocusHandler: firstNameFocusHandlur,
+    inputBlurHandler: firstNameBlurHandler,
   } = useFormInput("", true, nameValidator);
   const {
     value: lastName,
@@ -60,30 +73,31 @@ const Register = ({ navigation }: props) => {
     inputFocusHandler: dateOfBirthocusHandlur,
     inputBlurHandler: dateOfBirthlurHandler,
   } = useFormInput("", true, nameValidator);
-
+  const {
+    value: email,
+    isFocused: emailFocus,
+    validationResult: {
+      hasError: isemailError,
+      errorMessage: isemailErrorMessage,
+    },
+    valueChangeHandler: emailChangeHandler,
+    inputFocusHandler: emailFocusHandlur,
+    inputBlurHandler: emailBlurHandler,
+  } = useFormInput("", true, nameValidator);
   const _navigateAction = () => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      navigation.navigate("BackupIdentity");
-    }, 5000);
-
-    // if (!getGeneratedKeys.responseData) {
-    //   dispatch(GeneratedKeysAction());
-    // }
+    dispatch(GeneratedKeysAction());
   };
 
   useEffect(() => {
-    console.log("accountDetails", accountDetails);
-    if (!accountDetails.responseData && getGeneratedKeys.responseData) {
-      // const { publicKey } = getGeneratedKeys.responseData.result;
+    const deviceId = getDeviceId();
+    if (getGeneratedKeys?.responseData?.result) {
       let payLoad: ICreateAccount = {
-        publicKeyHex: "publicKey",
+        publicKeyHex: getGeneratedKeys?.responseData.result.publicKey,
         versionName: "2.0",
-        deviceId: "",
-        encryptedEmail: "",
-        accountStatus: "",
-        testnet: false,
+        deviceId: deviceId.toString(),
+        encryptedEmail: encrptedEmail(email),
+        accountStatus: "account created",
+        testnet: true,
       };
 
       dispatch(createAccount(payLoad));
@@ -91,19 +105,38 @@ const Register = ({ navigation }: props) => {
   }, [getGeneratedKeys]);
 
   useEffect(() => {
-    // console.log("getGeneratedKeys", JSON.stringify(getGeneratedKeys));
-    // console.log("accountDetails", JSON.stringify(accountDetails));
-    if (accountDetails.result) {
+    if (
+      accountDetails?.responseData?.result &&
+      !contractDetails?.responseData?.result
+    ) {
+      console.log("contractDetails", contractDetails);
+      const encrptedUserDetails = getEncrptedUserDetais({
+        fullName: firstName + lastName,
+        mobileNumber,
+        email,
+        dateOfBirth,
+      });
       let payLoad: IContractRequest = {
-        accountId: "",
-        privateKey: "",
-        publicKey: "",
-        functionName: "",
-        functionParams: [],
+        accountId: accountDetails?.responseData?.result
+          .toString()
+          .split(".")[2],
+        privateKey: getGeneratedKeys?.responseData.result.privateKey,
+        publicKey: getGeneratedKeys?.responseData.result.publicKey,
+        functionName: "createIdentity",
+        functionParams: encrptedUserDetails,
         isViewOnly: false,
       };
+
+      dispatch(contractCall(payLoad));
     }
   }, [accountDetails]);
+
+  useEffect(() => {
+    if (contractDetails?.responseData?.result) {
+      setIsLoading(true);
+      setTimeout(() => setIsLoading(false), 1500);
+    }
+  }, [contractDetails]);
 
   return (
     <View style={styles.sectionContainer}>
@@ -136,7 +169,7 @@ const Register = ({ navigation }: props) => {
               {SCREENS.LANDINGSCREEN.setUpId}
             </Text>
             <Info
-              title={"Full Name"}
+              title={"first Name"}
               style={{
                 title: styles.title,
                 subtitle: styles.subtitle,
@@ -147,14 +180,14 @@ const Register = ({ navigation }: props) => {
               style={{
                 container: styles.textInputContainer,
               }}
-              isError={isfullNameError}
-              errorText={isfullNameErrorMessage}
-              onFocus={fullNameFocusHandlur}
-              onBlur={fullNameBlurHandler}
+              isError={isfirstNameError}
+              errorText={isfirstNameErrorMessage}
+              onFocus={firstNameFocusHandlur}
+              onBlur={firstNameBlurHandler}
               maxLength={60}
-              isFocused={fullNameFocus}
-              value={fullName}
-              onChangeText={fullNameChangeHandler}
+              isFocused={firstNameFocus}
+              value={firstName}
+              onChangeText={firstNameChangeHandler}
             />
             <Info
               title={"Last Name"}
@@ -246,14 +279,14 @@ const Register = ({ navigation }: props) => {
               style={{
                 container: styles.textInputContainer,
               }}
-              isError={isfullNameError}
-              errorText={isfullNameErrorMessage}
-              onFocus={fullNameFocusHandlur}
-              onBlur={fullNameBlurHandler}
+              isError={isemailError}
+              errorText={isemailErrorMessage}
+              onFocus={emailFocusHandlur}
+              onBlur={emailBlurHandler}
               maxLength={60}
-              isFocused={fullNameFocus}
-              value={fullName}
-              onChangeText={fullNameChangeHandler}
+              isFocused={emailFocus}
+              value={email}
+              onChangeText={emailChangeHandler}
             />
           </View>
           <Button
@@ -286,10 +319,15 @@ const Register = ({ navigation }: props) => {
             <Text style={{ color: Screens.colors.primary }}>{"GlobaliD"}</Text>
           </Text>
           <Loader
-            loadingText="Your Global ID is generated successfully."
+            loadingText="Your Global ID is generated successfutlly."
             Status="Success !"
             isLoaderVisible={isLoading}
           ></Loader>
+          {accountDetails?.isLoading && (
+            <View style={styles.loading}>
+              <ActivityIndicator size="large" />
+            </View>
+          )}
         </View>
       </ScrollView>
     </View>
@@ -370,6 +408,15 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     flex: 0.95,
     justifyContent: "space-between",
+  },
+  loading: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    alignItems: "center",
+    justifyContent: "center",
   },
   avatarContainer: {
     width: 60,

@@ -8,4 +8,5 @@ export interface ILoaderProps {
   leftIcon?: any;
   Status?: string;
   loadingText?: string;
+  type?: string;
 }

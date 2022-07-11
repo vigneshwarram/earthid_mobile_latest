@@ -1,10 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { userReducer, accountReducer } from "./reducer/user.reducer";
+import {
+  userReducer,
+  accountReducer,
+  contractReducer,
+} from "./reducer/user.reducer";
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
     account: accountReducer,
+    contract: contractReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

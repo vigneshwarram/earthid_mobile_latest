@@ -1,16 +1,20 @@
 import React from "react";
-import { View, StyleSheet, Text, ScrollView } from "react-native";
+import { View, StyleSheet, Text, ScrollView, Linking } from "react-native";
 import Header from "../../../components/Header";
 import { LocalImages } from "../../../constants/imageUrlConstants";
 import { SCREENS } from "../../../constants/Labels";
 import { Screens } from "../../../themes";
 import Button from "../../../components/Button";
+import Snackbar from "react-native-snackbar";
 
 interface IHomeScreenProps {
   navigation?: any;
 }
 
 const landingPage = ({ navigation }: IHomeScreenProps) => {
+  const navigateAction = async () => {
+    navigation.navigate("RegisterScreen");
+  };
   return (
     <View style={styles.sectionContainer}>
       <ScrollView contentContainerStyle={styles.sectionContainer}>
@@ -65,7 +69,7 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
               title={"REGISTER WITH DOCUMENT"}
             ></Button>
             <Button
-              onPress={() => navigation.navigate("RegisterScreen")}
+              onPress={navigateAction}
               style={{
                 buttonContainer: {
                   backgroundColor: Screens.pureWhite,

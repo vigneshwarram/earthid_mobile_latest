@@ -56,5 +56,6 @@ export const LocalImages = {
   },
   LOTTIEICONS: {
     success: require("../../resources/lottie/31973-success-message.json"),
+    loader: require("../../resources/lottie/load.json"),
   },
 };

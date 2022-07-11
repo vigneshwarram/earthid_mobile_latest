@@ -9,7 +9,7 @@ export const userReducer = (state = initialState, { type, payload }: any) => {
     case ACTION_TYPES.GENERATED_KEYS_LOADING:
       return { ...state, isLoading: true };
     case ACTION_TYPES.GENERATED_KEYS_RESPONSE:
-      return { ...state, isLoading: false, responseData: payload.responseData };
+      return { ...state, ...payload };
     default:
       return state;
   }
@@ -19,9 +19,20 @@ export const accountReducer = (state = {}, { type, payload }: any) => {
     case ACTION_TYPES.CREATEDACCOUNT:
       return { ...state, isLoading: true };
     case ACTION_TYPES.CREATED_ACCOUNT_RESPONSE:
-      return { ...state, isLoading: false, responseData: payload.responseData };
+      return { ...state, ...payload };
     default:
-      return type ? { ...state, ...payload } : state;
+      return state;
   }
 };
-export default { userReducer, accountReducer };
+
+export const contractReducer = (state = {}, { type, payload }: any) => {
+  switch (type) {
+    case ACTION_TYPES.CONTRACT_CALL:
+      return { ...state, isLoading: true };
+    case ACTION_TYPES.CONTRACT_CALL_RESPONSE:
+      return { ...state, ...payload };
+    default:
+      return state;
+  }
+};
+export default { userReducer, accountReducer, contractReducer };

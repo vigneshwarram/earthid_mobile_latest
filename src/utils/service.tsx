@@ -29,6 +29,7 @@ export const postCall = (
     method,
     headers: {
       "Content-Type": "application/json",
+      authkey: "fae2622d-7b73-4fc6-a536-202cabe75187",
     },
     body: JSON.stringify(payload),
   });
