@@ -37,7 +37,6 @@ export const decryption = (encryptedString: string): any => {
 };
 
 export const getUserDetails = (response: string[]): IUser => {
-  response = [];
   var bytes,
     name,
     mobile,
@@ -46,27 +45,28 @@ export const getUserDetails = (response: string[]): IUser => {
     earthId,
     mobileApproved,
     emailApproved,
-    score;
-  if (response && response?.length) {
-    bytes = decryption(response[0]);
-    name = bytes.toString(CryptoJS.enc.Utf8);
+    score,
+    rewardPoint;
+  console.log("response", response);
 
-    bytes = decryption(response[1]);
-    mobile = bytes.toString(CryptoJS.enc.Utf8);
+  let responseArray = response[0].split("<=>%");
+  bytes = decryption(responseArray[0]);
+  name = bytes.toString(CryptoJS.enc.Utf8);
 
-    bytes = decryption(response[2]);
-    email = bytes.toString(CryptoJS.enc.Utf8);
+  bytes = decryption(responseArray[1]);
+  mobile = bytes.toString(CryptoJS.enc.Utf8);
 
-    bytes = response[1];
-    earthId = bytes.toString(CryptoJS.enc.Utf8);
+  bytes = decryption(responseArray[2]);
+  email = bytes.toString(CryptoJS.enc.Utf8);
 
-    dob = "";
+  earthId = response[1];
 
-    mobileApproved = parseInt(response[1]).toString();
-    emailApproved = parseInt(response[2]).toString();
-    score = "23";
-    const rewardPoint = 33;
-  }
+  dob = "";
+
+  mobileApproved = parseInt(response[1]) === 1 ? true : false;
+  emailApproved = parseInt(response[2]) === 1 ? true : false;
+  score = "23";
+  rewardPoint = "33";
 
   return {
     name,
@@ -77,5 +77,6 @@ export const getUserDetails = (response: string[]): IUser => {
     mobileApproved,
     emailApproved,
     score,
+    rewardPoint,
   };
 };

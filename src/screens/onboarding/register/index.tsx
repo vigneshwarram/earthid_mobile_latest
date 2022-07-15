@@ -15,7 +15,7 @@ import Info from "../../../components/Info";
 import TextInput from "../../../components/TextInput";
 import PhoneInput from "react-native-phone-number-input";
 import useFormInput from "../../../hooks/use-text-input";
-import { nameValidator } from "../../../utils/inputValidations";
+import { emailValidator, nameValidator } from "../../../utils/inputValidations";
 import Loader from "../../../components/Loader";
 import {
   GeneratedKeysAction,
@@ -88,9 +88,22 @@ const Register = ({ navigation }: IRegister) => {
     valueChangeHandler: emailChangeHandler,
     inputFocusHandler: emailFocusHandlur,
     inputBlurHandler: emailBlurHandler,
-  } = useFormInput("", true, nameValidator);
+  } = useFormInput("", true, emailValidator);
   const _navigateAction = () => {
-    dispatch(GeneratedKeysAction());
+    if (
+      !nameValidator(firstName, true).hasError &&
+      !nameValidator(lastName, true).hasError &&
+      !nameValidator(dateOfBirth, true).hasError &&
+      !emailValidator(email, true).hasError
+    ) {
+      dispatch(GeneratedKeysAction());
+    } else {
+      console.log("its coming");
+      firstNameBlurHandler();
+      lastNameBlurHandler();
+      emailBlurHandler();
+      dateOfBirthlurHandler();
+    }
   };
 
   useEffect(() => {
@@ -135,7 +148,6 @@ const Register = ({ navigation }: IRegister) => {
 
   useEffect(() => {
     if (contractDetails?.responseData) {
-      const userDetails = getUserDetails(contractDetails?.responseData);
       setIsLoading(true);
       setTimeout(() => {
         setIsLoading(false);

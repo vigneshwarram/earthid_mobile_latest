@@ -7,6 +7,7 @@ import Card from "../../../components/Card";
 import Header from "../../../components/Header";
 import { LocalImages } from "../../../constants/imageUrlConstants";
 import { SCREENS } from "../../../constants/Labels";
+import { useAppSelector } from "../../../hooks/hooks";
 import { Screens } from "../../../themes";
 
 interface IHomeScreenProps {
@@ -14,10 +15,11 @@ interface IHomeScreenProps {
 }
 
 const HomeScreen = ({ navigation }: IHomeScreenProps) => {
+  const contractDetails = useAppSelector((state) => state.contract);
   const _toggleDrawer = () => {
     navigation.toggleDrawer();
   };
-
+  console.log("contractDetails", contractDetails);
   const categoryList = values(SCREENS.HOMESCREEN.categoryList).map(
     ({ TITLE: title, URI: uri, COLOR: color }: any) => ({
       title,
@@ -74,6 +76,7 @@ const HomeScreen = ({ navigation }: IHomeScreenProps) => {
         rewardPoints={"50"}
         rightIconSource={LocalImages.giftBoxImage}
         isAvatar
+        profileName={contractDetails?.responseData?.name}
         avatarClick={_avatarClick}
         onpress={_toggleDrawer}
         linearStyle={styles.linearStyle}
@@ -83,7 +86,9 @@ const HomeScreen = ({ navigation }: IHomeScreenProps) => {
           <Text style={[styles.label, { fontSize: 12 }]}>
             {SCREENS.HOMESCREEN.appName}
           </Text>
-          <Text style={[styles.label, { fontSize: 16 }]}>37578810</Text>
+          <Text style={[styles.label, { fontSize: 16 }]}>
+            {contractDetails?.responseData?.earthId}
+          </Text>
         </View>
         <CircularProgress
           value={60}

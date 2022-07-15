@@ -4,7 +4,8 @@ export interface IUser {
   email: string;
   dob: string;
   earthId: string;
-  mobileApproved: string;
-  emailApprove: string;
+  mobileApproved: boolean;
+  emailApproved: boolean;
   score: string;
+  rewardPoint: string;
 }

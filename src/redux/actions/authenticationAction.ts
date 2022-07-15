@@ -63,13 +63,15 @@ export const createAccount =
 export const contractCall =
   (requestPayload: any) =>
   async (dispatch: any): Promise<any> => {
-    let responseData;
+    let responseData, userDetails;
     try {
       dispatch({
         type: ACTION_TYPES.CONTRACT_CALL,
       });
       const response = await postCall(contractUrl, requestPayload);
       responseData = await _responseHandler(response);
+      console.log("responseData", responseData);
+      userDetails = getUserDetails(responseData);
     } catch (error) {
       console.log("GeneratedKeysAction API===>", error);
     }

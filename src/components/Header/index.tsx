@@ -24,10 +24,12 @@ const Header = ({
   rightIconSource,
   actionIcon = LocalImages.humbergerImage,
   rewardPoints,
+  profileName,
   leftIconSource,
   avatarClick,
   isLogoAlone,
   headingText,
+  rightIconPress,
 }: IHeaderProps) => (
   <View style={containerStyle}>
     <LinearGradients
@@ -84,7 +86,7 @@ const Header = ({
               >
                 <TouchableOpacity
                   style={styles.closeContainer}
-                  onPress={onpress}
+                  onPress={rightIconPress}
                 >
                   <Image
                     resizeMode="contain"
@@ -129,7 +131,7 @@ const Header = ({
                   absoluteCircleInnerImage={absoluteCircleInnerImage}
                   isProfileAvatar={isProfileAvatar}
                   isUploaded={isUploaded}
-                  text={SCREENS.HOMESCREEN.avatarName}
+                  text={profileName}
                   iconSource={LocalImages.avatarImage}
                 ></Avatar>
               </View>

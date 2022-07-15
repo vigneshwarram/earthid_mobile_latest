@@ -14,4 +14,6 @@ export interface IHeaderProps {
   actionIcon?: any;
   isLogoAlone?: boolean;
   headingText?: string;
+  profileName?: string;
+  rightIconPress?: any;
 }

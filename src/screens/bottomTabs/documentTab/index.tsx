@@ -116,10 +116,14 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
   );
 
   const onChangeHandler = () => {};
+  const onPressNavigateTo = () => {
+    navigation.navigate("uploadDocumentsScreen");
+  };
   const _keyExtractor = ({ id }: any) => id.toString();
   return (
     <View style={styles.sectionContainer}>
       <Header
+        rightIconPress={onPressNavigateTo}
         leftIconSource={LocalImages.logoImage}
         rightIconSource={LocalImages.addImage}
         onpress={_toggleDrawer}

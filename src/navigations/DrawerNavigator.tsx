@@ -9,10 +9,41 @@ import EditProfileScreen from "../screens/profiles/EditProfile";
 import settings from "../screens/settings";
 import ShowQrScreen from "../screens/Camera/ShowQrCodeScreen";
 import { SlidAnimation } from "./SlidAnimation";
+import uploadDocumentsScreen from "../screens/uploadDocuments";
+import DocumentPreviewScreen from "../screens/uploadDocuments/DocumentPreviewScreen";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 const animations: any = SlidAnimation;
+
+const dashBoardStack = {
+  ProfileScreen: ProfileScreen,
+  EditProfileScreen: EditProfileScreen,
+  settings: settings,
+  ShowQrScreen: ShowQrScreen,
+  uploadDocumentsScreen: uploadDocumentsScreen,
+  DocumentPreviewScreen: DocumentPreviewScreen,
+};
+
+function appStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      {Object.entries({
+        ...dashBoardStack,
+      }).map(([name, component]) => (
+        <Stack.Screen
+          key={name}
+          options={{
+            ...animations,
+          }}
+          name={name}
+          component={component}
+        />
+      ))}
+    </Stack.Navigator>
+  );
+}
+
 const DrawerNavigator = () => {
   return (
     <Drawer.Navigator
@@ -37,44 +68,9 @@ const DrawerNavigator = () => {
           ...animations,
         }}
         name="DrawerStacks"
-        component={HomeScreenStack}
+        component={appStack}
       />
     </Drawer.Navigator>
   );
 };
 export default DrawerNavigator;
-
-export const HomeScreenStack = () => {
-  return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen
-        options={{
-          ...animations,
-        }}
-        name="ProfileScreen"
-        component={ProfileScreen}
-      />
-      <Stack.Screen
-        options={{
-          ...animations,
-        }}
-        name="EditProfileScreen"
-        component={EditProfileScreen}
-      />
-      <Stack.Screen
-        options={{
-          ...animations,
-        }}
-        name="settings"
-        component={settings}
-      />
-      <Stack.Screen
-        options={{
-          ...animations,
-        }}
-        name="ShowQrScreen"
-        component={ShowQrScreen}
-      />
-    </Stack.Navigator>
-  );
-};
