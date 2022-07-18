@@ -1,22 +1,33 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { AsyncStorage } from "react-native";
+import { persistStore, persistReducer } from "redux-persist";
 import {
   userReducer,
   accountReducer,
   contractReducer,
 } from "./reducer/user.reducer";
 
+const persistConfig = {
+  key: "root",
+  keyPrefix: "",
+  storage: AsyncStorage,
+  whitelist: ["contract"],
+};
+const rootReducer = combineReducers({
+  user: userReducer,
+  account: accountReducer,
+  contract: contractReducer,
+});
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 export const store = configureStore({
-  reducer: {
-    user: userReducer,
-    account: accountReducer,
-    contract: contractReducer,
-  },
+  reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       immutableCheck: false,
       serializableCheck: false,
     }),
 });
+export const persistor = persistStore(store);
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;
 // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}

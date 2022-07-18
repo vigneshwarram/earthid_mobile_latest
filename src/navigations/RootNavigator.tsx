@@ -13,6 +13,7 @@ import Security from "../screens/onboarding/security";
 import SetPin from "../screens/onboarding/security/passcode/SetPincode";
 import ConfirmPincode from "../screens/onboarding/security/passcode/ConfirmPincode";
 import uploadDocumentsScreen from "../screens/uploadDocuments";
+import LoadingScreen from "../screens/onboarding/LoadingScreen";
 // Before rendering any navigation stack
 const animations: any = SlidAnimation;
 export default function RootNavigator() {
@@ -51,6 +52,13 @@ export default function RootNavigator() {
   return (
     <NavigationContainer theme={Apptheme}>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen
+          options={{
+            ...animations,
+          }}
+          name={"LoadingScreen"}
+          component={LoadingScreen}
+        />
         <Stack.Screen
           options={{
             ...animations,
