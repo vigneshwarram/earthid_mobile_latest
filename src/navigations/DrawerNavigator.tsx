@@ -11,6 +11,8 @@ import ShowQrScreen from "../screens/Camera/ShowQrCodeScreen";
 import { SlidAnimation } from "./SlidAnimation";
 import uploadDocumentsScreen from "../screens/uploadDocuments";
 import DocumentPreviewScreen from "../screens/uploadDocuments/DocumentPreviewScreen";
+import categoryScreen from "../screens/uploadDocuments/categoryScreen";
+import LivenessCameraScreen from "../screens/uploadDocuments/LivenessCameraScreen";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -23,12 +25,19 @@ const dashBoardStack = {
   ShowQrScreen: ShowQrScreen,
   uploadDocumentsScreen: uploadDocumentsScreen,
   DocumentPreviewScreen: DocumentPreviewScreen,
+  categoryScreen: categoryScreen,
+  LivenessCameraScreen: LivenessCameraScreen,
+};
+
+const tabs = {
+  bottomTabs: BottomMenus,
 };
 
 function appStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {Object.entries({
+        ...tabs,
         ...dashBoardStack,
       }).map(([name, component]) => (
         <Stack.Screen
@@ -56,13 +65,6 @@ const DrawerNavigator = () => {
         drawerPosition: "right",
       }}
     >
-      <Drawer.Screen
-        options={{
-          ...animations,
-        }}
-        name="bottomMenuStacks"
-        component={BottomMenus}
-      />
       <Drawer.Screen
         options={{
           ...animations,

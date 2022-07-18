@@ -147,4 +147,32 @@ export const SCREENS = {
   SHOWQRSCREEN: {
     instruction: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the`,
   },
+  CATEGORYSCREEN: {
+    categories: [
+      {
+        title: "ID",
+        color: "#D7EFFB",
+      },
+      {
+        title: "Education",
+        color: "#FFDD9B",
+      },
+      {
+        title: "Employment",
+        color: "rgba(255, 175, 175, 1)",
+      },
+      {
+        title: "Insurance",
+        color: "rgba(255, 221, 155, 1)",
+      },
+      {
+        title: "Healthcare",
+        color: "rgba(191, 245, 206, 1)",
+      },
+      {
+        title: "Travel",
+        color: "rgba(246, 189, 233, 1)",
+      },
+    ],
+  },
 };

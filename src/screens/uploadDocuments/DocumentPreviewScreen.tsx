@@ -1,22 +1,16 @@
-import { useTheme } from "@react-navigation/native";
-import React, { useRef } from "react";
-import {
-  View,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  Text,
-  Dimensions,
-} from "react-native";
-import { RNCamera } from "react-native-camera";
+import React from "react";
+import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
 
 import Button from "../../components/Button";
 import { LocalImages } from "../../constants/imageUrlConstants";
 import { Screens } from "../../themes/index";
-import DocumentMask from "../uploadDocuments/DocumentMask";
 
 const DocumentPreviewScreen = (props: any) => {
   const { fileUri } = props.route.params;
+  const navigateToAction = () => {
+    props.navigation.navigate("categoryScreen");
+  };
+
   return (
     <View style={styles.sectionContainer}>
       <View style={{ position: "absolute", top: 20, right: 20, zIndex: 100 }}>
@@ -64,6 +58,7 @@ const DocumentPreviewScreen = (props: any) => {
           title={"ReTake"}
         ></Button>
         <Button
+          onPress={navigateToAction}
           style={{
             buttonContainer: {
               elevation: 5,
