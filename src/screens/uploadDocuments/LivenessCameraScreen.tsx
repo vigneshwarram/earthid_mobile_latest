@@ -1,5 +1,5 @@
 import { useTheme } from "@react-navigation/native";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -11,11 +11,15 @@ import {
 import { RNCamera } from "react-native-camera";
 
 import Button from "../../components/Button";
+import { SnackBar } from "../../components/SnackBar";
 import { LocalImages } from "../../constants/imageUrlConstants";
 import { Screens } from "../../themes/index";
 import DocumentMask from "../uploadDocuments/DocumentMask";
 
 const LivenessCameraScreen = (props: any) => {
+  const { fileUri } = props.route.params;
+  const [maskedColor, setmaskedColor] = useState("#fff");
+  const [data, setData] = useState();
   // Initial state of variables
   let rightEyeOpen: any[] = [];
   let camera: {
@@ -66,10 +70,15 @@ const LivenessCameraScreen = (props: any) => {
           if (displacement > 30) {
             hasMoved = true;
             if (stillToast) {
-              Alert.alert("Be still like a stone !");
-              stillToast = false;
+              SnackBar({
+                indicationMessage: "Be still like a stone !",
+              });
+              setmaskedColor("red");
             } else {
-              Alert.alert("I can still see you moving");
+              setmaskedColor("red");
+              SnackBar({
+                indicationMessage: "I can still see you moving",
+              });
             }
             break;
           }
@@ -77,7 +86,11 @@ const LivenessCameraScreen = (props: any) => {
         if (!hasMoved && avg > 0.5) {
           console.log(avg, min);
           if (min < threshold && faceId === faceArray.faces[0].faceID) {
-            Alert.alert("Aww, Thank you");
+            setmaskedColor("green");
+            SnackBar({
+              indicationMessage: "Aww, Thank you",
+            });
+
             faceDetected = true;
             const options = {
               quality: 0.5,
@@ -85,10 +98,12 @@ const LivenessCameraScreen = (props: any) => {
             };
             const data = await camRef.current.takePictureAsync(options);
             if (data) {
-              props.handleFaceDetected(data);
+              setData(data);
             }
           } else {
-            Alert.alert("Can you wink 😉 ? ");
+            SnackBar({
+              indicationMessage: "I can still see you moving",
+            });
           }
         }
         faceOrigin = [];
@@ -101,13 +116,12 @@ const LivenessCameraScreen = (props: any) => {
   const { colors } = useTheme();
   const camRef: any = useRef();
 
-  const _takePicture = async () => {
-    const options = { quality: 0.5, base64: true };
-    const data = await camRef.current.takePictureAsync(options);
+  const handlingFacialData = async () => {
     if (data) {
-      let extension = data.uri.substring(data.uri.lastIndexOf(".") + 1);
-      console.log("extension", extension);
-      props.navigation.navigate("DocumentPreviewScreen", { fileUri: data.uri });
+      props.navigation.navigate("VerifiDocumentScreen", {
+        uploadedDocuments: fileUri,
+        faceImageData: data,
+      });
     }
   };
   return (
@@ -137,10 +151,10 @@ const LivenessCameraScreen = (props: any) => {
         }
         faceDetectionLandmarks={RNCamera.Constants.FaceDetection.Landmarks.all}
         faceDetectionMode={RNCamera.Constants.FaceDetection.Mode.accurate}
-        onFacesDetected={_handleBarCodeRead}
+        onFacesDetected={!data && _handleBarCodeRead}
         captureAudio={false}
       >
-        <DocumentMask />
+        <DocumentMask color={maskedColor} />
       </RNCamera>
       <Text
         style={{
@@ -156,7 +170,7 @@ const LivenessCameraScreen = (props: any) => {
       <Text style={{ textAlign: "center", paddingVertical: 5, color: "#fff" }}>
         Place your face inside the live box!
       </Text>
-      <TouchableOpacity onPress={_takePicture}>
+      <TouchableOpacity onPress={data && handlingFacialData}>
         <View
           style={{
             width: 60,

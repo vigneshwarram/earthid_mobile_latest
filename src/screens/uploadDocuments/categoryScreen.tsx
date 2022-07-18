@@ -11,9 +11,11 @@ import { Screens } from "../../themes";
 
 interface IDocumentScreenProps {
   navigation?: any;
+  route?: any;
 }
 
-const categoryScreen = ({ navigation }: IDocumentScreenProps) => {
+const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
+  const { fileUri } = route.params;
   const _toggleDrawer = () => {
     navigation.toggleDrawer();
   };
@@ -22,7 +24,7 @@ const categoryScreen = ({ navigation }: IDocumentScreenProps) => {
     return (
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate("LivenessCameraScreen");
+          navigation.navigate("LivenessCameraScreen", { fileUri });
         }}
       >
         <View style={styles.cardContainer}>

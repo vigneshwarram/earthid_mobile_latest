@@ -13,6 +13,7 @@ import uploadDocumentsScreen from "../screens/uploadDocuments";
 import DocumentPreviewScreen from "../screens/uploadDocuments/DocumentPreviewScreen";
 import categoryScreen from "../screens/uploadDocuments/categoryScreen";
 import LivenessCameraScreen from "../screens/uploadDocuments/LivenessCameraScreen";
+import VerifiDocumentScreen from "../screens/uploadDocuments/VerifiDocumentScreen";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -27,6 +28,7 @@ const dashBoardStack = {
   DocumentPreviewScreen: DocumentPreviewScreen,
   categoryScreen: categoryScreen,
   LivenessCameraScreen: LivenessCameraScreen,
+  VerifiDocumentScreen: VerifiDocumentScreen,
 };
 
 const tabs = {

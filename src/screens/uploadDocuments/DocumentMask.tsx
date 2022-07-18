@@ -4,7 +4,10 @@ import { Dimensions, StyleSheet, View } from "react-native";
 const { height, width } = Dimensions.get("window");
 const maskRowHeight = Math.round((height - 300) / 20);
 const maskColWidth = (width - 300) / 2;
-export const QrScannerMaskedWidget = () => {
+interface IQrScannerProps {
+  color?: string;
+}
+export const QrScannerMaskedWidget = ({ color }: IQrScannerProps) => {
   return (
     <View style={styles.maskOutter}>
       <View
@@ -12,7 +15,7 @@ export const QrScannerMaskedWidget = () => {
       />
       <View style={styles.maskCenter}>
         <View style={[{ width: maskColWidth }, styles.maskFrame]} />
-        <View style={styles.maskInner}></View>
+        <View style={[styles.maskInner, { borderColor: color }]}></View>
 
         <View style={[{ width: maskColWidth }, styles.maskFrame]} />
       </View>
