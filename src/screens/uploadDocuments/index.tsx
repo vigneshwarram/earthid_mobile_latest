@@ -14,12 +14,11 @@ const UploadScreen = (props: any) => {
   const camRef: any = useRef();
 
   const _takePicture = async () => {
-    const options = { quality: 0.5, base64: true };
+    const options = { quality: 1, base64: true };
     const data = await camRef.current.takePictureAsync(options);
     if (data) {
       let extension = data.uri.substring(data.uri.lastIndexOf(".") + 1);
-      console.log("extension", extension);
-      props.navigation.navigate("DocumentPreviewScreen", { fileUri: data.uri });
+      props.navigation.navigate("DocumentPreviewScreen", { fileUri: data });
     }
   };
   return (

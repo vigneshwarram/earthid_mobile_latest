@@ -1,20 +1,40 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
 
 import Button from "../../components/Button";
 import Header from "../../components/Header";
+import SuccessPopUp from "../../components/Loader";
+import AnimatedLoader from "../../components/Loader/AnimatedLoader";
 import { LocalImages } from "../../constants/imageUrlConstants";
+import { useFetch } from "../../hooks/use-fetch";
 import { Screens } from "../../themes/index";
+import { selfieeverifyAPI } from "../../utils/earthid_account";
 
 const VerifiDocumentScreen = (props: any) => {
   const { uploadedDocuments } = props.route.params;
   const { faceImageData } = props.route.params;
-  var base64Icon = `data:image/png;base64,${faceImageData.base64}`;
-  console.log("VerifiDocumentScreen", base64Icon);
-  const navigateToAction = () => {
-    props.navigation.navigate("categoryScreen", { uploadedDocuments });
-  };
+  const { loading, data, error, fetch } = useFetch();
+  const [successResponse, setsuccessResponse] = useState(false);
+  var base64Icon = `data:image/png;base64,${faceImageData?.base64}`;
+  var uploadedDocumentsBase64 = `data:image/png;base64,${uploadedDocuments?.base64}`;
+  console.log("uploadedDocuments", uploadedDocumentsBase64);
 
+  const validateImages = () => {
+    const requestBody = {
+      docPhotoUrl: uploadedDocuments,
+      selfieBase64: faceImageData,
+    };
+
+    fetch(selfieeverifyAPI, requestBody, "POST");
+  };
+  useEffect(() => {
+    if (data) {
+      setsuccessResponse(true);
+      setTimeout(() => {
+        setsuccessResponse(false);
+      }, 3000);
+    }
+  }, [data]);
   return (
     <View style={styles.sectionContainer}>
       <Header
@@ -45,7 +65,7 @@ const VerifiDocumentScreen = (props: any) => {
             width: 330,
             height: "100%",
           }}
-          source={{ uri: uploadedDocuments }}
+          source={{ uri: uploadedDocumentsBase64 }}
         ></Image>
       </View>
 
@@ -69,7 +89,7 @@ const VerifiDocumentScreen = (props: any) => {
         }}
       >
         <Button
-          onPress={navigateToAction}
+          onPress={validateImages}
           style={{
             buttonContainer: {
               elevation: 5,
@@ -86,6 +106,12 @@ const VerifiDocumentScreen = (props: any) => {
           title={"SUBMIT"}
         ></Button>
       </View>
+
+      <AnimatedLoader isLoaderVisible={loading} loadingText="verifying..." />
+      <SuccessPopUp
+        isLoaderVisible={successResponse}
+        loadingText={"Verification succeeded"}
+      />
     </View>
   );
 };
@@ -99,6 +125,15 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-end",
     alignItems: "center",
+  },
+  loading: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    alignItems: "center",
+    justifyContent: "center",
   },
   dashedLine: {
     borderStyle: "dashed",

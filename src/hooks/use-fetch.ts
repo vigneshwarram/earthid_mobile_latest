@@ -13,11 +13,7 @@ const useFetch = (): IResponse => {
   const [data, setData] = useState<any>(undefined);
   const [error, serError] = useState<any>(undefined);
 
-  const fetch = async (
-    url: string,
-    reuestData?: string,
-    methodName = "POST"
-  ) => {
+  const fetch = async (url: string, reuestData?: any, methodName = "POST") => {
     setloading(true);
     try {
       const response =
@@ -25,10 +21,12 @@ const useFetch = (): IResponse => {
           ? await postCall(url, reuestData)
           : await getCall(url);
       const JsonResponse = await response.json();
+      console.log("JsonResponse", JsonResponse);
       setData(JsonResponse);
     } catch (error) {
       serError(error);
     }
+    setloading(false);
   };
 
   return {

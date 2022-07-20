@@ -6,55 +6,35 @@ import { ILoaderProps } from "./ILoaderProps";
 import LottieView from "lottie-react-native";
 import { LocalImages } from "../../constants/imageUrlConstants";
 const deviceWidth = Dimensions.get("window").width;
-const deviceHeight = Dimensions.get("window").height;
 
 /**
  * @author  vicky@
  * @description This is a base component for the implementation of Button.
  */
 
-const SuccessPopUp = ({
+const AnimatedLoader = ({
   isLoaderVisible = false,
-  style = {},
-  Status,
   loadingText,
-  type = "success",
 }: ILoaderProps) => (
-  <Modal style={{ marginLeft: deviceWidth / 6 }} isVisible={isLoaderVisible}>
+  <Modal style={{ marginLeft: deviceWidth / 5 }} isVisible={isLoaderVisible}>
     <View
       style={{
         backgroundColor: "#fff",
-        width: deviceWidth / 1.5,
-        height: 200,
+        width: deviceWidth / 1.7,
+        height: 130,
         justifyContent: "center",
         alignItems: "center",
-        borderRadius: 20,
+        borderRadius: 18,
       }}
     >
       {/* <ActivityIndicator size="small" color={Screens.colors.primary} /> */}
       <LottieView
-        style={{ width: 90, height: 90 }}
-        source={
-          type === "success"
-            ? LocalImages.LOTTIEICONS.success
-            : LocalImages.LOTTIEICONS.loader
-        }
+        style={{ width: 100, height: 100 }}
+        source={LocalImages.LOTTIEICONS.loader}
         autoPlay
         loop
       />
-      <Text
-        style={[
-          styles.categoryHeaderText,
-          {
-            fontSize: 16,
-            fontWeight: "bold",
-            textAlign: "center",
-            color: Screens.black,
-          },
-        ]}
-      >
-        {Status}
-      </Text>
+
       <Text
         style={[
           styles.categoryHeaderText,
@@ -71,7 +51,7 @@ const SuccessPopUp = ({
     </View>
   </Modal>
 );
-export default SuccessPopUp;
+export default AnimatedLoader;
 
 const styles = StyleSheet.create({
   logoContainer: {

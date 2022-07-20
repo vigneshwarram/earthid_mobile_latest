@@ -1,10 +1,12 @@
 import { values } from "lodash";
-import React from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, Text, FlatList, Image } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import Button from "../../components/Button";
 
 import Card from "../../components/Card";
 import Header from "../../components/Header";
+import ModalView from "../../components/Modal";
 import { LocalImages } from "../../constants/imageUrlConstants";
 import { SCREENS } from "../../constants/Labels";
 import { Screens } from "../../themes";
@@ -16,6 +18,7 @@ interface IDocumentScreenProps {
 
 const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const { fileUri } = route.params;
+  const [isPrceedForLivenessTest, setIsPrceedForLivenessTest] = useState(false);
   const _toggleDrawer = () => {
     navigation.toggleDrawer();
   };
@@ -24,7 +27,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
     return (
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate("LivenessCameraScreen", { fileUri });
+          setIsPrceedForLivenessTest(true);
         }}
       >
         <View style={styles.cardContainer}>
@@ -70,6 +73,39 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
         renderItem={_renderItem}
         keyExtractor={_keyExtractor}
       />
+      <ModalView isModalVisible={isPrceedForLivenessTest}>
+        <View style={{ flex: 1, paddingHorizontal: 5 }}>
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <Image
+              resizeMode="contain"
+              style={[styles.logoContainer]}
+              source={LocalImages.logoImage}
+            ></Image>
+          </View>
+
+          <Button
+            onPress={() => {
+              setIsPrceedForLivenessTest(false);
+              setTimeout(() => {
+                navigation.navigate("LivenessCameraScreen", { fileUri });
+              }, 100);
+            }}
+            style={{
+              buttonContainer: {
+                elevation: 5,
+              },
+              text: {
+                color: Screens.pureWhite,
+                fontSize: 12,
+              },
+              iconStyle: {
+                tintColor: Screens.pureWhite,
+              },
+            }}
+            title={"PROCEED FOR LIVENESS TEST"}
+          ></Button>
+        </View>
+      </ModalView>
     </View>
   );
 };
@@ -129,8 +165,8 @@ const styles = StyleSheet.create({
     backgroundColor: Screens.pureWhite,
   },
   logoContainer: {
-    width: 25,
-    height: 25,
+    width: 100,
+    height: 100,
   },
 });
 

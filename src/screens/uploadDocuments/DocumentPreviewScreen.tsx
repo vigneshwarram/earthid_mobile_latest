@@ -1,15 +1,49 @@
-import React from "react";
-import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 
 import Button from "../../components/Button";
+import SuccessPopUp from "../../components/Loader";
+import AnimatedLoader from "../../components/Loader/AnimatedLoader";
 import { LocalImages } from "../../constants/imageUrlConstants";
+import { useFetch } from "../../hooks/use-fetch";
 import { Screens } from "../../themes/index";
+import { validateDocsApi } from "../../utils/earthid_account";
 
 const DocumentPreviewScreen = (props: any) => {
   const { fileUri } = props.route.params;
-  const navigateToAction = () => {
-    props.navigation.navigate("categoryScreen", { fileUri });
+  const { loading, data, error, fetch } = useFetch();
+  const [successResponse, setsuccessResponse] = useState(false);
+  const navigateToAction = async () => {
+    const requestedData = {
+      IsDocumentExtracted: false,
+      Source: 1,
+      InputImages: [
+        {
+          Name: "WhiteImage",
+          ImageFormat: "JPEG",
+          Data: fileUri?.base64,
+        },
+      ],
+    };
+    console.log("data====>", JSON.stringify(requestedData));
+    fetch(validateDocsApi, requestedData, "POST");
   };
+
+  useEffect(() => {
+    if (data) {
+      setsuccessResponse(true);
+      setTimeout(() => {
+        setsuccessResponse(false);
+        props.navigation.navigate("categoryScreen", { fileUri });
+      }, 3000);
+    }
+  }, [data]);
 
   return (
     <View style={styles.sectionContainer}>
@@ -29,7 +63,7 @@ const DocumentPreviewScreen = (props: any) => {
             width: 330,
             height: "100%",
           }}
-          source={{ uri: fileUri }}
+          source={{ uri: fileUri.uri }}
         ></Image>
       </View>
 
@@ -74,6 +108,14 @@ const DocumentPreviewScreen = (props: any) => {
           title={"Upload"}
         ></Button>
       </View>
+      <AnimatedLoader
+        isLoaderVisible={loading}
+        loadingText="Uploading Documents..."
+      />
+      <SuccessPopUp
+        isLoaderVisible={successResponse}
+        loadingText={"Document Validated !"}
+      />
     </View>
   );
 };
@@ -82,6 +124,15 @@ const styles = StyleSheet.create({
   sectionContainer: {
     flex: 1,
     backgroundColor: Screens.black,
+  },
+  loading: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    alignItems: "center",
+    justifyContent: "center",
   },
   preview: {
     flex: 1,

@@ -117,6 +117,7 @@ const LivenessCameraScreen = (props: any) => {
   const camRef: any = useRef();
 
   const handlingFacialData = async () => {
+    console.log("handling facial data", data);
     if (data) {
       props.navigation.navigate("VerifiDocumentScreen", {
         uploadedDocuments: fileUri,
