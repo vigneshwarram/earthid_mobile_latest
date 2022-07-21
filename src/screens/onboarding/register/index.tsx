@@ -32,6 +32,7 @@ import {
   getUserDetails,
 } from "../../../utils/encryption";
 import { StackActions } from "@react-navigation/native";
+import AnimatedLoader from "../../../components/Loader/AnimatedLoader";
 interface IRegister {
   navigation: any;
 }
@@ -43,7 +44,7 @@ const Register = ({ navigation }: IRegister) => {
   const getGeneratedKeys = useAppSelector((state) => state.user);
   const accountDetails = useAppSelector((state) => state.account);
   const contractDetails = useAppSelector((state) => state.contract);
-  const [isLoading, setIsLoading] = useState(false);
+  const [successResponse, setsuccessResponse] = useState(false);
   const {
     value: firstName,
     isFocused: firstNameFocus,
@@ -148,9 +149,9 @@ const Register = ({ navigation }: IRegister) => {
 
   useEffect(() => {
     if (contractDetails?.responseData) {
-      setIsLoading(true);
+      setsuccessResponse(true);
       setTimeout(() => {
-        setIsLoading(false);
+        setsuccessResponse(false);
         navigation.dispatch(StackActions.replace("DrawerNavigator"));
       }, 3000);
     }
@@ -339,13 +340,12 @@ const Register = ({ navigation }: IRegister) => {
           <Loader
             loadingText="Your Global ID is generated successfutlly."
             Status="Success !"
-            isLoaderVisible={isLoading}
+            isLoaderVisible={successResponse}
           ></Loader>
-          {accountDetails?.isLoading && (
-            <View style={styles.loading}>
-              <ActivityIndicator size="large" />
-            </View>
-          )}
+          <AnimatedLoader
+            isLoaderVisible={accountDetails?.isLoading}
+            loadingText="Loading..."
+          />
         </View>
       </ScrollView>
     </View>
