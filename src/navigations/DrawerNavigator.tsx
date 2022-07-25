@@ -14,6 +14,9 @@ import DocumentPreviewScreen from "../screens/uploadDocuments/DocumentPreviewScr
 import categoryScreen from "../screens/uploadDocuments/categoryScreen";
 import LivenessCameraScreen from "../screens/uploadDocuments/LivenessCameraScreen";
 import VerifiDocumentScreen from "../screens/uploadDocuments/VerifiDocumentScreen";
+import SetPincode from "../screens/onboarding/security/passcode/SetPincode";
+import ConfirmPincode from "../screens/onboarding/security/passcode/ConfirmPincode";
+import OTPScreen from "../screens/onboarding/security/passcode/OTPScreen";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -29,6 +32,9 @@ const dashBoardStack = {
   categoryScreen: categoryScreen,
   LivenessCameraScreen: LivenessCameraScreen,
   VerifiDocumentScreen: VerifiDocumentScreen,
+  SetPincode: SetPincode,
+  ConfirmPincode: ConfirmPincode,
+  OTPScreen: OTPScreen,
 };
 
 const tabs = {

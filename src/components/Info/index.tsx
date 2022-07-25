@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import { LocalImages } from "../../constants/imageUrlConstants";
 import { Screens } from "../../themes";
 
@@ -16,6 +17,7 @@ const Info = ({
   style = {},
   titleIcon,
   subtitleRowText,
+  subTitlePress,
 }: IInfoProps) => (
   <View style={[styles.container, style.container]}>
     {title && (
@@ -36,24 +38,28 @@ const Info = ({
       <View style={styles.titleTextContainer}>
         <Text style={[styles.subtitle, style.subtitle]}>{subtitle}</Text>
         {subtitleRowText && (
-          <View style={styles.titleTextContainer}>
-            <View
-              style={{
-                paddingHorizontal: 10,
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Image
-                resizeMode="contain"
-                style={styles.sublogoContainers}
-                source={LocalImages.successTikImage}
-              ></Image>
+          <TouchableOpacity onPress={subTitlePress}>
+            <View style={styles.titleTextContainer}>
+              <View
+                style={{
+                  paddingHorizontal: 10,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                {subtitleRowText === "verified" && (
+                  <Image
+                    resizeMode="contain"
+                    style={styles.sublogoContainers}
+                    source={LocalImages.successTikImage}
+                  ></Image>
+                )}
+              </View>
+              <Text style={[styles.subtitle, style.subtitleNearText]}>
+                {subtitleRowText}
+              </Text>
             </View>
-            <Text style={[styles.subtitle, style.subtitleNearText]}>
-              {"verified"}
-            </Text>
-          </View>
+          </TouchableOpacity>
         )}
       </View>
     )}

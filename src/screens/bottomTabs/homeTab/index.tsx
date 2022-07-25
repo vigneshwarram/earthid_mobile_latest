@@ -1,6 +1,6 @@
 import { values } from "lodash";
 import React from "react";
-import { View, StyleSheet, Text, FlatList } from "react-native";
+import { View, StyleSheet, Text, FlatList, Alert } from "react-native";
 import CircularProgress from "react-native-circular-progress-indicator";
 import Avatar from "../../../components/Avatar";
 import Card from "../../../components/Card";
@@ -9,6 +9,7 @@ import { LocalImages } from "../../../constants/imageUrlConstants";
 import { SCREENS } from "../../../constants/Labels";
 import { useAppSelector } from "../../../hooks/hooks";
 import { Screens } from "../../../themes";
+import { alertBox } from "../../../utils/earthid_account";
 
 interface IHomeScreenProps {
   navigation?: any;
@@ -63,9 +64,7 @@ const HomeScreen = ({ navigation }: IHomeScreenProps) => {
   };
 
   const _avatarClick = () => {
-    navigation.navigate("DrawerStacks", {
-      screen: "ProfileScreen",
-    });
+    navigation.navigate("ProfileScreen");
   };
 
   const _keyExtractor = ({ title }: any) => title.toString();

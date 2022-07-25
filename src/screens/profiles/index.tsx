@@ -8,6 +8,7 @@ import Header from "../../components/Header";
 import Info from "../../components/Info";
 import { LocalImages } from "../../constants/imageUrlConstants";
 import { SCREENS } from "../../constants/Labels";
+import { useAppSelector } from "../../hooks/hooks";
 import { Screens } from "../../themes";
 
 interface IHomeScreenProps {
@@ -15,6 +16,8 @@ interface IHomeScreenProps {
 }
 
 const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
+  const contractDetails = useAppSelector((state) => state.contract);
+  console.log("contractDetails", contractDetails);
   const [isCameraOptionVisible, setisCameraOptionVisible] =
     useState<boolean>(false);
   const _navigateAction = () => {
@@ -65,6 +68,12 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
     setisCameraOptionVisible(true);
   };
 
+  const emailVerifyAction = () => {
+    if (!contractDetails?.responseData?.emailApproved) {
+      navigation.navigate("OTPScreen", { type: "email" });
+    }
+  };
+
   return (
     <View style={styles.sectionContainer}>
       <Header
@@ -93,7 +102,9 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
           <Text style={[styles.label, { fontSize: 12 }]}>
             {SCREENS.HOMESCREEN.appName}
           </Text>
-          <Text style={[styles.label, { fontSize: 16 }]}>37578810</Text>
+          <Text style={[styles.label, { fontSize: 16 }]}>
+            {contractDetails?.responseData?.earthId}
+          </Text>
         </View>
         <CircularProgress
           value={60}
@@ -105,7 +116,7 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
       <View style={styles.category}>
         <Info
           title={"Full Name"}
-          subtitle={"Robert Downey"}
+          subtitle={contractDetails?.responseData?.name}
           style={{
             title: styles.title,
             subtitle: styles.subtitle,
@@ -123,24 +134,45 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
         />
         <Info
           title={"Mobile Number"}
-          subtitle={"7373834595"}
-          subtitleRowText={"verified"}
+          subtitle={contractDetails?.responseData?.mobile}
+          subtitleRowText={
+            contractDetails?.responseData?.mobileApproved
+              ? "verified"
+              : "verify"
+          }
           style={{
             title: styles.title,
             subtitle: styles.subtitle,
             container: styles.textContainer,
-            subtitleNearText: styles.subtitleNearText,
+            subtitleNearText: [
+              styles.subtitleNearText,
+              {
+                color: contractDetails?.responseData?.mobileApproved
+                  ? Screens.success
+                  : "red",
+              },
+            ],
           }}
         />
         <Info
+          subTitlePress={emailVerifyAction}
           title={"Email"}
-          subtitle={"vickyrams20@gmail.com"}
-          subtitleRowText={"verified"}
+          subtitle={contractDetails?.responseData?.email}
+          subtitleRowText={
+            contractDetails?.responseData?.emailApproved ? "verified" : "verify"
+          }
           style={{
             title: styles.title,
             subtitle: styles.subtitle,
             container: styles.textContainer,
-            subtitleNearText: styles.subtitleNearText,
+            subtitleNearText: [
+              styles.subtitleNearText,
+              {
+                color: contractDetails?.responseData?.emailApproved
+                  ? Screens.success
+                  : "red",
+              },
+            ],
           }}
         />
       </View>

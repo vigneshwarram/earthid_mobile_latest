@@ -79,7 +79,40 @@ export const contractCall =
       type: ACTION_TYPES.CONTRACT_CALL_RESPONSE,
       payload: {
         isLoading: false,
+        responseData: userDetails,
+      },
+    });
+  };
+
+export const approveOTP =
+  (requestPayload: any) =>
+  async (dispatch: any): Promise<any> => {
+    let responseData, userDetails;
+    try {
+      dispatch({
+        type: ACTION_TYPES.APPROVE_OTP,
+      });
+      const response = await postCall(contractUrl, requestPayload);
+      responseData = await _responseHandler(response);
+    } catch (error) {
+      console.log("GeneratedKeysAction API===>", error);
+    }
+    dispatch({
+      type: ACTION_TYPES.APPROVEOTP_RESPONSE,
+      payload: {
+        isLoading: false,
         responseData,
+      },
+    });
+  };
+export const byPassUserDetailsRedux =
+  (userDetails: any) =>
+  async (dispatch: any): Promise<any> => {
+    dispatch({
+      type: ACTION_TYPES.CONTRACT_CALL_RESPONSE,
+      payload: {
+        isLoading: false,
+        responseData: userDetails,
       },
     });
   };

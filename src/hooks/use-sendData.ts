@@ -8,7 +8,7 @@ export type IResponse = {
   fetch?: any;
 };
 
-const useFetch = (): IResponse => {
+const useSendData = (): IResponse => {
   const [loading, setloading] = useState<boolean>(false);
   const [data, setData] = useState<any>(undefined);
   const [error, serError] = useState<any>(undefined);
@@ -39,4 +39,4 @@ const useFetch = (): IResponse => {
   };
 };
 
-export { useFetch };
+export { useSendData };

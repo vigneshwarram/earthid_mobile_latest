@@ -113,7 +113,7 @@ export const functioNames = [
   "getMyEarthId",
 ];
 
-export const hexToString = (hexStr) => {
+export const hexToString = (hexStr: { toString: () => any }) => {
   if (Platform.OS === "android") {
     return hexToStringAndroid(hexStr);
   } else {
@@ -126,7 +126,7 @@ export const hexToString = (hexStr) => {
   }
 };
 
-export const hexToStringAndroid = (hexx) => {
+export const hexToStringAndroid = (hexx: { toString: any }) => {
   var hex = hexx.toString(); //force conversion
   var str = "";
   for (var i = 0; i < hex.length && hex.substr(i, 2) !== "00"; i += 2)
@@ -597,13 +597,15 @@ export const SMART_CONTRACT_ABI = {
 }]`,
 };
 
-export const toHexString = (byteArray) => {
+export const toHexString = (
+  byteArray: Iterable<unknown> | ArrayLike<unknown>
+) => {
   return Array.from(byteArray, function (byte) {
     return ("0" + (byte & 0xff).toString(16)).slice(-2);
   }).join("");
 };
 
-export const decryption = (encryptedString) => {
+export const decryption = (encryptedString: string) => {
   return CryptoJS.AES.decrypt(
     { ciphertext: CryptoJS.enc.Base64.parse(encryptedString) },
     keyutf,
@@ -612,11 +614,11 @@ export const decryption = (encryptedString) => {
     }
   );
 };
-export const MD5 = function (string) {
-  function RotateLeft(lValue, iShiftBits) {
+export const MD5 = function (string: string) {
+  function RotateLeft(lValue: number, iShiftBits: number) {
     return (lValue << iShiftBits) | (lValue >>> (32 - iShiftBits));
   }
-  function AddUnsigned(lX, lY) {
+  function AddUnsigned(lX: number, lY: number) {
     var lX4, lY4, lX8, lY8, lResult;
     lX8 = lX & 0x80000000;
     lY8 = lY & 0x80000000;
@@ -636,35 +638,67 @@ export const MD5 = function (string) {
       return lResult ^ lX8 ^ lY8;
     }
   }
-  function F(x, y, z) {
+  function F(x: number, y: number, z: number) {
     return (x & y) | (~x & z);
   }
-  function G(x, y, z) {
+  function G(x: number, y: number, z: number) {
     return (x & z) | (y & ~z);
   }
-  function H(x, y, z) {
+  function H(x: number, y: number, z: number) {
     return x ^ y ^ z;
   }
-  function I(x, y, z) {
+  function I(x: number, y: number, z: number) {
     return y ^ (x | ~z);
   }
-  function FF(a, b, c, d, x, s, ac) {
+  function FF(
+    a: number,
+    b: number,
+    c: number,
+    d: number,
+    x: any,
+    s: number,
+    ac: number
+  ) {
     a = AddUnsigned(a, AddUnsigned(AddUnsigned(F(b, c, d), x), ac));
     return AddUnsigned(RotateLeft(a, s), b);
   }
-  function GG(a, b, c, d, x, s, ac) {
+  function GG(
+    a: number,
+    b: number,
+    c: number,
+    d: number,
+    x: any,
+    s: number,
+    ac: number
+  ) {
     a = AddUnsigned(a, AddUnsigned(AddUnsigned(G(b, c, d), x), ac));
     return AddUnsigned(RotateLeft(a, s), b);
   }
-  function HH(a, b, c, d, x, s, ac) {
+  function HH(
+    a: number,
+    b: number,
+    c: number,
+    d: number,
+    x: any,
+    s: number,
+    ac: number
+  ) {
     a = AddUnsigned(a, AddUnsigned(AddUnsigned(H(b, c, d), x), ac));
     return AddUnsigned(RotateLeft(a, s), b);
   }
-  function II(a, b, c, d, x, s, ac) {
+  function II(
+    a: number,
+    b: number,
+    c: number,
+    d: number,
+    x: any,
+    s: number,
+    ac: number
+  ) {
     a = AddUnsigned(a, AddUnsigned(AddUnsigned(I(b, c, d), x), ac));
     return AddUnsigned(RotateLeft(a, s), b);
   }
-  function ConvertToWordArray(string) {
+  function ConvertToWordArray(string: string) {
     var lWordCount;
     var lMessageLength = string.length;
     var lNumberOfWords_temp1 = lMessageLength + 8;
@@ -689,7 +723,7 @@ export const MD5 = function (string) {
     lWordArray[lNumberOfWords - 1] = lMessageLength >>> 29;
     return lWordArray;
   }
-  function WordToHex(lValue) {
+  function WordToHex(lValue: number) {
     var WordToHexValue = "",
       WordToHexValue_temp = "",
       lByte,
@@ -703,7 +737,7 @@ export const MD5 = function (string) {
     }
     return WordToHexValue;
   }
-  function Utf8Encode(string) {
+  function Utf8Encode(string: string) {
     string = string.replace(/\r\n/g, "\n");
     var utftext = "";
     for (var n = 0; n < string.length; n++) {
@@ -823,7 +857,11 @@ export const MD5 = function (string) {
   return temp.toLowerCase();
 };
 
-export const alertBox = (title, message, action) => {
+export const alertBox = (
+  title: string,
+  message: string | undefined,
+  action: () => void
+) => {
   Alert.alert(
     title,
     message,
@@ -839,7 +877,7 @@ export const alertBox = (title, message, action) => {
   );
 };
 
-export const sleep = (ms) => {
+export const sleep = (ms: number | undefined) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
 };
 
@@ -855,7 +893,9 @@ export const errorStrings = [
   "EarthId already exists with this deviceId!",
 ];
 
-export const decryptQRCode = (encryptedData) => {
+export const decryptQRCode = (
+  encryptedData: string | CryptoJS.lib.CipherParams
+) => {
   return new Promise((resolve, reject) => {
     var bytes = CryptoJS.AES.decrypt(encryptedData, AES_ENCRYPTION_SALT);
     var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));

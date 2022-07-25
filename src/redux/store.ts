@@ -5,18 +5,20 @@ import {
   userReducer,
   accountReducer,
   contractReducer,
+  approveOTPReducer,
 } from "./reducer/user.reducer";
 
 const persistConfig = {
   key: "root",
   keyPrefix: "",
   storage: AsyncStorage,
-  whitelist: ["contract"],
+  whitelist: ["contract", "user"],
 };
 const rootReducer = combineReducers({
   user: userReducer,
   account: accountReducer,
   contract: contractReducer,
+  ApproveOtp: approveOTPReducer,
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 export const store = configureStore({

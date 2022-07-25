@@ -34,4 +34,20 @@ export const contractReducer = (state = {}, { type, payload }: any) => {
       return state;
   }
 };
-export default { userReducer, accountReducer, contractReducer };
+
+export const approveOTPReducer = (state = {}, { type, payload }: any) => {
+  switch (type) {
+    case ACTION_TYPES.APPROVE_OTP:
+      return { ...state, isLoading: true };
+    case ACTION_TYPES.APPROVEOTP_RESPONSE:
+      return { ...state, ...payload };
+    default:
+      return state;
+  }
+};
+export default {
+  userReducer,
+  accountReducer,
+  contractReducer,
+  approveOTPReducer,
+};

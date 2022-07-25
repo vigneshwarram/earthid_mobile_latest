@@ -25,6 +25,9 @@ export const postCall = (
   payload?: any,
   method: string = "POST"
 ): Promise<any> => {
+  console.log("url==>", uri);
+  console.log("request==>", JSON.stringify(payload));
+
   return fetch(uri, {
     method,
     headers: {
