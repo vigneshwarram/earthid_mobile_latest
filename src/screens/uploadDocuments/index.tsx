@@ -1,12 +1,22 @@
 import { useTheme } from "@react-navigation/native";
 import React, { useRef } from "react";
-import { View, StyleSheet, Image, TouchableOpacity, Text } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Text,
+  PermissionsAndroid,
+  Platform,
+} from "react-native";
 import { RNCamera } from "react-native-camera";
-
+import DocumentPicker from "react-native-document-picker";
 import Button from "../../components/Button";
 import { LocalImages } from "../../constants/imageUrlConstants";
 import { Screens } from "../../themes/index";
 import DocumentMask from "../uploadDocuments/DocumentMask";
+import RNFS from "react-native-fs";
+import RNFetchBlob from "rn-fetch-blob";
 
 const UploadScreen = (props: any) => {
   const _handleBarCodeRead = (barCodeData: any) => {};
@@ -17,10 +27,47 @@ const UploadScreen = (props: any) => {
     const options = { quality: 0.1, base64: true };
     const data = await camRef.current.takePictureAsync(options);
     if (data) {
-      let extension = data.uri.substring(data.uri.lastIndexOf(".") + 1);
       props.navigation.navigate("DocumentPreviewScreen", { fileUri: data });
     }
   };
+  const requestPermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+        {
+          title: "EarthId Storage Acess",
+          message: "EarthId needs access to your storage ",
+          buttonNeutral: "Ask Me Later",
+          buttonNegative: "Cancel",
+          buttonPositive: "OK",
+        }
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const openFilePicker = async () => {
+    if (Platform.OS == "android") {
+      await requestPermission();
+    }
+    try {
+      const resp: any = await DocumentPicker.pick({
+        type: [DocumentPicker.types.images, DocumentPicker.types.pdf],
+        readContent: true,
+      });
+      console.log("destPath", resp);
+      let fileUri = resp[0].uri;
+      RNFS.readFile(fileUri, "base64").then((res) => {
+        console.log("res", res);
+        props.navigation.navigate("DocumentPreviewScreen", {
+          fileUri: { uri: `data:image/png;base64,${res}`, base64: res },
+        });
+      });
+    } catch (err) {
+      console.log("data==>", err);
+    }
+  };
+
   return (
     <View style={styles.sectionContainer}>
       <View style={{ position: "absolute", top: 20, right: 20, zIndex: 100 }}>
@@ -93,6 +140,7 @@ const UploadScreen = (props: any) => {
         OR
       </Text>
       <Button
+        onPress={openFilePicker}
         leftIcon={LocalImages.upload}
         style={{
           buttonContainer: {

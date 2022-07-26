@@ -60,12 +60,20 @@ const CameraScreen = (props: any) => {
   const getData = () => {
     if (barCodeDataDetails) {
       const encrypted_object = {
-        pressed: true,
-        earthId: "1060",
+        earthId: contractDetails?.responseData?.earthId,
+        fname: contractDetails?.responseData?.name,
+        userEmail: contractDetails?.responseData?.email,
+        userMobileNo: contractDetails?.responseData?.mobile,
+        emailVerified: contractDetails?.responseData?.emailApproved,
+        trustScore: "33",
+        mobileVerified: contractDetails?.responseData?.mobileApproved,
+        pressed: false,
+        dob: "22/02/1995",
         requestType: "login",
-        fname: "vicky",
-        userEmail: "fairvicks20@gmail.com",
+        duration: "220",
+        documents: [],
       };
+      console.log("encrypted_object", encrypted_object);
       let ciphertext: any = CryptoJS.AES.encrypt(
         JSON.stringify(encrypted_object),
         barCodeDataDetails?.encryptionkey
@@ -74,10 +82,8 @@ const CameraScreen = (props: any) => {
         reqNo: barCodeDataDetails.reqNo,
         testnet: true,
         encrypted_object: {
-          pressed: false,
-          earthId: "1060",
-          requestType: "login",
           ciphertext,
+          earthId: contractDetails?.responseData?.earthId,
         },
       };
       sendDataFetch(userDataApi, data, "POST");
