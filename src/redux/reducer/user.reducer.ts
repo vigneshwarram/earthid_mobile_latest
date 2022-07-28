@@ -45,9 +45,19 @@ export const approveOTPReducer = (state = {}, { type, payload }: any) => {
       return state;
   }
 };
+
+export const documentListReducer = (state = {}, { type, payload }: any) => {
+  switch (type) {
+    case ACTION_TYPES.SAVE_DOCUMENTS:
+      return { ...state, ...payload };
+    default:
+      return state;
+  }
+};
 export default {
   userReducer,
   accountReducer,
   contractReducer,
   approveOTPReducer,
+  documentListReducer,
 };

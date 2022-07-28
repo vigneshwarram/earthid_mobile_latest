@@ -68,9 +68,10 @@ export const contractCall =
       dispatch({
         type: ACTION_TYPES.CONTRACT_CALL,
       });
+      console.log("request", JSON.stringify(requestPayload));
       const response = await postCall(contractUrl, requestPayload);
       responseData = await _responseHandler(response);
-      console.log("responseData", responseData);
+      console.log("contract  response===>", response);
       userDetails = getUserDetails(responseData);
     } catch (error) {
       console.log("GeneratedKeysAction API===>", error);
@@ -87,15 +88,16 @@ export const contractCall =
 export const approveOTP =
   (requestPayload: any) =>
   async (dispatch: any): Promise<any> => {
-    let responseData, userDetails;
+    let responseData;
     try {
       dispatch({
         type: ACTION_TYPES.APPROVE_OTP,
       });
       const response = await postCall(contractUrl, requestPayload);
+      console.log("Approve OTP response===>", response);
       responseData = await _responseHandler(response);
     } catch (error) {
-      console.log("GeneratedKeysAction API===>", error);
+      console.log("Approve OTP API===>", error);
     }
     dispatch({
       type: ACTION_TYPES.APPROVEOTP_RESPONSE,
@@ -113,6 +115,18 @@ export const byPassUserDetailsRedux =
       payload: {
         isLoading: false,
         responseData: userDetails,
+      },
+    });
+  };
+
+export const saveDocuments =
+  (documentsDetails: any) =>
+  async (dispatch: any): Promise<any> => {
+    dispatch({
+      type: ACTION_TYPES.SAVE_DOCUMENTS,
+      payload: {
+        isLoading: false,
+        responseData: documentsDetails,
       },
     });
   };

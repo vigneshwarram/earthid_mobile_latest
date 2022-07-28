@@ -125,9 +125,7 @@ const Register = ({ navigation }: IRegister) => {
   }, [getGeneratedKeys]);
 
   useEffect(() => {
-    console.log("accountDetails", accountDetails);
-    console.log("contractDetails", contractDetails);
-    if (accountDetails?.responseData) {
+    if (accountDetails?.responseData !== undefined) {
       const encrptedUserDetails = getEncrptedUserDetais({
         fullName: firstName + lastName,
         mobileNumber,
@@ -142,7 +140,7 @@ const Register = ({ navigation }: IRegister) => {
         functionParams: encrptedUserDetails,
         isViewOnly: false,
       };
-
+      console.log("payload", JSON.stringify(payLoad));
       dispatch(contractCall(payLoad));
     }
   }, [accountDetails]);

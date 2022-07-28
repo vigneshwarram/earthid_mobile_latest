@@ -16,6 +16,7 @@ import Header from "../../../components/Header";
 import TextInput from "../../../components/TextInput";
 import { LocalImages } from "../../../constants/imageUrlConstants";
 import { SCREENS } from "../../../constants/Labels";
+import { useAppSelector } from "../../../hooks/hooks";
 import { Screens } from "../../../themes";
 
 interface IDocumentScreenProps {
@@ -26,7 +27,8 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
   const _toggleDrawer = () => {
     navigation.toggleDrawer();
   };
-
+  let documentsDetailsList = useAppSelector((state) => state.Documents);
+  console.log("documentsDetailsList", documentsDetailsList);
   const [
     isBottomSheetForSideOptionVisible,
     setisBottomSheetForSideOptionVisible,
@@ -34,26 +36,6 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
 
   const [isBottomSheetForFilterVisible, setisBottomSheetForFilterVisible] =
     useState<boolean>(false);
-
-  const documentsDetailsList = values(
-    SCREENS.HOMESCREEN.documentsDetailsList
-  ).map(
-    ({
-      TITLE: title,
-      URI: uri,
-      COLOR: color,
-      SUBTITLE: subtitle,
-      UPLOADIMAGECOLOR: sub_color,
-      ID: id,
-    }: any) => ({
-      title,
-      uri,
-      color,
-      subtitle,
-      id,
-      sub_color,
-    })
-  );
 
   const _rightIconOnPress = () => {
     setisBottomSheetForSideOptionVisible(true);
@@ -64,11 +46,9 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
       <Card
         absoluteCircleInnerImage={LocalImages.upImage}
         rightIconOnPress={_rightIconOnPress}
-        titleIcon={LocalImages.vcImage}
+        leftAvatar={LocalImages.documentsImage}
         rightIconSrc={LocalImages.menuImage}
-        leftAvatar={item.uri}
-        title={item.title}
-        subtitle={item.subtitle}
+        title={item.name}
         style={{
           ...styles.cardContainer,
           ...{
@@ -119,7 +99,7 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
   const onPressNavigateTo = () => {
     navigation.navigate("uploadDocumentsScreen");
   };
-  const _keyExtractor = ({ id }: any) => id.toString();
+  const _keyExtractor = ({ path }: any) => path.toString();
   return (
     <View style={styles.sectionContainer}>
       <Header
@@ -168,7 +148,7 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
 
       <FlatList<any>
         showsHorizontalScrollIndicator={false}
-        data={documentsDetailsList}
+        data={documentsDetailsList?.responseData}
         renderItem={_renderItem}
         keyExtractor={_keyExtractor}
       />

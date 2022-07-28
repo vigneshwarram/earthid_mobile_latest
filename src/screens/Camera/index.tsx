@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Image, TouchableOpacity, Alert } from "react-native";
 import { RNCamera } from "react-native-camera";
 import Button from "../../components/Button";
 import SuccessPopUp from "../../components/Loader";
@@ -13,6 +13,7 @@ import { Screens } from "../../themes/index";
 import CryptoJS from "react-native-crypto-js";
 import { serviceProviderApi, userDataApi } from "../../utils/earthid_account";
 import QrScannerMaskedWidget from "../Camera/QrScannerMaskedWidget";
+import { useCreateScehma } from "../../hooks/use-create-shecma";
 
 const CameraScreen = (props: any) => {
   const {
@@ -27,13 +28,23 @@ const CameraScreen = (props: any) => {
     error: sendDataError,
     fetch: sendDataFetch,
   } = useSendData();
+
+  const {
+    loading: createShemaLoading,
+    data: scehmaResponseData,
+    error: scehmaError,
+    fetch: scehmaFetch,
+  } = useCreateScehma();
   const contractDetails = useAppSelector((state) => state.contract);
   const [successResponse, setsuccessResponse] = useState(false);
+  const documentsDetailsList = useAppSelector((state) => state.Documents);
+  const [scehmaResponse, setscehmaResponse] = useState();
+  const [schemaName, setschemaName] = useState([]);
   const [issuerLogin, setissuerLogin] = useState(false);
   const [barCodeDataDetails, setbarCodeData] = useState<any>();
   const _handleBarCodeRead = (barCodeData: any) => {
     let serviceData = JSON.parse(barCodeData.data);
-    console.log("contractDetails", contractDetails);
+    console.log("serviceData", serviceData);
     const { apikey, reqNo, requestType } = serviceData;
     setbarCodeData(serviceData);
     let params = {
@@ -43,6 +54,9 @@ const CameraScreen = (props: any) => {
     };
 
     if (serviceData.requestType === "login") {
+      setissuerLogin(true);
+    }
+    if (serviceData.requestType === "generateCredentials") {
       issuerFetch(
         `${serviceProviderApi}?apikey=${apikey}&reqNo=${reqNo}&requestType=${requestType}`,
         {},
@@ -53,9 +67,44 @@ const CameraScreen = (props: any) => {
   useEffect(() => {
     if (issuerDataResponse?.status === "success") {
       console.log("issuerData", issuerDataResponse);
-      setissuerLogin(true);
+      if (barCodeDataDetails?.requestType === "login") {
+        Alert.alert("Login successfully");
+      } else if (barCodeDataDetails?.requestType === "generateCredentials") {
+        getCredentialsSchema();
+      }
     }
   }, [issuerDataResponse]);
+  useEffect(() => {
+    if (scehmaResponseData?.data) {
+      let schemaResponse = scehmaResponseData?.data;
+      if (schemaResponse.length < 1) {
+        Alert.alert("No Schemas to Generate credentials");
+      } else {
+        let schemaName:
+          | ((prevState: never[]) => never[])
+          | { value: any; name: any }[] = [];
+        setscehmaResponse(scehmaResponseData);
+        scehmaResponseData.map((item) => {
+          schemaName.push({
+            value: item.schemaName,
+            name: item.schemaName,
+          });
+        });
+        setschemaName(schemaName);
+        setissuerLogin(true);
+        console.log("schemaName", schemaName);
+      }
+    }
+  }, [scehmaResponseData]);
+  console.log("scehmaResponseData", scehmaResponseData);
+  const getCredentialsSchema = () => {
+    console.log("url", `${barCodeDataDetails?.endpointURL}/api/issuer/schemas`);
+    scehmaFetch(
+      `${barCodeDataDetails?.endpointURL}/api/issuer/schemas`,
+      {},
+      "GET"
+    );
+  };
 
   const getData = () => {
     if (barCodeDataDetails) {
@@ -71,7 +120,7 @@ const CameraScreen = (props: any) => {
         dob: "22/02/1995",
         requestType: "login",
         duration: "220",
-        documents: [],
+        documents: documentsDetailsList?.responseData,
       };
       console.log("encrypted_object", encrypted_object);
       let ciphertext: any = CryptoJS.AES.encrypt(
@@ -89,6 +138,8 @@ const CameraScreen = (props: any) => {
       sendDataFetch(userDataApi, data, "POST");
     }
   };
+
+  const createVarifiableCredentials = () => {};
 
   return (
     <View style={styles.sectionContainer}>
@@ -114,7 +165,7 @@ const CameraScreen = (props: any) => {
         type={RNCamera.Constants.Type.back}
         captureAudio={false}
         onBarCodeRead={(data) =>
-          !issuerLoading && !issuerDataResponse && _handleBarCodeRead(data)
+          !issuerLoading && !issuerLogin && _handleBarCodeRead(data)
         }
       >
         <QrScannerMaskedWidget />
@@ -140,7 +191,11 @@ const CameraScreen = (props: any) => {
           <Button
             onPress={() => {
               setissuerLogin(false);
-              getData();
+              if (barCodeDataDetails?.requestType === "login") {
+                getData();
+              } else {
+                createVarifiableCredentials();
+              }
             }}
             style={{
               buttonContainer: {

@@ -1,38 +1,72 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
+import RNFetchBlob from "rn-fetch-blob";
 
 import Button from "../../components/Button";
 import Header from "../../components/Header";
 import SuccessPopUp from "../../components/Loader";
 import AnimatedLoader from "../../components/Loader/AnimatedLoader";
 import { LocalImages } from "../../constants/imageUrlConstants";
+import { useAppDispatch } from "../../hooks/hooks";
 import { useFetch } from "../../hooks/use-fetch";
+import { saveDocuments } from "../../redux/actions/authenticationAction";
 import { Screens } from "../../themes/index";
-import { selfieeverifyAPI } from "../../utils/earthid_account";
+import {
+  cryptoTransferApi,
+  MD5,
+  selfieeverifyAPI,
+} from "../../utils/earthid_account";
+import { dateTime } from "../../utils/encryption";
 
+interface IDocumentProps {
+  name: string;
+  path: string;
+  date: string;
+  time: string;
+  txId: string;
+  docType: string;
+  docExt: string;
+  processedDoc: string;
+}
 const VerifiDocumentScreen = (props: any) => {
   const { uploadedDocuments } = props.route.params;
   const { faceImageData } = props.route.params;
   const { loading, data, error, fetch } = useFetch();
+  const dispatch = useAppDispatch();
   const [successResponse, setsuccessResponse] = useState(false);
   var base64Icon = `data:image/png;base64,${faceImageData?.base64}`;
   var uploadedDocumentsBase64 = `data:image/png;base64,${uploadedDocuments?.base64}`;
-  console.log("uploadedDocuments", uploadedDocumentsBase64);
 
   const validateImages = () => {
-    const requestBody = {
-      docPhotoUrl: uploadedDocuments,
-      selfieBase64: faceImageData,
+    const dataHashed = MD5(uploadedDocuments?.base64);
+    const request = {
+      memo: dataHashed,
+      isTestnet: true,
     };
-
-    fetch(selfieeverifyAPI, requestBody, "POST");
+    fetch(cryptoTransferApi, request, "POST");
   };
   useEffect(() => {
     if (data) {
+      var date = dateTime();
+      const filePath = RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
+      var documentDetails: IDocumentProps = {
+        name: "Adhaar",
+        path: filePath,
+        date: date?.date,
+        time: date?.time,
+        txId: data?.result,
+        docType: "pdf",
+        docExt: ".jpg",
+        processedDoc: "",
+      };
+
+      var DocumentList = [];
+      DocumentList.push(documentDetails);
+      dispatch(saveDocuments(DocumentList));
       setsuccessResponse(true);
       setTimeout(() => {
         setsuccessResponse(false);
-      }, 3000);
+      }, 2000);
     }
   }, [data]);
   return (

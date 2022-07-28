@@ -36,6 +36,20 @@ export const decryption = (encryptedString: string): any => {
     }
   );
 };
+export const dateTime = () => {
+  var date = new Date().getDate();
+  var month = new Date().getMonth() + 1;
+  var year = new Date().getFullYear();
+  var hours = new Date().getHours();
+  var min = new Date().getMinutes();
+  var sec = new Date().getSeconds();
+  var _date = date + "/" + month + "/" + year;
+  var _time = hours + ":" + min + ":" + sec;
+  return {
+    time: _time,
+    date: _date,
+  };
+};
 
 export const getUserDetails = (response: string[]): IUser => {
   var bytes,
