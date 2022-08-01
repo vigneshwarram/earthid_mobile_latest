@@ -48,24 +48,25 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
         onPress={() => navigation.navigate("ViewCredential")}
       >
         <Card
-          absoluteCircleInnerImage={LocalImages.upImage}
-          rightIconOnPress={_rightIconOnPress}
-          leftAvatar={LocalImages.documentsImage}
-          rightIconSrc={LocalImages.menuImage}
           titleIcon={item?.isVc ? LocalImages.vcImage : null}
+          leftAvatar={LocalImages.documentsImage}
+          absoluteCircleInnerImage={LocalImages.upImage}
+          rightIconSrc={LocalImages.menuImage}
+          rightIconOnPress={_rightIconOnPress}
           title={item.name}
+          subtitle={`       Uploaded  : ${item.date}`}
           style={{
             ...styles.cardContainer,
             ...{
               avatarContainer: {
-                backgroundColor: item.color,
-                width: 60,
-                height: 60,
+                backgroundColor: "rgba(245, 188, 232, 1)",
+                width: 50,
+                height: 50,
                 borderRadius: 20,
                 marginTop: 25,
               },
               uploadImageStyle: {
-                backgroundColor: item.sub_color,
+                backgroundColor: "rgba(245, 188, 232, 1)",
               },
             },
           }}

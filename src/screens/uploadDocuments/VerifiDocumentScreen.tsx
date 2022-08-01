@@ -68,6 +68,7 @@ const VerifiDocumentScreen = (props: any) => {
       setsuccessResponse(true);
       setTimeout(() => {
         setsuccessResponse(false);
+        props.navigation.navigate("Document");
       }, 2000);
     }
   }, [data]);

@@ -22,45 +22,47 @@ const Info = ({
   <View style={[styles.container, style.container]}>
     {title && (
       <View style={styles.titleTextContainer}>
-        <Text style={[styles.title, style.title]}>{title}</Text>
-        {titleIcon && (
-          <View style={styles.imageContainer}>
-            <Image
-              resizeMode="contain"
-              style={styles.logoContainers}
-              source={titleIcon}
-            ></Image>
-          </View>
-        )}
-      </View>
-    )}
-    {subtitle && (
-      <View style={styles.titleTextContainer}>
-        <Text style={[styles.subtitle, style.subtitle]}>{subtitle}</Text>
-        {subtitleRowText && (
-          <TouchableOpacity onPress={subTitlePress}>
+        <View>
+          <Text style={[styles.title, style.title]}>{title}</Text>
+          {subtitle && (
             <View style={styles.titleTextContainer}>
-              <View
-                style={{
-                  paddingHorizontal: 10,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                {subtitleRowText === "verified" && (
-                  <Image
-                    resizeMode="contain"
-                    style={styles.sublogoContainers}
-                    source={LocalImages.successTikImage}
-                  ></Image>
-                )}
-              </View>
-              <Text style={[styles.subtitle, style.subtitleNearText]}>
-                {subtitleRowText}
-              </Text>
+              <Text style={[styles.subtitle, style.subtitle]}>{subtitle}</Text>
+              {subtitleRowText && (
+                <TouchableOpacity onPress={subTitlePress}>
+                  <View style={styles.titleTextContainer}>
+                    <View
+                      style={{
+                        paddingHorizontal: 10,
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      {subtitleRowText === "verified" && (
+                        <Image
+                          resizeMode="contain"
+                          style={styles.sublogoContainers}
+                          source={LocalImages.successTikImage}
+                        ></Image>
+                      )}
+                    </View>
+                    <Text style={[styles.subtitle, style.subtitleNearText]}>
+                      {subtitleRowText}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              )}
             </View>
-          </TouchableOpacity>
-        )}
+          )}
+          {titleIcon && (
+            <View style={styles.imageContainer}>
+              <Image
+                resizeMode="contain"
+                style={styles.logoContainers}
+                source={titleIcon}
+              ></Image>
+            </View>
+          )}
+        </View>
       </View>
     )}
   </View>
@@ -70,8 +72,8 @@ export default Info;
 
 const styles = StyleSheet.create({
   logoContainers: {
-    width: 20,
-    height: 20,
+    width: 50,
+    height: 50,
   },
   sublogoContainers: {
     width: 15,
@@ -82,9 +84,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   imageContainer: {
+    position: "absolute",
     justifyContent: "center",
     alignItems: "center",
-    marginLeft: 10,
+    top: 0,
+    bottom: 25,
+    left: 150,
+    right: 0,
   },
   container: {
     paddingVertical: 10,
