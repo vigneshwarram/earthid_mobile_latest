@@ -10,13 +10,19 @@ const deviceWidth = Dimensions.get("window").width;
  * @description This is a base component for the implementation of Button.
  */
 
-const ModalView = ({ isModalVisible = false, children }: IModalProps) => (
-  <Modal style={{ marginLeft: deviceWidth / 5 }} isVisible={isModalVisible}>
+const ModalView = ({
+  isModalVisible = false,
+  height = 200,
+  width = deviceWidth / 1.5,
+  left = deviceWidth / 5,
+  children,
+}: IModalProps) => (
+  <Modal style={{ marginLeft: left }} isVisible={isModalVisible}>
     <View
       style={{
         backgroundColor: "#fff",
-        width: deviceWidth / 1.5,
-        height: 200,
+        width: width,
+        height: height,
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 18,

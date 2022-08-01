@@ -7,7 +7,7 @@ import Header from "../../components/Header";
 import SuccessPopUp from "../../components/Loader";
 import AnimatedLoader from "../../components/Loader/AnimatedLoader";
 import { LocalImages } from "../../constants/imageUrlConstants";
-import { useAppDispatch } from "../../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { useFetch } from "../../hooks/use-fetch";
 import { saveDocuments } from "../../redux/actions/authenticationAction";
 import { Screens } from "../../themes/index";
@@ -18,7 +18,7 @@ import {
 } from "../../utils/earthid_account";
 import { dateTime } from "../../utils/encryption";
 
-interface IDocumentProps {
+export interface IDocumentProps {
   name: string;
   path: string;
   date: string;
@@ -36,6 +36,7 @@ const VerifiDocumentScreen = (props: any) => {
   const { loading, data, error, fetch } = useFetch();
   const dispatch = useAppDispatch();
   const [successResponse, setsuccessResponse] = useState(false);
+  let documentsDetailsList = useAppSelector((state) => state.Documents);
   var base64Icon = `data:image/png;base64,${faceImageData?.base64}`;
   var uploadedDocumentsBase64 = `data:image/png;base64,${uploadedDocuments?.base64}`;
 
@@ -62,7 +63,9 @@ const VerifiDocumentScreen = (props: any) => {
         processedDoc: "",
       };
 
-      var DocumentList = [];
+      var DocumentList = documentsDetailsList?.responseData
+        ? documentsDetailsList?.responseData
+        : [];
       DocumentList.push(documentDetails);
       dispatch(saveDocuments(DocumentList));
       setsuccessResponse(true);
