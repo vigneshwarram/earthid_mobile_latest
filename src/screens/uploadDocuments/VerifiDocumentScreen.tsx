@@ -27,6 +27,8 @@ interface IDocumentProps {
   docType: string;
   docExt: string;
   processedDoc: string;
+  vc: any;
+  isVc: boolean;
 }
 const VerifiDocumentScreen = (props: any) => {
   const { uploadedDocuments } = props.route.params;

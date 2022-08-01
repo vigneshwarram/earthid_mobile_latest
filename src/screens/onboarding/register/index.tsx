@@ -150,7 +150,7 @@ const Register = ({ navigation }: IRegister) => {
       setsuccessResponse(true);
       setTimeout(() => {
         setsuccessResponse(false);
-        navigation.dispatch(StackActions.replace("DrawerNavigator"));
+        navigation.navigate("BackupIdentity");
       }, 3000);
     }
   }, [contractDetails]);
@@ -460,7 +460,7 @@ const styles = StyleSheet.create({
   },
   textInputContainer: {
     borderRadius: 10,
-    borderColor: Screens.darkGray,
+    borderColor: Screens.colors.primary,
     borderWidth: 2,
     marginLeft: 10,
     marginTop: -2,

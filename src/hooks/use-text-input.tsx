@@ -8,7 +8,7 @@ interface ITextInputState {
 
 const initialInputState = {
   value: "",
-  isFocused: false,
+  isFocused: true,
 };
 
 const inputStateReducer = (

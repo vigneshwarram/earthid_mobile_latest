@@ -43,28 +43,34 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
 
   const _renderItem = ({ item }: any) => {
     return (
-      <Card
-        absoluteCircleInnerImage={LocalImages.upImage}
-        rightIconOnPress={_rightIconOnPress}
-        leftAvatar={LocalImages.documentsImage}
-        rightIconSrc={LocalImages.menuImage}
-        title={item.name}
-        style={{
-          ...styles.cardContainer,
-          ...{
-            avatarContainer: {
-              backgroundColor: item.color,
-              width: 60,
-              height: 60,
-              borderRadius: 20,
-              marginTop: 25,
+      <TouchableOpacity
+        disabled={!item?.isVc}
+        onPress={() => navigation.navigate("ViewCredential")}
+      >
+        <Card
+          absoluteCircleInnerImage={LocalImages.upImage}
+          rightIconOnPress={_rightIconOnPress}
+          leftAvatar={LocalImages.documentsImage}
+          rightIconSrc={LocalImages.menuImage}
+          titleIcon={item?.isVc ? LocalImages.vcImage : null}
+          title={item.name}
+          style={{
+            ...styles.cardContainer,
+            ...{
+              avatarContainer: {
+                backgroundColor: item.color,
+                width: 60,
+                height: 60,
+                borderRadius: 20,
+                marginTop: 25,
+              },
+              uploadImageStyle: {
+                backgroundColor: item.sub_color,
+              },
             },
-            uploadImageStyle: {
-              backgroundColor: item.sub_color,
-            },
-          },
-        }}
-      />
+          }}
+        />
+      </TouchableOpacity>
     );
   };
   const RowOption = ({ icon, title }: any) => (

@@ -7,6 +7,7 @@ import Loader from "../../../components/Loader";
 import QRCode from "react-native-qrcode-svg";
 import Button from "../../../components/Button";
 import { LocalImages } from "../../../constants/imageUrlConstants";
+import { StackActions } from "@react-navigation/native";
 
 interface IHomeScreenProps {
   navigation?: any;
@@ -72,7 +73,9 @@ const Register = ({ navigation }: IHomeScreenProps) => {
               {SCREENS.SECURITYSCREEN.instructions}
             </Text>
             <Button
-              onPress={() => navigation.navigate("RegisterScreen")}
+              onPress={() =>
+                navigation.dispatch(StackActions.replace("DrawerNavigator"))
+              }
               style={{
                 buttonContainer: {
                   backgroundColor: Screens.pureWhite,
@@ -86,7 +89,9 @@ const Register = ({ navigation }: IHomeScreenProps) => {
               title={"USE TOUCH ID"}
             ></Button>
             <Button
-              onPress={() => navigation.navigate("RegisterScreen")}
+              onPress={() =>
+                navigation.dispatch(StackActions.replace("DrawerNavigator"))
+              }
               style={{
                 buttonContainer: {
                   backgroundColor: Screens.pureWhite,
@@ -100,7 +105,9 @@ const Register = ({ navigation }: IHomeScreenProps) => {
               title={"USE FACE ID"}
             ></Button>
             <Button
-              onPress={() => navigation.navigate("SetPin")}
+              onPress={() =>
+                navigation.dispatch(StackActions.replace("DrawerNavigator"))
+              }
               style={{
                 buttonContainer: {
                   backgroundColor: Screens.pureWhite,

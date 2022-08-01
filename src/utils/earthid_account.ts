@@ -36,8 +36,8 @@ export const verifierWebsite = "https://verifier.icca.flexsin.org/";
 
 //Scan QR always on mainnet only
 export const serviceProviderApi =
-  "https://api.myearth.id/authorize/serviceProvider/";
-export const userDataApi = "https://api.myearth.id/authorize/userData/";
+  "https://api-stage.myearth.id/authorize/serviceProvider/";
+export const userDataApi = "https://api-stage.myearth.id/authorize/userData/";
 
 // Last Mainnet - 0.0.43407
 const SMART_CONTRACT_ADDR_MAIN = 53874; //mainnet

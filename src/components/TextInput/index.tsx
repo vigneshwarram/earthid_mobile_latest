@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     borderWidth: 1,
     paddingLeft: 40,
-    borderColor: Screens.black,
+    borderColor: Screens.colors.primary,
     marginTop: 10,
     borderRadius: 3,
     height: 50,
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     backgroundColor: Screens.grayShadeColor,
   },
   focus: {
-    borderColor: Screens.colors.primary,
+    borderColor: Screens.darkGray,
     borderWidth: 3,
   },
   error: {

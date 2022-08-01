@@ -6,7 +6,7 @@ import SuccessPopUp from "../../components/Loader";
 import AnimatedLoader from "../../components/Loader/AnimatedLoader";
 import ModalView from "../../components/Modal";
 import { LocalImages } from "../../constants/imageUrlConstants";
-import { useAppSelector } from "../../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { useFetch } from "../../hooks/use-fetch";
 import { useSendData } from "../../hooks/use-sendData";
 import { Screens } from "../../themes/index";
@@ -14,6 +14,7 @@ import CryptoJS from "react-native-crypto-js";
 import { serviceProviderApi, userDataApi } from "../../utils/earthid_account";
 import QrScannerMaskedWidget from "../Camera/QrScannerMaskedWidget";
 import { useCreateScehma } from "../../hooks/use-create-shecma";
+import { saveDocuments } from "../../redux/actions/authenticationAction";
 
 const CameraScreen = (props: any) => {
   const {
@@ -35,6 +36,7 @@ const CameraScreen = (props: any) => {
     error: scehmaError,
     fetch: scehmaFetch,
   } = useCreateScehma();
+  const dispatch = useAppDispatch();
   const contractDetails = useAppSelector((state) => state.contract);
   const [successResponse, setsuccessResponse] = useState(false);
   const documentsDetailsList = useAppSelector((state) => state.Documents);
@@ -42,6 +44,9 @@ const CameraScreen = (props: any) => {
   const [schemaName, setschemaName] = useState([]);
   const [issuerLogin, setissuerLogin] = useState(false);
   const [barCodeDataDetails, setbarCodeData] = useState<any>();
+  const [successMessage, setsuccessMessage] = useState(
+    "verification successfully"
+  );
   const _handleBarCodeRead = (barCodeData: any) => {
     let serviceData = JSON.parse(barCodeData.data);
     console.log("serviceData", serviceData);
@@ -56,7 +61,7 @@ const CameraScreen = (props: any) => {
     if (serviceData.requestType === "login") {
       setissuerLogin(true);
     }
-    if (serviceData.requestType === "generateCredentials") {
+    if (serviceData.requestType === "document") {
       issuerFetch(
         `${serviceProviderApi}?apikey=${apikey}&reqNo=${reqNo}&requestType=${requestType}`,
         {},
@@ -64,47 +69,31 @@ const CameraScreen = (props: any) => {
       );
     }
   };
+
   useEffect(() => {
     if (issuerDataResponse?.status === "success") {
       console.log("issuerData", issuerDataResponse);
       if (barCodeDataDetails?.requestType === "login") {
         Alert.alert("Login successfully");
-      } else if (barCodeDataDetails?.requestType === "generateCredentials") {
-        getCredentialsSchema();
+      } else if (barCodeDataDetails?.requestType === "document") {
+        setsuccessResponse(true);
+
+        documentsDetailsList?.responseData.map((item: any, index: any) => {
+          item.isVc = true;
+          item.vc = JSON.stringify(item);
+          return item;
+        });
+        var DocumentList = [];
+        DocumentList.push(documentsDetailsList?.responseData[0]);
+        console.log("documentsDetailsList", documentsDetailsList);
+        dispatch(saveDocuments(DocumentList));
+        setsuccessMessage("documents VC created successfully");
+        setTimeout(() => {
+          setsuccessResponse(false);
+        }, 2000);
       }
     }
   }, [issuerDataResponse]);
-  useEffect(() => {
-    if (scehmaResponseData?.data) {
-      let schemaResponse = scehmaResponseData?.data;
-      if (schemaResponse.length < 1) {
-        Alert.alert("No Schemas to Generate credentials");
-      } else {
-        let schemaName:
-          | ((prevState: never[]) => never[])
-          | { value: any; name: any }[] = [];
-        setscehmaResponse(scehmaResponseData);
-        scehmaResponseData.map((item) => {
-          schemaName.push({
-            value: item.schemaName,
-            name: item.schemaName,
-          });
-        });
-        setschemaName(schemaName);
-        setissuerLogin(true);
-        console.log("schemaName", schemaName);
-      }
-    }
-  }, [scehmaResponseData]);
-  console.log("scehmaResponseData", scehmaResponseData);
-  const getCredentialsSchema = () => {
-    console.log("url", `${barCodeDataDetails?.endpointURL}/api/issuer/schemas`);
-    scehmaFetch(
-      `${barCodeDataDetails?.endpointURL}/api/issuer/schemas`,
-      {},
-      "GET"
-    );
-  };
 
   const getData = () => {
     if (barCodeDataDetails) {
@@ -118,7 +107,7 @@ const CameraScreen = (props: any) => {
         mobileVerified: contractDetails?.responseData?.mobileApproved,
         pressed: false,
         dob: "22/02/1995",
-        requestType: "login",
+        requestType: barCodeDataDetails?.requestType,
         duration: "220",
         documents: documentsDetailsList?.responseData,
       };
@@ -138,8 +127,6 @@ const CameraScreen = (props: any) => {
       sendDataFetch(userDataApi, data, "POST");
     }
   };
-
-  const createVarifiableCredentials = () => {};
 
   return (
     <View style={styles.sectionContainer}>
@@ -176,7 +163,7 @@ const CameraScreen = (props: any) => {
       />
       <SuccessPopUp
         isLoaderVisible={successResponse}
-        loadingText={"Verification succeeded"}
+        loadingText={successMessage}
       />
       <ModalView isModalVisible={issuerLogin}>
         <View style={{ flex: 1, paddingHorizontal: 5 }}>
@@ -191,11 +178,7 @@ const CameraScreen = (props: any) => {
           <Button
             onPress={() => {
               setissuerLogin(false);
-              if (barCodeDataDetails?.requestType === "login") {
-                getData();
-              } else {
-                createVarifiableCredentials();
-              }
+              getData();
             }}
             style={{
               buttonContainer: {

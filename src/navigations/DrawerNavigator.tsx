@@ -17,6 +17,7 @@ import VerifiDocumentScreen from "../screens/uploadDocuments/VerifiDocumentScree
 import SetPincode from "../screens/onboarding/security/passcode/SetPincode";
 import ConfirmPincode from "../screens/onboarding/security/passcode/ConfirmPincode";
 import OTPScreen from "../screens/onboarding/security/passcode/OTPScreen";
+import ViewCredential from "../screens/bottomTabs/documentTab/ViewCredebtials";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -35,6 +36,7 @@ const dashBoardStack = {
   SetPincode: SetPincode,
   ConfirmPincode: ConfirmPincode,
   OTPScreen: OTPScreen,
+  ViewCredential: ViewCredential,
 };
 
 const tabs = {
