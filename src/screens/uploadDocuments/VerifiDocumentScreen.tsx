@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Image, TouchableOpacity, Text } from "react-native";
+
 import RNFetchBlob from "rn-fetch-blob";
 
 import Button from "../../components/Button";
@@ -34,6 +35,7 @@ const VerifiDocumentScreen = (props: any) => {
   const { uploadedDocuments } = props.route.params;
   const { faceImageData } = props.route.params;
   const { loading, data, error, fetch } = useFetch();
+  const [load, setLoad] = useState(false);
   const dispatch = useAppDispatch();
   const [successResponse, setsuccessResponse] = useState(false);
   let documentsDetailsList = useAppSelector((state) => state.Documents);
@@ -41,12 +43,15 @@ const VerifiDocumentScreen = (props: any) => {
   var uploadedDocumentsBase64 = `data:image/png;base64,${uploadedDocuments?.base64}`;
 
   const validateImages = () => {
+    setLoad(true);
     const dataHashed = MD5(uploadedDocuments?.base64);
     const request = {
       memo: dataHashed,
       isTestnet: true,
     };
-    fetch(cryptoTransferApi, request, "POST");
+    fetch(cryptoTransferApi, request, "POST").then(() => {
+      setLoad(false);
+    });
   };
   useEffect(() => {
     if (data) {
@@ -122,32 +127,32 @@ const VerifiDocumentScreen = (props: any) => {
 
       <View
         style={{
-          flex: 0.2,
+          flex: 0.17,
           flexDirection: "row",
-          paddingHorizontal: 10,
+          paddingHorizontal: 5,
           justifyContent: "space-between",
         }}
       >
-        <Button
+        <TouchableOpacity
           onPress={validateImages}
           style={{
-            buttonContainer: {
-              elevation: 5,
-              margin: 20,
-              width: 300,
-            },
-            text: {
-              color: Screens.pureWhite,
-            },
-            iconStyle: {
-              tintColor: Screens.pureWhite,
-            },
+            elevation: 5,
+            margin: 20,
+            width: 300,
+            borderRadius: 50,
+            backgroundColor: Screens.colors.primary,
+            justifyContent: "center",
+            alignItems: "center",
           }}
-          title={"SUBMIT"}
-        ></Button>
+        >
+          <Text style={{ color: "#fff" }}>Sumbit</Text>
+        </TouchableOpacity>
       </View>
 
-      <AnimatedLoader isLoaderVisible={loading} loadingText="verifying..." />
+      <AnimatedLoader
+        isLoaderVisible={loading || load}
+        loadingText="verifying..."
+      />
       <SuccessPopUp
         isLoaderVisible={successResponse}
         loadingText={"Verification succeeded"}
