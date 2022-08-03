@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
   sectionHeaderContainer: {
     flexDirection: "row",
     height: 120,
-    backgroundColor: Screens.colors.customDrawer.headerBackground,
+    backgroundColor: "#8b88db",
     borderBottomRightRadius: 25,
     borderBottomLeftRadius: 25,
     justifyContent: "space-between",
@@ -152,6 +152,7 @@ const styles = StyleSheet.create({
   close: {
     width: 15,
     height: 15,
+    tintColor: "#fff",
   },
   closeContainer: {
     justifyContent: "center",

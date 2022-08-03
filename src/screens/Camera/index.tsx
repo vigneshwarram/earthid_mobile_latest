@@ -246,7 +246,7 @@ const CameraScreen = (props: any) => {
               marginTop: 20,
             }}
           >
-            GlobalId wants to access your following information
+            EarthId wants to access your following information
           </Text>
           <View>
             <View style={{ flexDirection: "row", marginVertical: 10 }}>

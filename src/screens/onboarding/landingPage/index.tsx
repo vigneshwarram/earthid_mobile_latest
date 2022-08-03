@@ -64,6 +64,9 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
                   backgroundColor: Screens.pureWhite,
                   elevation: 5,
                 },
+                iconStyle: {
+                  tintColor: Screens.colors.primary,
+                },
               }}
               leftIcon={LocalImages.registerdocumentImage}
               title={"REGISTER WITH DOCUMENT"}
@@ -74,6 +77,9 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
                 buttonContainer: {
                   backgroundColor: Screens.pureWhite,
                   elevation: 5,
+                },
+                iconStyle: {
+                  tintColor: Screens.colors.primary,
                 },
               }}
               leftIcon={LocalImages.registerdocumentImage}
@@ -92,7 +98,7 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
                 },
               ]}
             >
-              {"I already have my GlobaliD"}
+              {"I already have my EarthID"}
             </Text>
             <Button
               onPress={() => navigation.navigate("uploadDocumentsScreen")}

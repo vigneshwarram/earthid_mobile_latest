@@ -45,7 +45,7 @@ const Header = ({
             fontWeight: "bold",
             textAlign: "center",
             fontSize: 20,
-            color: Screens.black,
+            color: Screens.pureWhite,
             marginTop: 30,
           }}
         >
@@ -102,7 +102,13 @@ const Header = ({
                       marginLeft: 10,
                     }}
                   >
-                    <Text style={{ fontWeight: "bold", marginLeft: -5 }}>
+                    <Text
+                      style={{
+                        fontWeight: "bold",
+                        marginLeft: -5,
+                        color: Screens.pureWhite,
+                      }}
+                    >
                       {rewardPoints}
                     </Text>
                   </View>
@@ -128,6 +134,7 @@ const Header = ({
             >
               <View>
                 <Avatar
+                  style={{ text: { color: Screens.pureWhite } }}
                   absoluteCircleInnerImage={absoluteCircleInnerImage}
                   isProfileAvatar={isProfileAvatar}
                   isUploaded={isUploaded}
@@ -161,7 +168,7 @@ const styles = StyleSheet.create({
   sectionHeaderContainer: {
     flexDirection: "row",
     height: 120,
-    backgroundColor: Screens.colors.customDrawer.headerBackground,
+
     borderBottomRightRadius: 25,
     borderBottomLeftRadius: 25,
     justifyContent: "space-between",
@@ -174,5 +181,6 @@ const styles = StyleSheet.create({
   close: {
     width: 25,
     height: 25,
+    tintColor: Screens.pureWhite,
   },
 });
