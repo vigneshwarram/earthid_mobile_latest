@@ -186,7 +186,7 @@ const Register = ({ navigation }: IRegister) => {
               {SCREENS.LANDINGSCREEN.setUpId}
             </Text>
             <Info
-              title={"first Name"}
+              title={"First Name"}
               style={{
                 title: styles.title,
                 subtitle: styles.subtitle,

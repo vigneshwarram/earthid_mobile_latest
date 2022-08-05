@@ -18,6 +18,7 @@ import SetPincode from "../screens/onboarding/security/passcode/SetPincode";
 import ConfirmPincode from "../screens/onboarding/security/passcode/ConfirmPincode";
 import OTPScreen from "../screens/onboarding/security/passcode/OTPScreen";
 import ViewCredential from "../screens/bottomTabs/documentTab/ViewCredebtials";
+import CustomizeQr from "../screens/profiles/CustomizeQr";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -37,6 +38,7 @@ const dashBoardStack = {
   ConfirmPincode: ConfirmPincode,
   OTPScreen: OTPScreen,
   ViewCredential: ViewCredential,
+  CustomizeQr: CustomizeQr,
 };
 
 const tabs = {
