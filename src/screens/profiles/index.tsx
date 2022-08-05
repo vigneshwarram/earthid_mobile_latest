@@ -1,7 +1,15 @@
 import { values } from "lodash";
 import React, { useState } from "react";
-import { View, StyleSheet, Text, FlatList, Image } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  FlatList,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 import CircularProgress from "react-native-circular-progress-indicator";
+import { ScrollView } from "react-native-gesture-handler";
 import Avatar from "../../components/Avatar";
 import BottomSheet from "../../components/Bottomsheet";
 import Header from "../../components/Header";
@@ -74,139 +82,176 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
     }
   };
 
+  const navigateToCustomizedControl = () => {
+    navigation.navigate("CustomizeQr");
+  };
+
   return (
     <View style={styles.sectionContainer}>
-      <Header
-        actionIcon={LocalImages.editImage}
-        avatarClick={_avatarClick}
-        absoluteCircleInnerImage={LocalImages.cameraImage}
-        isProfileAvatar={true}
-        isUploaded={true}
-        letfIconPress={_letfIconPress}
-        rewardPoints={"50"}
-        leftIconSource={LocalImages.backImage}
-        rightIconSource={LocalImages.giftBoxImage}
-        isAvatar
-        onpress={_navigateAction}
-        linearStyle={styles.linearStyle}
-        containerStyle={{
-          iconStyle: {
-            width: 15,
-            height: 15,
-          },
-          iconContainer: styles.alignCenter,
-        }}
-      ></Header>
-      <View style={styles.flatPanel}>
-        <View style={styles.alignCenter}>
-          <Text style={[styles.label, { fontSize: 12 }]}>
-            {SCREENS.HOMESCREEN.appName}
-          </Text>
-          <Text style={[styles.label, { fontSize: 16 }]}>
-            {contractDetails?.responseData?.earthId}
-          </Text>
-        </View>
-        <CircularProgress
-          value={60}
-          radius={30}
-          activeStrokeWidth={5}
-          activeStrokeColor={Screens.colors.primary}
-        />
-      </View>
-      <View style={styles.category}>
-        <Info
-          title={"Full Name"}
-          subtitle={contractDetails?.responseData?.name}
-          style={{
-            title: styles.title,
-            subtitle: styles.subtitle,
-            container: styles.textContainer,
+      <ScrollView contentContainerStyle={styles.sectionContainer}>
+        <Header
+          actionIcon={LocalImages.editImage}
+          avatarClick={_avatarClick}
+          absoluteCircleInnerImage={LocalImages.cameraImage}
+          isProfileAvatar={true}
+          isUploaded={true}
+          letfIconPress={_letfIconPress}
+          rewardPoints={"50"}
+          leftIconSource={LocalImages.backImage}
+          rightIconSource={LocalImages.giftBoxImage}
+          isAvatar
+          onpress={_navigateAction}
+          linearStyle={styles.linearStyle}
+          containerStyle={{
+            iconStyle: {
+              width: 15,
+              height: 15,
+            },
+            iconContainer: styles.alignCenter,
           }}
-        />
-        <Info
-          title={"Date of Birth"}
-          subtitle={"22/02/1995"}
-          style={{
-            title: styles.title,
-            subtitle: styles.subtitle,
-            container: styles.textContainer,
-          }}
-        />
-        <Info
-          title={"Mobile Number"}
-          subtitle={contractDetails?.responseData?.mobile}
-          subtitleRowText={
-            contractDetails?.responseData?.mobileApproved
-              ? "verified"
-              : "verify"
-          }
-          style={{
-            title: styles.title,
-            subtitle: styles.subtitle,
-            container: styles.textContainer,
-            subtitleNearText: [
-              styles.subtitleNearText,
-              {
-                color: contractDetails?.responseData?.mobileApproved
-                  ? Screens.success
-                  : "red",
-              },
-            ],
-          }}
-        />
-        <Info
-          subTitlePress={emailVerifyAction}
-          title={"Email"}
-          subtitle={contractDetails?.responseData?.email}
-          subtitleRowText={
-            contractDetails?.responseData?.emailApproved ? "verified" : "verify"
-          }
-          style={{
-            title: styles.title,
-            subtitle: styles.subtitle,
-            container: styles.textContainer,
-            subtitleNearText: [
-              styles.subtitleNearText,
-              {
-                color: contractDetails?.responseData?.emailApproved
-                  ? Screens.success
-                  : "red",
-              },
-            ],
-          }}
-        />
-      </View>
-      <View style={styles.socialMediaContainer}>
-        <FlatList<any>
-          horizontal
-          scrollEnabled={false}
-          data={socialMedialList}
-          renderItem={_renderItem}
-          keyExtractor={_keyExtractor}
-        />
-      </View>
-      <BottomSheet
-        onClose={() => setisCameraOptionVisible(false)}
-        height={150}
-        isVisible={isCameraOptionVisible}
-      >
-        <View
-          style={{
-            height: 100,
-            width: "100%",
-            paddingHorizontal: 50,
-            flexDirection: "row",
-            justifyContent: "space-around",
-          }}
-        >
-          <ColoumnOption
-            title={"Remove phone"}
-            icon={LocalImages.deleteImage}
+        ></Header>
+        <View style={styles.flatPanel}>
+          <View style={styles.alignCenter}>
+            <Text style={[styles.label, { fontSize: 12 }]}>
+              {SCREENS.HOMESCREEN.appName}
+            </Text>
+            <Text style={[styles.label, { fontSize: 16 }]}>
+              {contractDetails?.responseData?.earthId}
+            </Text>
+          </View>
+          <CircularProgress
+            value={60}
+            radius={30}
+            activeStrokeWidth={5}
+            activeStrokeColor={Screens.colors.primary}
           />
-          <ColoumnOption title={"Camera"} icon={LocalImages.cameraImage} />
-          <ColoumnOption title={"Gallery"} icon={LocalImages.galleryImage} />
         </View>
-      </BottomSheet>
+        <View style={styles.category}>
+          <Info
+            title={"Full Name"}
+            subtitle={contractDetails?.responseData?.name}
+            style={{
+              title: styles.title,
+              subtitle: styles.subtitle,
+              container: styles.textContainer,
+            }}
+          />
+          <Info
+            title={"Date of Birth"}
+            subtitle={"22/02/1995"}
+            style={{
+              title: styles.title,
+              subtitle: styles.subtitle,
+              container: styles.textContainer,
+            }}
+          />
+          <Info
+            title={"Mobile Number"}
+            subtitle={contractDetails?.responseData?.mobile}
+            subtitleRowText={
+              contractDetails?.responseData?.mobileApproved
+                ? "verified"
+                : "verify"
+            }
+            style={{
+              title: styles.title,
+              subtitle: styles.subtitle,
+              container: styles.textContainer,
+              subtitleNearText: [
+                styles.subtitleNearText,
+                {
+                  color: contractDetails?.responseData?.mobileApproved
+                    ? Screens.success
+                    : "red",
+                },
+              ],
+            }}
+          />
+          <Info
+            subTitlePress={emailVerifyAction}
+            title={"Email"}
+            subtitle={contractDetails?.responseData?.email}
+            subtitleRowText={
+              contractDetails?.responseData?.emailApproved
+                ? "verified"
+                : "verify"
+            }
+            style={{
+              title: styles.title,
+              subtitle: styles.subtitle,
+              container: styles.textContainer,
+              subtitleNearText: [
+                styles.subtitleNearText,
+                {
+                  color: contractDetails?.responseData?.emailApproved
+                    ? Screens.success
+                    : "red",
+                },
+              ],
+            }}
+          />
+        </View>
+        <View style={styles.socialMediaContainer}>
+          <FlatList<any>
+            horizontal
+            scrollEnabled={false}
+            data={socialMedialList}
+            renderItem={_renderItem}
+            keyExtractor={_keyExtractor}
+          />
+        </View>
+        <BottomSheet
+          onClose={() => setisCameraOptionVisible(false)}
+          height={150}
+          isVisible={isCameraOptionVisible}
+        >
+          <View
+            style={{
+              height: 100,
+              width: "100%",
+              paddingHorizontal: 50,
+              flexDirection: "row",
+              justifyContent: "space-around",
+            }}
+          >
+            <ColoumnOption
+              title={"Remove phone"}
+              icon={LocalImages.deleteImage}
+            />
+            <ColoumnOption title={"Camera"} icon={LocalImages.cameraImage} />
+            <ColoumnOption title={"Gallery"} icon={LocalImages.galleryImage} />
+          </View>
+        </BottomSheet>
+        <TouchableOpacity onPress={() => navigateToCustomizedControl()}>
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              marginVertical: 20,
+              flexDirection: "row",
+            }}
+          >
+            <Image
+              resizeMode="contain"
+              style={[styles.logoContainer]}
+              source={LocalImages.qrcodeImage}
+            ></Image>
+            <Text
+              style={[
+                styles.label,
+                {
+                  fontSize: 14,
+                  paddingHorizontal: 10,
+                  color: Screens.colors.primary,
+                  textDecorationLine: "underline",
+                },
+              ]}
+            >
+              {"Customize QR Code"}
+            </Text>
+          </View>
+        </TouchableOpacity>
+      </ScrollView>
     </View>
   );
 };
@@ -218,6 +263,11 @@ const styles = StyleSheet.create({
   },
   title: {
     color: Screens.grayShadeColor,
+  },
+  logoContainer: {
+    width: 30,
+    height: 30,
+    tintColor: Screens.colors.primary,
   },
   subtitle: {
     color: Screens.black,
@@ -273,7 +323,7 @@ const styles = StyleSheet.create({
     color: Screens.black,
   },
   category: {
-    flex: 0.9,
+    flex: 1,
     backgroundColor: Screens.pureWhite,
     padding: 10,
     marginVertical: 20,

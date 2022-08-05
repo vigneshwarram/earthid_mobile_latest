@@ -228,13 +228,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: "500",
   },
-  cardContainer: {
-    flex: 1,
-    paddingVertical: 9,
-    title: {
-      color: Screens.grayShadeColor,
-    },
-  },
+
   textInputContainer: {
     borderRadius: 10,
     borderColor: Screens.colors.primary,

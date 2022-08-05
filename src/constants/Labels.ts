@@ -74,6 +74,74 @@ export const SCREENS = {
         COLOR: "#F5BCE8",
       },
     ],
+    CategoryCustomiseList: [
+      {
+        TITLE: "Full Name",
+        VALUE: "Roberty Dowry",
+        URI: LocalImages.SOCIAL_MEDIA_.webImage,
+        DOMAIN: "https://yourdomain.com",
+        CHECKED: true,
+      },
+      {
+        TITLE: "Date of Birth",
+        VALUE: "25/12/1965",
+        URI: LocalImages.SOCIAL_MEDIA_.webImage,
+        DOMAIN: "https://yourdomain.com",
+        CHECKED: true,
+      },
+      {
+        TITLE: "Mobile Number",
+        VALUE: "+91 7373834595",
+        URI: LocalImages.SOCIAL_MEDIA_.webImage,
+        DOMAIN: "https://yourdomain.com",
+        CHECKED: true,
+      },
+      {
+        TITLE: "Email",
+        VALUE: "vicky@yopmail.com",
+        URI: LocalImages.SOCIAL_MEDIA_.webImage,
+        DOMAIN: "https://yourdomain.com",
+        CHECKED: true,
+      },
+
+      {
+        TITLE: "website",
+        URI: LocalImages.SOCIAL_MEDIA_.webImage,
+        VALUE: "https://yourdomain.com",
+        CHECKED: true,
+      },
+      {
+        TITLE: "facebook",
+        URI: LocalImages.SOCIAL_MEDIA_.facebookImage,
+        VALUE: "https://yourdomain.com",
+        CHECKED: true,
+      },
+      {
+        TITLE: "twitter",
+        URI: LocalImages.SOCIAL_MEDIA_.twitterImage,
+        VALUE: "https://yourdomain.com",
+        CHECKED: true,
+      },
+      {
+        TITLE: "instagram",
+        URI: LocalImages.SOCIAL_MEDIA_.instagramImage,
+        VALUE: "https://yourdomain.com",
+        CHECKED: true,
+      },
+      {
+        TITLE: "linkeid",
+        URI: LocalImages.SOCIAL_MEDIA_.linkdInImage,
+        VALUE: "https://yourdomain.com",
+        CHECKED: true,
+      },
+      {
+        TITLE: "telegram",
+        URI: LocalImages.SOCIAL_MEDIA_.telegramImage,
+        VALUE: "https://yourdomain.com",
+        CHECKED: true,
+      },
+    ],
+
     documentsDetailsList: [
       {
         ID: 1,
