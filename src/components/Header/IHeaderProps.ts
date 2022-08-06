@@ -16,4 +16,5 @@ export interface IHeaderProps {
   headingText?: string;
   profileName?: string;
   rightIconPress?: any;
+  isBack?: boolean;
 }
