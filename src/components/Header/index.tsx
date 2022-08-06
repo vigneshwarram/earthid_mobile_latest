@@ -29,6 +29,7 @@ const Header = ({
   avatarClick,
   isLogoAlone,
   headingText,
+  isBack = false,
   rightIconPress,
 }: IHeaderProps) => (
   <View style={containerStyle}>
@@ -67,11 +68,30 @@ const Header = ({
               disabled={letfIconPress ? false : true}
               onPress={letfIconPress}
             >
-              <Image
-                resizeMode="contain"
-                style={[styles.logoContainer, containerStyle.iconStyle]}
-                source={leftIconSource}
-              ></Image>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <View
+                  style={{ justifyContent: "center", alignItems: "center" }}
+                >
+                  {isBack && (
+                    <Image
+                      resizeMode="contain"
+                      style={{ width: 15, height: 15 }}
+                      source={LocalImages.backImage}
+                    ></Image>
+                  )}
+                </View>
+
+                <Image
+                  resizeMode="contain"
+                  style={[styles.logoContainer]}
+                  source={LocalImages.logoImage}
+                ></Image>
+              </View>
             </TouchableOpacity>
 
             <View
