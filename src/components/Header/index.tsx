@@ -1,7 +1,6 @@
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { LocalImages } from "../../constants/imageUrlConstants";
-import { SCREENS } from "../../constants/Labels";
 import { Screens } from "../../themes";
 import Avatar from "../Avatar";
 import LinearGradients from "../GradientsPanel/LinearGradient";

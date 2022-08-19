@@ -1,11 +1,26 @@
 import React, { useRef, useState } from "react";
-import { View, StyleSheet, Text, ScrollView } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  ScrollView,
+  Share,
+  PermissionsAndroid,
+  Alert,
+  BackHandler,
+  Platform,
+} from "react-native";
 import Header from "../../../components/Header";
 import { SCREENS } from "../../../constants/Labels";
 import { Screens } from "../../../themes";
 import Loader from "../../../components/Loader";
+import RNHTMLtoPDF from "react-native-html-to-pdf";
 import QRCode from "react-native-qrcode-svg";
 import Button from "../../../components/Button";
+import RNPdfToImage from "react-native-pdf-to-image";
+import RNFS from "react-native-fs";
+import { alertBox, sleep } from "../../../utils/earthid_account";
+import { baseData } from "./cb-base64-string";
 
 interface IHomeScreenProps {
   navigation?: any;
@@ -15,13 +30,123 @@ const Register = ({ navigation }: IHomeScreenProps) => {
   const phoneInput: any = useRef();
   const [mobileNumber, setmobileNumber] = useState();
   const [isLoading, setIsLoading] = useState(false);
-
+  let [qrBase64, setBase64] = useState("");
+  const refqr: any = useRef();
   const _navigateAction = () => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      navigation.navigate("Security");
-    }, 5000);
+    onShare();
+  };
+
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message:
+          "React Native | A framework for building native apps using React",
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          navigation.navigate("Security");
+          // shared with activity type of result.activityType
+        } else {
+          navigation.navigate("Security");
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {}
+  };
+  const callback = (data) => {
+    console.log("data", data);
+  };
+  const captureScreenShot = async () => {
+    refqr.current.toDataURL(callback);
+    if (Platform.OS === "android") {
+      if (await requestExternalStoragePermission()) {
+        var d = new Date();
+        const month = d.getMonth() + 1;
+        const fileName =
+          "EarthId_Test_" +
+          d.getDate() +
+          "_" +
+          month +
+          "_" +
+          d.getFullYear() +
+          "_" +
+          d.getHours() +
+          "_" +
+          d.getMinutes();
+        let options = {
+          html:
+            `<html>
+                    <body>
+                    <div style="display:flex; align-items:center; width:100%; flex-direction:column;">
+                    <p>This is your QR code, keep it safe.</p>
+                    <img src=` +
+            baseData +
+            ` style="width:80%;" />
+                    <div>
+                    </body>
+                  </html>`,
+          fileName: fileName,
+          directory: "Documents",
+          width: 20,
+        };
+        let filetoPdf = await RNHTMLtoPDF.convert(options);
+        console.log("testing", filetoPdf);
+        const attachimageUri = "file://";
+        let file = await RNPdfToImage.convert(
+          `${attachimageUri}${filetoPdf.filePath}`
+        );
+        console.log("file", file);
+        console.log("file", file.outputFiles[0]);
+        //console.log('this.state.base64',this.state.base64 )
+        //const destPath = `${RNFS.DownloadDirectoryPath}/${fileName}.png`
+        //await CameraRoll.saveToCameraRoll(file.outputFiles[0]);
+        const destPath = `${RNFS.DownloadDirectoryPath}/${fileName}.png`;
+        await RNFS.copyFile(file.outputFiles[0], destPath);
+
+        await sleep(10);
+        onShare();
+        Alert.alert("Image saved succesfully as PNG in Download");
+      }
+    } else {
+    }
+  };
+  const requestExternalStoragePermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
+        // {
+        //     title: 'Earth Id Storage Permission',
+        //     message: 'Earth Id needs access to your storage ' +
+        //         'so you can save your photos',
+        // },
+      );
+      return granted == "granted"
+        ? true
+        : granted == "never_ask_again"
+        ? securityModalPopup()
+        : securityModalPopup();
+    } catch (err) {
+      console.error("Failed to request permission ", err);
+      return false;
+    }
+  };
+
+  const securityModalPopup = () => {
+    Alert.alert(
+      "Device Permission",
+      "To grant Device id you need to all the app permission from (Setting > App > Earth Id > Permission)",
+      [
+        // {
+        //   text: 'Cancel',
+        //   onPress: () => console.log('Cancel'),
+        //   style: 'cancel',
+        // },
+        { text: "OK", onPress: () => BackHandler.exitApp() },
+      ],
+      { cancelable: false }
+    );
   };
 
   return (
@@ -73,6 +198,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
             <QRCode
               //QR code value
               value={"NA"}
+              getRef={refqr}
               //size of QR Code
               size={200}
               //Color of the QR Code (Optional)
@@ -92,7 +218,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
             />
           </View>
           <Button
-            onPress={_navigateAction}
+            onPress={captureScreenShot}
             style={{
               buttonContainer: {
                 elevation: 5,

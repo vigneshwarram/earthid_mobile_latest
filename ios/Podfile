@@ -35,6 +35,10 @@ target 'earthidnew' do
 
   pod 'RNCCheckbox', :path => '../node_modules/@react-native-community/checkbox'
 
+  pod 'react-native-view-shot', :path => '../node_modules/react-native-view-shot'
+
+  pod 'react-native-html-to-pdf', :path => '../node_modules/react-native-html-to-pdf'
+
   target 'earthidnewTests' do
     inherit! :complete
     # Pods for testing
