@@ -43,6 +43,11 @@ const CameraScreen = (props: any) => {
     data: issuerDataResponse,
     fetch: issuerFetch,
   } = useFetch();
+  const {
+    loading: shareCredientialLoading,
+    data: shareCredientialData,
+    fetch: shareCredientialFetch,
+  } = useFetch();
   const { loading: sendDataLoading, fetch: sendDataFetch } = useSendData();
 
   const dispatch = useAppDispatch();
@@ -51,6 +56,7 @@ const CameraScreen = (props: any) => {
   const [isDocumentModal, setisDocumentModal] = useState(false);
   const documentsDetailsList = useAppSelector((state) => state.Documents);
   const [value, setValue] = useState(null);
+  const [isDocumentModalkyc, setisDocumentModalkyc] = useState(false);
   const [checkbox1, setcheckbox1] = useState(true);
   const [checkbox2, setcheckbox2] = useState(true);
   const [issuerLogin, setissuerLogin] = useState(false);
@@ -70,13 +76,24 @@ const CameraScreen = (props: any) => {
     if (serviceData.requestType === "document") {
       setisDocumentModal(true);
     }
+    if (serviceData.requestType === "shareCredentials") {
+      setisDocumentModalkyc(true);
+    }
   };
+  useEffect(() => {
+    console.log("sharecredientials", shareCredientialData);
+    if (shareCredientialData?.status === "success") {
+      setisDocumentModalkyc(false);
+      props.navigation.goBack(null);
+    }
+  }, [shareCredientialData]);
 
   useEffect(() => {
+    console.log("issuerDataResponse", issuerDataResponse);
     if (issuerDataResponse?.status === "success") {
       console.log("issuerData", issuerDataResponse);
       if (barCodeDataDetails?.requestType === "login") {
-        Alert.alert("Login successfully");
+        props.navigation.navigate.goBack(null);
       } else if (barCodeDataDetails?.requestType === "document") {
         setsuccessResponse(true);
         var documentDetails: IDocumentProps = {
@@ -113,6 +130,7 @@ const CameraScreen = (props: any) => {
         setTimeout(() => {
           setsuccessResponse(false);
           setisDocumentModal(false);
+          setisDocumentModalkyc(false);
           props.navigation.navigate("Document");
         }, 2000);
       }
@@ -122,6 +140,14 @@ const CameraScreen = (props: any) => {
   const documentShare = () => {
     const { apikey, reqNo, requestType } = barCodeDataDetails;
     issuerFetch(
+      `${serviceProviderApi}?apikey=${apikey}&reqNo=${reqNo}&requestType=${requestType}`,
+      {},
+      "GET"
+    );
+  };
+  const shareCredientials = () => {
+    const { apikey, reqNo, requestType } = barCodeDataDetails;
+    shareCredientialFetch(
       `${serviceProviderApi}?apikey=${apikey}&reqNo=${reqNo}&requestType=${requestType}`,
       {},
       "GET"
@@ -337,6 +363,100 @@ const CameraScreen = (props: any) => {
               </Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={documentShare}>
+              <Text style={{ color: "green", fontSize: 16, fontWeight: "700" }}>
+                Authorize
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ModalView>
+
+      <ModalView
+        left={deviceWidth / 9}
+        width={deviceWidth / 1.2}
+        height={300}
+        isModalVisible={isDocumentModalkyc}
+      >
+        <View style={{ flex: 1, paddingHorizontal: 5 }}>
+          <Text
+            style={{
+              textAlign: "center",
+              padding: 5,
+              color: "#000",
+              fontSize: 14,
+              fontWeight: "900",
+              marginTop: 20,
+            }}
+          >
+            GlobalId wants to access your KYC token
+          </Text>
+          <View>
+            <View style={{ flexDirection: "row", marginVertical: 10 }}>
+              <CheckBox
+                disabled={false}
+                onValueChange={(value) => {
+                  setcheckbox1(value);
+                }}
+                value={checkbox1}
+              />
+              <View style={{ justifyContent: "center", alignItems: "center" }}>
+                <Text
+                  style={{
+                    textAlign: "center",
+                    padding: 5,
+                    color: "#000",
+                    fontSize: 14,
+                    fontWeight: "300",
+                  }}
+                >
+                  KYC Token
+                </Text>
+              </View>
+            </View>
+          </View>
+          <Text
+            style={{
+              textAlign: "center",
+              padding: 5,
+              color: "#000",
+              fontSize: 16,
+              fontWeight: "bold",
+            }}
+          >
+            Duration
+          </Text>
+          <Dropdown
+            style={[styles.dropdown]}
+            placeholderStyle={styles.placeholderStyle}
+            selectedTextStyle={styles.selectedTextStyle}
+            inputSearchStyle={styles.inputSearchStyle}
+            iconStyle={styles.iconStyle}
+            data={data}
+            search
+            maxHeight={300}
+            labelField="label"
+            valueField="value"
+            placeholder={"Expirational Time (default 1 day)"}
+            searchPlaceholder="Search..."
+            value={"value"}
+            onChange={(item) => {
+              setValue(item.value);
+            }}
+          />
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              marginVertical: 50,
+              marginHorizontal: 20,
+            }}
+          >
+            <TouchableOpacity onPress={() => setisDocumentModalkyc(false)}>
+              <Text style={{ color: "red", fontSize: 16, fontWeight: "700" }}>
+                Cancel
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={shareCredientials}>
               <Text style={{ color: "green", fontSize: 16, fontWeight: "700" }}>
                 Authorize
               </Text>

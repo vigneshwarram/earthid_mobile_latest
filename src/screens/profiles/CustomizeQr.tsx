@@ -108,7 +108,7 @@ const CustomizeQr = ({ navigation }: IDocumentScreenProps) => {
       ></Header>
       <Text style={[styles.label, { fontSize: 14, textAlign: "center" }]}>
         {
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
+          "Please enable the information to share with other user by simply scanning Qrcode"
         }
       </Text>
       <FlatList<any>

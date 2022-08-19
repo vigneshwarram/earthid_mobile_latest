@@ -57,7 +57,7 @@ export const ABOUT_ROUTES = {
     URI: LocalImages.historyImage,
     CARD: "AcceptableUsePolicy",
     TITLE: "Bachup Identity",
-    SCREEN: "history",
+    SCREEN: "backupIdentity",
     COLOR: "#FFDD9B",
   },
   DELETE: {

@@ -1,4 +1,10 @@
 rootProject.name = 'earthidnew'
+include ':react-native-pdf-to-image'
+project(':react-native-pdf-to-image').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-pdf-to-image/android')
+include ':react-native-html-to-pdf'
+project(':react-native-html-to-pdf').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-html-to-pdf/android')
+include ':react-native-view-shot'
+project(':react-native-view-shot').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-view-shot/android')
 include ':@react-native-community_checkbox'
 project(':@react-native-community_checkbox').projectDir = new File(rootProject.projectDir, '../node_modules/@react-native-community/checkbox/android')
 include ':react-native-fs'
