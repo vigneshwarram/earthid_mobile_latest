@@ -30,7 +30,7 @@ const LanguageContextProvider = ({children}:any) => {
       languageCode,
       changeLanguagePreference
     }}>
-    <App/>
+    {children}
   </LanguageContext.Provider>
   )
 }
