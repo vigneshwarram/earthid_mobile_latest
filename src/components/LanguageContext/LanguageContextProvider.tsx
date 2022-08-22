@@ -1,7 +1,7 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet } from 'react-native'
 import React, { createContext, useState } from 'react'
 import { AppLanguage } from '../Languages/Languages';
-import RootNavigator from ".././../navigations/RootNavigator";
+import App from '../../../App';
 
 
 export const LanguageContext =createContext<any>({})
@@ -30,7 +30,7 @@ const LanguageContextProvider = ({children}:any) => {
       languageCode,
       changeLanguagePreference
     }}>
-    <RootNavigator/>
+    <App/>
   </LanguageContext.Provider>
   )
 }
