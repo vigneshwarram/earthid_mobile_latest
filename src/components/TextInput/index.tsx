@@ -10,6 +10,8 @@ import { ITextInputProps } from "./ITextInputProps";
  * @description This is a base component for the implementation of TextInput.
  */
 
+//praveeb
+
 const TextInputBox = ({
   onFocus,
   onBlur,
@@ -26,6 +28,7 @@ const TextInputBox = ({
   placeholder,
   rightIcon,
   style = {},
+  
 }: ITextInputProps) => (
   <View>
     {leftIcon && (
