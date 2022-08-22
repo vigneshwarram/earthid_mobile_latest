@@ -55,7 +55,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
       }
     } catch (error) {}
   };
-  const callback = (data) => {
+  const callback = (data: any) => {
     console.log("data", data);
   };
   const captureScreenShot = async () => {

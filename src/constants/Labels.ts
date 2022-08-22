@@ -196,6 +196,7 @@ export const SCREENS = {
   LANDINGSCREEN: {
     setUpId: "Set Up Your EarthiD",
     instruction: "Setup with one of our available registration options",
+    BUTTON_LABEL: "buttonLabel",
   },
   BACKUPIDENTYSCREEN: {
     instruction:
