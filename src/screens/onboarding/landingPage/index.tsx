@@ -148,7 +148,7 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
             >
               {"By continuing you agree to our "}
               <Text style={{ color: Screens.colors.primary }}>
-                {"Terms & Condition and Privacy Policy"}
+                {"Terms & Condition and  Policy"}
               </Text>
             </Text>
           </View>
