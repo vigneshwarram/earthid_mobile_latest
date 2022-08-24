@@ -41,7 +41,9 @@ export const BottomMenus = () => {
                 style={[
                   styles.ImgStyle,
                   {
-                    tintColor: focused ? colors.primary : colors.background,
+                    tintColor: focused
+                      ? Screens.colors.primary
+                      : colors.background,
                   },
                 ]}
                 source={LocalImages.homeImage}
@@ -66,7 +68,9 @@ export const BottomMenus = () => {
                 style={[
                   styles.ImgStyle,
                   {
-                    tintColor: focused ? colors.primary : colors.background,
+                    tintColor: focused
+                      ? Screens.colors.primary
+                      : colors.background,
                   },
                 ]}
                 source={LocalImages.documentsImage}
@@ -88,9 +92,9 @@ export const BottomMenus = () => {
               <View style={styles.circle}>
                 <LinearGradients
                   horizontalGradient
-                  endColor={Screens.colors.ScanButton.endColor}
-                  middleColor={Screens.colors.ScanButton.middleColor}
-                  startColor={Screens.colors.ScanButton.startColor}
+                  endColor={Screens.colors.header.endColor}
+                  middleColor={Screens.colors.header.middleColor}
+                  startColor={Screens.colors.header.startColor}
                   style={[styles.Innercircle]}
                 >
                   <Image
@@ -123,7 +127,9 @@ export const BottomMenus = () => {
                 style={[
                   styles.ImgStyle,
                   {
-                    tintColor: focused ? colors.primary : colors.background,
+                    tintColor: focused
+                      ? Screens.colors.primary
+                      : colors.background,
                   },
                 ]}
                 source={LocalImages.historyImage}
@@ -148,7 +154,9 @@ export const BottomMenus = () => {
                 style={[
                   styles.ImgStyle,
                   {
-                    tintColor: focused ? colors.primary : colors.background,
+                    tintColor: focused
+                      ? Screens.colors.primary
+                      : colors.background,
                   },
                 ]}
                 source={LocalImages.moreImage}

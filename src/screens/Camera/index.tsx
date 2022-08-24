@@ -224,9 +224,22 @@ const CameraScreen = (props: any) => {
         isLoaderVisible={successResponse}
         loadingText={successMessage}
       />
-      <ModalView isModalVisible={issuerLogin}>
-        <View style={{ flex: 1, paddingHorizontal: 5 }}>
-          <View style={{ justifyContent: "center", alignItems: "center" }}>
+      <ModalView height={250} isModalVisible={issuerLogin}>
+        <View
+          style={{
+            flex: 1,
+            paddingHorizontal: 5,
+            justifyContent: "space-between",
+          }}
+        >
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "#8059D0",
+              width: deviceWidth / 1.5,
+            }}
+          >
             <Image
               resizeMode="contain"
               style={[styles.imageLogo]}
@@ -242,6 +255,7 @@ const CameraScreen = (props: any) => {
             style={{
               buttonContainer: {
                 elevation: 5,
+                marginHorizontal: 10,
               },
               text: {
                 color: Screens.pureWhite,
@@ -272,7 +286,7 @@ const CameraScreen = (props: any) => {
               marginTop: 20,
             }}
           >
-            GlobalId wants to access your following information
+            EarthId wants to access your following information
           </Text>
           <View>
             <View style={{ flexDirection: "row", marginVertical: 10 }}>

@@ -12,7 +12,9 @@ import React from "react";
 import { SafeAreaView, StyleSheet } from "react-native";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/lib/integration/react";
-import LanguageContextProvider, { LanguageContext } from "./src/components/LanguageContext/LanguageContextProvider";
+//@ts-ignore
+import i18n from "./src/utils/i18n"; //DO NOT REMOVE - this needs to be present here or in index.js
+import LanguageContextProvider from "./src/components/LanguageContext/LanguageContextProvider";
 import RootNavigator from "./src/navigations/RootNavigator";
 import { persistor, store } from "./src/redux/store";
 
@@ -22,7 +24,7 @@ const App = () => {
       <PersistGate loading={null} persistor={persistor}>
         <SafeAreaView style={styles.container}>
           <LanguageContextProvider>
-          <RootNavigator />
+            <RootNavigator />
           </LanguageContextProvider>
         </SafeAreaView>
       </PersistGate>

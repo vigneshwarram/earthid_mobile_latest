@@ -319,7 +319,7 @@ const Register = ({ navigation }: IRegister) => {
                 tintColor: Screens.pureWhite,
               },
             }}
-            title={"GENERATE GLOBAL ID"}
+            title={"GENERATE EARTH ID"}
           ></Button>
           <Text
             style={[
@@ -333,10 +333,10 @@ const Register = ({ navigation }: IRegister) => {
             ]}
           >
             {"I Already have my "}
-            <Text style={{ color: Screens.colors.primary }}>{"GlobaliD"}</Text>
+            <Text style={{ color: Screens.colors.primary }}>{"EarthID"}</Text>
           </Text>
           <Loader
-            loadingText="Your Global ID is generated successfutlly."
+            loadingText="Your Earth ID is generated successfutlly."
             Status="Success !"
             isLoaderVisible={successResponse}
           ></Loader>

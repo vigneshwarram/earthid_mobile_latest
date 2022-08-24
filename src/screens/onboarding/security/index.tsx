@@ -113,6 +113,9 @@ const Register = ({ navigation }: IHomeScreenProps) => {
                   backgroundColor: Screens.pureWhite,
                   elevation: 2,
                 },
+                iconStyle: {
+                  tintColor: Screens.colors.primary,
+                },
               }}
               leftIcon={LocalImages.passcordImage}
               title={"USE PASSCORD"}

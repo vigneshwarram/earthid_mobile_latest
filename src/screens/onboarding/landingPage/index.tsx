@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { View, StyleSheet, Text, ScrollView, Linking } from "react-native";
 import Header from "../../../components/Header";
 import { LocalImages } from "../../../constants/imageUrlConstants";
@@ -6,6 +6,8 @@ import { SCREENS } from "../../../constants/Labels";
 import { Screens } from "../../../themes";
 import Button from "../../../components/Button";
 import Snackbar from "react-native-snackbar";
+import { LanguageContext } from "../../../components/LanguageContext/LanguageContextProvider";
+import { getUserLanguagePreference } from "../../../utils/i18n";
 
 interface IHomeScreenProps {
   navigation?: any;
@@ -15,6 +17,22 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
   const navigateAction = async () => {
     navigation.navigate("RegisterScreen");
   };
+
+  const initializeUserPreferences = async () => {
+    const { languageCode, changeLanguagePreference } =
+      useContext(LanguageContext);
+    const storedUserLanguagePref = await getUserLanguagePreference();
+    console.log("storedUserLanguagePref", storedUserLanguagePref);
+
+    if (languageCode !== storedUserLanguagePref) {
+      changeLanguagePreference(storedUserLanguagePref, "SplashScreen");
+    }
+  };
+
+  useEffect(() => {
+    initializeUserPreferences();
+  }, []);
+
   return (
     <View style={styles.sectionContainer}>
       <ScrollView contentContainerStyle={styles.sectionContainer}>
@@ -64,6 +82,9 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
                   backgroundColor: Screens.pureWhite,
                   elevation: 5,
                 },
+                iconStyle: {
+                  tintColor: Screens.colors.primary,
+                },
               }}
               leftIcon={LocalImages.registerdocumentImage}
               title={"REGISTER WITH DOCUMENT"}
@@ -74,6 +95,9 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
                 buttonContainer: {
                   backgroundColor: Screens.pureWhite,
                   elevation: 5,
+                },
+                iconStyle: {
+                  tintColor: Screens.colors.primary,
                 },
               }}
               leftIcon={LocalImages.registerdocumentImage}
@@ -92,7 +116,7 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
                 },
               ]}
             >
-              {"I already have my GlobaliD"}
+              {"I already have my EarthID"}
             </Text>
             <Button
               onPress={() => navigation.navigate("uploadDocumentsScreen")}
@@ -108,7 +132,7 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
                 },
               }}
               leftIcon={LocalImages.qrcodeImage}
-              title={"Upload QR COde"}
+              title={SCREENS.LANDINGSCREEN.BUTTON_LABEL}
             ></Button>
 
             <Text

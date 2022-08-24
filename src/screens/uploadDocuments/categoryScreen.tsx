@@ -1,6 +1,13 @@
 import { values } from "lodash";
 import React, { useState } from "react";
-import { View, StyleSheet, Text, FlatList, Image } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  FlatList,
+  Image,
+  Dimensions,
+} from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Button from "../../components/Button";
 
@@ -10,7 +17,7 @@ import ModalView from "../../components/Modal";
 import { LocalImages } from "../../constants/imageUrlConstants";
 import { SCREENS } from "../../constants/Labels";
 import { Screens } from "../../themes";
-
+const deviceWidth = Dimensions.get("window").width;
 interface IDocumentScreenProps {
   navigation?: any;
   route?: any;
@@ -73,9 +80,22 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
         renderItem={_renderItem}
         keyExtractor={_keyExtractor}
       />
-      <ModalView isModalVisible={isPrceedForLivenessTest}>
-        <View style={{ flex: 1, paddingHorizontal: 5 }}>
-          <View style={{ justifyContent: "center", alignItems: "center" }}>
+      <ModalView height={250} isModalVisible={isPrceedForLivenessTest}>
+        <View
+          style={{
+            flex: 1,
+            paddingHorizontal: 5,
+            justifyContent: "space-between",
+          }}
+        >
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "#8059D0",
+              width: deviceWidth / 1.5,
+            }}
+          >
             <Image
               resizeMode="contain"
               style={[styles.logoContainer]}
@@ -93,6 +113,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
             style={{
               buttonContainer: {
                 elevation: 5,
+                marginHorizontal: 10,
               },
               text: {
                 color: Screens.pureWhite,
