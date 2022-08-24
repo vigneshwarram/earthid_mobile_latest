@@ -6,8 +6,8 @@ import { SCREENS } from "../../../constants/Labels";
 import { Screens } from "../../../themes";
 import Button from "../../../components/Button";
 import Snackbar from "react-native-snackbar";
-import { getUserLanguagePreference } from "../../../utils/i18n";
 import { LanguageContext } from "../../../components/LanguageContext/LanguageContextProvider";
+import { getUserLanguagePreference } from "../../../utils/i18n";
 
 interface IHomeScreenProps {
   navigation?: any;
@@ -82,6 +82,9 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
                   backgroundColor: Screens.pureWhite,
                   elevation: 5,
                 },
+                iconStyle: {
+                  tintColor: Screens.colors.primary,
+                },
               }}
               leftIcon={LocalImages.registerdocumentImage}
               title={"REGISTER WITH DOCUMENT"}
@@ -92,6 +95,9 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
                 buttonContainer: {
                   backgroundColor: Screens.pureWhite,
                   elevation: 5,
+                },
+                iconStyle: {
+                  tintColor: Screens.colors.primary,
                 },
               }}
               leftIcon={LocalImages.registerdocumentImage}
@@ -110,7 +116,7 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
                 },
               ]}
             >
-              {"I already have my GlobaliD"}
+              {"I already have my Globaid"}
             </Text>
             <Button
               onPress={() => navigation.navigate("uploadDocumentsScreen")}
@@ -126,7 +132,7 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
                 },
               }}
               leftIcon={LocalImages.qrcodeImage}
-              title={"Upload QR COde"}
+              title={SCREENS.LANDINGSCREEN.BUTTON_LABEL}
             ></Button>
 
             <Text
@@ -142,7 +148,7 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
             >
               {"By continuing you agree to our "}
               <Text style={{ color: Screens.colors.primary }}>
-                {"Terms & Condition and Privacy Policy"}
+                {"Terms & Condition and  Policy"}
               </Text>
             </Text>
           </View>
