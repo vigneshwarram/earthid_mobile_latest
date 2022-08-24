@@ -116,7 +116,7 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
                 },
               ]}
             >
-              {"I already have my EarthID"}
+              {"I already have my Globaid"}
             </Text>
             <Button
               onPress={() => navigation.navigate("uploadDocumentsScreen")}
