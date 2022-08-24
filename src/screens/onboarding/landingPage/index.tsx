@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { View, StyleSheet, Text, ScrollView, Linking } from "react-native";
 import Header from "../../../components/Header";
 import { LocalImages } from "../../../constants/imageUrlConstants";
@@ -6,6 +6,8 @@ import { SCREENS } from "../../../constants/Labels";
 import { Screens } from "../../../themes";
 import Button from "../../../components/Button";
 import Snackbar from "react-native-snackbar";
+import { getUserLanguagePreference } from "../../../utils/i18n";
+import { LanguageContext } from "../../../components/LanguageContext/LanguageContextProvider";
 
 interface IHomeScreenProps {
   navigation?: any;
@@ -15,6 +17,22 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
   const navigateAction = async () => {
     navigation.navigate("RegisterScreen");
   };
+
+  const initializeUserPreferences = async () => {
+    const { languageCode, changeLanguagePreference } =
+      useContext(LanguageContext);
+    const storedUserLanguagePref = await getUserLanguagePreference();
+    console.log("storedUserLanguagePref", storedUserLanguagePref);
+
+    if (languageCode !== storedUserLanguagePref) {
+      changeLanguagePreference(storedUserLanguagePref, "SplashScreen");
+    }
+  };
+
+  useEffect(() => {
+    initializeUserPreferences();
+  }, []);
+
   return (
     <View style={styles.sectionContainer}>
       <ScrollView contentContainerStyle={styles.sectionContainer}>

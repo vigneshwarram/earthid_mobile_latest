@@ -194,12 +194,13 @@ export const SCREENS = {
     ],
   },
   LANDINGSCREEN: {
-    setUpId: "Set Up Your GlobaliD",
+    setUpId: "Set Up Your GlobalId",
     instruction: "Setup with one of our available registration options",
+    BUTTON_LABEL: "buttonLabel",
   },
   BACKUPIDENTYSCREEN: {
     instruction:
-      "We strongly recommend to save this QR code at a secure location, at it will be needed to recover or port your Global Id in future.",
+      "We strongly recommend to save this QR code at a secure location, at it will be needed to recover or port your Earth Id in future.",
     instructions: "Save it like, millions of dollar it may one day may worth.",
   },
   SECURITYSCREEN: {
@@ -209,7 +210,7 @@ export const SCREENS = {
     passcordInstruction:
       "To keep your data secure, we store your  personal data on your device, not on the  centralised servers.",
     passcordInstructions:
-      "Secure Global ID with 6 - digit code that will remember.",
+      "Secure Earth ID with 6 - digit code that will remember.",
     confirmInstruction: "Please confirm your 6 - digit passcode for go further",
   },
   SHOWQRSCREEN: {

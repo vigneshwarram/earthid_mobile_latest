@@ -1,6 +1,7 @@
 import React from "react";
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, StyleSheet, View } from "react-native";
 import { Screens } from "../../themes";
+import GenericText from "../Text";
 
 import { IButtonProps } from "./IButtonProps";
 
@@ -28,7 +29,7 @@ const Button = ({
         )}
       </View>
       <View style={{ justifyContent: "center", alignItems: "center" }}>
-        <Text style={[styles.common, style.text]}>{title}</Text>
+        <GenericText style={[styles.common, style.text]}>{title}</GenericText>
       </View>
     </View>
   </Pressable>
