@@ -10,4 +10,4 @@ export const isAndroid = Platform.OS === "android";
  * both Android platform. Convert xx_YY to xx-YY format as that is the standard format i18next supports.
  */
 export const platformLanguage =
-  NativeModules.I18nManager.localeIdentifier.replace(/_/, "-");
+  NativeModules?.I18nManager?.localeIdentifier?.replace(/_/, "-");

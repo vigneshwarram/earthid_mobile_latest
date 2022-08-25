@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Text,
   Alert,
+  Platform,
 } from "react-native";
 import { RNCamera } from "react-native-camera";
 
@@ -117,12 +118,24 @@ const LivenessCameraScreen = (props: any) => {
   const camRef: any = useRef();
 
   const handlingFacialData = async () => {
-    console.log("handling facial data", data);
     if (data) {
       props.navigation.navigate("VerifiDocumentScreen", {
         uploadedDocuments: fileUri,
         faceImageData: data,
       });
+    }
+    if (Platform.OS === "ios") {
+      const options = {
+        quality: 0.5,
+        base64: true,
+      };
+      const datas = await camRef.current.takePictureAsync(options);
+      if (datas) {
+        props.navigation.navigate("VerifiDocumentScreen", {
+          uploadedDocuments: fileUri,
+          faceImageData: data,
+        });
+      }
     }
   };
   return (

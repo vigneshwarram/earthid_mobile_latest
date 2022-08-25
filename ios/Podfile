@@ -19,11 +19,15 @@ target 'earthidnew' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+pod 'react-native-camera', path: '../node_modules/react-native-camera', subspecs: [
+  'FaceDetectorMLKit'
+]
+
   pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
 
   pod 'RNSVG', :path => '../node_modules/react-native-svg'
 
-  pod 'react-native-camera', :path => '../node_modules/react-native-camera'
+
 
   pod 'RNSnackbar', :path => '../node_modules/react-native-snackbar'
 

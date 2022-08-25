@@ -110,6 +110,9 @@ const Register = ({ navigation }: IHomeScreenProps) => {
         Alert.alert("Image saved succesfully as PNG in Download");
       }
     } else {
+      await sleep(10);
+      onShare();
+      Alert.alert("Image saved succesfully as PNG in Download");
     }
   };
   const requestExternalStoragePermission = async () => {
