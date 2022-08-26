@@ -4,6 +4,7 @@ import { LocalImages } from "../../constants/imageUrlConstants";
 import { Screens } from "../../themes";
 import Avatar from "../Avatar";
 import LinearGradients from "../GradientsPanel/LinearGradient";
+import GenericText from "../Text";
 import { IHeaderProps } from "./IHeaderProps";
 
 /**
@@ -40,7 +41,7 @@ const Header = ({
       style={linearStyle}
     >
       {headingText ? (
-        <Text
+        <GenericText
           style={{
             fontWeight: "bold",
             textAlign: "center",
@@ -50,7 +51,7 @@ const Header = ({
           }}
         >
           {headingText}
-        </Text>
+        </GenericText>
       ) : isLogoAlone ? (
         <View style={{ alignItems: "center" }}>
           <Image

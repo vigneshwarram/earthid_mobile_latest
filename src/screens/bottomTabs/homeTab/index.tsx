@@ -5,6 +5,7 @@ import CircularProgress from "react-native-circular-progress-indicator";
 import Avatar from "../../../components/Avatar";
 import Card from "../../../components/Card";
 import Header from "../../../components/Header";
+import GenericText from "../../../components/Text";
 import { LocalImages } from "../../../constants/imageUrlConstants";
 import { SCREENS } from "../../../constants/Labels";
 import { useAppSelector } from "../../../hooks/hooks";
@@ -96,9 +97,9 @@ const HomeScreen = ({ navigation }: IHomeScreenProps) => {
           activeStrokeColor={Screens.colors.primary}
         />
       </View>
-      <Text style={[styles.categoryHeaderText, { fontSize: 13 }]}>
-        {SCREENS.HOMESCREEN.category}
-      </Text>
+      <GenericText style={[styles.categoryHeaderText, { fontSize: 13 }]}>
+        {SCREENS.HOMESCREENTITLES.CATEGORIES}
+      </GenericText>
       <View style={[styles.flatPanel, { height: 130, marginTop: -10 }]}>
         <FlatList<any>
           horizontal
@@ -108,9 +109,9 @@ const HomeScreen = ({ navigation }: IHomeScreenProps) => {
           keyExtractor={_keyExtractor}
         />
       </View>
-      <Text style={[styles.categoryHeaderText, { fontSize: 13 }]}>
+      <GenericText style={[styles.categoryHeaderText, { fontSize: 13 }]}>
         {SCREENS.HOMESCREEN.documentLabel}
-      </Text>
+      </GenericText>
       <View>
         <FlatList<any>
           scrollEnabled={false}

@@ -37,7 +37,7 @@ i18n
       [AppLanguage.ENGLISH]: {
         translation: translationEN,
       },
-      [AppLanguage.HINDI]: {
+      [AppLanguage.SPANISH]: {
         translation: translationHI,
       },
     },

@@ -26,6 +26,7 @@ import QrScannerMaskedWidget from "../Camera/QrScannerMaskedWidget";
 import { useCreateScehma } from "../../hooks/use-create-shecma";
 import { saveDocuments } from "../../redux/actions/authenticationAction";
 import { IDocumentProps } from "../uploadDocuments/VerifiDocumentScreen";
+import GenericText from "../../components/Text";
 const data = [
   { label: " 1", value: "1" },
   { label: " 2", value: "2" },
@@ -218,7 +219,7 @@ const CameraScreen = (props: any) => {
       </RNCamera>
       <AnimatedLoader
         isLoaderVisible={issuerLoading || sendDataLoading}
-        loadingText="Sending Data..."
+        loadingText="sendingdata"
       />
       <SuccessPopUp
         isLoaderVisible={successResponse}
@@ -265,7 +266,7 @@ const CameraScreen = (props: any) => {
                 tintColor: Screens.pureWhite,
               },
             }}
-            title={"Authorize"}
+            title={"authorize"}
           ></Button>
         </View>
       </ModalView>
@@ -276,7 +277,7 @@ const CameraScreen = (props: any) => {
         isModalVisible={isDocumentModal}
       >
         <View style={{ flex: 1, paddingHorizontal: 5 }}>
-          <Text
+          <GenericText
             style={{
               textAlign: "center",
               padding: 5,
@@ -286,8 +287,8 @@ const CameraScreen = (props: any) => {
               marginTop: 20,
             }}
           >
-            EarthId wants to access your following information
-          </Text>
+            {"earthidwanttoaccess"}
+          </GenericText>
           <View>
             <View style={{ flexDirection: "row", marginVertical: 10 }}>
               <CheckBox
@@ -298,7 +299,7 @@ const CameraScreen = (props: any) => {
                 value={checkbox1}
               />
               <View style={{ justifyContent: "center", alignItems: "center" }}>
-                <Text
+                <GenericText
                   style={{
                     textAlign: "center",
                     padding: 5,
@@ -307,8 +308,8 @@ const CameraScreen = (props: any) => {
                     fontWeight: "300",
                   }}
                 >
-                  Drriving License
-                </Text>
+                  {"drivinglicense"}
+                </GenericText>
               </View>
             </View>
             <View style={{ flexDirection: "row", marginVertical: 10 }}>
@@ -320,7 +321,7 @@ const CameraScreen = (props: any) => {
                 value={checkbox2}
               />
               <View style={{ justifyContent: "center", alignItems: "center" }}>
-                <Text
+                <GenericText
                   style={{
                     textAlign: "center",
                     padding: 5,
@@ -329,12 +330,12 @@ const CameraScreen = (props: any) => {
                     fontWeight: "300",
                   }}
                 >
-                  National Identification Card
-                </Text>
+                 {"nationalidcard"}
+                </GenericText>
               </View>
             </View>
           </View>
-          <Text
+          <GenericText
             style={{
               textAlign: "center",
               padding: 5,
@@ -343,8 +344,8 @@ const CameraScreen = (props: any) => {
               fontWeight: "bold",
             }}
           >
-            Duration
-          </Text>
+            {"duration"}
+          </GenericText>
           <Dropdown
             style={[styles.dropdown]}
             placeholderStyle={styles.placeholderStyle}
@@ -372,14 +373,14 @@ const CameraScreen = (props: any) => {
             }}
           >
             <TouchableOpacity onPress={() => setisDocumentModal(false)}>
-              <Text style={{ color: "red", fontSize: 16, fontWeight: "700" }}>
-                Cancel
-              </Text>
+              <GenericText style={{ color: "red", fontSize: 16, fontWeight: "700" }}>
+                {"cancel"}
+              </GenericText>
             </TouchableOpacity>
             <TouchableOpacity onPress={documentShare}>
-              <Text style={{ color: "green", fontSize: 16, fontWeight: "700" }}>
-                Authorize
-              </Text>
+              <GenericText style={{ color: "green", fontSize: 16, fontWeight: "700" }}>
+                {"authorize"}
+              </GenericText>
             </TouchableOpacity>
           </View>
         </View>
@@ -392,7 +393,7 @@ const CameraScreen = (props: any) => {
         isModalVisible={isDocumentModalkyc}
       >
         <View style={{ flex: 1, paddingHorizontal: 5 }}>
-          <Text
+          <GenericText
             style={{
               textAlign: "center",
               padding: 5,
@@ -402,8 +403,8 @@ const CameraScreen = (props: any) => {
               marginTop: 20,
             }}
           >
-            GlobalId wants to access your KYC token
-          </Text>
+            {"globalidwanttoaccess"}
+          </GenericText>
           <View>
             <View style={{ flexDirection: "row", marginVertical: 10 }}>
               <CheckBox
@@ -414,7 +415,7 @@ const CameraScreen = (props: any) => {
                 value={checkbox1}
               />
               <View style={{ justifyContent: "center", alignItems: "center" }}>
-                <Text
+                <GenericText
                   style={{
                     textAlign: "center",
                     padding: 5,
@@ -423,12 +424,12 @@ const CameraScreen = (props: any) => {
                     fontWeight: "300",
                   }}
                 >
-                  KYC Token
-                </Text>
+                  {"kyctoken"}
+                </GenericText>
               </View>
             </View>
           </View>
-          <Text
+          <GenericText
             style={{
               textAlign: "center",
               padding: 5,
@@ -437,8 +438,8 @@ const CameraScreen = (props: any) => {
               fontWeight: "bold",
             }}
           >
-            Duration
-          </Text>
+           {"duration"}
+          </GenericText>
           <Dropdown
             style={[styles.dropdown]}
             placeholderStyle={styles.placeholderStyle}

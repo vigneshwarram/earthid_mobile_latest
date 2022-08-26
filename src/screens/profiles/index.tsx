@@ -14,6 +14,7 @@ import Avatar from "../../components/Avatar";
 import BottomSheet from "../../components/Bottomsheet";
 import Header from "../../components/Header";
 import Info from "../../components/Info";
+import GenericText from "../../components/Text";
 import { LocalImages } from "../../constants/imageUrlConstants";
 import { SCREENS } from "../../constants/Labels";
 import { useAppSelector } from "../../hooks/hooks";
@@ -64,9 +65,9 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
           imgContainer: styles.avatarImageContainer,
         }}
       />
-      <Text style={[styles.label, { fontSize: 12, textAlign: "center" }]}>
+      <GenericText style={[styles.label, { fontSize: 12, textAlign: "center" }]}>
         {title}
-      </Text>
+      </GenericText>
     </View>
   );
 
@@ -128,7 +129,7 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
         </View>
         <View style={styles.category}>
           <Info
-            title={"Full Name"}
+            title={"fullname"}
             subtitle={contractDetails?.responseData?.name}
             style={{
               title: styles.title,
@@ -137,7 +138,7 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
             }}
           />
           <Info
-            title={"Date of Birth"}
+            title={"dob"}
             subtitle={"22/02/1995"}
             style={{
               title: styles.title,
@@ -146,7 +147,7 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
             }}
           />
           <Info
-            title={"Mobile Number"}
+            title={"mobileno"}
             subtitle={contractDetails?.responseData?.mobile}
             subtitleRowText={
               contractDetails?.responseData?.mobileApproved
@@ -169,7 +170,7 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
           />
           <Info
             subTitlePress={emailVerifyAction}
-            title={"Email"}
+            title={"email"}
             subtitle={contractDetails?.responseData?.email}
             subtitleRowText={
               contractDetails?.responseData?.emailApproved
@@ -215,11 +216,11 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
             }}
           >
             <ColoumnOption
-              title={"Remove phone"}
+              title={"removephone"}
               icon={LocalImages.deleteImage}
             />
-            <ColoumnOption title={"Camera"} icon={LocalImages.cameraImage} />
-            <ColoumnOption title={"Gallery"} icon={LocalImages.galleryImage} />
+            <ColoumnOption title={"camera"} icon={LocalImages.cameraImage} />
+            <ColoumnOption title={"gallery"} icon={LocalImages.galleryImage} />
           </View>
         </BottomSheet>
         <TouchableOpacity onPress={() => navigateToCustomizedControl()}>
@@ -236,7 +237,7 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
               style={[styles.logoContainer]}
               source={LocalImages.qrcodeImage}
             ></Image>
-            <Text
+            <GenericText
               style={[
                 styles.label,
                 {
@@ -247,8 +248,8 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
                 },
               ]}
             >
-              {"Customize QR Code"}
-            </Text>
+              {"customizeqrcode"}
+            </GenericText>
           </View>
         </TouchableOpacity>
       </ScrollView>
