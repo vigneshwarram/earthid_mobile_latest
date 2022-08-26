@@ -17,6 +17,7 @@ import { Screens } from "../../themes/index";
 import DocumentMask from "../uploadDocuments/DocumentMask";
 import RNFS from "react-native-fs";
 import RNFetchBlob from "rn-fetch-blob";
+import GenericText from "../../components/Text";
 
 const UploadScreen = (props: any) => {
   const _handleBarCodeRead = (barCodeData: any) => {};
@@ -90,7 +91,7 @@ const UploadScreen = (props: any) => {
       >
         <DocumentMask />
       </RNCamera>
-      <Text
+      <GenericText
         style={{
           textAlign: "center",
           paddingVertical: 5,
@@ -99,11 +100,11 @@ const UploadScreen = (props: any) => {
           color: "#fff",
         }}
       >
-        Capture
-      </Text>
-      <Text style={{ textAlign: "center", paddingVertical: 5, color: "#fff" }}>
-        Place the document inside the box and Capture!
-      </Text>
+        {"capture"}
+      </GenericText>
+      <GenericText style={{ textAlign: "center", paddingVertical: 5, color: "#fff" }}>
+        {"placethedoc"}
+      </GenericText>
       <TouchableOpacity onPress={_takePicture}>
         <View
           style={{
@@ -128,7 +129,7 @@ const UploadScreen = (props: any) => {
           ></View>
         </View>
       </TouchableOpacity>
-      <Text
+      <GenericText
         style={{
           textAlign: "center",
           paddingVertical: 5,
@@ -137,8 +138,8 @@ const UploadScreen = (props: any) => {
           color: "#fff",
         }}
       >
-        OR
-      </Text>
+        {"or"}
+      </GenericText>
       <Button
         onPress={openFilePicker}
         leftIcon={LocalImages.upload}
@@ -153,7 +154,7 @@ const UploadScreen = (props: any) => {
             tintColor: Screens.pureWhite,
           },
         }}
-        title={"upload from gallery"}
+        title={"uploadgallery"}
       ></Button>
     </View>
   );

@@ -4,6 +4,7 @@ import { View, StyleSheet, Text, FlatList, Image } from "react-native";
 
 import Card from "../../../components/Card";
 import Header from "../../../components/Header";
+import GenericText from "../../../components/Text";
 import { LocalImages } from "../../../constants/imageUrlConstants";
 import { SCREENS } from "../../../constants/Labels";
 import { Screens } from "../../../themes";
@@ -72,9 +73,9 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
         onpress={_toggleDrawer}
         linearStyle={styles.linearStyle}
       ></Header>
-      <Text style={[styles.categoryHeaderText, { fontSize: 13 }]}>
+      <GenericText style={[styles.categoryHeaderText, { fontSize: 13 }]}>
         {SCREENS.HOMESCREEN.History}
-      </Text>
+      </GenericText>
       <FlatList<any>
         showsHorizontalScrollIndicator={false}
         data={documentsDetailsList}

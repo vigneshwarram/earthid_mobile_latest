@@ -8,6 +8,7 @@ import Button from "../../../components/Button";
 import Snackbar from "react-native-snackbar";
 import { LanguageContext } from "../../../components/LanguageContext/LanguageContextProvider";
 import { getUserLanguagePreference } from "../../../utils/i18n";
+import GenericText from "../../../components/Text";
 
 interface IHomeScreenProps {
   navigation?: any;
@@ -50,7 +51,7 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
         ></Header>
         <View style={styles.category}>
           <View>
-            <Text
+            <GenericText
               style={[
                 styles.categoryHeaderText,
                 {
@@ -62,8 +63,8 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
               ]}
             >
               {SCREENS.LANDINGSCREEN.setUpId}
-            </Text>
-            <Text
+            </GenericText>
+            <GenericText
               style={[
                 styles.categoryHeaderText,
                 {
@@ -75,7 +76,7 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
               ]}
             >
               {SCREENS.LANDINGSCREEN.instruction}
-            </Text>
+            </GenericText>
             <Button
               style={{
                 buttonContainer: {
@@ -87,7 +88,7 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
                 },
               }}
               leftIcon={LocalImages.registerdocumentImage}
-              title={"REGISTER WITH DOCUMENT"}
+              title={"registerwithdoc"}
             ></Button>
             <Button
               onPress={navigateAction}
@@ -101,11 +102,11 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
                 },
               }}
               leftIcon={LocalImages.registerdocumentImage}
-              title={"REGISTER MANUALLY"}
+              title={"registermanually"}
             ></Button>
           </View>
           <View>
-            <Text
+            <GenericText
               style={[
                 styles.categoryHeaderText,
                 {
@@ -116,8 +117,8 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
                 },
               ]}
             >
-              {"I already have my Globaid"}
-            </Text>
+              {"alreadyhaveearthid"}
+            </GenericText>
             <Button
               onPress={() => navigation.navigate("uploadDocumentsScreen")}
               style={{
@@ -135,22 +136,27 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
               title={SCREENS.LANDINGSCREEN.BUTTON_LABEL}
             ></Button>
 
-            <Text
-              style={[
-                styles.categoryHeaderText,
-                {
-                  fontSize: 13,
-                  fontWeight: "500",
-                  textAlign: "center",
-                  color: Screens.black,
-                },
-              ]}
-            >
-              {"By continuing you agree to our "}
-              <Text style={{ color: Screens.colors.primary }}>
-                {"Terms & Condition and  Policy"}
-              </Text>
-            </Text>
+            <View style={{ flexDirection: "column" }}>
+              <GenericText
+                style={[
+                  styles.categoryHeaderText,
+                  {
+                    fontSize: 13,
+                    fontWeight: "500",
+                    textAlign: "center",
+                    color: Screens.black,
+                  },
+                ]}
+              >
+                {"continuetoagree"}
+              </GenericText>
+
+              <GenericText
+                style={{ color: Screens.colors.primary, alignSelf: "center" }}
+              >
+                {"termpolicy"}
+              </GenericText>
+            </View>
           </View>
         </View>
       </ScrollView>

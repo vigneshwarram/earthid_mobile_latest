@@ -13,6 +13,7 @@ import { LocalImages } from "../constants/imageUrlConstants";
 import Card from "../components/Card";
 import { ABOUT_ROUTES } from "../constants/Routes";
 import { StackActions } from "@react-navigation/native";
+import GenericText from "../components/Text";
 
 const CustomDrawer = (props: any) => {
   const aboutList = values(ABOUT_ROUTES).map(
@@ -61,7 +62,7 @@ const CustomDrawer = (props: any) => {
             ></Image>
           </View>
           <View style={{ justifyContent: "center", alignItems: "center" }}>
-            <Text
+            <GenericText
               style={[
                 {
                   fontSize: 14,
@@ -73,7 +74,7 @@ const CustomDrawer = (props: any) => {
               ]}
             >
               {item.title}
-            </Text>
+            </GenericText>
           </View>
         </View>
         <View style={{ justifyContent: "center", alignItems: "center" }}>

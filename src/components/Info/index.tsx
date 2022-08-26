@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, Image } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { LocalImages } from "../../constants/imageUrlConstants";
 import { Screens } from "../../themes";
+import GenericText from "../Text";
 
 import { IInfoProps } from "./IInfoProps";
 
@@ -23,10 +24,10 @@ const Info = ({
     {title && (
       <View style={styles.titleTextContainer}>
         <View>
-          <Text style={[styles.title, style.title]}>{title}</Text>
+          <GenericText style={[styles.title, style.title]}>{title}</GenericText>
           {subtitle && (
             <View style={styles.titleTextContainer}>
-              <Text style={[styles.subtitle, style.subtitle]}>{subtitle}</Text>
+              <GenericText style={[styles.subtitle, style.subtitle]}>{subtitle}</GenericText>
               {subtitleRowText && (
                 <TouchableOpacity onPress={subTitlePress}>
                   <View style={styles.titleTextContainer}>
@@ -45,9 +46,9 @@ const Info = ({
                         ></Image>
                       )}
                     </View>
-                    <Text style={[styles.subtitle, style.subtitleNearText]}>
+                    <GenericText style={[styles.subtitle, style.subtitleNearText]}>
                       {subtitleRowText}
-                    </Text>
+                    </GenericText>
                   </View>
                 </TouchableOpacity>
               )}

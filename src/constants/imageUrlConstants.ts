@@ -38,6 +38,7 @@ export const LocalImages = {
   passcordImage: require("../../resources/images/passcord.png"),
   scanbarImage: require("../../resources/images/scanbarcode.png"),
   qrscanImage: require("../../resources/images/qrscan.png"),
+  translateImage: require("../../resources/images/translate.png"),
 
   //categories
   CATEGORIES: {

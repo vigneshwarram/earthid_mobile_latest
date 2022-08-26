@@ -13,6 +13,7 @@ import Avatar from "../../../components/Avatar";
 import BottomSheet from "../../../components/Bottomsheet";
 import Card from "../../../components/Card";
 import Header from "../../../components/Header";
+import GenericText from "../../../components/Text";
 import TextInput from "../../../components/TextInput";
 import { LocalImages } from "../../../constants/imageUrlConstants";
 import { SCREENS } from "../../../constants/Labels";
@@ -128,17 +129,17 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
         onChangeText={onChangeHandler}
       />
       <View style={{ flexDirection: "row" }}>
-        <Text style={[styles.categoryHeaderText, { fontSize: 13 }]}>
+        <GenericText style={[styles.categoryHeaderText, { fontSize: 13 }]}>
           {SCREENS.HOMESCREEN.upload}
-        </Text>
-        <Text
+        </GenericText>
+        <GenericText
           style={[
             styles.categoryHeaderText,
             { fontSize: 13, color: Screens.colors.primary },
           ]}
         >
-          {`press & hold`}
-        </Text>
+          {"presshold"}
+        </GenericText>
         <TouchableOpacity
           style={{ justifyContent: "center", alignItems: "center" }}
           onPress={() => setisBottomSheetForFilterVisible(true)}

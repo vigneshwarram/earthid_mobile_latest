@@ -12,6 +12,7 @@ import ToggleSwitch from "toggle-switch-react-native";
 import BottomSheet from "../../components/Bottomsheet";
 import Card from "../../components/Card";
 import Header from "../../components/Header";
+import GenericText from "../../components/Text";
 import TextInput from "../../components/TextInput";
 import { LocalImages } from "../../constants/imageUrlConstants";
 import { SCREENS } from "../../constants/Labels";
@@ -75,10 +76,10 @@ const CustomizeQr = ({ navigation }: IDocumentScreenProps) => {
         }}
       >
         <View>
-          <Text style={[{ fontSize: 13 }]}>{item.title}</Text>
-          <Text style={[{ fontSize: 15, fontWeight: "900" }]}>
+          <GenericText style={[{ fontSize: 13 }]}>{item.title}</GenericText>
+          <GenericText style={[{ fontSize: 15, fontWeight: "900" }]}>
             {item.value}
-          </Text>
+          </GenericText>
         </View>
         <View>
           <ToggleSwitch
@@ -106,11 +107,9 @@ const CustomizeQr = ({ navigation }: IDocumentScreenProps) => {
         onpress={_toggleDrawer}
         linearStyle={styles.linearStyle}
       ></Header>
-      <Text style={[styles.label, { fontSize: 14, textAlign: "center" }]}>
-        {
-          "Please enable the information to share with other user by simply scanning Qrcode"
-        }
-      </Text>
+      <GenericText style={[styles.label, { fontSize: 14, textAlign: "center" }]}>
+        {"pleaseenableinfo"}
+      </GenericText>
       <FlatList<any>
         showsHorizontalScrollIndicator={false}
         data={categoriCustomize}

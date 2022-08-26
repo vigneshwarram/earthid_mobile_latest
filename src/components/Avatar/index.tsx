@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import Icon from "../Icon";
+import GenericText from "../Text";
 import { IAvatarProps } from "./IAvatarProps";
 
 /**
@@ -28,7 +29,7 @@ const Avatar = ({
         uploadImageStyle: style.uploadImageStyle,
       }}
     />
-    {text !== "" && <Text style={[styles.text, style.text]}>{text}</Text>}
+    {text !== "" && <GenericText style={[styles.text, style.text]}>{text}</GenericText>}
   </View>
 );
 

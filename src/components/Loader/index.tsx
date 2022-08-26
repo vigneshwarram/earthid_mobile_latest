@@ -5,6 +5,7 @@ import Modal from "react-native-modal";
 import { ILoaderProps } from "./ILoaderProps";
 import LottieView from "lottie-react-native";
 import { LocalImages } from "../../constants/imageUrlConstants";
+import GenericText from "../Text";
 const deviceWidth = Dimensions.get("window").width;
 const deviceHeight = Dimensions.get("window").height;
 
@@ -42,7 +43,7 @@ const SuccessPopUp = ({
         autoPlay
         loop
       />
-      <Text
+      <GenericText
         style={[
           styles.categoryHeaderText,
           {
@@ -54,8 +55,8 @@ const SuccessPopUp = ({
         ]}
       >
         {Status}
-      </Text>
-      <Text
+      </GenericText>
+      <GenericText
         style={[
           styles.categoryHeaderText,
           {
@@ -67,7 +68,7 @@ const SuccessPopUp = ({
         ]}
       >
         {loadingText}
-      </Text>
+      </GenericText>
     </View>
   </Modal>
 );

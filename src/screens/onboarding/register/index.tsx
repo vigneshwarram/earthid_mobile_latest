@@ -33,6 +33,7 @@ import {
 } from "../../../utils/encryption";
 import { StackActions } from "@react-navigation/native";
 import AnimatedLoader from "../../../components/Loader/AnimatedLoader";
+import GenericText from "../../../components/Text";
 interface IRegister {
   navigation: any;
 }
@@ -172,7 +173,7 @@ const Register = ({ navigation }: IRegister) => {
         ></Header>
         <View style={styles.category}>
           <View>
-            <Text
+            <GenericText
               style={[
                 styles.categoryHeaderText,
                 {
@@ -184,9 +185,9 @@ const Register = ({ navigation }: IRegister) => {
               ]}
             >
               {SCREENS.LANDINGSCREEN.setUpId}
-            </Text>
+            </GenericText>
             <Info
-              title={"First Name"}
+              title={"firstname"}
               style={{
                 title: styles.title,
                 subtitle: styles.subtitle,
@@ -207,7 +208,7 @@ const Register = ({ navigation }: IRegister) => {
               onChangeText={firstNameChangeHandler}
             />
             <Info
-              title={"Last Name"}
+              title={"lastname"}
               style={{
                 title: styles.title,
                 subtitle: styles.subtitle,
@@ -228,7 +229,7 @@ const Register = ({ navigation }: IRegister) => {
               onChangeText={lastNameChangeHandler}
             />
             <Info
-              title={"Date of Birth"}
+              title={"dob"}
               style={{
                 title: styles.title,
                 subtitle: styles.subtitle,
@@ -250,7 +251,7 @@ const Register = ({ navigation }: IRegister) => {
               onChangeText={dateOfBirthChangeHandler}
             />
             <Info
-              title={"Mobile Number"}
+              title={"mobileno"}
               style={{
                 title: styles.title,
                 subtitle: styles.subtitle,
@@ -285,7 +286,7 @@ const Register = ({ navigation }: IRegister) => {
               withShadow
             />
             <Info
-              title={"Email"}
+              title={"email"}
               style={{
                 title: styles.title,
                 subtitle: styles.subtitle,
@@ -319,9 +320,11 @@ const Register = ({ navigation }: IRegister) => {
                 tintColor: Screens.pureWhite,
               },
             }}
-            title={"GENERATE GLOBAL ID"}
+            title={"generateeathid"}
           ></Button>
-          <Text
+
+          <View style={{flexDirection:"row",alignSelf:"center"}}>
+          <GenericText
             style={[
               styles.categoryHeaderText,
               {
@@ -333,16 +336,16 @@ const Register = ({ navigation }: IRegister) => {
             ]}
           >
             {"I Already have my "}
-            <Text style={{ color: Screens.colors.primary }}>{"GlobaliD"}</Text>
-          </Text>
+            <Text style={{ color: Screens.colors.primary }}>{"EarthID"}</Text>
+          </GenericText>
           <Loader
-            loadingText="Your Global ID is generated successfutlly."
+            loadingText="Your Earth ID is generated successfutlly."
             Status="Success !"
             isLoaderVisible={successResponse}
           ></Loader>
           <AnimatedLoader
             isLoaderVisible={accountDetails?.isLoading}
-            loadingText="Loading..."
+            loadingText="loading"
           />
         </View>
       </ScrollView>
@@ -387,7 +390,6 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   categoryHeaderText: {
-    marginHorizontal: 20,
     marginVertical: 10,
 
     color: Screens.headingtextColor,
