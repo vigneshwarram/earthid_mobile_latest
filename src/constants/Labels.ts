@@ -5,9 +5,9 @@ export const SCREENS = {
     avatarName: "Robert Downey",
     appName: "Earth ID",
     category: "CATEGORIES",
-    documentLabel: "BY MOST FREQUENTLY USED DOCUMENTS",
-    upload: "UPLOADED DOCUMENTS",
-    History: "HISTORY",
+    documentLabel: "useddocument",
+    upload: "uploaddoc",
+    History: "historyy",
     SocialMedialList: [
       {
         TITLE: "website",
@@ -42,62 +42,62 @@ export const SCREENS = {
     ],
     DocumentList: [
       {
-        TITLE: "Passport",
+        TITLE: "passport",
         URI: LocalImages.CATEGORIES.personalcardImage,
         COLOR: "#D7EFFB",
       },
       {
-        TITLE: "National ID",
+        TITLE: "nationalid",
         URI: LocalImages.CATEGORIES.educationImage,
         COLOR: "#FFDD9B",
       },
     ],
     categoryList: [
       {
-        TITLE: "ID",
+        TITLE: "id",
         URI: LocalImages.CATEGORIES.personalcardImage,
         COLOR: "#D7EFFB",
       },
       {
-        TITLE: "Education",
+        TITLE: "education",
         URI: LocalImages.CATEGORIES.educationImage,
         COLOR: "#FFDD9B",
       },
       {
-        TITLE: "Insurance",
+        TITLE: "insurance",
         URI: LocalImages.CATEGORIES.insuranceImage,
         COLOR: "#C5BDF6",
       },
       {
-        TITLE: "Travel",
+        TITLE: "travel",
         URI: LocalImages.CATEGORIES.travelImage,
         COLOR: "#F5BCE8",
       },
     ],
     CategoryCustomiseList: [
       {
-        TITLE: "Full Name",
+        TITLE: "fullname",
         VALUE: "Roberty Dowry",
         URI: LocalImages.SOCIAL_MEDIA_.webImage,
         DOMAIN: "https://yourdomain.com",
         CHECKED: true,
       },
       {
-        TITLE: "Date of Birth",
+        TITLE: "dob",
         VALUE: "25/12/1965",
         URI: LocalImages.SOCIAL_MEDIA_.webImage,
         DOMAIN: "https://yourdomain.com",
         CHECKED: true,
       },
       {
-        TITLE: "Mobile Number",
+        TITLE: "mobileno",
         VALUE: "+91 7373834595",
         URI: LocalImages.SOCIAL_MEDIA_.webImage,
         DOMAIN: "https://yourdomain.com",
         CHECKED: true,
       },
       {
-        TITLE: "Email",
+        TITLE: "email",
         VALUE: "vicky@yopmail.com",
         URI: LocalImages.SOCIAL_MEDIA_.webImage,
         DOMAIN: "https://yourdomain.com",
@@ -194,24 +194,28 @@ export const SCREENS = {
     ],
   },
   LANDINGSCREEN: {
-    setUpId: "Set Up Your EarthiD",
-    instruction: "Setup with one of our available registration options",
+    setUpId: "landscreensetupid",
+    instruction: "landscreeninstruction",
     BUTTON_LABEL: "buttonLabel",
   },
+
+  LANGUAGESCREEN:{
+    SELECT_LANGUAGE:"selectLanguage"
+  },
+
   BACKUPIDENTYSCREEN: {
-    instruction:
-      "We strongly recommend to save this QR code at a secure location, at it will be needed to recover or port your Earth Id in future.",
-    instructions: "Save it like, millions of dollar it may one day may worth.",
+    instruction:"backupscreeninstruction",
+    instructions: "backupscreeninstructions",
   },
   SECURITYSCREEN: {
-    instruction: "Locking this app is required for added security ",
+    instruction: "securityscreeninstruction",
     instructions:
-      "To keep your data secure, we store your  personal data on your device, not on the  centralised servers.",
+      "securityscreeninstructions",
     passcordInstruction:
-      "To keep your data secure, we store your  personal data on your device, not on the  centralised servers.",
+      "securityscreeninstructions",
     passcordInstructions:
-      "Secure Earth ID with 6 - digit code that will remember.",
-    confirmInstruction: "Please confirm your 6 - digit passcode for go further",
+      "passcodeinstruction",
+    confirmInstruction: "confirminstruction",
   },
   SHOWQRSCREEN: {
     instruction: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the`,
@@ -244,4 +248,22 @@ export const SCREENS = {
       },
     ],
   },
+
+  DRAWERMENUTITLES:{
+    MY_PROFILE:"myProfile",
+    HOME:"home",
+    DOCUMENT:"document",
+    HISTORY:"history",
+    SETTING:"setting",
+    LANGUAGE:"language",
+    ABOUT_US:"aboutus",
+    TERM_CONDITION:"termcondition",
+    BACKUP:"backupidentity",
+    DELETE_IDENTITY:"deleteyouridentity",
+    LOGOUT:"logout",
+  },
+  HOMESCREENTITLES:{
+    CATEGORIES:"categories",
+  }
+
 };

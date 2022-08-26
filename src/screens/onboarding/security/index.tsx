@@ -8,6 +8,7 @@ import QRCode from "react-native-qrcode-svg";
 import Button from "../../../components/Button";
 import { LocalImages } from "../../../constants/imageUrlConstants";
 import { StackActions } from "@react-navigation/native";
+import GenericText from "../../../components/Text";
 
 interface IHomeScreenProps {
   navigation?: any;
@@ -19,7 +20,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
       <ScrollView contentContainerStyle={styles.sectionContainer}>
         <Header
           isLogoAlone={true}
-          headingText={"Add Security"}
+          headingText={"addsecurity"}
           linearStyle={styles.linearStyle}
           containerStyle={{
             iconStyle: {
@@ -46,7 +47,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
               ></Image>
             </View>
 
-            <Text
+            <GenericText
               style={[
                 styles.categoryHeaderText,
                 {
@@ -58,8 +59,8 @@ const Register = ({ navigation }: IHomeScreenProps) => {
               ]}
             >
               {SCREENS.SECURITYSCREEN.instruction}
-            </Text>
-            <Text
+            </GenericText>
+            <GenericText
               style={[
                 styles.categoryHeaderText,
                 {
@@ -71,7 +72,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
               ]}
             >
               {SCREENS.SECURITYSCREEN.instructions}
-            </Text>
+            </GenericText>
             <Button
               onPress={() =>
                 navigation.dispatch(StackActions.replace("DrawerNavigator"))
@@ -86,7 +87,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
                 },
               }}
               leftIcon={LocalImages.touchImage}
-              title={"USE TOUCH ID"}
+              title={"usetouchid"}
             ></Button>
             <Button
               onPress={() =>
@@ -102,7 +103,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
                 },
               }}
               leftIcon={LocalImages.faceImage}
-              title={"USE FACE ID"}
+              title={"usefaceid"}
             ></Button>
             <Button
               onPress={() =>
@@ -118,7 +119,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
                 },
               }}
               leftIcon={LocalImages.passcordImage}
-              title={"USE PASSCORD"}
+              title={"usepasscode"}
             ></Button>
           </View>
         </View>

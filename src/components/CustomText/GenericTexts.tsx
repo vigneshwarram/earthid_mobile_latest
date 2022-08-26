@@ -16,7 +16,7 @@ import { ITextProps } from "./ITextProps";
  * @author: vicky (vicky@)
  * @description A generic text component to abstract commonly used props.
  */
-const GenericText: React.SFC<ITextProps> = ({
+const GenericTexts: React.SFC<ITextProps> = ({
   bold,
   bolder,
   size,
@@ -33,15 +33,14 @@ const GenericText: React.SFC<ITextProps> = ({
   const textInput = children! as string; // typescript
   return (
     <Text_
-      style={[
-    
-        style
-      ]}
-      {...props}
-    >
-      {t(textInput)}
-    </Text_>
+    style={[
+      style
+    ]}
+    {...props}
+  >
+    {t(textInput)}
+  </Text_>
   );
 };
 
-export default GenericText;
+export default GenericTexts;

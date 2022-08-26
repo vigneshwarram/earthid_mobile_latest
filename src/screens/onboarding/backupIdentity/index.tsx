@@ -21,6 +21,7 @@ import RNPdfToImage from "react-native-pdf-to-image";
 import RNFS from "react-native-fs";
 import { alertBox, sleep } from "../../../utils/earthid_account";
 import { baseData } from "./cb-base64-string";
+import GenericText from "../../../components/Text";
 
 interface IHomeScreenProps {
   navigation?: any;
@@ -154,7 +155,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
       <ScrollView contentContainerStyle={styles.sectionContainer}>
         <Header
           isLogoAlone={true}
-          headingText={"Important"}
+          headingText={"important"}
           linearStyle={styles.linearStyle}
           containerStyle={{
             iconStyle: {
@@ -167,7 +168,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
         ></Header>
         <View style={styles.category}>
           <View>
-            <Text
+            <GenericText
               style={[
                 styles.categoryHeaderText,
                 {
@@ -179,8 +180,8 @@ const Register = ({ navigation }: IHomeScreenProps) => {
               ]}
             >
               {SCREENS.BACKUPIDENTYSCREEN.instruction}
-            </Text>
-            <Text
+            </GenericText>
+            <GenericText
               style={[
                 styles.categoryHeaderText,
                 {
@@ -192,7 +193,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
               ]}
             >
               {SCREENS.BACKUPIDENTYSCREEN.instructions}
-            </Text>
+            </GenericText>
           </View>
           <View style={{ justifyContent: "center", alignItems: "center" }}>
             <QRCode
@@ -230,11 +231,11 @@ const Register = ({ navigation }: IHomeScreenProps) => {
                 tintColor: Screens.pureWhite,
               },
             }}
-            title={"DOWNLOAD QR CODE"}
+            title={"downlaodqr"}
           ></Button>
           <Loader
-            loadingText="QR Code Downloaded successfully."
-            Status="Success !"
+            loadingText="downlaodqrsuccess"
+            Status="status"
             isLoaderVisible={isLoading}
           ></Loader>
         </View>

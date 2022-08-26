@@ -5,6 +5,7 @@ import Modal from "react-native-modal";
 import { ILoaderProps } from "./ILoaderProps";
 import LottieView from "lottie-react-native";
 import { LocalImages } from "../../constants/imageUrlConstants";
+import GenericText from "../Text";
 const deviceWidth = Dimensions.get("window").width;
 
 /**
@@ -35,7 +36,7 @@ const AnimatedLoader = ({
         loop
       />
 
-      <Text
+      <GenericText
         style={[
           styles.categoryHeaderText,
           {
@@ -47,7 +48,7 @@ const AnimatedLoader = ({
         ]}
       >
         {loadingText}
-      </Text>
+      </GenericText>
     </View>
   </Modal>
 );
