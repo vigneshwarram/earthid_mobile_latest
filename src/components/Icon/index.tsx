@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     borderColor: "#fff",
   },
   profileAvatar: {
-    right: 30,
+    left: 210,
     backgroundColor: "#fff",
     zIndex: 100,
   },

@@ -5,4 +5,5 @@ export interface IAvatarProps {
   isUploaded?: boolean;
   isProfileAvatar?: boolean;
   absoluteCircleInnerImage?: any;
+  avatarClick?: any;
 }

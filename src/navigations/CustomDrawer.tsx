@@ -6,6 +6,8 @@ import {
   Image,
   FlatList,
   Text,
+  Alert,
+  Linking,
 } from "react-native";
 import { Screens } from "../themes/index";
 import { values } from "lodash";
@@ -14,8 +16,11 @@ import Card from "../components/Card";
 import { ABOUT_ROUTES } from "../constants/Routes";
 import { StackActions } from "@react-navigation/native";
 import GenericText from "../components/Text";
+import { useAppDispatch } from "../hooks/hooks";
+import { FlushData } from "../redux/actions/authenticationAction";
 
 const CustomDrawer = (props: any) => {
+  const dispatch = useAppDispatch();
   const aboutList = values(ABOUT_ROUTES).map(
     ({
       CARD: card,
@@ -36,10 +41,39 @@ const CustomDrawer = (props: any) => {
 
   const _navigateAction = (item: any) => {
     if (item.route === "Logout") {
-      props.navigation.dispatch(StackActions.replace("AuthStack"));
+      dispatch(FlushData()).then(() => {
+        props.navigation.dispatch(StackActions.replace("AuthStack"));
+      });
+    } else if (item.route === "delete") {
+      _signOutAsync();
+    } else if (item.route === "about" || item.route === "terms") {
+      Linking.openURL("https://www.myearth.id");
     } else {
       props.navigation.navigate(item.route);
     }
+  };
+
+  const _signOutAsync = () => {
+    Alert.alert(
+      "Delete Identity?",
+      "Are you sure you want to delete your EarthId? Once deleted you won't be able to recover it later.",
+      [
+        {
+          text: "Yes",
+          onPress: async () => {
+            dispatch(FlushData()).then(() => {
+              props.navigation.dispatch(StackActions.replace("AuthStack"));
+            });
+          },
+          style: "cancel",
+        },
+        {
+          text: "No",
+          onPress: async () => {},
+        },
+      ],
+      { cancelable: false }
+    );
   };
   const _renderItem = ({ item }: { item: any }) => (
     <TouchableOpacity onPress={() => _navigateAction(item)}>
@@ -98,7 +132,7 @@ const CustomDrawer = (props: any) => {
         ></Image>
         <TouchableOpacity
           style={styles.closeContainer}
-          onPress={() => props.navigation.toggleDrawer()}
+          onPress={() => props.navigation.closeDrawer()}
         >
           <Image
             resizeMode="contain"

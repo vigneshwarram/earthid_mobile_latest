@@ -1,5 +1,12 @@
 import React, { useRef, useState } from "react";
-import { View, StyleSheet, Text, ScrollView, Image } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  ScrollView,
+  Image,
+  AsyncStorage,
+} from "react-native";
 import Header from "../../../../components/Header";
 import { SCREENS } from "../../../../constants/Labels";
 import { Screens } from "../../../../themes";
@@ -13,18 +20,27 @@ interface IHomeScreenProps {
   navigation?: any;
 }
 
-const Register = ({ navigation }: IHomeScreenProps) => {
-  const _navigateAction = () => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      navigation.dispatch(StackActions.replace("DrawerNavigator"));
-    }, 5000);
-  };
+const Register = ({ navigation, route }: IHomeScreenProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [code, setCode] = useState();
+  const [isError, setisError] = useState(false);
+  const savedCode = route.params?.setCode;
   const onPinCodeChange = (code: any) => {
+    setisError(false);
     setCode(code);
+  };
+  const _navigateAction = async () => {
+    console.log("savedCode", savedCode);
+    if (savedCode === code?.toString()) {
+      await AsyncStorage.setItem("passcode", code?.toString());
+      setIsLoading(true);
+      setTimeout(() => {
+        setIsLoading(false);
+        navigation.dispatch(StackActions.replace("DrawerNavigator"));
+      }, 3000);
+    } else {
+      setisError(true);
+    }
   };
   return (
     <View style={styles.sectionContainer}>
@@ -74,8 +90,8 @@ const Register = ({ navigation }: IHomeScreenProps) => {
           </View>
           <SmoothPinCodeInput
             cellStyle={{
-              borderWidth: 0.5,
-              borderColor: Screens.grayShadeColor,
+              borderWidth: isError ? 1.5 : 0.5,
+              borderColor: isError ? "red" : Screens.grayShadeColor,
               borderRadius: 5,
             }}
             cellStyleFocused={{
@@ -88,6 +104,22 @@ const Register = ({ navigation }: IHomeScreenProps) => {
             value={code}
             onTextChange={onPinCodeChange}
           />
+          {isError && (
+            <Text
+              style={[
+                styles.categoryHeaderText,
+                {
+                  fontSize: 13,
+                  fontWeight: "500",
+                  textAlign: "center",
+                  color: "red",
+                },
+              ]}
+            >
+              {"Please Enter valid code"}
+            </Text>
+          )}
+
           <Button
             onPress={_navigateAction}
             style={{

@@ -26,7 +26,7 @@ interface IDocumentScreenProps {
 
 const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
   const _toggleDrawer = () => {
-    navigation.toggleDrawer();
+    navigation.openDrawer();
   };
   let documentsDetailsList = useAppSelector((state) => state.Documents);
   console.log("documentsDetailsList", documentsDetailsList);

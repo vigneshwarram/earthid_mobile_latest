@@ -15,7 +15,7 @@ interface IDocumentScreenProps {
 
 const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
   const _toggleDrawer = () => {
-    navigation.toggleDrawer();
+    navigation.openDrawer();
   };
 
   const documentsDetailsList = values(
@@ -76,12 +76,12 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
       <GenericText style={[styles.categoryHeaderText, { fontSize: 13 }]}>
         {SCREENS.HOMESCREEN.History}
       </GenericText>
-      <FlatList<any>
+      {/* <FlatList<any>
         showsHorizontalScrollIndicator={false}
         data={documentsDetailsList}
         renderItem={_renderItem}
         keyExtractor={_keyExtractor}
-      />
+      /> */}
     </View>
   );
 };

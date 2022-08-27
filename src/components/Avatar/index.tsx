@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import Icon from "../Icon";
 import GenericText from "../Text";
 import { IAvatarProps } from "./IAvatarProps";
@@ -16,9 +16,11 @@ const Avatar = ({
   isUploaded,
   isProfileAvatar = false,
   absoluteCircleInnerImage,
+  avatarClick,
 }: IAvatarProps) => (
-  <View>
+  <Pressable onPress={avatarClick}>
     <Icon
+      onPress={avatarClick}
       absoluteCircleInnerImage={absoluteCircleInnerImage}
       isProfileAvatar={isProfileAvatar}
       isUploaded={isUploaded}
@@ -29,8 +31,10 @@ const Avatar = ({
         uploadImageStyle: style.uploadImageStyle,
       }}
     />
-    {text !== "" && <GenericText style={[styles.text, style.text]}>{text}</GenericText>}
-  </View>
+    {text !== "" && (
+      <GenericText style={[styles.text, style.text]}>{text}</GenericText>
+    )}
+  </Pressable>
 );
 
 export default Avatar;

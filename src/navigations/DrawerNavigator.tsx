@@ -21,6 +21,7 @@ import ViewCredential from "../screens/bottomTabs/documentTab/ViewCredebtials";
 import CustomizeQr from "../screens/profiles/CustomizeQr";
 import backupIdentity from "../screens/onboarding/backupIdentity";
 import language from "../screens/settings/Language";
+import UpdateAuthentication from "../screens/onboarding/security/UpdateAuthentication";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -42,7 +43,8 @@ const dashBoardStack = {
   ViewCredential: ViewCredential,
   CustomizeQr: CustomizeQr,
   backupIdentity: backupIdentity,
-  language:language
+  language: language,
+  UpdateAuthentication: UpdateAuthentication,
 };
 
 const tabs = {

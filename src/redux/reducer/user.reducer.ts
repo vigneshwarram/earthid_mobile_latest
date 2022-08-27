@@ -54,6 +54,7 @@ export const documentListReducer = (state = {}, { type, payload }: any) => {
       return state;
   }
 };
+
 export default {
   userReducer,
   accountReducer,

@@ -1,6 +1,11 @@
 import { StackActions } from "@react-navigation/native";
 import React, { useEffect } from "react";
-import { ActivityIndicator, StyleSheet, View } from "react-native";
+import {
+  ActivityIndicator,
+  AsyncStorage,
+  StyleSheet,
+  View,
+} from "react-native";
 import { useAppSelector } from "../../hooks/hooks";
 
 interface ILoadingScreen {
@@ -9,12 +14,22 @@ interface ILoadingScreen {
 
 const LoadingScreen = ({ navigation }: ILoadingScreen) => {
   const isAlreadyLoggedIn = useAppSelector((state) => state?.contract);
+
+  const checkAuth = async () => {
+    const getItem = await AsyncStorage.getItem("passcode");
+    console.log("getItem", getItem);
+    if (getItem) {
+      navigation.dispatch(StackActions.replace("PasswordCheck"));
+    } else {
+      navigation.dispatch(StackActions.replace("DrawerNavigator"));
+    }
+  };
   console.log("isAlreadyLoggedIn", isAlreadyLoggedIn);
   useEffect(() => {
     if (isAlreadyLoggedIn?.responseData) {
-      navigation.dispatch(StackActions.replace("DrawerNavigator"));
     } else {
-      navigation.dispatch(StackActions.replace("AuthStack"));
+      checkAuth();
+      // navigation.dispatch(StackActions.replace("AuthStack"));
     }
   }, [isAlreadyLoggedIn]);
   return (

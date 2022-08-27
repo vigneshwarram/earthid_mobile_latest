@@ -4,7 +4,6 @@ import {
   StyleSheet,
   Text,
   ScrollView,
-  Share,
   PermissionsAndroid,
   Alert,
   BackHandler,
@@ -19,6 +18,7 @@ import QRCode from "react-native-qrcode-svg";
 import Button from "../../../components/Button";
 import RNPdfToImage from "react-native-pdf-to-image";
 import RNFS from "react-native-fs";
+import Share from "react-native-share";
 import { alertBox, sleep } from "../../../utils/earthid_account";
 import { baseData } from "./cb-base64-string";
 import GenericText from "../../../components/Text";
@@ -39,22 +39,16 @@ const Register = ({ navigation }: IHomeScreenProps) => {
 
   const onShare = async () => {
     try {
-      const result = await Share.share({
-        message:
-          "React Native | A framework for building native apps using React",
+      const result = await Share.open({
+        message: "Share this QR code for easy login",
+        url: `data:image/jpeg;base64,${baseData}`, // use image/jpeg instead of image/jpg
       });
-      if (result.action === Share.sharedAction) {
-        if (result.activityType) {
-          navigation.navigate("Security");
-          // shared with activity type of result.activityType
-        } else {
-          navigation.navigate("Security");
-          // shared
-        }
-      } else if (result.action === Share.dismissedAction) {
-        // dismissed
+      if (result) {
+        navigation.navigate("Security");
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log("error", error);
+    }
   };
   const callback = (data: any) => {
     console.log("data", data);

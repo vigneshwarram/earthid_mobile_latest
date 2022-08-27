@@ -136,28 +136,27 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
               title={SCREENS.LANDINGSCREEN.BUTTON_LABEL}
             ></Button>
 
+            <View style={{ flexDirection: "column" }}>
+              <GenericText
+                style={[
+                  styles.categoryHeaderText,
+                  {
+                    fontSize: 13,
+                    fontWeight: "500",
+                    textAlign: "center",
+                    color: Screens.black,
+                  },
+                ]}
+              >
+                {"continuetoagree"}
+              </GenericText>
 
-            <View style={{flexDirection:"column"}}>
-               
-            <GenericText
-              style={[
-                styles.categoryHeaderText,
-                {
-                  fontSize: 13,
-                  fontWeight: "500",
-                  textAlign: "center",
-                  color: Screens.black,
-                },
-              ]}
-            >
-              {"continuetoagree"}
-           
-            </GenericText>
-
-            <GenericText style={{ color: Screens.colors.primary,alignSelf:"center" }}>
+              <GenericText
+                style={{ color: Screens.colors.primary, alignSelf: "center" }}
+              >
                 {"termpolicy"}
               </GenericText>
-            </View>  
+            </View>
           </View>
         </View>
       </ScrollView>
