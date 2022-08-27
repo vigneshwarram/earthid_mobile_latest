@@ -5,12 +5,15 @@ import {
   Text,
   ScrollView,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import Header from "../../../components/Header";
 import { LocalImages } from "../../../constants/imageUrlConstants";
 import { SCREENS } from "../../../constants/Labels";
 import { Screens } from "../../../themes";
 import Button from "../../../components/Button";
+import DatePicker from "react-native-date-picker";
+
 import Info from "../../../components/Info";
 import TextInput from "../../../components/TextInput";
 import PhoneInput from "react-native-phone-number-input";
@@ -21,6 +24,7 @@ import {
   GeneratedKeysAction,
   createAccount,
   contractCall,
+  FlushData,
 } from "../../../redux/actions/authenticationAction";
 import { ICreateAccount } from "../../../typings/AccountCreation/ICreateAccount";
 import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
@@ -34,6 +38,7 @@ import {
 import { StackActions } from "@react-navigation/native";
 import AnimatedLoader from "../../../components/Loader/AnimatedLoader";
 import GenericText from "../../../components/Text";
+import { alertBox } from "../../../utils/earthid_account";
 interface IRegister {
   navigation: any;
 }
@@ -46,6 +51,8 @@ const Register = ({ navigation }: IRegister) => {
   const accountDetails = useAppSelector((state) => state.account);
   const contractDetails = useAppSelector((state) => state.contract);
   const [successResponse, setsuccessResponse] = useState(false);
+  const [openDatePicker, setopenDatePicker] = useState<boolean>();
+
   const {
     value: firstName,
     isFocused: firstNameFocus,
@@ -110,8 +117,8 @@ const Register = ({ navigation }: IRegister) => {
 
   useEffect(() => {
     const deviceId = getDeviceId();
-    console.log("getGeneratedKeys", getGeneratedKeys);
-    if (getGeneratedKeys?.responseData) {
+    console.log("getGeneratedKeys====?>", getGeneratedKeys);
+    if (getGeneratedKeys?.responseData !== undefined) {
       let payLoad: ICreateAccount = {
         publicKeyHex: getGeneratedKeys?.responseData.publicKey,
         versionName: "2.0",
@@ -125,8 +132,15 @@ const Register = ({ navigation }: IRegister) => {
     }
   }, [getGeneratedKeys]);
 
+  const onDatePickerOpen = () => {
+    setopenDatePicker(true);
+  };
+
   useEffect(() => {
-    if (accountDetails?.responseData !== undefined) {
+    if (
+      accountDetails?.responseData !== undefined &&
+      getGeneratedKeys?.responseData !== undefined
+    ) {
       const encrptedUserDetails = getEncrptedUserDetais({
         fullName: firstName + lastName,
         mobileNumber,
@@ -141,18 +155,22 @@ const Register = ({ navigation }: IRegister) => {
         functionParams: encrptedUserDetails,
         isViewOnly: false,
       };
-      console.log("payload", JSON.stringify(payLoad));
+      console.log("its coming");
       dispatch(contractCall(payLoad));
     }
   }, [accountDetails]);
 
   useEffect(() => {
+    console.log("contractDetails", contractDetails);
     if (contractDetails?.responseData) {
       setsuccessResponse(true);
       setTimeout(() => {
         setsuccessResponse(false);
         navigation.navigate("BackupIdentity");
       }, 3000);
+    } else {
+      accountDetails.responseData = undefined;
+      getGeneratedKeys.responseData = undefined;
     }
   }, [contractDetails]);
 
@@ -240,6 +258,7 @@ const Register = ({ navigation }: IRegister) => {
               style={{
                 container: styles.textInputContainer,
               }}
+              onPressRightIcon={() => onDatePickerOpen()}
               rightIcon={LocalImages.calendarImage}
               isError={dateOfBirthError}
               errorText={dateOfBirthErrorMessage}
@@ -323,21 +342,27 @@ const Register = ({ navigation }: IRegister) => {
             title={"generateeathid"}
           ></Button>
 
-          <View style={{flexDirection:"row",alignSelf:"center"}}>
-          <GenericText
-            style={[
-              styles.categoryHeaderText,
-              {
-                fontSize: 13,
-                fontWeight: "500",
-                textAlign: "center",
-                color: Screens.black,
-              },
-            ]}
-          >
-            {"I Already have my "}
-            <Text style={{ color: Screens.colors.primary }}>{"EarthID"}</Text>
-          </GenericText>
+          <View style={{ flexDirection: "row", alignSelf: "center" }}>
+            <GenericText
+              style={[
+                styles.categoryHeaderText,
+                {
+                  fontSize: 13,
+                  fontWeight: "500",
+                  textAlign: "center",
+                  color: Screens.black,
+                },
+              ]}
+            >
+              {"alreadyhavemy"}
+            </GenericText>
+            <GenericText
+              style={{ color: Screens.colors.primary, alignSelf: "center" }}
+            >
+              {"EarthID"}
+            </GenericText>
+          </View>
+
           <Loader
             loadingText="Your Earth ID is generated successfutlly."
             Status="Success !"
@@ -348,6 +373,19 @@ const Register = ({ navigation }: IRegister) => {
             loadingText="loading"
           />
         </View>
+        <DatePicker
+          modal
+          open={openDatePicker}
+          date={new Date()}
+          onConfirm={(date) => {
+            console.log("date");
+            setopenDatePicker(false);
+            dateOfBirthChangeHandler(date.toDateString());
+          }}
+          onCancel={() => {
+            setopenDatePicker(false);
+          }}
+        />
       </ScrollView>
     </View>
   );

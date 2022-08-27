@@ -7,12 +7,12 @@ export const ABOUT_ROUTES = {
     TITLE: SCREENS.DRAWERMENUTITLES.MY_PROFILE,
     URI: LocalImages.profileImage,
     RIGHT_ICON: LocalImages.sideArrowImage,
-    SCREEN: "DrawerStacks",
+    SCREEN: "ProfileScreen",
     COLOR: "#D7EFFB",
   },
   HOME: {
     CARD: "UserAgreement",
-    TITLE:SCREENS.DRAWERMENUTITLES.HOME,
+    TITLE: SCREENS.DRAWERMENUTITLES.HOME,
     URI: LocalImages.homeImage,
     SCREEN: "Home",
     COLOR: "#FFDD9B",
@@ -27,7 +27,7 @@ export const ABOUT_ROUTES = {
   HISTORY: {
     URI: LocalImages.historyImage,
     CARD: "AcceptableUsePolicy",
-    TITLE:SCREENS.DRAWERMENUTITLES.HISTORY,
+    TITLE: SCREENS.DRAWERMENUTITLES.HISTORY,
     SCREEN: "History",
     COLOR: "#F6BDE9",
   },
@@ -51,15 +51,15 @@ export const ABOUT_ROUTES = {
   ABOUT: {
     URI: LocalImages.documentsImage,
     CARD: "AcceptableUsePolicy",
-    TITLE:SCREENS.DRAWERMENUTITLES.ABOUT_US,
-    SCREEN: "history",
+    TITLE: SCREENS.DRAWERMENUTITLES.ABOUT_US,
+    SCREEN: "about",
     COLOR: "#FFAFAF",
   },
   TERMS: {
     URI: LocalImages.termsImage,
     CARD: "AcceptableUsePolicy",
-    TITLE:SCREENS.DRAWERMENUTITLES.TERM_CONDITION,
-    SCREEN: "history",
+    TITLE: SCREENS.DRAWERMENUTITLES.TERM_CONDITION,
+    SCREEN: "terms",
     COLOR: "#D7EFFB",
   },
   IDENTITY: {
@@ -74,7 +74,7 @@ export const ABOUT_ROUTES = {
     URI: LocalImages.deleteImage,
     CARD: "AcceptableUsePolicy",
     TITLE: SCREENS.DRAWERMENUTITLES.DELETE_IDENTITY,
-    SCREEN: "history",
+    SCREEN: "delete",
     COLOR: "#C5BDF6",
   },
   LOGOUT: {
@@ -85,3 +85,22 @@ export const ABOUT_ROUTES = {
     COLOR: "#F6BDE9",
   },
 };
+
+export const SETTING_LIST = [
+  {
+    CARD: "updateauthenticaion",
+    TITLE: "updateauthenticaion",
+    URI: LocalImages.securityImage,
+    RIGHT_ICON: LocalImages.sideArrowImage,
+    SCREEN: "ProfileScreen",
+    COLOR: "#D7EFFB",
+  },
+  {
+    CARD: "language",
+    TITLE: "language",
+    URI: LocalImages.translateImage,
+    SCREEN: "Home",
+    RIGHT_ICON: LocalImages.sideArrowImage,
+    COLOR: "#FFDD9B",
+  },
+];

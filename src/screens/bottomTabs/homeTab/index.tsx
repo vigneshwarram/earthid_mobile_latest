@@ -19,7 +19,7 @@ interface IHomeScreenProps {
 const HomeScreen = ({ navigation }: IHomeScreenProps) => {
   const contractDetails = useAppSelector((state) => state.contract);
   const _toggleDrawer = () => {
-    navigation.toggleDrawer();
+    navigation.openDrawer();
   };
   console.log("contractDetails", contractDetails);
   const categoryList = values(SCREENS.HOMESCREEN.categoryList).map(

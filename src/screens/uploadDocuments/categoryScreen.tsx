@@ -20,7 +20,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const { fileUri } = route.params;
   const [isPrceedForLivenessTest, setIsPrceedForLivenessTest] = useState(false);
   const _toggleDrawer = () => {
-    navigation.toggleDrawer();
+    navigation.openDrawer();
   };
 
   const _renderItem = ({ item }: any) => {

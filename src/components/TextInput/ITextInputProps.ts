@@ -14,4 +14,6 @@ export interface ITextInputProps {
   placeholder?: string;
   style?: any;
   leftIcon?: any;
+  disabled?: boolean;
+  onPressRightIcon?: any;
 }

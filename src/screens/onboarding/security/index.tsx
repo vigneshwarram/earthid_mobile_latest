@@ -90,9 +90,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
               title={"usetouchid"}
             ></Button>
             <Button
-              onPress={() =>
-                navigation.dispatch(StackActions.replace("DrawerNavigator"))
-              }
+              onPress={() => navigation.navigate("facePlaceHolderWidget")}
               style={{
                 buttonContainer: {
                   backgroundColor: Screens.pureWhite,
@@ -106,9 +104,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
               title={"usefaceid"}
             ></Button>
             <Button
-              onPress={() =>
-                navigation.dispatch(StackActions.replace("DrawerNavigator"))
-              }
+              onPress={() => navigation.navigate("SetPin")}
               style={{
                 buttonContainer: {
                   backgroundColor: Screens.pureWhite,

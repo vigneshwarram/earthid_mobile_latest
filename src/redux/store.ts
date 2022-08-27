@@ -22,7 +22,14 @@ const rootReducer = combineReducers({
   ApproveOtp: approveOTPReducer,
   Documents: documentListReducer,
 });
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+const appreducer = (state: any, action: any) => {
+  if (action.type === "DELETE") {
+    return rootReducer(undefined, action);
+  }
+  return rootReducer(state, action);
+};
+const persistedReducer = persistReducer(persistConfig, appreducer);
 export const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>

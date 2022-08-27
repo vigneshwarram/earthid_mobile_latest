@@ -1,5 +1,5 @@
 import { values } from "lodash";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -65,7 +65,9 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
           imgContainer: styles.avatarImageContainer,
         }}
       />
-      <GenericText style={[styles.label, { fontSize: 12, textAlign: "center" }]}>
+      <GenericText
+        style={[styles.label, { fontSize: 12, textAlign: "center" }]}
+      >
         {title}
       </GenericText>
     </View>
@@ -86,7 +88,9 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
   const navigateToCustomizedControl = () => {
     navigation.navigate("CustomizeQr");
   };
-
+  useEffect(() => {
+    navigation.closeDrawer();
+  }, []);
   return (
     <View style={styles.sectionContainer}>
       <ScrollView contentContainerStyle={styles.sectionContainer}>

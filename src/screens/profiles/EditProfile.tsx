@@ -24,9 +24,7 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
   const [mobileNumber, setmobileNumber] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const phoneInput: any = useRef();
-  const _toggleDrawer = () => {
-    navigation.toggleDrawer();
-  };
+
   const _letfIconPress = () => {
     navigation.goBack();
   };

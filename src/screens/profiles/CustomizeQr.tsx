@@ -25,7 +25,7 @@ interface IDocumentScreenProps {
 
 const CustomizeQr = ({ navigation }: IDocumentScreenProps) => {
   const _toggleDrawer = () => {
-    navigation.toggleDrawer();
+    navigation.openDrawer();
   };
   const CategoryCustomiseList = values(
     SCREENS.HOMESCREEN.CategoryCustomiseList
@@ -107,7 +107,9 @@ const CustomizeQr = ({ navigation }: IDocumentScreenProps) => {
         onpress={_toggleDrawer}
         linearStyle={styles.linearStyle}
       ></Header>
-      <GenericText style={[styles.label, { fontSize: 14, textAlign: "center" }]}>
+      <GenericText
+        style={[styles.label, { fontSize: 14, textAlign: "center" }]}
+      >
         {"pleaseenableinfo"}
       </GenericText>
       <FlatList<any>

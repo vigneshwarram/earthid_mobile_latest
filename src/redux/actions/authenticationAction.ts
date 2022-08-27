@@ -131,6 +131,14 @@ export const saveDocuments =
     });
   };
 
+export const FlushData =
+  () =>
+  async (dispatch: any): Promise<any> => {
+    dispatch({
+      type: "DELETE",
+    });
+  };
+
 const _responseHandler = async (response: any): Promise<any> => {
   const responseData = await response.json();
   return new Promise((resolve, reject) => {

@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, TextInput, View, Text, Image } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import { LocalImages } from "../../constants/imageUrlConstants";
 import { Screens } from "../../themes";
 
@@ -28,7 +29,7 @@ const TextInputBox = ({
   placeholder,
   rightIcon,
   style = {},
-  
+  onPressRightIcon,
 }: ITextInputProps) => (
   <View>
     {leftIcon && (
@@ -42,11 +43,13 @@ const TextInputBox = ({
     )}
     {rightIcon && (
       <View style={{ position: "absolute", right: 30, top: 15, zIndex: 100 }}>
-        <Image
-          resizeMode="contain"
-          style={styles.leftIconContainer}
-          source={rightIcon}
-        ></Image>
+        <TouchableOpacity style={{ width: 30 }} onPress={onPressRightIcon}>
+          <Image
+            resizeMode="contain"
+            style={styles.leftIconContainer}
+            source={rightIcon}
+          ></Image>
+        </TouchableOpacity>
       </View>
     )}
     <TextInput

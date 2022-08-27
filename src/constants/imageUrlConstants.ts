@@ -39,6 +39,7 @@ export const LocalImages = {
   scanbarImage: require("../../resources/images/scanbarcode.png"),
   qrscanImage: require("../../resources/images/qrscan.png"),
   translateImage: require("../../resources/images/translate.png"),
+  facedetection: require("../../resources/images/facedetection.png"),
 
   //categories
   CATEGORIES: {

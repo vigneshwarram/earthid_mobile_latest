@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import {
   View,
   StyleSheet,
@@ -8,32 +8,44 @@ import {
   AsyncStorage,
 } from "react-native";
 import Header from "../../../../components/Header";
-import { SCREENS } from "../../../../constants/Labels";
 import { Screens } from "../../../../themes";
 import Button from "../../../../components/Button";
 import SmoothPinCodeInput from "react-native-smooth-pincode-input";
 import { LocalImages } from "../../../../constants/imageUrlConstants";
+import { StackActions } from "@react-navigation/native";
 
 interface IHomeScreenProps {
   navigation?: any;
+  route?: any;
 }
 
-const Register = ({ navigation }: IHomeScreenProps) => {
+const PasswordCheck = ({ navigation, route }: IHomeScreenProps) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [code, setCode] = useState();
+  const [isError, setisError] = useState(false);
+  const savedCode = route.params?.setCode;
   const onPinCodeChange = (code: any) => {
+    setisError(false);
     setCode(code);
   };
+
   const _navigateAction = async () => {
-    if (code.length === 6) {
-      navigation.navigate("ConfirmPincode", { setCode: code });
+    console.log("savedCode", savedCode);
+    const getItem = await AsyncStorage.getItem("passcode");
+    if (getItem === code?.toString()) {
+      setIsLoading(true);
+      navigation.dispatch(StackActions.replace("DrawerNavigator"));
+    } else {
+      setisError(true);
     }
   };
+
   return (
     <View style={styles.sectionContainer}>
       <ScrollView contentContainerStyle={styles.sectionContainer}>
         <Header
           isLogoAlone={true}
-          headingText={"Set Passcord"}
+          headingText={"Passcord Authentication"}
           linearStyle={styles.linearStyle}
           containerStyle={{
             iconStyle: {
@@ -64,19 +76,6 @@ const Register = ({ navigation }: IHomeScreenProps) => {
               style={[
                 styles.categoryHeaderText,
                 {
-                  fontSize: 14,
-                  fontWeight: "500",
-                  textAlign: "center",
-                  color: Screens.grayShadeColor,
-                },
-              ]}
-            >
-              {SCREENS.SECURITYSCREEN.passcordInstruction}
-            </Text>
-            <Text
-              style={[
-                styles.categoryHeaderText,
-                {
                   fontSize: 13,
                   fontWeight: "500",
                   textAlign: "center",
@@ -84,18 +83,18 @@ const Register = ({ navigation }: IHomeScreenProps) => {
                 },
               ]}
             >
-              {SCREENS.SECURITYSCREEN.passcordInstructions}
+              {"Please enter your passcode"}
             </Text>
           </View>
           <SmoothPinCodeInput
             cellStyle={{
-              borderWidth: 0.5,
-              borderColor: Screens.grayShadeColor,
+              borderWidth: isError ? 1.5 : 0.5,
+              borderColor: isError ? "red" : Screens.grayShadeColor,
               borderRadius: 5,
             }}
             cellStyleFocused={{
-              borderColor: Screens.colors.primary,
               borderWidth: 2,
+              borderColor: Screens.colors.primary,
             }}
             password
             cellSize={50}
@@ -103,6 +102,22 @@ const Register = ({ navigation }: IHomeScreenProps) => {
             value={code}
             onTextChange={onPinCodeChange}
           />
+          {isError && (
+            <Text
+              style={[
+                styles.categoryHeaderText,
+                {
+                  fontSize: 13,
+                  fontWeight: "500",
+                  textAlign: "center",
+                  color: "red",
+                },
+              ]}
+            >
+              {"Please Enter valid code"}
+            </Text>
+          )}
+
           <Button
             onPress={_navigateAction}
             style={{
@@ -116,7 +131,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
                 tintColor: Screens.pureWhite,
               },
             }}
-            title={"CREATE PASSCODE"}
+            title={"Sumbit"}
           ></Button>
         </View>
       </ScrollView>
@@ -233,4 +248,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Register;
+export default PasswordCheck;

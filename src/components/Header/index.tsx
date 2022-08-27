@@ -1,5 +1,12 @@
 import React from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Alert,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { LocalImages } from "../../constants/imageUrlConstants";
 import { Screens } from "../../themes";
 import Avatar from "../Avatar";
@@ -142,20 +149,15 @@ const Header = ({
             </View>
           </View>
           {isAvatar && (
-            <TouchableOpacity
-              style={{ justifyContent: "center", alignItems: "center" }}
-              onPress={avatarClick}
-            >
-              <View>
-                <Avatar
-                  absoluteCircleInnerImage={absoluteCircleInnerImage}
-                  isProfileAvatar={isProfileAvatar}
-                  isUploaded={isUploaded}
-                  text={profileName}
-                  iconSource={LocalImages.avatarImage}
-                ></Avatar>
-              </View>
-            </TouchableOpacity>
+            <Avatar
+              avatarClick={avatarClick}
+              style={{ text: { color: Screens.pureWhite } }}
+              absoluteCircleInnerImage={absoluteCircleInnerImage}
+              isProfileAvatar={isProfileAvatar}
+              isUploaded={isUploaded}
+              text={profileName}
+              iconSource={LocalImages.avatarImage}
+            ></Avatar>
           )}
         </View>
       )}
