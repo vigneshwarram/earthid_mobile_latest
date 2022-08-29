@@ -1,5 +1,5 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { View, Image, StyleSheet } from "react-native";
+import { View, Image, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import * as React from "react";
 import { useTheme } from "@react-navigation/native";
 
@@ -11,10 +11,10 @@ import HomeScreen from "../screens/bottomTabs/homeTab/index";
 import DocumentScreen from "../screens/bottomTabs/documentTab";
 import HistoryScreen from "../screens/bottomTabs/historyTab";
 import CameraScreen from "../screens/Camera";
-
+import { EventRegister } from "react-native-event-listeners";
 const Tab = createBottomTabNavigator();
 
-export const BottomMenus = () => {
+export const BottomMenus = (propss: any) => {
   const { colors } = useTheme();
 
   return (
@@ -53,7 +53,7 @@ export const BottomMenus = () => {
         }}
       />
       <Tab.Screen
-        name="Document"
+        name="Documents"
         component={DocumentScreen}
         options={{
           tabBarLabelStyle: styles.tabBarLabelStyle,
@@ -143,6 +143,14 @@ export const BottomMenus = () => {
         component={HistoryScreen}
         options={{
           tabBarLabelStyle: styles.tabBarLabelStyle,
+          tabBarButton: (props) => (
+            <TouchableOpacity
+              {...props}
+              onPress={() => {
+                EventRegister.emit("OpenDrawer");
+              }}
+            />
+          ),
           tabBarIcon: ({ focused }: any) => (
             <View
               style={[
@@ -216,3 +224,6 @@ const styles = StyleSheet.create({
     fontWeight: "900",
   },
 });
+function alert(arg0: number): void {
+  throw new Error("Function not implemented.");
+}

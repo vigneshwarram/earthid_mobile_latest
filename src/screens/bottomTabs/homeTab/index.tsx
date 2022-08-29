@@ -1,7 +1,8 @@
 import { values } from "lodash";
-import React from "react";
+import React, { useEffect } from "react";
 import { View, StyleSheet, Text, FlatList, Alert } from "react-native";
 import CircularProgress from "react-native-circular-progress-indicator";
+import { EventRegister } from "react-native-event-listeners";
 import Avatar from "../../../components/Avatar";
 import Card from "../../../components/Card";
 import Header from "../../../components/Header";
@@ -68,6 +69,17 @@ const HomeScreen = ({ navigation }: IHomeScreenProps) => {
     navigation.navigate("ProfileScreen");
   };
 
+  useEffect(() => {
+    const listener: any = EventRegister.addEventListener("OpenDrawer", () => {
+      navigation.openDrawer();
+      return;
+    });
+    return () => {
+      EventRegister.removeEventListener(listener);
+      listener;
+    };
+  });
+
   const _keyExtractor = ({ title }: any) => title.toString();
   return (
     <View style={styles.sectionContainer}>
@@ -78,7 +90,9 @@ const HomeScreen = ({ navigation }: IHomeScreenProps) => {
         isAvatar
         profileName={contractDetails?.responseData?.name}
         avatarClick={_avatarClick}
-        onpress={_toggleDrawer}
+        onpress={() => {
+          _toggleDrawer();
+        }}
         linearStyle={styles.linearStyle}
       ></Header>
       <View style={styles.flatPanel}>

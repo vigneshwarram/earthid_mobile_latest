@@ -6,9 +6,26 @@ const initialState = {
 export const userReducer = (state = initialState, { type, payload }: any) => {
   switch (type) {
     case ACTION_TYPES.GENERATED_KEYS_LOADING:
-      return { ...state, isLoading: true };
+      return {
+        ...state,
+        isLoading: true,
+        isGeneratedKeySuccess: false,
+        isGeneratedKeyError: false,
+      };
     case ACTION_TYPES.GENERATED_KEYS_RESPONSE:
-      return { ...state, ...payload };
+      return {
+        ...state,
+        ...payload,
+        isGeneratedKeySuccess: true,
+        isGeneratedKeyError: false,
+      };
+    case ACTION_TYPES.GENERATED_KEYS_ERROR:
+      return {
+        ...state,
+        ...payload,
+        isGeneratedKeySuccess: false,
+        isGeneratedKeyError: true,
+      };
     default:
       return state;
   }
@@ -16,9 +33,26 @@ export const userReducer = (state = initialState, { type, payload }: any) => {
 export const accountReducer = (state = {}, { type, payload }: any) => {
   switch (type) {
     case ACTION_TYPES.CREATEDACCOUNT:
-      return { ...state, isLoading: true };
+      return {
+        ...state,
+        isLoading: true,
+        isAccountCreatedSuccess: false,
+        isAccountCreatedFailure: false,
+      };
     case ACTION_TYPES.CREATED_ACCOUNT_RESPONSE:
-      return { ...state, ...payload };
+      return {
+        ...state,
+        ...payload,
+        isAccountCreatedSuccess: true,
+        isAccountCreatedFailure: false,
+      };
+    case ACTION_TYPES.CREATED_ACCOUNT_ERROR:
+      return {
+        ...state,
+        ...payload,
+        isAccountCreatedSuccess: false,
+        isAccountCreatedFailure: true,
+      };
     default:
       return state;
   }
@@ -27,9 +61,26 @@ export const accountReducer = (state = {}, { type, payload }: any) => {
 export const contractReducer = (state = {}, { type, payload }: any) => {
   switch (type) {
     case ACTION_TYPES.CONTRACT_CALL:
-      return { ...state, isLoading: true };
+      return {
+        ...state,
+        isLoading: true,
+        isContractCreatedSuccessfull: false,
+        isContractCreatedFailure: false,
+      };
     case ACTION_TYPES.CONTRACT_CALL_RESPONSE:
-      return { ...state, ...payload };
+      return {
+        ...state,
+        ...payload,
+        isContractCreatedSuccessfull: true,
+        isContractCreatedFailure: false,
+      };
+    case ACTION_TYPES.CONTRACT_CALL_ERROR:
+      return {
+        ...state,
+        ...payload,
+        isContractCreatedSuccessfull: false,
+        isContractCreatedFailure: true,
+      };
     default:
       return state;
   }
@@ -53,12 +104,4 @@ export const documentListReducer = (state = {}, { type, payload }: any) => {
     default:
       return state;
   }
-};
-
-export default {
-  userReducer,
-  accountReducer,
-  contractReducer,
-  approveOTPReducer,
-  documentListReducer,
 };

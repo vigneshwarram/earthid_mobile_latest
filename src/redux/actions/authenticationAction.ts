@@ -22,18 +22,22 @@ export const GeneratedKeysAction =
       });
       const response = await getCall(generateKeyUrl);
       responseData = await _responseHandler(response);
+      dispatch({
+        type: ACTION_TYPES.GENERATED_KEYS_RESPONSE,
+        payload: {
+          responseData,
+        },
+      });
     } catch (error) {
+      console.log("generated key  API catch ===>", error);
+      dispatch({
+        type: ACTION_TYPES.GENERATED_KEYS_ERROR,
+      });
       SnackBar({
         indicationMessage: "Retry",
         actionMessage: "Internal Server Error",
       });
     }
-    dispatch({
-      type: ACTION_TYPES.GENERATED_KEYS_RESPONSE,
-      payload: {
-        responseData,
-      },
-    });
   };
 
 export const createAccount =
@@ -46,18 +50,22 @@ export const createAccount =
       });
       const response = await postCall(createAccountUrl, requestPayload);
       responseData = await _responseHandler(response);
+      dispatch({
+        type: ACTION_TYPES.CREATED_ACCOUNT_RESPONSE,
+        payload: {
+          responseData,
+          isLoading: false,
+        },
+      });
     } catch (error) {
+      console.log("create account API catch ===>", error);
+      dispatch({
+        type: ACTION_TYPES.CREATED_ACCOUNT_ERROR,
+      });
       SnackBar({
         indicationMessage: "Internal Server Error",
       });
     }
-    dispatch({
-      type: ACTION_TYPES.CREATED_ACCOUNT_RESPONSE,
-      payload: {
-        responseData,
-        isLoading: false,
-      },
-    });
   };
 
 export const contractCall =
@@ -68,21 +76,22 @@ export const contractCall =
       dispatch({
         type: ACTION_TYPES.CONTRACT_CALL,
       });
-      console.log("request", JSON.stringify(requestPayload));
       const response = await postCall(contractUrl, requestPayload);
       responseData = await _responseHandler(response);
-      console.log("contract  response===>", response);
       userDetails = getUserDetails(responseData);
+      dispatch({
+        type: ACTION_TYPES.CONTRACT_CALL_RESPONSE,
+        payload: {
+          isLoading: false,
+          responseData: userDetails,
+        },
+      });
     } catch (error) {
-      console.log("GeneratedKeysAction API===>", error);
+      dispatch({
+        type: ACTION_TYPES.CONTRACT_CALL_ERROR,
+      });
+      console.log("Contarct API catch ===>", error);
     }
-    dispatch({
-      type: ACTION_TYPES.CONTRACT_CALL_RESPONSE,
-      payload: {
-        isLoading: false,
-        responseData: userDetails,
-      },
-    });
   };
 
 export const approveOTP =

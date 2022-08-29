@@ -18,6 +18,7 @@ import PasswordCheck from "../screens/onboarding/security/passcode/PasswordCheck
 import facePlaceHolderWidget from "../screens/FaceRegister/facePlaceHolderWidget";
 import RegisterFace from "../screens/FaceRegister/RegisterFace";
 import SuccessFaceRegister from "../screens/FaceRegister/SuccessFaceRegister";
+import FingerPrintInstructionScreen from "../screens/FingerPrintRegister/FingerPrintInstructionScreen";
 // Before rendering any navigation stack
 const animations: any = SlidAnimation;
 export default function RootNavigator() {
@@ -25,10 +26,11 @@ export default function RootNavigator() {
   const Stack = createStackNavigator();
 
   const beforeLoggedIn = {
+    LandingScreen: LandingScreen,
     Security: Security,
     facePlaceHolderWidget: facePlaceHolderWidget,
     RegisterFace: RegisterFace,
-    LandingScreen: LandingScreen,
+    FingerPrintInstructionScreen: FingerPrintInstructionScreen,
     RegisterScreen: RegisterScreen,
     BackupIdentity: BackupIdentity,
     SetPin: SetPin,
@@ -63,16 +65,17 @@ export default function RootNavigator() {
           options={{
             ...animations,
           }}
-          name={"AuthStack"}
-          component={AuthStack}
+          name={"LoadingScreen"}
+          component={LoadingScreen}
         />
         <Stack.Screen
           options={{
             ...animations,
           }}
-          name={"LoadingScreen"}
-          component={LoadingScreen}
+          name={"AuthStack"}
+          component={AuthStack}
         />
+
         <Stack.Screen
           options={{
             ...animations,

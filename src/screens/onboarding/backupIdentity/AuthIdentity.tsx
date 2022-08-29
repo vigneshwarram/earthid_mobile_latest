@@ -26,7 +26,8 @@ interface IHomeScreenProps {
   navigation?: any;
 }
 
-const Register = ({ navigation }: IHomeScreenProps) => {
+const AuthBackupIdentity = ({ navigation }: IHomeScreenProps) => {
+  const phoneInput: any = useRef();
   const [mobileNumber, setmobileNumber] = useState();
   const [isLoading, setIsLoading] = useState(false);
   let [qrBase64, setBase64] = useState("");
@@ -44,6 +45,9 @@ const Register = ({ navigation }: IHomeScreenProps) => {
   );
   encryptedString = encryptedString.toString();
 
+  const callback = (data: any) => {
+    console.log("data", data);
+  };
   const capturePicture = () => {
     console.log("Capturing picture..");
 
@@ -56,10 +60,10 @@ const Register = ({ navigation }: IHomeScreenProps) => {
         ImgToBase64.getBase64String(imageData)
           .then((base64String: any) => dwFile(base64String))
           .catch(() => console.log("error"));
-        navigation.navigate("Security");
+        navigation.goBack(null);
       } catch (error) {
         console.log("error", error);
-        navigation.navigate("Security");
+        navigation.goBack(null);
       }
     });
   };
@@ -154,7 +158,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
             <ViewShot
               ref={viewShot}
               captureMode="update"
-              onCapture={() => {
+              onCapture={(res) => {
                 // console.log('on capture image response', res)
               }}
               options={{ format: "jpg", quality: 0.8 }}
@@ -301,4 +305,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Register;
+export default AuthBackupIdentity;

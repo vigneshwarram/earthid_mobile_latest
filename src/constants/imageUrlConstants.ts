@@ -40,6 +40,7 @@ export const LocalImages = {
   qrscanImage: require("../../resources/images/qrscan.png"),
   translateImage: require("../../resources/images/translate.png"),
   facedetection: require("../../resources/images/facedetection.png"),
+  fingerprint: require("../../resources/images/fingerprint.png"),
 
   //categories
   CATEGORIES: {

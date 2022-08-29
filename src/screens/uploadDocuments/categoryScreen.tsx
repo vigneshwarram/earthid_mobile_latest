@@ -62,7 +62,9 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
     <View style={styles.sectionContainer}>
       <Header
         leftIconSource={LocalImages.backImage}
-        onpress={_toggleDrawer}
+        onpress={() => {
+          _toggleDrawer();
+        }}
         headingText={"Choose Category"}
         linearStyle={styles.linearStyle}
         containerStyle={{

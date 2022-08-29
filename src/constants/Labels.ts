@@ -30,7 +30,7 @@ export const SCREENS = {
         DOMAIN: "https://yourdomain.com",
       },
       {
-        TITLE: "linkeid",
+        TITLE: "LinkedIn",
         URI: LocalImages.SOCIAL_MEDIA_.linkdInImage,
         DOMAIN: "https://yourdomain.com",
       },
@@ -108,17 +108,20 @@ export const SCREENS = {
         TITLE: "website",
         URI: LocalImages.SOCIAL_MEDIA_.webImage,
         VALUE: "https://yourdomain.com",
+        DOMAIN: "https://yourdomain.com",
         CHECKED: true,
       },
       {
         TITLE: "facebook",
         URI: LocalImages.SOCIAL_MEDIA_.facebookImage,
         VALUE: "https://yourdomain.com",
+        DOMAIN: "https://yourdomain.com",
         CHECKED: true,
       },
       {
         TITLE: "twitter",
         URI: LocalImages.SOCIAL_MEDIA_.twitterImage,
+        DOMAIN: "https://yourdomain.com",
         VALUE: "https://yourdomain.com",
         CHECKED: true,
       },
@@ -126,18 +129,21 @@ export const SCREENS = {
         TITLE: "instagram",
         URI: LocalImages.SOCIAL_MEDIA_.instagramImage,
         VALUE: "https://yourdomain.com",
+        DOMAIN: "https://yourdomain.com",
         CHECKED: true,
       },
       {
         TITLE: "linkeid",
         URI: LocalImages.SOCIAL_MEDIA_.linkdInImage,
         VALUE: "https://yourdomain.com",
+        DOMAIN: "https://yourdomain.com",
         CHECKED: true,
       },
       {
         TITLE: "telegram",
         URI: LocalImages.SOCIAL_MEDIA_.telegramImage,
         VALUE: "https://yourdomain.com",
+        DOMAIN: "https://yourdomain.com",
         CHECKED: true,
       },
     ],
@@ -199,22 +205,19 @@ export const SCREENS = {
     BUTTON_LABEL: "buttonLabel",
   },
 
-  LANGUAGESCREEN:{
-    SELECT_LANGUAGE:"selectLanguage"
+  LANGUAGESCREEN: {
+    SELECT_LANGUAGE: "selectLanguage",
   },
 
   BACKUPIDENTYSCREEN: {
-    instruction:"backupscreeninstruction",
+    instruction: "backupscreeninstruction",
     instructions: "backupscreeninstructions",
   },
   SECURITYSCREEN: {
     instruction: "securityscreeninstruction",
-    instructions:
-      "securityscreeninstructions",
-    passcordInstruction:
-      "securityscreeninstructions",
-    passcordInstructions:
-      "passcodeinstruction",
+    instructions: "securityscreeninstructions",
+    passcordInstruction: "securityscreeninstructions",
+    passcordInstructions: "passcodeinstruction",
     confirmInstruction: "confirminstruction",
   },
   SHOWQRSCREEN: {
@@ -249,21 +252,20 @@ export const SCREENS = {
     ],
   },
 
-  DRAWERMENUTITLES:{
-    MY_PROFILE:"myProfile",
-    HOME:"home",
-    DOCUMENT:"document",
-    HISTORY:"history",
-    SETTING:"setting",
-    LANGUAGE:"language",
-    ABOUT_US:"aboutus",
-    TERM_CONDITION:"termcondition",
-    BACKUP:"backupidentity",
-    DELETE_IDENTITY:"deleteyouridentity",
-    LOGOUT:"logout",
+  DRAWERMENUTITLES: {
+    MY_PROFILE: "myProfile",
+    HOME: "home",
+    DOCUMENT: "document",
+    HISTORY: "history",
+    SETTING: "setting",
+    LANGUAGE: "language",
+    ABOUT_US: "aboutus",
+    TERM_CONDITION: "termcondition",
+    BACKUP: "backupidentity",
+    DELETE_IDENTITY: "deleteyouridentity",
+    LOGOUT: "logout",
   },
-  HOMESCREENTITLES:{
-    CATEGORIES:"categories",
-  }
-
+  HOMESCREENTITLES: {
+    CATEGORIES: "categories",
+  },
 };
