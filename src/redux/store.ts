@@ -8,12 +8,13 @@ import {
   approveOTPReducer,
   documentListReducer,
 } from "./reducer/user.reducer";
+import { SavedQrData } from "./reducer/saveDataReducer";
 
 const persistConfig = {
   key: "root",
   keyPrefix: "",
   storage: AsyncStorage,
-  whitelist: ["contract", "user", "Documents"],
+  whitelist: ["contract", "user", "Documents", "saveData"],
 };
 const rootReducer = combineReducers({
   user: userReducer,
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   contract: contractReducer,
   ApproveOtp: approveOTPReducer,
   Documents: documentListReducer,
+  saveData: SavedQrData,
 });
 
 const appreducer = (state: any, action: any) => {

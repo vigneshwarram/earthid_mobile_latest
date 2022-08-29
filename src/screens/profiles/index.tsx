@@ -18,6 +18,7 @@ import GenericText from "../../components/Text";
 import { LocalImages } from "../../constants/imageUrlConstants";
 import { SCREENS } from "../../constants/Labels";
 import { useAppSelector } from "../../hooks/hooks";
+import { useDrawerStatus } from "@react-navigation/drawer";
 import { Screens } from "../../themes";
 
 interface IHomeScreenProps {
@@ -26,7 +27,12 @@ interface IHomeScreenProps {
 
 const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
   const contractDetails = useAppSelector((state) => state.contract);
-  console.log("contractDetails", contractDetails);
+
+  const isDrawerOpen = useDrawerStatus() === "open";
+  if (isDrawerOpen) {
+    navigation.closeDrawer();
+  }
+  console.log("isDrawerOpen", isDrawerOpen);
   const [isCameraOptionVisible, setisCameraOptionVisible] =
     useState<boolean>(false);
   const _navigateAction = () => {

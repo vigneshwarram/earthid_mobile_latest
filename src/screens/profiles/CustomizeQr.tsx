@@ -1,22 +1,12 @@
-import { values } from "lodash";
 import React, { useState } from "react";
-import {
-  View,
-  StyleSheet,
-  Text,
-  FlatList,
-  Image,
-  TouchableOpacity,
-} from "react-native";
+import { View, StyleSheet, FlatList } from "react-native";
 import ToggleSwitch from "toggle-switch-react-native";
-import BottomSheet from "../../components/Bottomsheet";
-import Card from "../../components/Card";
 import Header from "../../components/Header";
 import GenericText from "../../components/Text";
-import TextInput from "../../components/TextInput";
 import { LocalImages } from "../../constants/imageUrlConstants";
 import { SCREENS } from "../../constants/Labels";
-import { useAppSelector } from "../../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { savingCustomQrData } from "../../redux/actions/LocalSavingActions";
 import { Screens } from "../../themes";
 
 interface IDocumentScreenProps {
@@ -24,26 +14,25 @@ interface IDocumentScreenProps {
 }
 
 const CustomizeQr = ({ navigation }: IDocumentScreenProps) => {
+  const qrListData = useAppSelector((state) => state.saveData);
+  var ctList = SCREENS.HOMESCREEN.CategoryCustomiseList;
+  console.log("documentsDetailsList", qrListData);
+  if (qrListData && qrListData?.qrListData && qrListData?.qrListData) {
+    ctList = qrListData?.qrListData;
+  }
+
+  const dispatch = useAppDispatch();
   const _toggleDrawer = () => {
     navigation.openDrawer();
   };
-  const CategoryCustomiseList = values(
-    SCREENS.HOMESCREEN.CategoryCustomiseList
-  ).map(({ TITLE: title, URI: uri, VALUE: value, CHECKED: checked }: any) => ({
-    title,
-    uri,
-    value,
-    checked,
-  }));
+
   let documentsDetailsList = useAppSelector((state) => state.Documents);
-  console.log("documentsDetailsList", documentsDetailsList);
+
   const [
     isBottomSheetForSideOptionVisible,
     setisBottomSheetForSideOptionVisible,
   ] = useState<boolean>(false);
-  const [categoriCustomize, setcategoriCustomize] = useState(
-    CategoryCustomiseList
-  );
+  const [categoriCustomize, setcategoriCustomize] = useState(ctList);
   const [isBottomSheetForFilterVisible, setisBottomSheetForFilterVisible] =
     useState<boolean>(false);
 
@@ -54,12 +43,13 @@ const CustomizeQr = ({ navigation }: IDocumentScreenProps) => {
   const onToggelchange = (toggle: any, item: any, itemIndex: any) => {
     categoriCustomize.map((item, index) => {
       if (index === itemIndex) {
-        item.checked = !item.checked;
+        item.CHECKED = !item.CHECKED;
       }
 
       return item;
     });
     setcategoriCustomize([...categoriCustomize]);
+    dispatch(savingCustomQrData([...categoriCustomize]));
   };
 
   const _renderItem = ({ item, index }: any) => {
@@ -76,15 +66,15 @@ const CustomizeQr = ({ navigation }: IDocumentScreenProps) => {
         }}
       >
         <View>
-          <GenericText style={[{ fontSize: 13 }]}>{item.title}</GenericText>
+          <GenericText style={[{ fontSize: 13 }]}>{item.TITLE}</GenericText>
           <GenericText style={[{ fontSize: 15, fontWeight: "900" }]}>
-            {item.value}
+            {item.DOMAIN}
           </GenericText>
         </View>
         <View>
           <ToggleSwitch
             onToggle={(on) => onToggelchange(on, item, index)}
-            isOn={item.checked}
+            isOn={item.CHECKED}
             size={"small"}
             onColor={Screens.colors.primary}
             offColor={Screens.darkGray}
@@ -104,7 +94,9 @@ const CustomizeQr = ({ navigation }: IDocumentScreenProps) => {
       <Header
         rightIconPress={onPressNavigateTo}
         leftIconSource={LocalImages.logoImage}
-        onpress={_toggleDrawer}
+        onpress={() => {
+          _toggleDrawer();
+        }}
         linearStyle={styles.linearStyle}
       ></Header>
       <GenericText
@@ -114,7 +106,7 @@ const CustomizeQr = ({ navigation }: IDocumentScreenProps) => {
       </GenericText>
       <FlatList<any>
         showsHorizontalScrollIndicator={false}
-        data={categoriCustomize}
+        data={ctList}
         renderItem={_renderItem}
       />
     </View>

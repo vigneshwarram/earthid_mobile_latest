@@ -70,7 +70,9 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
     <View style={styles.sectionContainer}>
       <Header
         leftIconSource={LocalImages.logoImage}
-        onpress={_toggleDrawer}
+        onpress={() => {
+          _toggleDrawer();
+        }}
         linearStyle={styles.linearStyle}
       ></Header>
       <GenericText style={[styles.categoryHeaderText, { fontSize: 13 }]}>

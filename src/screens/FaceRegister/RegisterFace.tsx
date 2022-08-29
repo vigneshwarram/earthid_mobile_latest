@@ -102,11 +102,8 @@ const LivenessCameraScreen = (props: any) => {
               base64: true,
             };
             const data = await camRef.current.takePictureAsync(options);
-            console.log("data", data);
-            if (data) {
-              setData(data);
-              handleFaceDetected(data);
-            }
+
+            props.navigation.navigate("SuccessFaceRegister");
           } else {
             SnackBar({
               indicationMessage: "I can still see you moving",

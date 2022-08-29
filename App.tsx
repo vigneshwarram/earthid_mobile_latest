@@ -17,6 +17,8 @@ import i18n from "./src/utils/i18n"; //DO NOT REMOVE - this needs to be present 
 import LanguageContextProvider from "./src/components/LanguageContext/LanguageContextProvider";
 import RootNavigator from "./src/navigations/RootNavigator";
 import { persistor, store } from "./src/redux/store";
+import { Buffer } from "buffer";
+global.Buffer = Buffer;
 
 const App = () => {
   return (

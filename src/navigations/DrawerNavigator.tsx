@@ -20,8 +20,10 @@ import OTPScreen from "../screens/onboarding/security/passcode/OTPScreen";
 import ViewCredential from "../screens/bottomTabs/documentTab/ViewCredebtials";
 import CustomizeQr from "../screens/profiles/CustomizeQr";
 import backupIdentity from "../screens/onboarding/backupIdentity";
+
 import language from "../screens/settings/Language";
 import UpdateAuthentication from "../screens/onboarding/security/UpdateAuthentication";
+import AuthBackupIdentity from "../screens/onboarding/backupIdentity/AuthIdentity";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -29,9 +31,11 @@ const animations: any = SlidAnimation;
 
 const dashBoardStack = {
   ProfileScreen: ProfileScreen,
+
   EditProfileScreen: EditProfileScreen,
   settings: settings,
   ShowQrScreen: ShowQrScreen,
+  AuthBackupIdentity: AuthBackupIdentity,
   uploadDocumentsScreen: uploadDocumentsScreen,
   DocumentPreviewScreen: DocumentPreviewScreen,
   categoryScreen: categoryScreen,
@@ -74,6 +78,7 @@ function appStack() {
 const DrawerNavigator = () => {
   return (
     <Drawer.Navigator
+      useLegacyImplementation
       drawerContent={(props: any) => <CustomDrawer {...props} />}
       screenOptions={{
         headerShown: false,

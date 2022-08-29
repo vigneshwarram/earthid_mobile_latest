@@ -75,7 +75,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
             </GenericText>
             <Button
               onPress={() =>
-                navigation.dispatch(StackActions.replace("DrawerNavigator"))
+                navigation.navigate("FingerPrintInstructionScreen")
               }
               style={{
                 buttonContainer: {

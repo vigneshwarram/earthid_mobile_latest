@@ -40,14 +40,6 @@ export const ABOUT_ROUTES = {
     COLOR: "#BFF5CE",
   },
 
-  LANGUAGE: {
-    RIGHT_ICON: LocalImages.sideArrowImage,
-    URI: LocalImages.translateImage,
-    CARD: "AcceptableUsePolicy",
-    TITLE: SCREENS.DRAWERMENUTITLES.LANGUAGE,
-    SCREEN: "language",
-    COLOR: "#BFF5CE",
-  },
   ABOUT: {
     URI: LocalImages.documentsImage,
     CARD: "AcceptableUsePolicy",
@@ -67,7 +59,7 @@ export const ABOUT_ROUTES = {
     URI: LocalImages.historyImage,
     CARD: "AcceptableUsePolicy",
     TITLE: SCREENS.DRAWERMENUTITLES.BACKUP,
-    SCREEN: "backupIdentity",
+    SCREEN: "AuthBackupIdentity",
     COLOR: "#FFDD9B",
   },
   DELETE: {

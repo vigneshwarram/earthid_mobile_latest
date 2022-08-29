@@ -114,7 +114,9 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
         rightIconPress={onPressNavigateTo}
         leftIconSource={LocalImages.logoImage}
         rightIconSource={LocalImages.addImage}
-        onpress={_toggleDrawer}
+        onpress={() => {
+          _toggleDrawer();
+        }}
         linearStyle={styles.linearStyle}
       ></Header>
       <TextInput
@@ -217,6 +219,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     elevation: 1,
     borderColor: "transparent",
+    borderRadius: 13,
   },
   categoryHeaderText: {
     marginHorizontal: 30,

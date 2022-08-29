@@ -98,13 +98,9 @@ const Register = ({ navigation }: IRegister) => {
     inputFocusHandler: emailFocusHandlur,
     inputBlurHandler: emailBlurHandler,
   } = useFormInput("", true, emailValidator);
+
   const _navigateAction = () => {
-    if (
-      !nameValidator(firstName, true).hasError &&
-      !nameValidator(lastName, true).hasError &&
-      !nameValidator(dateOfBirth, true).hasError &&
-      !emailValidator(email, true).hasError
-    ) {
+    if (isValid()) {
       dispatch(GeneratedKeysAction());
     } else {
       console.log("its coming");
@@ -114,65 +110,67 @@ const Register = ({ navigation }: IRegister) => {
       dateOfBirthlurHandler();
     }
   };
-
-  useEffect(() => {
-    const deviceId = getDeviceId();
-    console.log("getGeneratedKeys====?>", getGeneratedKeys);
-    if (getGeneratedKeys?.responseData !== undefined) {
-      let payLoad: ICreateAccount = {
-        publicKeyHex: getGeneratedKeys?.responseData.publicKey,
-        versionName: "2.0",
-        deviceId: deviceId.toString(),
-        encryptedEmail: encrptedEmail(email),
-        accountStatus: "account created",
-        testnet: true,
-      };
-
-      dispatch(createAccount(payLoad));
+  const isValid = () => {
+    if (
+      !nameValidator(firstName, true).hasError &&
+      !nameValidator(lastName, true).hasError &&
+      !nameValidator(dateOfBirth, true).hasError &&
+      !emailValidator(email, true).hasError
+    ) {
+      return true;
     }
-  }, [getGeneratedKeys]);
+    return false;
+  };
 
   const onDatePickerOpen = () => {
     setopenDatePicker(true);
   };
+  if (getGeneratedKeys && getGeneratedKeys?.isGeneratedKeySuccess) {
+    getGeneratedKeys.isGeneratedKeySuccess = false;
+    const deviceId = getDeviceId();
+    console.log("its coming inside");
+    let payLoad: ICreateAccount = {
+      publicKeyHex: getGeneratedKeys?.responseData.publicKey,
+      versionName: "2.0",
+      deviceId: deviceId.toString(),
+      encryptedEmail: encrptedEmail(email),
+      accountStatus: "account created",
+      testnet: true,
+    };
 
-  useEffect(() => {
-    if (
-      accountDetails?.responseData !== undefined &&
-      getGeneratedKeys?.responseData !== undefined
-    ) {
-      const encrptedUserDetails = getEncrptedUserDetais({
-        fullName: firstName + lastName,
-        mobileNumber,
-        email,
-        dateOfBirth,
-      });
-      let payLoad: IContractRequest = {
-        accountId: accountDetails?.responseData.toString().split(".")[2],
-        privateKey: getGeneratedKeys?.responseData.privateKey,
-        publicKey: getGeneratedKeys?.responseData.publicKey,
-        functionName: "createIdentity",
-        functionParams: encrptedUserDetails,
-        isViewOnly: false,
-      };
-      console.log("its coming");
-      dispatch(contractCall(payLoad));
-    }
-  }, [accountDetails]);
+    dispatch(createAccount(payLoad));
+  }
+  console.log("getGeneratedKeys", getGeneratedKeys);
+  console.log("Account Details", accountDetails);
+  if (accountDetails && accountDetails?.isAccountCreatedSuccess) {
+    accountDetails.isAccountCreatedSuccess = false;
+    const encrptedUserDetails = getEncrptedUserDetais({
+      fullName: firstName + lastName,
+      mobileNumber,
+      email,
+      dateOfBirth,
+    });
+    let payLoad: IContractRequest = {
+      accountId: accountDetails?.responseData.toString().split(".")[2],
+      privateKey: getGeneratedKeys?.responseData.privateKey,
+      publicKey: getGeneratedKeys?.responseData.publicKey,
+      functionName: "createIdentity",
+      functionParams: encrptedUserDetails,
+      isViewOnly: false,
+    };
 
-  useEffect(() => {
-    console.log("contractDetails", contractDetails);
+    dispatch(contractCall(payLoad));
+  }
+  if (contractDetails && contractDetails?.isContractCreatedSuccessfull) {
+    contractDetails.isContractCreatedSuccessfull = false;
     if (contractDetails?.responseData) {
       setsuccessResponse(true);
       setTimeout(() => {
         setsuccessResponse(false);
         navigation.navigate("BackupIdentity");
       }, 3000);
-    } else {
-      accountDetails.responseData = undefined;
-      getGeneratedKeys.responseData = undefined;
     }
-  }, [contractDetails]);
+  }
 
   return (
     <View style={styles.sectionContainer}>

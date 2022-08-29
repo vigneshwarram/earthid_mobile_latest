@@ -21,15 +21,15 @@ const LoadingScreen = ({ navigation }: ILoadingScreen) => {
     if (getItem) {
       navigation.dispatch(StackActions.replace("PasswordCheck"));
     } else {
-      navigation.dispatch(StackActions.replace("DrawerNavigator"));
+      navigation.dispatch(StackActions.replace("AuthStack"));
     }
   };
   console.log("isAlreadyLoggedIn", isAlreadyLoggedIn);
   useEffect(() => {
     if (isAlreadyLoggedIn?.responseData) {
-    } else {
       checkAuth();
-      // navigation.dispatch(StackActions.replace("AuthStack"));
+    } else {
+      navigation.dispatch(StackActions.replace("AuthStack"));
     }
   }, [isAlreadyLoggedIn]);
   return (

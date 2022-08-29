@@ -5,7 +5,6 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
-  Text,
   PermissionsAndroid,
   Platform,
 } from "react-native";
@@ -16,7 +15,6 @@ import { LocalImages } from "../../constants/imageUrlConstants";
 import { Screens } from "../../themes/index";
 import DocumentMask from "../uploadDocuments/DocumentMask";
 import RNFS from "react-native-fs";
-import RNFetchBlob from "rn-fetch-blob";
 import GenericText from "../../components/Text";
 
 const UploadScreen = (props: any) => {
@@ -102,7 +100,9 @@ const UploadScreen = (props: any) => {
       >
         {"capture"}
       </GenericText>
-      <GenericText style={{ textAlign: "center", paddingVertical: 5, color: "#fff" }}>
+      <GenericText
+        style={{ textAlign: "center", paddingVertical: 5, color: "#fff" }}
+      >
         {"placethedoc"}
       </GenericText>
       <TouchableOpacity onPress={_takePicture}>
