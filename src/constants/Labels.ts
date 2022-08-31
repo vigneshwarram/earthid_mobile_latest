@@ -3,7 +3,7 @@ import { LocalImages } from "./imageUrlConstants";
 export const SCREENS = {
   HOMESCREEN: {
     avatarName: "Robert Downey",
-    appName: "Earth ID",
+    appName: "Global ID",
     category: "CATEGORIES",
     documentLabel: "useddocument",
     upload: "uploaddoc",
@@ -200,7 +200,7 @@ export const SCREENS = {
     ],
   },
   LANDINGSCREEN: {
-    setUpId: "Set Up Your EarthiD",
+    setUpId: "Set Up Your Global ID",
     instruction: "Setup with one of our available registration options",
     BUTTON_LABEL: "buttonLabel",
   },

@@ -34,8 +34,8 @@ const UploadScreen = (props: any) => {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
         {
-          title: "EarthId Storage Acess",
-          message: "EarthId needs access to your storage ",
+          title: "Global Id Storage Acess",
+          message: "Global Id  needs access to your storage ",
           buttonNeutral: "Ask Me Later",
           buttonNegative: "Cancel",
           buttonPositive: "OK",

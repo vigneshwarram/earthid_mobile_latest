@@ -357,12 +357,12 @@ const Register = ({ navigation }: IRegister) => {
             <GenericText
               style={{ color: Screens.colors.primary, alignSelf: "center" }}
             >
-              {"EarthID"}
+              {"Global Id"}
             </GenericText>
           </View>
 
           <Loader
-            loadingText="Your Earth ID is generated successfutlly."
+            loadingText="Your Global ID is generated successfutlly."
             Status="Success !"
             isLoaderVisible={successResponse}
           ></Loader>
