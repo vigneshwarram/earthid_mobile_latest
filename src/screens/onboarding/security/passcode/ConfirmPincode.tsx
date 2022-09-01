@@ -15,6 +15,7 @@ import SmoothPinCodeInput from "react-native-smooth-pincode-input";
 import { LocalImages } from "../../../../constants/imageUrlConstants";
 import Loader from "../../../../components/Loader";
 import { StackActions } from "@react-navigation/native";
+import GenericText from "../../../../components/Text";
 
 interface IHomeScreenProps {
   navigation?: any;
@@ -74,7 +75,7 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
               ></Image>
             </View>
 
-            <Text
+            <GenericText
               style={[
                 styles.categoryHeaderText,
                 {
@@ -86,7 +87,7 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
               ]}
             >
               {SCREENS.SECURITYSCREEN.confirmInstruction}
-            </Text>
+            </GenericText>
           </View>
           <SmoothPinCodeInput
             cellStyle={{

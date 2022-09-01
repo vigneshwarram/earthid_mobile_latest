@@ -6,6 +6,7 @@ import {
   PermissionsAndroid,
   Alert,
   BackHandler,
+  Platform,
 } from "react-native";
 import Header from "../../../components/Header";
 import { SCREENS } from "../../../constants/Labels";
@@ -50,7 +51,10 @@ const Register = ({ navigation }: IHomeScreenProps) => {
     viewShot.current.capture().then(async (imageData: any) => {
       console.log("imageData", imageData);
       try {
-        await requestExternalStoragePermission();
+        if (Platform.OS === "android") {
+          await requestExternalStoragePermission();
+        }
+
         await CameraRoll.save(imageData);
         dwFile(imageData);
         ImgToBase64.getBase64String(imageData)
