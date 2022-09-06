@@ -74,5 +74,9 @@
   "verify": "verificar",
   "customizeqrcode": "Personalizar código QR",
   "pleaseenableinfo": "Habilite la información para compartirla con otros usuarios simplemente escaneando Qrcode",
-  "website": "sitio web"
+  "website": "sitio web",
+  "updateauthenticaion":"Actualizar autenticación",
+  "faceid":"Cara ID",
+  "passcode":"Contraseña",
+  "touchid":"Tocar ID"
 }
