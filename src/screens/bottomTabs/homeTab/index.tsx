@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { View, StyleSheet, Text, FlatList, Alert } from "react-native";
 import CircularProgress from "react-native-circular-progress-indicator";
 import { EventRegister } from "react-native-event-listeners";
+import { ScrollView } from "react-native-gesture-handler";
 import Avatar from "../../../components/Avatar";
 import Card from "../../../components/Card";
 import Header from "../../../components/Header";
@@ -82,59 +83,61 @@ const HomeScreen = ({ navigation }: IHomeScreenProps) => {
 
   const _keyExtractor = ({ title }: any) => title.toString();
   return (
-    <View style={styles.sectionContainer}>
-      <Header
-        leftIconSource={LocalImages.logoImage}
-        rewardPoints={"50"}
-        rightIconSource={LocalImages.giftBoxImage}
-        isAvatar
-        profileName={contractDetails?.responseData?.name}
-        avatarClick={_avatarClick}
-        onpress={() => {
-          _toggleDrawer();
-        }}
-        linearStyle={styles.linearStyle}
-      ></Header>
-      <View style={styles.flatPanel}>
-        <View style={styles.alignCenter}>
-          <Text style={[styles.label, { fontSize: 12 }]}>
-            {SCREENS.HOMESCREEN.appName}
-          </Text>
-          <Text style={[styles.label, { fontSize: 16 }]}>
-            {contractDetails?.responseData?.earthId}
-          </Text>
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+      <View style={styles.sectionContainer}>
+        <Header
+          leftIconSource={LocalImages.logoImage}
+          rewardPoints={"50"}
+          rightIconSource={LocalImages.giftBoxImage}
+          isAvatar
+          profileName={contractDetails?.responseData?.name}
+          avatarClick={_avatarClick}
+          onpress={() => {
+            _toggleDrawer();
+          }}
+          linearStyle={styles.linearStyle}
+        ></Header>
+        <View style={styles.flatPanel}>
+          <View style={styles.alignCenter}>
+            <Text style={[styles.label, { fontSize: 12 }]}>
+              {SCREENS.HOMESCREEN.appName}
+            </Text>
+            <Text style={[styles.label, { fontSize: 16 }]}>
+              {contractDetails?.responseData?.earthId}
+            </Text>
+          </View>
+          <CircularProgress
+            value={60}
+            radius={30}
+            activeStrokeWidth={5}
+            activeStrokeColor={Screens.colors.primary}
+          />
         </View>
-        <CircularProgress
-          value={60}
-          radius={30}
-          activeStrokeWidth={5}
-          activeStrokeColor={Screens.colors.primary}
-        />
+        <GenericText style={[styles.categoryHeaderText, { fontSize: 13 }]}>
+          {SCREENS.HOMESCREENTITLES.CATEGORIES}
+        </GenericText>
+        <View style={[styles.flatPanel, { height: 130, marginTop: -10 }]}>
+          <FlatList<any>
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            data={categoryList}
+            renderItem={_renderItem}
+            keyExtractor={_keyExtractor}
+          />
+        </View>
+        <GenericText style={[styles.categoryHeaderText, { fontSize: 13 }]}>
+          {SCREENS.HOMESCREEN.documentLabel}
+        </GenericText>
+        <View>
+          <FlatList<any>
+            scrollEnabled={false}
+            data={documentList}
+            renderItem={_renderItemDocuments}
+            keyExtractor={_keyExtractor}
+          />
+        </View>
       </View>
-      <GenericText style={[styles.categoryHeaderText, { fontSize: 13 }]}>
-        {SCREENS.HOMESCREENTITLES.CATEGORIES}
-      </GenericText>
-      <View style={[styles.flatPanel, { height: 130, marginTop: -10 }]}>
-        <FlatList<any>
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          data={categoryList}
-          renderItem={_renderItem}
-          keyExtractor={_keyExtractor}
-        />
-      </View>
-      <GenericText style={[styles.categoryHeaderText, { fontSize: 13 }]}>
-        {SCREENS.HOMESCREEN.documentLabel}
-      </GenericText>
-      <View>
-        <FlatList<any>
-          scrollEnabled={false}
-          data={documentList}
-          renderItem={_renderItemDocuments}
-          keyExtractor={_keyExtractor}
-        />
-      </View>
-    </View>
+    </ScrollView>
   );
 };
 
