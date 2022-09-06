@@ -1,22 +1,42 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { View, Image, StyleSheet } from "react-native";
+import { View, Image, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import * as React from "react";
 import { useTheme } from "@react-navigation/native";
-import HomeScreen from "../screens/bottomTabs/homeTab";
-import { LocalImages } from "../constants/imageUrlConstants";
 
+import { LocalImages } from "../constants/imageUrlConstants";
+import LinearGradients from "../components/GradientsPanel/LinearGradient";
+import { Screens } from "../themes/index";
+
+import HomeScreen from "../screens/bottomTabs/homeTab/index";
+import DocumentScreen from "../screens/bottomTabs/documentTab";
+import HistoryScreen from "../screens/bottomTabs/historyTab";
+import CameraScreen from "../screens/Camera";
+import { EventRegister } from "react-native-event-listeners";
 const Tab = createBottomTabNavigator();
-export const BottomMenus = () => {
+
+export const BottomMenus = (propss: any) => {
   const { colors } = useTheme();
 
   return (
-    <Tab.Navigator initialRouteName="Home">
+    <Tab.Navigator
+      screenOptions={{
+        tabBarStyle: styles.tabBar,
+        headerShown: false,
+      }}
+      initialRouteName="Home"
+    >
       <Tab.Screen
         name="Home"
         component={HomeScreen}
         options={{
-          tabBarIcon: ({ color, size, focused }: any) => (
-            <View>
+          tabBarLabelStyle: styles.tabBarLabelStyle,
+          tabBarIcon: ({ focused }: any) => (
+            <View
+              style={[
+                styles.iconContainer,
+                { backgroundColor: focused ? "#EDF1F4" : "transparent" },
+              ]}
+            >
               <Image
                 style={[
                   styles.ImgStyle,
@@ -31,11 +51,17 @@ export const BottomMenus = () => {
         }}
       />
       <Tab.Screen
-        name="Home1"
-        component={HomeScreen}
+        name="Documents"
+        component={DocumentScreen}
         options={{
-          tabBarIcon: ({ color, size, focused }: any) => (
-            <View>
+          tabBarLabelStyle: styles.tabBarLabelStyle,
+          tabBarIcon: ({ focused }: any) => (
+            <View
+              style={[
+                styles.iconContainer,
+                { backgroundColor: focused ? "#EDF1F4" : "transparent" },
+              ]}
+            >
               <Image
                 style={[
                   styles.ImgStyle,
@@ -43,36 +69,56 @@ export const BottomMenus = () => {
                     tintColor: focused ? colors.primary : colors.background,
                   },
                 ]}
-                source={LocalImages.homeImage}
+                source={LocalImages.documentsImage}
               />
             </View>
           ),
         }}
       />
       <Tab.Screen
-        name="Home2"
-        component={HomeScreen}
+        name="Camera"
+        component={CameraScreen}
         options={{
-          tabBarIcon: ({ color, size, focused }) => (
-            <View style={styles.circle}>
-              <View
-                style={[
-                  styles.Innercircle,
-                  { backgroundColor: colors.background },
-                ]}
-              >
-                <Image style={styles.ImgStyle} source={LocalImages.homeImage} />
+          tabBarLabelStyle: {
+            color: "transparent",
+          },
+
+          tabBarIcon: () => (
+            <View style={{ overflow: "hidden", paddingTop: 5 }}>
+              <View style={styles.circle}>
+                <LinearGradients
+                  horizontalGradient
+                  endColor={Screens.colors.ScanButton.endColor}
+                  middleColor={Screens.colors.ScanButton.middleColor}
+                  startColor={Screens.colors.ScanButton.startColor}
+                  style={[styles.Innercircle]}
+                >
+                  <Image
+                    style={styles.ImgStyle}
+                    source={LocalImages.scanImage}
+                  />
+                </LinearGradients>
               </View>
             </View>
           ),
         }}
       />
       <Tab.Screen
-        name="Home3"
-        component={HomeScreen}
+        name="History"
+        component={HistoryScreen}
         options={{
-          tabBarIcon: ({ color, size, focused }: any) => (
-            <View>
+          tabBarLabelStyle: styles.tabBarLabelStyle,
+          tabBarIcon: ({ focused }: any) => (
+            <View
+              style={[
+                styles.iconContainer,
+                {
+                  backgroundColor: focused
+                    ? Screens.colors.bottomFocusedBackground.color
+                    : "transparent",
+                },
+              ]}
+            >
               <Image
                 style={[
                   styles.ImgStyle,
@@ -80,18 +126,32 @@ export const BottomMenus = () => {
                     tintColor: focused ? colors.primary : colors.background,
                   },
                 ]}
-                source={LocalImages.homeImage}
+                source={LocalImages.historyImage}
               />
             </View>
           ),
         }}
       />
       <Tab.Screen
-        name="Home4"
-        component={HomeScreen}
+        name="More"
+        component={HistoryScreen}
         options={{
-          tabBarIcon: ({ color, size, focused }: any) => (
-            <View>
+          tabBarLabelStyle: styles.tabBarLabelStyle,
+          tabBarButton: (props) => (
+            <TouchableOpacity
+              {...props}
+              onPress={() => {
+                EventRegister.emit("OpenDrawer");
+              }}
+            />
+          ),
+          tabBarIcon: ({ focused }: any) => (
+            <View
+              style={[
+                styles.iconContainer,
+                { backgroundColor: focused ? "#EDF1F4" : "transparent" },
+              ]}
+            >
               <Image
                 style={[
                   styles.ImgStyle,
@@ -99,7 +159,7 @@ export const BottomMenus = () => {
                     tintColor: focused ? colors.primary : colors.background,
                   },
                 ]}
-                source={LocalImages.homeImage}
+                source={LocalImages.moreImage}
               />
             </View>
           ),
@@ -108,20 +168,17 @@ export const BottomMenus = () => {
     </Tab.Navigator>
   );
 };
+
 const styles = StyleSheet.create({
   circle: {
     marginBottom: 20,
     backgroundColor: "#fff",
     width: 70,
-    height: 70,
-    borderRadius: 35,
+    height: 80,
+    borderRadius: (70 + 80) / 2,
     justifyContent: "center",
     alignItems: "center",
-    elevation: 10,
     shadowColor: "gray",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.8,
-    shadowRadius: 15,
   },
   Innercircle: {
     elevation: 10,
@@ -129,11 +186,25 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.8,
     shadowRadius: 15,
-    width: 65,
-    height: 65,
-    borderRadius: 65 / 2,
+    width: 68,
+    height: 70,
+    borderRadius: (68 + 70) / 2,
     justifyContent: "center",
     alignItems: "center",
+  },
+  tabBar: {
+    position: "absolute",
+    zIndex: 100,
+    height: 75,
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 20,
+  },
+  iconContainer: {
+    width: 40,
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 3,
   },
   ImgStyle: {
     width: 25,
@@ -141,4 +212,10 @@ const styles = StyleSheet.create({
     height: 25,
     resizeMode: "contain",
   },
+  tabBarLabelStyle: {
+    fontWeight: "900",
+  },
 });
+function alert(arg0: number): void {
+  throw new Error("Function not implemented.");
+}

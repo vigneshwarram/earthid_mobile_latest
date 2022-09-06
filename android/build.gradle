@@ -22,6 +22,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
+          classpath 'com.google.android.gms:strict-version-matcher-plugin:1.2.1'
         classpath("com.android.tools.build:gradle:7.0.4")
         classpath("com.facebook.react:react-native-gradle-plugin")
         classpath("de.undercouch:gradle-download-task:4.1.2")
@@ -51,3 +52,4 @@ allprojects {
         maven { url 'https://www.jitpack.io' }
     }
 }
+apply plugin: 'com.google.android.gms.strict-version-matcher-plugin'

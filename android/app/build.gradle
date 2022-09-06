@@ -79,7 +79,7 @@ import org.apache.tools.ant.taskdefs.condition.Os
  */
 
 project.ext.react = [
-    enableHermes: false,  // clean and rebuild if changing
+    enableHermes: true,  // clean and rebuild if changing
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
@@ -138,6 +138,7 @@ android {
         applicationId "com.earthidnew"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
+          missingDimensionStrategy 'react-native-camera', 'mlkit'
         versionCode 1
         versionName "1.0"
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
@@ -175,6 +176,8 @@ android {
 
     if (isNewArchitectureEnabled()) {
         // We configure the NDK build only if you decide to opt-in for the New Architecture.
+
+        
         externalNativeBuild {
             ndkBuild {
                 path "$projectDir/src/main/jni/Android.mk"
@@ -223,11 +226,11 @@ android {
         }
     }
     signingConfigs {
-        debug {
-            storeFile file('debug.keystore')
-            storePassword 'android'
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
+        release {
+            storeFile file("myearthid.keystore")
+            storePassword "Rejolut@123"
+            keyAlias "myearthid"
+            keyPassword "Rejolut@123"
         }
     }
     buildTypes {
@@ -262,7 +265,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
-
+     implementation project(':react-native-linear-gradient')
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
 
