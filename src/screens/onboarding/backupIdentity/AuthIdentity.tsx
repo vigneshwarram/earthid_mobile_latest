@@ -27,7 +27,6 @@ interface IHomeScreenProps {
 }
 
 const AuthBackupIdentity = ({ navigation }: IHomeScreenProps) => {
-  const phoneInput: any = useRef();
   const [mobileNumber, setmobileNumber] = useState();
   const [isLoading, setIsLoading] = useState(false);
   let [qrBase64, setBase64] = useState("");
@@ -36,7 +35,7 @@ const AuthBackupIdentity = ({ navigation }: IHomeScreenProps) => {
   const viewShot: any = useRef();
 
   let qrData = {
-    accountId: accountDetails?.responseData.toString().split(".")[2],
+    accountId: accountDetails?.responseData?.toString().split(".")[2],
     passPhrase: getGeneratedKeys?.responseData.mnemonics,
   };
   var encryptedString: any = CryptoJS.AES.encrypt(
@@ -45,9 +44,6 @@ const AuthBackupIdentity = ({ navigation }: IHomeScreenProps) => {
   );
   encryptedString = encryptedString.toString();
 
-  const callback = (data: any) => {
-    console.log("data", data);
-  };
   const capturePicture = () => {
     console.log("Capturing picture..");
 
@@ -158,7 +154,7 @@ const AuthBackupIdentity = ({ navigation }: IHomeScreenProps) => {
             <ViewShot
               ref={viewShot}
               captureMode="update"
-              onCapture={(res) => {
+              onCapture={() => {
                 // console.log('on capture image response', res)
               }}
               options={{ format: "jpg", quality: 0.8 }}
