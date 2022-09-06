@@ -6,19 +6,54 @@ import {
   StyleSheet,
   View,
 } from "react-native";
+import TouchID from "react-native-touch-id";
 import { useAppSelector } from "../../hooks/hooks";
 
 interface ILoadingScreen {
   navigation: any;
 }
-
+const optionalConfigObject = {
+  title: "Authentication Required", // Android
+  imageColor: "#2AA2DE", // Android
+  imageErrorColor: "#ff0000", // Android
+  sensorDescription: "Touch sensor", // Android
+  sensorErrorDescription: "Failed", // Android
+  cancelText: "Cancel", // Android
+  fallbackLabel: "Show Passcode", // iOS (if empty, then label is hidden)
+  unifiedErrors: false, // use unified error messages (default false)
+  passcodeFallback: false, // iOS - allows the device to fall back to using the passcode, if faceid/touch is not available. this does not mean that if touchid/faceid fails the first few times it will revert to passcode, rather that if the former are not enrolled, then it will use the passcode.
+};
 const LoadingScreen = ({ navigation }: ILoadingScreen) => {
   const isAlreadyLoggedIn = useAppSelector((state) => state?.contract);
-
+  const aunthenticateBioMetricInfo = () => {
+    TouchID.isSupported(optionalConfigObject)
+      .then(async (biometryType) => {
+        // Success code
+        if (biometryType === "FaceID") {
+          console.log("FaceID is supported.");
+        } else {
+          TouchID.authenticate("", optionalConfigObject)
+            .then(async (success: any) => {
+              console.log("success", success);
+              navigation.dispatch(StackActions.replace("DrawerNavigator"));
+            })
+            .catch((e: any) => console.log(e));
+          console.log("TouchID is supported.");
+        }
+      })
+      .catch((error) => {
+        // Failure code
+        console.log(error);
+      });
+  };
   const checkAuth = async () => {
+    const fingerPrint = await AsyncStorage.getItem("fingerprint");
     const getItem = await AsyncStorage.getItem("passcode");
+
     console.log("getItem", getItem);
-    if (getItem) {
+    if (fingerPrint) {
+      aunthenticateBioMetricInfo();
+    } else if (getItem) {
       navigation.dispatch(StackActions.replace("PasswordCheck"));
     } else {
       navigation.dispatch(StackActions.replace("AuthStack"));

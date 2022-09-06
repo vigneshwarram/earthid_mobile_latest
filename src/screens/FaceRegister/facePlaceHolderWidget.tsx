@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
+import TouchID from "react-native-touch-id";
 
 import Button from "../../components/Button";
 import SuccessPopUp from "../../components/Loader";
@@ -17,6 +18,18 @@ import { Screens } from "../../themes/index";
 import { validateDocsApi } from "../../utils/earthid_account";
 
 const facePlaceHolderWidget = (props: any) => {
+
+
+const faceBiometricHandler = ()=>{
+  TouchID.authenticate("face")
+  .then((success :any) => {
+    console.log("success",success)
+  })
+  .catch((error:any) => {
+    console.log(error);
+  });
+}
+  
   return (
     <View style={styles.sectionContainer}>
       <View style={{ position: "absolute", top: 20, right: 20, zIndex: 100 }}>
@@ -45,7 +58,7 @@ const facePlaceHolderWidget = (props: any) => {
             },
           ]}
         >
-          {"Enroll Face"}
+          {"enrollface"}
         </GenericText>
 
         <GenericText
@@ -61,13 +74,13 @@ const facePlaceHolderWidget = (props: any) => {
           ]}
         >
           {
-            "For best results, keep the device 20cm to 50cm from your face in an environment that is not too bright or too dim."
+            "forbestresults"
           }
         </GenericText>
       </View>
 
       <Button
-        onPress={() => props.navigation.navigate("RegisterFace")}
+        onPress={() => props.navigation.navigate("RegisterFace")}       
         style={{
           buttonContainer: {
             elevation: 5,

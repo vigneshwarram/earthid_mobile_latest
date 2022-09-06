@@ -107,7 +107,9 @@ const CameraScreen = (props: any) => {
       props.navigation.goBack(null);
     }
   }, [shareCredientialData]);
-
+  const getSchemeDetails = () => {
+    getScheme();
+  };
   useEffect(() => {
     console.log("issuerDataResponse", issuerDataResponse);
     if (issuerDataResponse?.status === "success") {
@@ -115,7 +117,8 @@ const CameraScreen = (props: any) => {
       if (barCodeDataDetails?.requestType === "login") {
         props.navigation.navigate.goBack(null);
       } else if (barCodeDataDetails?.requestType === "generateCredentials") {
-        setisDocumentModalGenerateCredientials(true);
+        // setisDocumentModalGenerateCredientials(true);
+        getSchemeDetails();
       } else if (barCodeDataDetails?.requestType === "document") {
         setsuccessResponse(true);
         var documentDetails: IDocumentProps = {

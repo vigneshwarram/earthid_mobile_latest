@@ -76,5 +76,13 @@
   "verify": "verify",
   "customizeqrcode": "Customize QR Code",
   "pleaseenableinfo": "Please enable the information to share with other user by simply scanning Qrcode",
-  "website": "website"
+  "website": "website",
+  "faceid": "Face Id",
+  "passcode": "Passcode",
+  "touchid": "Touch Id",
+  "authenticatedevicefinger": "Authenticated Device's Fingerprint",
+  "plsauthenticatenablefinger": "Please authenticate to enable fingerprint authentication",
+  "continue": "Continue",
+  "enrollface": "Enroll Face",
+  "forbestresults": "For best results, keep the device 20cm to 50cm from your face in an environment that is not too bright or too dim."
 }

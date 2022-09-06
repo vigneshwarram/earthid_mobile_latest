@@ -14,11 +14,47 @@ import { Screens } from "../../themes/index";
 
 import Loader from "../../components/Loader";
 import { StackActions } from "@react-navigation/native";
+import TouchID from "react-native-touch-id";
 
 const FingerPrintInstructionScreen = (props: any) => {
   const [isLoading, setIsLoading] = useState(false);
+
+  const optionalConfigObject = {
+    title: "Authentication Required", // Android
+    imageColor: "#2AA2DE", // Android
+    imageErrorColor: "#ff0000", // Android
+    sensorDescription: "Touch sensor", // Android
+    sensorErrorDescription: "Failed", // Android
+    cancelText: "Cancel", // Android
+    fallbackLabel: "Show Passcode", // iOS (if empty, then label is hidden)
+    unifiedErrors: false, // use unified error messages (default false)
+    passcodeFallback: false, // iOS - allows the device to fall back to using the passcode, if faceid/touch is not available. this does not mean that if touchid/faceid fails the first few times it will revert to passcode, rather that if the former are not enrolled, then it will use the passcode.
+  };
+
   const aunthenticateBioMetricInfo = () => {
-    props.navigation.dispatch(StackActions.replace("DrawerNavigator"));
+    TouchID.isSupported(optionalConfigObject)
+      .then(async (biometryType) => {
+        // Success code
+        if (biometryType === "FaceID") {
+          console.log("FaceID is supported.");
+        } else {
+          TouchID.authenticate("", optionalConfigObject)
+            .then(async (success: any) => {
+              console.log("success", success);
+              await AsyncStorage.setItem("fingerprint", "enabled");
+
+              props.navigation.dispatch(
+                StackActions.replace("DrawerNavigator")
+              );
+            })
+            .catch((e: any) => console.log(e));
+          console.log("TouchID is supported.");
+        }
+      })
+      .catch((error) => {
+        // Failure code
+        console.log(error);
+      });
   };
 
   return (
@@ -49,7 +85,7 @@ const FingerPrintInstructionScreen = (props: any) => {
             },
           ]}
         >
-          {"Authenticated Device's Fingerprint"}
+          {"authenticatedevicefinger"}
         </GenericText>
 
         <GenericText
@@ -64,7 +100,7 @@ const FingerPrintInstructionScreen = (props: any) => {
             },
           ]}
         >
-          {"Please authenticate to enable fingerprint authentication"}
+          {"plsauthenticatenablefinger"}
         </GenericText>
       </View>
 
@@ -82,7 +118,7 @@ const FingerPrintInstructionScreen = (props: any) => {
             tintColor: Screens.pureWhite,
           },
         }}
-        title={"Continue"}
+        title={"continue"}
       ></Button>
       <Loader
         loadingText="Finger Print authenticated successfully !"
