@@ -76,6 +76,7 @@ const DocumentPreviewScreen = (props: any) => {
         }}
       >
         <Button
+        onPress={()=>props.navigation.goBack()}
           style={{
             buttonContainer: {
               elevation: 5,

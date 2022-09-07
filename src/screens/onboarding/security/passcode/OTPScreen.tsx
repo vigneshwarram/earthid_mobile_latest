@@ -16,6 +16,7 @@ import {
   byPassUserDetailsRedux,
   contractCall,
 } from "../../../../redux/actions/authenticationAction";
+import GenericText from "../../../../components/Text";
 
 interface IHomeScreenProps {
   navigation?: any;
@@ -91,7 +92,7 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
       <ScrollView contentContainerStyle={styles.sectionContainer}>
         <Header
           isLogoAlone={true}
-          headingText={"Set Passcord"}
+          headingText={"setpass"}
           linearStyle={styles.linearStyle}
           containerStyle={{
             iconStyle: {
@@ -118,7 +119,7 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
               ></Image>
             </View>
 
-            <Text
+            <GenericText
               style={[
                 styles.categoryHeaderText,
                 {
@@ -130,8 +131,8 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
               ]}
             >
               {SCREENS.SECURITYSCREEN.passcordInstruction}
-            </Text>
-            <Text
+            </GenericText>
+            <GenericText
               style={[
                 styles.categoryHeaderText,
                 {
@@ -143,7 +144,7 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
               ]}
             >
               {SCREENS.SECURITYSCREEN.passcordInstructions}
-            </Text>
+            </GenericText>
           </View>
           <SmoothPinCodeInput
             cellStyle={{

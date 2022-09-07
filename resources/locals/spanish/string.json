@@ -83,5 +83,11 @@
   "plsauthenticatenablefinger": "Autentíquese para habilitar la autenticación de huellas dactilares",
   "continue": "Continuar",
   "enrollface": "Inscribir Cara",
-  "forbestresults": "Para obtener los mejores resultados, mantenga el dispositivo a una distancia de 20 cm a 50 cm de su cara en un entorno que no sea demasiado brillante ni demasiado oscuro."
+  "forbestresults": "Para obtener los mejores resultados, mantenga el dispositivo a una distancia de 20 cm a 50 cm de su cara en un entorno que no sea demasiado brillante ni demasiado oscuro.",
+  "passcordauth":"Autenticación de contraseña",
+  "plsenterpass":"Por favor ingrese su código de acceso",
+  "plsentervalid":"Por favor Ingrese un código válido",
+  "submitt":"Enviar",
+  "setpass":"Configurar la clave",
+  "passcord":"Contraseña"
 }

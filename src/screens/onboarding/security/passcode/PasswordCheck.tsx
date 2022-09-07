@@ -13,6 +13,7 @@ import Button from "../../../../components/Button";
 import SmoothPinCodeInput from "react-native-smooth-pincode-input";
 import { LocalImages } from "../../../../constants/imageUrlConstants";
 import { StackActions } from "@react-navigation/native";
+import GenericText from "../../../../components/Text";
 
 interface IHomeScreenProps {
   navigation?: any;
@@ -45,7 +46,7 @@ const PasswordCheck = ({ navigation, route }: IHomeScreenProps) => {
       <ScrollView contentContainerStyle={styles.sectionContainer}>
         <Header
           isLogoAlone={true}
-          headingText={"Passcord Authentication"}
+          headingText={"passcordauth"}
           linearStyle={styles.linearStyle}
           containerStyle={{
             iconStyle: {
@@ -72,7 +73,7 @@ const PasswordCheck = ({ navigation, route }: IHomeScreenProps) => {
               ></Image>
             </View>
 
-            <Text
+            <GenericText
               style={[
                 styles.categoryHeaderText,
                 {
@@ -83,8 +84,8 @@ const PasswordCheck = ({ navigation, route }: IHomeScreenProps) => {
                 },
               ]}
             >
-              {"Please enter your passcode"}
-            </Text>
+              {"plsenterpass"}
+            </GenericText>
           </View>
           <SmoothPinCodeInput
             cellStyle={{
@@ -103,7 +104,7 @@ const PasswordCheck = ({ navigation, route }: IHomeScreenProps) => {
             onTextChange={onPinCodeChange}
           />
           {isError && (
-            <Text
+            <GenericText
               style={[
                 styles.categoryHeaderText,
                 {
@@ -114,8 +115,8 @@ const PasswordCheck = ({ navigation, route }: IHomeScreenProps) => {
                 },
               ]}
             >
-              {"Please Enter valid code"}
-            </Text>
+              {"plsentervalid"}
+            </GenericText>
           )}
 
           <Button
@@ -131,7 +132,7 @@ const PasswordCheck = ({ navigation, route }: IHomeScreenProps) => {
                 tintColor: Screens.pureWhite,
               },
             }}
-            title={"Sumbit"}
+            title={"submitt"}
           ></Button>
         </View>
       </ScrollView>

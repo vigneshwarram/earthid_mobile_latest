@@ -108,22 +108,28 @@ const CustomDrawer = (props: any) => {
   return (
     <View style={styles.sectionContainer}>
       <View style={styles.sectionHeaderContainer}>
+        <TouchableOpacity
+        onPress={()=>props.navigation.goBack()}
+        >
+
         <Image
           resizeMode="contain"
           style={styles.logoContainer}
           source={LocalImages.backImage}
         ></Image>
+        </TouchableOpacity>
         <GenericText
           style={[
             {
               fontSize: 20,
-
+            
               color: Screens.pureWhite,
               fontWeight: "500",
+              marginLeft:-10
             },
           ]}
         >
-          {"settings"}
+          {"setting"}
         </GenericText>
         <View />
       </View>

@@ -34,19 +34,19 @@ const UpdateAuthentication = (props: any) => {
   };
   const [authenticationList, setauthenticationList] = useState([
     {
-      label: "Face Id",
+      label: "faceid",
       COLOR: "#D7EFFB",
       icon: LocalImages.faceImage,
       selection: true,
     },
     {
-      label: "Passcord",
+      label: "passcord",
       COLOR: "#FFDD9B",
       icon: LocalImages.passcordImage,
       selection: false,
     },
     {
-      label: "TouchId",
+      label: "touchid",
       COLOR: "#F6BDE9",
       icon: LocalImages.touchImage,
       selection: false,
@@ -104,11 +104,17 @@ const UpdateAuthentication = (props: any) => {
   return (
     <View style={styles.sectionContainer}>
       <View style={styles.sectionHeaderContainer}>
+
+       <TouchableOpacity
+        onPress={()=>props.navigation.goBack()}
+        >
+
         <Image
           resizeMode="contain"
           style={styles.logoContainer}
           source={LocalImages.backImage}
         ></Image>
+        </TouchableOpacity>
         <GenericText
           style={[
             {
@@ -119,7 +125,7 @@ const UpdateAuthentication = (props: any) => {
             },
           ]}
         >
-          {"Update Authentication"}
+          {"updateauthenticaion"}
         </GenericText>
         <View />
       </View>
