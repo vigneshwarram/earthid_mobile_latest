@@ -1,12 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import {
-  View,
-  StyleSheet,
-  Text,
-  ScrollView,
-  ActivityIndicator,
-  Alert,
-} from "react-native";
+import React, { useRef, useState } from "react";
+import { View, StyleSheet, ScrollView, Platform } from "react-native";
 import Header from "../../../components/Header";
 import { LocalImages } from "../../../constants/imageUrlConstants";
 import { SCREENS } from "../../../constants/Labels";
@@ -20,25 +13,13 @@ import PhoneInput from "react-native-phone-number-input";
 import useFormInput from "../../../hooks/use-text-input";
 import { emailValidator, nameValidator } from "../../../utils/inputValidations";
 import Loader from "../../../components/Loader";
-import {
-  GeneratedKeysAction,
-  createAccount,
-  contractCall,
-  FlushData,
-} from "../../../redux/actions/authenticationAction";
-import { ICreateAccount } from "../../../typings/AccountCreation/ICreateAccount";
+import { createAccount } from "../../../redux/actions/authenticationAction";
 import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
-import { IContractRequest } from "../../../typings/AccountCreation/IContractRequest";
-import {
-  encrptedEmail,
-  getDeviceId,
-  getEncrptedUserDetais,
-  getUserDetails,
-} from "../../../utils/encryption";
-import { StackActions } from "@react-navigation/native";
+import { IUserAccountRequest } from "../../../typings/AccountCreation/IUserAccount";
+import { getDeviceId, getDeviceName } from "../../../utils/encryption";
 import AnimatedLoader from "../../../components/Loader/AnimatedLoader";
 import GenericText from "../../../components/Text";
-import { alertBox } from "../../../utils/earthid_account";
+import { SnackBar } from "../../../components/SnackBar";
 interface IRegister {
   navigation: any;
 }
@@ -46,12 +27,11 @@ interface IRegister {
 const Register = ({ navigation }: IRegister) => {
   const phoneInput: any = useRef();
   const dispatch = useAppDispatch();
-  const [mobileNumber, setmobileNumber] = useState();
-  const getGeneratedKeys = useAppSelector((state) => state.user);
-  const accountDetails = useAppSelector((state) => state.account);
-  const contractDetails = useAppSelector((state) => state.contract);
+  const [mobileNumber, setmobileNumber] = useState<string>("");
+  const userDetails = useAppSelector((state) => state.account);
   const [successResponse, setsuccessResponse] = useState(false);
   const [openDatePicker, setopenDatePicker] = useState<boolean>();
+  const [callingCode, setcallingCode] = useState<string>("+91");
 
   const {
     value: firstName,
@@ -99,9 +79,23 @@ const Register = ({ navigation }: IRegister) => {
     inputBlurHandler: emailBlurHandler,
   } = useFormInput("", true, emailValidator);
 
-  const _navigateAction = () => {
+  const _navigateAction = async () => {
     if (isValid()) {
-      dispatch(GeneratedKeysAction());
+      const token = await getDeviceId();
+      const deviceName = await getDeviceName();
+      const payLoad: IUserAccountRequest = {
+        firstName: firstName,
+        lastName: lastName,
+        deviceID: token + Math.random(),
+        deviceIMEI: token,
+        deviceName: deviceName,
+        email: email,
+        phone: mobileNumber,
+        countryCode: callingCode,
+        deviceOS: Platform.OS === "android" ? "android" : "ios",
+      };
+
+      dispatch(createAccount(payLoad));
     } else {
       console.log("its coming");
       firstNameBlurHandler();
@@ -125,51 +119,23 @@ const Register = ({ navigation }: IRegister) => {
   const onDatePickerOpen = () => {
     setopenDatePicker(true);
   };
-  if (getGeneratedKeys && getGeneratedKeys?.isGeneratedKeySuccess) {
-    getGeneratedKeys.isGeneratedKeySuccess = false;
-    const deviceId = getDeviceId();
-    console.log("its coming inside");
-    let payLoad: ICreateAccount = {
-      publicKeyHex: getGeneratedKeys?.responseData.publicKey,
-      versionName: "2.0",
-      deviceId: deviceId.toString(),
-      encryptedEmail: encrptedEmail(email),
-      accountStatus: "account created",
-      testnet: true,
-    };
-
-    dispatch(createAccount(payLoad));
-  }
-  console.log("getGeneratedKeys", getGeneratedKeys);
-  console.log("Account Details", accountDetails);
-  if (accountDetails && accountDetails?.isAccountCreatedSuccess) {
-    accountDetails.isAccountCreatedSuccess = false;
-    const encrptedUserDetails = getEncrptedUserDetais({
-      fullName: firstName + lastName,
-      mobileNumber,
-      email,
-      dateOfBirth,
-    });
-    let payLoad: IContractRequest = {
-      accountId: accountDetails?.responseData.toString().split(".")[2],
-      privateKey: getGeneratedKeys?.responseData.privateKey,
-      publicKey: getGeneratedKeys?.responseData.publicKey,
-      functionName: "createIdentity",
-      functionParams: encrptedUserDetails,
-      isViewOnly: false,
-    };
-
-    dispatch(contractCall(payLoad));
-  }
-  if (contractDetails && contractDetails?.isContractCreatedSuccessfull) {
-    contractDetails.isContractCreatedSuccessfull = false;
-    if (contractDetails?.responseData) {
+  console.log("userDetails", userDetails);
+  if (userDetails && userDetails?.isAccountCreatedSuccess) {
+    userDetails.isAccountCreatedSuccess = false;
+    console.log("userDetails", userDetails);
+    if (userDetails?.responseData) {
       setsuccessResponse(true);
       setTimeout(() => {
         setsuccessResponse(false);
         navigation.navigate("BackupIdentity");
       }, 3000);
     }
+  }
+  if (userDetails && userDetails?.isAccountCreatedFailure) {
+    userDetails.isAccountCreatedFailure = false;
+    SnackBar({
+      indicationMessage: userDetails?.errorMesssage,
+    });
   }
 
   return (
@@ -276,9 +242,14 @@ const Register = ({ navigation }: IRegister) => {
               }}
             />
             <PhoneInput
+              onChangeCountry={(code) => {
+                const { callingCode } = code;
+                setcallingCode(callingCode[0]);
+                console.log("code==>", callingCode[0]);
+              }}
               autoFocus={false}
               ref={phoneInput}
-              defaultValue={"0000000"}
+              defaultValue={""}
               defaultCode="IN"
               layout="first"
               onChangeText={(text: any) => {
@@ -367,7 +338,7 @@ const Register = ({ navigation }: IRegister) => {
             isLoaderVisible={successResponse}
           ></Loader>
           <AnimatedLoader
-            isLoaderVisible={accountDetails?.isLoading}
+            isLoaderVisible={userDetails?.isLoading}
             loadingText="loading"
           />
         </View>

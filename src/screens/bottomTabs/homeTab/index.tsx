@@ -19,11 +19,11 @@ interface IHomeScreenProps {
 }
 
 const HomeScreen = ({ navigation }: IHomeScreenProps) => {
-  const contractDetails = useAppSelector((state) => state.contract);
+  const userDetails = useAppSelector((state) => state.contract);
   const _toggleDrawer = () => {
     navigation.openDrawer();
   };
-  console.log("contractDetails", contractDetails);
+  console.log("userDetails", userDetails);
   const categoryList = values(SCREENS.HOMESCREEN.categoryList).map(
     ({ TITLE: title, URI: uri, COLOR: color }: any) => ({
       title,
@@ -90,7 +90,7 @@ const HomeScreen = ({ navigation }: IHomeScreenProps) => {
           rewardPoints={"50"}
           rightIconSource={LocalImages.giftBoxImage}
           isAvatar
-          profileName={contractDetails?.responseData?.name}
+          profileName={userDetails?.responseData?.name}
           avatarClick={_avatarClick}
           onpress={() => {
             _toggleDrawer();
@@ -103,7 +103,7 @@ const HomeScreen = ({ navigation }: IHomeScreenProps) => {
               {SCREENS.HOMESCREEN.appName}
             </Text>
             <Text style={[styles.label, { fontSize: 16 }]}>
-              {contractDetails?.responseData?.earthId}
+              {userDetails?.responseData?.earthId}
             </Text>
           </View>
           <CircularProgress

@@ -35,8 +35,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
   const viewShot: any = useRef();
 
   let qrData = {
-    accountId: accountDetails?.responseData.toString().split(".")[2],
-    passPhrase: getGeneratedKeys?.responseData.mnemonics,
+    accountId: accountDetails?.responseData.earthId,
   };
   var encryptedString: any = CryptoJS.AES.encrypt(
     JSON.stringify(qrData),

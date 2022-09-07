@@ -4,6 +4,7 @@ import { URI } from "../../constants/URLContstants";
 import { ICreateAccount } from "../../typings/AccountCreation/ICreateAccount";
 import { SnackBar } from "../../components/SnackBar";
 import { getUserDetails } from "../../utils/encryption";
+import { IUserAccountRequest } from "../../typings/AccountCreation/IUserAccount";
 const {
   ACCOUNT: {
     CREATE_ACCOUNT: createAccountUrl,
@@ -41,7 +42,7 @@ export const GeneratedKeysAction =
   };
 
 export const createAccount =
-  (requestPayload: ICreateAccount) =>
+  (requestPayload: IUserAccountRequest) =>
   async (dispatch: any): Promise<any> => {
     let responseData;
     try {
@@ -49,21 +50,24 @@ export const createAccount =
         type: ACTION_TYPES.CREATEDACCOUNT,
       });
       const response = await postCall(createAccountUrl, requestPayload);
+
       responseData = await _responseHandler(response);
+      console.log("responseData", responseData);
       dispatch({
         type: ACTION_TYPES.CREATED_ACCOUNT_RESPONSE,
         payload: {
           responseData,
           isLoading: false,
+          errorMesssage: "",
         },
       });
     } catch (error) {
       console.log("create account API catch ===>", error);
       dispatch({
         type: ACTION_TYPES.CREATED_ACCOUNT_ERROR,
-      });
-      SnackBar({
-        indicationMessage: "Internal Server Error",
+        payload: {
+          errorMesssage: error,
+        },
       });
     }
   };
@@ -103,7 +107,7 @@ export const approveOTP =
         type: ACTION_TYPES.APPROVE_OTP,
       });
       const response = await postCall(contractUrl, requestPayload);
-      console.log("Approve OTP response===>", response);
+
       responseData = await _responseHandler(response);
     } catch (error) {
       console.log("Approve OTP API===>", error);
@@ -149,11 +153,12 @@ export const FlushData =
   };
 
 const _responseHandler = async (response: any): Promise<any> => {
-  const responseData = await response.json();
-  return new Promise((resolve, reject) => {
-    if (responseData.code === 200) {
-      return resolve(responseData?.result);
+  return new Promise(async (resolve, reject) => {
+    if (response.status === 200 || response.status === 201) {
+      const responseData = await response.json();
+      return resolve(responseData);
     } else {
+      const responseData = await response.json();
       SnackBar({
         indicationMessage: responseData?.message,
       });

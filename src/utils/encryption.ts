@@ -15,6 +15,12 @@ export const getDeviceId = async () => {
   const deviceToken = await DeviceInfo.getDeviceToken();
   return deviceToken;
 };
+
+export const getDeviceName = async () => {
+  const deviceToken = await DeviceInfo.getDeviceName();
+  return deviceToken;
+};
+
 export const getEncrptedUserDetais = (data: any): string[] => {
   var dataArray = [
     data.fullName,

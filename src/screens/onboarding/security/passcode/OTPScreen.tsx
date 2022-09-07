@@ -27,11 +27,11 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
     navigation.navigate("ConfirmPincode");
   };
   const dispatch = useAppDispatch();
-  const contractDetails = useAppSelector((state) => state.contract);
+  const userDetails = useAppSelector((state) => state.contract);
   const accountDetails = useAppSelector((state) => state.account);
   const getGeneratedKeys = useAppSelector((state) => state.user);
   const ApproveOtpResponse = useAppSelector((state) => state.ApproveOtp);
-  console.log("contractDetails", contractDetails);
+  console.log("userDetails", userDetails);
   const { type } = route.params;
   const { loading, data, error, fetch } = useFetch();
   const [code, setCode] = useState();
@@ -41,8 +41,8 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
   const sendOtp = () => {
     var postData = {
       type: type,
-      value: contractDetails?.responseData?.email,
-      earthId: contractDetails?.responseData?.earthId,
+      value: userDetails?.responseData?.email,
+      earthId: userDetails?.responseData?.earthId,
       publicKey: getGeneratedKeys?.responseData?.publicKey,
       testnet: true,
     };
@@ -60,7 +60,7 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
     if (ApproveOtpResponse?.responseData) {
       let isEmailApproved = ApproveOtpResponse.responseData[1];
       let overallResponseData = {
-        ...contractDetails.responseData,
+        ...userDetails.responseData,
         ...{ emailApproved: isEmailApproved },
       };
 
@@ -75,7 +75,7 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
     const request = {
       functionName: "approveOTP",
       functionParams: [
-        contractDetails?.responseData?.earthId,
+        userDetails?.responseData?.earthId,
         type === "mobile" ? "1" : "2",
         encryptedOTP.toString(),
       ],

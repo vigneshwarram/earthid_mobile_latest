@@ -8,7 +8,7 @@ export interface ISnackbarProps {
 export const SnackBar = ({
   actionMessage = "",
   indicationMessage = "",
-  duration = Snackbar.LENGTH_SHORT,
+  duration = 50000,
 }: ISnackbarProps) => {
   Snackbar.show({
     text: indicationMessage,

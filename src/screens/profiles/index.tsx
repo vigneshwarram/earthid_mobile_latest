@@ -26,7 +26,7 @@ interface IHomeScreenProps {
 }
 
 const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
-  const contractDetails = useAppSelector((state) => state.contract);
+  const userDetails = useAppSelector((state) => state.contract);
 
   const isDrawerOpen = useDrawerStatus() === "open";
   if (isDrawerOpen) {
@@ -86,7 +86,7 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
   };
 
   const emailVerifyAction = () => {
-    if (!contractDetails?.responseData?.emailApproved) {
+    if (!userDetails?.responseData?.emailApproved) {
       navigation.navigate("OTPScreen", { type: "email" });
     }
   };
@@ -127,7 +127,7 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
               {SCREENS.HOMESCREEN.appName}
             </Text>
             <Text style={[styles.label, { fontSize: 16 }]}>
-              {contractDetails?.responseData?.earthId}
+              {userDetails?.responseData?.earthId}
             </Text>
           </View>
           <CircularProgress
@@ -140,7 +140,7 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
         <View style={styles.category}>
           <Info
             title={"fullname"}
-            subtitle={contractDetails?.responseData?.name}
+            subtitle={userDetails?.responseData?.name}
             style={{
               title: styles.title,
               subtitle: styles.subtitle,
@@ -158,11 +158,9 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
           />
           <Info
             title={"mobileno"}
-            subtitle={contractDetails?.responseData?.mobile}
+            subtitle={userDetails?.responseData?.mobile}
             subtitleRowText={
-              contractDetails?.responseData?.mobileApproved
-                ? "verified"
-                : "verify"
+              userDetails?.responseData?.mobileApproved ? "verified" : "verify"
             }
             style={{
               title: styles.title,
@@ -171,7 +169,7 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
               subtitleNearText: [
                 styles.subtitleNearText,
                 {
-                  color: contractDetails?.responseData?.mobileApproved
+                  color: userDetails?.responseData?.mobileApproved
                     ? Screens.success
                     : "red",
                 },
@@ -181,11 +179,9 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
           <Info
             subTitlePress={emailVerifyAction}
             title={"email"}
-            subtitle={contractDetails?.responseData?.email}
+            subtitle={userDetails?.responseData?.email}
             subtitleRowText={
-              contractDetails?.responseData?.emailApproved
-                ? "verified"
-                : "verify"
+              userDetails?.responseData?.emailApproved ? "verified" : "verify"
             }
             style={{
               title: styles.title,
@@ -194,7 +190,7 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
               subtitleNearText: [
                 styles.subtitleNearText,
                 {
-                  color: contractDetails?.responseData?.emailApproved
+                  color: userDetails?.responseData?.emailApproved
                     ? Screens.success
                     : "red",
                 },

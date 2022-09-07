@@ -24,7 +24,7 @@ import DocumentMask from "../uploadDocuments/DocumentMask";
 const LivenessCameraScreen = (props: any) => {
   const [maskedColor, setmaskedColor] = useState("#fff");
   const [data, setData] = useState();
-  const contractDetails = useAppSelector((state) => state.contract);
+  const userDetails = useAppSelector((state) => state.contract);
   // Initial state of variables
   let rightEyeOpen: any[] = [];
   let camera: {
@@ -122,7 +122,7 @@ const LivenessCameraScreen = (props: any) => {
     const detectedFace = data.base64;
     const deviceId = getDeviceId();
     const requestBody = {
-      earthId: contractDetails?.responseData?.earthId,
+      earthId: userDetails?.responseData?.earthId,
       deviceId: deviceId,
       faceImage: detectedFace,
     };

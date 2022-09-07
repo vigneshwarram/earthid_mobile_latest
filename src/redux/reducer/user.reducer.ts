@@ -1,3 +1,4 @@
+import { SnackBar } from "../../components/SnackBar";
 import { ACTION_TYPES } from "../actions/types";
 const initialState = {
   isLoading: false,
@@ -44,12 +45,14 @@ export const accountReducer = (state = {}, { type, payload }: any) => {
         ...state,
         ...payload,
         isAccountCreatedSuccess: true,
+        isLoading: false,
         isAccountCreatedFailure: false,
       };
     case ACTION_TYPES.CREATED_ACCOUNT_ERROR:
       return {
         ...state,
         ...payload,
+        isLoading: false,
         isAccountCreatedSuccess: false,
         isAccountCreatedFailure: true,
       };
@@ -64,22 +67,22 @@ export const contractReducer = (state = {}, { type, payload }: any) => {
       return {
         ...state,
         isLoading: true,
-        isContractCreatedSuccessfull: false,
-        isContractCreatedFailure: false,
+        isUserDetailsCreatedSuccessfull: false,
+        isUserDetailsCreatedFailure: false,
       };
     case ACTION_TYPES.CONTRACT_CALL_RESPONSE:
       return {
         ...state,
         ...payload,
-        isContractCreatedSuccessfull: true,
-        isContractCreatedFailure: false,
+        isUserDetailsCreatedSuccessfull: true,
+        isUserDetailsCreatedFailure: false,
       };
     case ACTION_TYPES.CONTRACT_CALL_ERROR:
       return {
         ...state,
         ...payload,
-        isContractCreatedSuccessfull: false,
-        isContractCreatedFailure: true,
+        isUserDetailsCreatedSuccessfull: false,
+        isUserDetailsCreatedFailure: true,
       };
     default:
       return state;

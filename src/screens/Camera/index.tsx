@@ -59,7 +59,7 @@ const CameraScreen = (props: any) => {
   const { loading: sendDataLoading, fetch: sendDataFetch } = useSendData();
 
   const dispatch = useAppDispatch();
-  const contractDetails = useAppSelector((state) => state.contract);
+  const userDetails = useAppSelector((state) => state.contract);
   const [successResponse, setsuccessResponse] = useState(false);
   const [isDocumentModal, setisDocumentModal] = useState(false);
   const documentsDetailsList = useAppSelector((state) => state.Documents);
@@ -182,13 +182,13 @@ const CameraScreen = (props: any) => {
   const getData = () => {
     if (barCodeDataDetails) {
       const encrypted_object = {
-        earthId: contractDetails?.responseData?.earthId,
-        fname: contractDetails?.responseData?.name,
-        userEmail: contractDetails?.responseData?.email,
-        userMobileNo: contractDetails?.responseData?.mobile,
-        emailVerified: contractDetails?.responseData?.emailApproved,
+        earthId: userDetails?.responseData?.earthId,
+        fname: userDetails?.responseData?.name,
+        userEmail: userDetails?.responseData?.email,
+        userMobileNo: userDetails?.responseData?.mobile,
+        emailVerified: userDetails?.responseData?.emailApproved,
         trustScore: "33",
-        mobileVerified: contractDetails?.responseData?.mobileApproved,
+        mobileVerified: userDetails?.responseData?.mobileApproved,
         pressed: false,
         dob: "22/02/1995",
         requestType: barCodeDataDetails?.requestType,
@@ -205,7 +205,7 @@ const CameraScreen = (props: any) => {
         testnet: true,
         encrypted_object: {
           ciphertext,
-          earthId: contractDetails?.responseData?.earthId,
+          earthId: userDetails?.responseData?.earthId,
         },
       };
       sendDataFetch(userDataApi, data, "POST");

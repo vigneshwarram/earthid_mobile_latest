@@ -1,11 +1,11 @@
 // @ts-ignore
-const EARTHID_DEV_BASE = "https://api-stage.myearth.id";
+const EARTHID_DEV_BASE = "http://35.154.54.127:3000";
 const EARTHID_PROD_BASE = "https://api.myearth.id";
 
 export const URI = {
   ACCOUNT: {
     GENERATE_KEYS: `${EARTHID_DEV_BASE}/contract/generateKeys`,
-    CREATE_ACCOUNT: `${EARTHID_DEV_BASE}/authorize/createAccount`,
+    CREATE_ACCOUNT: `${EARTHID_DEV_BASE}/user/manualRegistration`,
     CONTRACT_CALL: `${EARTHID_DEV_BASE}/contract/functionCall`,
   },
 };
