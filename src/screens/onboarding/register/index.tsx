@@ -98,7 +98,6 @@ const Register = ({ navigation }: IRegister) => {
     if (
       !nameValidator(firstName, true).hasError &&
       !nameValidator(lastName, true).hasError &&
-      !nameValidator(dateOfBirth, true).hasError &&
       !emailValidator(email, true).hasError
     ) {
       return true;
@@ -221,7 +220,7 @@ const Register = ({ navigation }: IRegister) => {
               value={lastName}
               onChangeText={lastNameChangeHandler}
             />
-            <Info
+            {/* <Info
               title={"dob"}
               style={{
                 title: styles.title,
@@ -243,7 +242,7 @@ const Register = ({ navigation }: IRegister) => {
               isFocused={dateOfBirthFocus}
               value={dateOfBirth}
               onChangeText={dateOfBirthChangeHandler}
-            />
+            /> */}
             <Info
               title={"mobileno"}
               style={{
