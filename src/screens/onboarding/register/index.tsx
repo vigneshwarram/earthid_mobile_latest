@@ -13,7 +13,10 @@ import PhoneInput from "react-native-phone-number-input";
 import useFormInput from "../../../hooks/use-text-input";
 import { emailValidator, nameValidator } from "../../../utils/inputValidations";
 import Loader from "../../../components/Loader";
-import { createAccount } from "../../../redux/actions/authenticationAction";
+import {
+  createAccount,
+  GeneratedKeysAction,
+} from "../../../redux/actions/authenticationAction";
 import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
 import { IUserAccountRequest } from "../../../typings/AccountCreation/IUserAccount";
 import { getDeviceId, getDeviceName } from "../../../utils/encryption";
@@ -29,6 +32,7 @@ const Register = ({ navigation }: IRegister) => {
   const dispatch = useAppDispatch();
   const [mobileNumber, setmobileNumber] = useState<string>("");
   const userDetails = useAppSelector((state) => state.account);
+  const keys = useAppSelector((state) => state.user);
   const [successResponse, setsuccessResponse] = useState(false);
   const [openDatePicker, setopenDatePicker] = useState<boolean>();
   const [callingCode, setcallingCode] = useState<string>("+91");
@@ -79,23 +83,9 @@ const Register = ({ navigation }: IRegister) => {
     inputBlurHandler: emailBlurHandler,
   } = useFormInput("", true, emailValidator);
 
-  const _navigateAction = async () => {
+  const _navigateAction = () => {
     if (isValid()) {
-      const token = await getDeviceId();
-      const deviceName = await getDeviceName();
-      const payLoad: IUserAccountRequest = {
-        firstName: firstName,
-        lastName: lastName,
-        deviceID: token + Math.random(),
-        deviceIMEI: token,
-        deviceName: deviceName,
-        email: email,
-        phone: mobileNumber,
-        countryCode: callingCode,
-        deviceOS: Platform.OS === "android" ? "android" : "ios",
-      };
-
-      dispatch(createAccount(payLoad));
+      dispatch(GeneratedKeysAction());
     } else {
       console.log("its coming");
       firstNameBlurHandler();
@@ -119,7 +109,28 @@ const Register = ({ navigation }: IRegister) => {
   const onDatePickerOpen = () => {
     setopenDatePicker(true);
   };
-  console.log("userDetails", userDetails);
+  const _registerAction = async ({ publicKey }: any) => {
+    const token = await getDeviceId();
+    const deviceName = await getDeviceName();
+    const payLoad: IUserAccountRequest = {
+      firstName: firstName,
+      lastName: lastName,
+      deviceID: token + Math.random(),
+      deviceIMEI: token,
+      deviceName: deviceName,
+      email: email,
+      phone: mobileNumber,
+      countryCode: callingCode,
+      publicKey,
+      deviceOS: Platform.OS === "android" ? "android" : "ios",
+    };
+    dispatch(createAccount(payLoad));
+  };
+  if (keys && keys?.isGeneratedKeySuccess) {
+    keys.isGeneratedKeySuccess = false;
+    _registerAction(keys?.responseData?.result);
+  }
+
   if (userDetails && userDetails?.isAccountCreatedSuccess) {
     userDetails.isAccountCreatedSuccess = false;
     console.log("userDetails", userDetails);

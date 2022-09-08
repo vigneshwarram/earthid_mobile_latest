@@ -8,4 +8,5 @@ export interface IUserAccountRequest {
   phone: string;
   countryCode: string;
   deviceOS: string;
+  publicKey: string;
 }

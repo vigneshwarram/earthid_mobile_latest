@@ -19,7 +19,7 @@ interface IHomeScreenProps {
 }
 
 const HomeScreen = ({ navigation }: IHomeScreenProps) => {
-  const userDetails = useAppSelector((state) => state.contract);
+  const userDetails = useAppSelector((state) => state.account);
   const _toggleDrawer = () => {
     navigation.openDrawer();
   };
@@ -90,7 +90,11 @@ const HomeScreen = ({ navigation }: IHomeScreenProps) => {
           rewardPoints={"50"}
           rightIconSource={LocalImages.giftBoxImage}
           isAvatar
-          profileName={userDetails?.responseData?.name}
+          profileName={
+            userDetails?.responseData?.firstName +
+            " " +
+            userDetails?.responseData?.lastName
+          }
           avatarClick={_avatarClick}
           onpress={() => {
             _toggleDrawer();

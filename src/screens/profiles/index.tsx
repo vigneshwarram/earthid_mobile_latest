@@ -26,7 +26,7 @@ interface IHomeScreenProps {
 }
 
 const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
-  const userDetails = useAppSelector((state) => state.contract);
+  const userDetails = useAppSelector((state) => state.account);
 
   const isDrawerOpen = useDrawerStatus() === "open";
   if (isDrawerOpen) {
@@ -139,26 +139,26 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
         </View>
         <View style={styles.category}>
           <Info
-            title={"fullname"}
-            subtitle={userDetails?.responseData?.name}
+            title={"UserName"}
+            subtitle={
+              userDetails?.responseData?.firstName +
+              " " +
+              userDetails?.responseData?.lastName
+            }
             style={{
               title: styles.title,
               subtitle: styles.subtitle,
               container: styles.textContainer,
             }}
           />
-          <Info
-            title={"dob"}
-            subtitle={"22/02/1995"}
-            style={{
-              title: styles.title,
-              subtitle: styles.subtitle,
-              container: styles.textContainer,
-            }}
-          />
+
           <Info
             title={"mobileno"}
-            subtitle={userDetails?.responseData?.mobile}
+            subtitle={
+              userDetails?.responseData?.countryCode +
+              " " +
+              userDetails?.responseData?.phone
+            }
             subtitleRowText={
               userDetails?.responseData?.mobileApproved ? "verified" : "verify"
             }
@@ -330,7 +330,7 @@ const styles = StyleSheet.create({
     color: Screens.black,
   },
   category: {
-    flex: 1,
+    flex: 0.8,
     backgroundColor: Screens.pureWhite,
     padding: 10,
     marginVertical: 20,

@@ -21,7 +21,9 @@ export const GeneratedKeysAction =
       dispatch({
         type: ACTION_TYPES.GENERATED_KEYS_LOADING,
       });
-      const response = await getCall(generateKeyUrl);
+      const response = await getCall(
+        "https://api-stage.myearth.id/contract/generateKeys"
+      );
       responseData = await _responseHandler(response);
       dispatch({
         type: ACTION_TYPES.GENERATED_KEYS_RESPONSE,

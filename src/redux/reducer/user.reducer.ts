@@ -17,6 +17,7 @@ export const userReducer = (state = initialState, { type, payload }: any) => {
       return {
         ...state,
         ...payload,
+        isLoading: false,
         isGeneratedKeySuccess: true,
         isGeneratedKeyError: false,
       };
@@ -24,6 +25,7 @@ export const userReducer = (state = initialState, { type, payload }: any) => {
       return {
         ...state,
         ...payload,
+        isLoading: false,
         isGeneratedKeySuccess: false,
         isGeneratedKeyError: true,
       };
