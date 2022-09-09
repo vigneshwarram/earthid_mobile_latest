@@ -2,15 +2,8 @@ import { Platform, Alert } from "react-native";
 import CryptoJS from "react-native-crypto-js";
 
 export const isTestnet = true;
-const BASE_URL =
-  isTestnet === true
-    ? "https://api-stage.myearth.id"
-    : // ? "http://192.168.0.108:3069" // already available
-      // ? "http://192.168.7.27:3069" // my local IP
-      // ? "http://15.207.193.210:3069" // new base url
-      "https://api.myearth.id";
-console.log("BASE_URL -->", BASE_URL);
-export const api = BASE_URL + "/otp/sendOTP";
+const BASE_URL = "http://35.154.54.127:3000";
+export const api = BASE_URL + "/verification/sendEmailOTP";
 export const changeContactApi = BASE_URL + "/otp/sendOTPChangeRequest";
 export const createAccountApi = BASE_URL + "/authorize/createAccount";
 export const getRecordByTxApi = BASE_URL + "/authorize/getRecordByTx?txId";

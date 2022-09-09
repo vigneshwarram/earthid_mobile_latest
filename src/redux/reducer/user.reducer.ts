@@ -94,9 +94,28 @@ export const contractReducer = (state = {}, { type, payload }: any) => {
 export const approveOTPReducer = (state = {}, { type, payload }: any) => {
   switch (type) {
     case ACTION_TYPES.APPROVE_OTP:
-      return { ...state, isLoading: true };
+      return {
+        ...state,
+        isApproveLoading: true,
+        isApproveOtpSuccess: false,
+        isApproveOtpFailure: false,
+      };
     case ACTION_TYPES.APPROVEOTP_RESPONSE:
-      return { ...state, ...payload };
+      return {
+        ...state,
+        ...payload,
+        isApproveLoading: false,
+        isApproveOtpSuccess: true,
+        isApproveOtpFailure: false,
+      };
+    case ACTION_TYPES.APPROVEOTP_ERROR:
+      return {
+        ...state,
+        ...payload,
+        isApproveLoading: false,
+        isApproveOtpSuccess: false,
+        isApproveOtpFailure: true,
+      };
     default:
       return state;
   }

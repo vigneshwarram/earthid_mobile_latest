@@ -21,9 +21,14 @@ const useFetch = (): IResponse => {
           ? await postCall(url, reuestData)
           : await getCall(url);
       console.log("response", response);
-      const JsonResponse = await response.json();
-      console.log("JsonResponse", JsonResponse);
-      setData(JsonResponse);
+      if (response.status === 201 || response.status === 200) {
+        const JsonResponse = await response.json();
+        console.log("JsonResponse", JsonResponse);
+        setData(JsonResponse);
+      } else {
+        const JsonResponse = await response.json();
+        throw new Error(JsonResponse.message);
+      }
     } catch (error) {
       console.log("error", error);
       serError(error);

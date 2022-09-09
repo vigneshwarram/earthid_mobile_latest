@@ -86,9 +86,7 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
   };
 
   const emailVerifyAction = () => {
-    if (!userDetails?.responseData?.emailApproved) {
-      navigation.navigate("OTPScreen", { type: "email" });
-    }
+    navigation.navigate("OTPScreen", { type: "email" });
   };
 
   const navigateToCustomizedControl = () => {

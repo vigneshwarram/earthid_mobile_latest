@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import { View, StyleSheet, Text, ScrollView, Image } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, StyleSheet, ScrollView, Image } from "react-native";
 import Header from "../../../../components/Header";
 import { SCREENS } from "../../../../constants/Labels";
 import { Screens } from "../../../../themes";
@@ -8,13 +8,12 @@ import SmoothPinCodeInput from "react-native-smooth-pincode-input";
 import { LocalImages } from "../../../../constants/imageUrlConstants";
 import { useFetch } from "../../../../hooks/use-fetch";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/hooks";
-import { api, MD5 } from "../../../../utils/earthid_account";
+import { api } from "../../../../utils/earthid_account";
 import AnimatedLoader from "../../../../components/Loader/AnimatedLoader";
 import SuccessPopUp from "../../../../components/Loader";
 import {
   approveOTP,
   byPassUserDetailsRedux,
-  contractCall,
 } from "../../../../redux/actions/authenticationAction";
 import GenericText from "../../../../components/Text";
 
@@ -28,11 +27,10 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
     navigation.navigate("ConfirmPincode");
   };
   const dispatch = useAppDispatch();
-  const userDetails = useAppSelector((state) => state.contract);
-  const accountDetails = useAppSelector((state) => state.account);
-  const getGeneratedKeys = useAppSelector((state) => state.user);
+  const userDetails = useAppSelector((state) => state.account);
+
   const ApproveOtpResponse = useAppSelector((state) => state.ApproveOtp);
-  console.log("userDetails", userDetails);
+
   const { type } = route.params;
   const { loading, data, error, fetch } = useFetch();
   const [code, setCode] = useState();
@@ -41,49 +39,37 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
   };
   const sendOtp = () => {
     var postData = {
-      type: type,
-      value: userDetails?.responseData?.email,
+      email: userDetails?.responseData?.email,
       earthId: userDetails?.responseData?.earthId,
-      publicKey: getGeneratedKeys?.responseData?.publicKey,
-      testnet: true,
+      publicKey: userDetails?.responseData?.publicKey,
     };
     fetch(api, postData, "POST");
   };
 
   useEffect(() => {
-    if (!data) {
-      console.log("data", data);
-      sendOtp();
-    }
+    console.log("data", data);
+
+    sendOtp();
   }, [data]);
+  console.log("ApproveOtpResponse", ApproveOtpResponse);
+  if (ApproveOtpResponse?.isApproveOtpSuccess) {
+    ApproveOtpResponse.isApproveOtpSuccess = false;
+    let isEmailApproved = true;
+    let overallResponseData = {
+      ...userDetails.responseData,
+      ...{ emailApproved: isEmailApproved },
+    };
 
-  useEffect(() => {
-    if (ApproveOtpResponse?.responseData) {
-      let isEmailApproved = ApproveOtpResponse.responseData[1];
-      let overallResponseData = {
-        ...userDetails.responseData,
-        ...{ emailApproved: isEmailApproved },
-      };
-
-      dispatch(byPassUserDetailsRedux(overallResponseData)).then(() => {
-        navigation.navigate("ProfileScreen");
-      });
-    }
-  }, [ApproveOtpResponse]);
+    dispatch(byPassUserDetailsRedux(overallResponseData)).then(() => {
+      navigation.navigate("ProfileScreen");
+    });
+  }
 
   const approveOtp = () => {
-    let encryptedOTP = MD5(getGeneratedKeys?.responseData?.publicKey + code);
     const request = {
-      functionName: "approveOTP",
-      functionParams: [
-        userDetails?.responseData?.earthId,
-        type === "mobile" ? "1" : "2",
-        encryptedOTP.toString(),
-      ],
-      isViewOnly: false,
-      accountId: accountDetails?.responseData.toString().split(".")[2],
-      privateKey: getGeneratedKeys?.responseData.privateKey,
-      publicKey: getGeneratedKeys?.responseData.publicKey,
+      otp: code,
+      earthId: userDetails?.responseData?.earthId,
+      publicKey: userDetails?.responseData?.publicKey,
     };
     dispatch(approveOTP(request));
   };
@@ -178,13 +164,13 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
             title={"SUBMIT"}
           ></Button>
           <AnimatedLoader
-            isLoaderVisible={loading || ApproveOtpResponse.isLoading}
+            isLoaderVisible={ApproveOtpResponse.isApproveLoading}
             loadingText="Loading..."
           />
-          <SuccessPopUp
-            isLoaderVisible={ApproveOtpResponse?.responseData ? true : false}
+          {/* <SuccessPopUp
+            isLoaderVisible={ApproveOtpResponse.isLoading}
             loadingText={"Email verification succeeded"}
-          />
+          /> */}
         </View>
       </ScrollView>
     </View>

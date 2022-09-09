@@ -9,7 +9,7 @@ const {
   ACCOUNT: {
     CREATE_ACCOUNT: createAccountUrl,
     GENERATE_KEYS: generateKeyUrl,
-    CONTRACT_CALL: contractUrl,
+    APPROVE_EMAIL_OTP: approveOTPEmail,
   },
 } = URI;
 
@@ -74,31 +74,31 @@ export const createAccount =
     }
   };
 
-export const contractCall =
-  (requestPayload: any) =>
-  async (dispatch: any): Promise<any> => {
-    let responseData, userDetails;
-    try {
-      dispatch({
-        type: ACTION_TYPES.CONTRACT_CALL,
-      });
-      const response = await postCall(contractUrl, requestPayload);
-      responseData = await _responseHandler(response);
-      userDetails = getUserDetails(responseData);
-      dispatch({
-        type: ACTION_TYPES.CONTRACT_CALL_RESPONSE,
-        payload: {
-          isLoading: false,
-          responseData: userDetails,
-        },
-      });
-    } catch (error) {
-      dispatch({
-        type: ACTION_TYPES.CONTRACT_CALL_ERROR,
-      });
-      console.log("Contarct API catch ===>", error);
-    }
-  };
+// export const contractCall =
+//   (requestPayload: any) =>
+//   async (dispatch: any): Promise<any> => {
+//     let responseData, userDetails;
+//     try {
+//       dispatch({
+//         type: ACTION_TYPES.CONTRACT_CALL,
+//       });
+//       const response = await postCall(contractUrl, requestPayload);
+//       responseData = await _responseHandler(response);
+//       userDetails = getUserDetails(responseData);
+//       dispatch({
+//         type: ACTION_TYPES.CONTRACT_CALL_RESPONSE,
+//         payload: {
+//           isLoading: false,
+//           responseData: userDetails,
+//         },
+//       });
+//     } catch (error) {
+//       dispatch({
+//         type: ACTION_TYPES.CONTRACT_CALL_ERROR,
+//       });
+//       console.log("Contarct API catch ===>", error);
+//     }
+//   };
 
 export const approveOTP =
   (requestPayload: any) =>
@@ -108,25 +108,31 @@ export const approveOTP =
       dispatch({
         type: ACTION_TYPES.APPROVE_OTP,
       });
-      const response = await postCall(contractUrl, requestPayload);
-
+      const response = await postCall(approveOTPEmail, requestPayload);
       responseData = await _responseHandler(response);
+
+      dispatch({
+        type: ACTION_TYPES.APPROVEOTP_RESPONSE,
+        payload: {
+          responseData,
+          errorMesssage: "",
+        },
+      });
     } catch (error) {
-      console.log("Approve OTP API===>", error);
+      console.log("error", error);
+      dispatch({
+        type: ACTION_TYPES.APPROVEOTP_ERROR,
+        payload: {
+          errorMesssage: error,
+        },
+      });
     }
-    dispatch({
-      type: ACTION_TYPES.APPROVEOTP_RESPONSE,
-      payload: {
-        isLoading: false,
-        responseData,
-      },
-    });
   };
 export const byPassUserDetailsRedux =
   (userDetails: any) =>
   async (dispatch: any): Promise<any> => {
     dispatch({
-      type: ACTION_TYPES.CONTRACT_CALL_RESPONSE,
+      type: ACTION_TYPES.CREATED_ACCOUNT_RESPONSE,
       payload: {
         isLoading: false,
         responseData: userDetails,
@@ -158,9 +164,11 @@ const _responseHandler = async (response: any): Promise<any> => {
   return new Promise(async (resolve, reject) => {
     if (response.status === 200 || response.status === 201) {
       const responseData = await response.json();
+
       return resolve(responseData);
     } else {
       const responseData = await response.json();
+      console.log("coming==>", "comingerror");
       SnackBar({
         indicationMessage: responseData?.message,
       });

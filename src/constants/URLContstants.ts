@@ -5,6 +5,7 @@ export const URI = {
   ACCOUNT: {
     GENERATE_KEYS: `${EARTHID_DEV_BASE}/contract/generateKeys`,
     CREATE_ACCOUNT: `${EARTHID_DEV_BASE}/user/registration`,
+    APPROVE_EMAIL_OTP: `${EARTHID_DEV_BASE}/verification/emailVerify`,
     CONTRACT_CALL: `${EARTHID_DEV_BASE}/contract/functionCall`,
   },
 };
