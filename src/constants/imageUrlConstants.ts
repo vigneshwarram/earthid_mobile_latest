@@ -41,6 +41,7 @@ export const LocalImages = {
   translateImage: require("../../resources/images/translate.png"),
   facedetection: require("../../resources/images/facedetection.png"),
   fingerprint: require("../../resources/images/fingerprint.png"),
+  editIcon: require("../../resources/images/editIcon.png"),
 
   //categories
   CATEGORIES: {

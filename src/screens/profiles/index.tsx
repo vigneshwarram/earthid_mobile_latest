@@ -85,6 +85,11 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
     setisCameraOptionVisible(true);
   };
 
+
+  const mobileVerifyAction = () => {
+    navigation.navigate("OTPScreen", { type: "phone" });
+  };
+
   const emailVerifyAction = () => {
     navigation.navigate("OTPScreen", { type: "email" });
   };
@@ -151,6 +156,8 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
           />
 
           <Info
+          tailIcon={LocalImages.editIcon}
+          subTitlePress={mobileVerifyAction}
             title={"mobileno"}
             subtitle={
               userDetails?.responseData?.countryCode +
@@ -175,6 +182,7 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
             }}
           />
           <Info
+            tailIcon={LocalImages.editIcon}
             subTitlePress={emailVerifyAction}
             title={"email"}
             subtitle={userDetails?.responseData?.email}

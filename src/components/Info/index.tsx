@@ -1,6 +1,6 @@
 import React from "react";
-import { StyleSheet, View, Text, Image } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { StyleSheet, View, Text, Image, Dimensions ,TouchableOpacity} from "react-native";
+import { DEVICE } from "../../constants";
 import { LocalImages } from "../../constants/imageUrlConstants";
 import { Screens } from "../../themes";
 import GenericText from "../Text";
@@ -19,6 +19,8 @@ const Info = ({
   titleIcon,
   subtitleRowText,
   subTitlePress,
+  tailIcon,
+  tailIconPress,
 }: IInfoProps) => (
   <View style={[styles.container, style.container]}>
     {title && (
@@ -26,6 +28,7 @@ const Info = ({
         <View>
           <GenericText style={[styles.title, style.title]}>{title}</GenericText>
           {subtitle && (
+            <View style={{justifyContent:"space-between",flexDirection:"row"}}>
             <View style={styles.titleTextContainer}>
               <GenericText style={[styles.subtitle, style.subtitle]}>{subtitle}</GenericText>
               {subtitleRowText && (
@@ -52,6 +55,23 @@ const Info = ({
                   </View>
                 </TouchableOpacity>
               )}
+            </View>
+
+            {tailIcon && (
+          
+              <TouchableOpacity
+              onPress={tailIconPress}
+              style={{position:"absolute",right:0}}
+              >
+              <Image
+              style={{position:"absolute",right:0}}
+                resizeMode="contain"
+                source={tailIcon}
+              ></Image>
+              </TouchableOpacity>
+            
+          )}
+
             </View>
           )}
           {titleIcon && (
@@ -83,6 +103,7 @@ const styles = StyleSheet.create({
   },
   titleTextContainer: {
     flexDirection: "row",
+    width:"100%",
   },
   imageContainer: {
     position: "absolute",

@@ -8,7 +8,7 @@ import SmoothPinCodeInput from "react-native-smooth-pincode-input";
 import { LocalImages } from "../../../../constants/imageUrlConstants";
 import { useFetch } from "../../../../hooks/use-fetch";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/hooks";
-import { api } from "../../../../utils/earthid_account";
+import { api, changeContactApi } from "../../../../utils/earthid_account";
 import AnimatedLoader from "../../../../components/Loader/AnimatedLoader";
 import SuccessPopUp from "../../../../components/Loader";
 import {
@@ -39,31 +39,44 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
   };
   const sendOtp = () => {
     var postData = {
+    
       email: userDetails?.responseData?.email,
+      phone: userDetails?.responseData?.phone,
       earthId: userDetails?.responseData?.earthId,
       publicKey: userDetails?.responseData?.publicKey,
     };
     fetch(api, postData, "POST");
   };
 
+  const sendPhoneOtp = () => {
+    var postPhoneData = {
+      phone: userDetails?.responseData?.phone,
+      earthId: userDetails?.responseData?.earthId,
+      publicKey: userDetails?.responseData?.publicKey,
+    };
+    fetch(changeContactApi, postPhoneData, "POST");
+  };
+
   useEffect(() => {
     console.log("data", data);
-
-    sendOtp();
+    if(type =="phone"){
+      sendPhoneOtp()
+    }else if(type =="email"){
+      sendOtp();
+    } 
   }, [data]);
   console.log("ApproveOtpResponse", ApproveOtpResponse);
-  if (ApproveOtpResponse?.isApproveOtpSuccess) {
-    ApproveOtpResponse.isApproveOtpSuccess = false;
-    let isEmailApproved = true;
-    let overallResponseData = {
-      ...userDetails.responseData,
-      ...{ emailApproved: isEmailApproved },
-    };
-
-    dispatch(byPassUserDetailsRedux(overallResponseData)).then(() => {
-      navigation.navigate("ProfileScreen");
-    });
-  }
+  // if (ApproveOtpResponse?.isApproveOtpSuccess) {
+  // //  ApproveOtpResponse.isApproveOtpSuccess = false;
+  //   let isEmailApproved = true;
+  //   let overallResponseData = {
+  //     ...userDetails.responseData,
+  //     ...{ emailApproved: isEmailApproved },
+  //   };
+  //   dispatch(byPassUserDetailsRedux(overallResponseData)).then(() => {
+  //     navigation.navigate("ProfileScreen");
+  //   });
+  // }
 
   const approveOtp = () => {
     const request = {
@@ -72,7 +85,21 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
       publicKey: userDetails?.responseData?.publicKey,
     };
     dispatch(approveOTP(request));
+    let isEmailApproved = true;
+    let overallResponseData = {
+      ...userDetails.responseData,
+      ...{ emailApproved: isEmailApproved },
+    };
+    setTimeout(() => {
+      if(isEmailApproved==true){
+        dispatch(byPassUserDetailsRedux(overallResponseData)).then(() => {
+          navigation.navigate("ProfileScreen");
+        });
+      } 
+    }, 3000);
   };
+
+
   return (
     <View style={styles.sectionContainer}>
       <ScrollView contentContainerStyle={styles.sectionContainer}>
@@ -132,6 +159,8 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
               {SCREENS.SECURITYSCREEN.passcordInstructions}
             </GenericText>
           </View>
+          <View style={{alignSelf:"center"}}>
+
           <SmoothPinCodeInput
             cellStyle={{
               borderWidth: 0.5,
@@ -148,6 +177,7 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
             value={code}
             onTextChange={onPinCodeChange}
           />
+          </View>
           <Button
             onPress={approveOtp}
             style={{
