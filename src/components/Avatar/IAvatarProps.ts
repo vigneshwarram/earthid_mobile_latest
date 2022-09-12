@@ -6,4 +6,5 @@ export interface IAvatarProps {
   isProfileAvatar?: boolean;
   absoluteCircleInnerImage?: any;
   avatarClick?: any;
+  isCategory?: boolean;
 }

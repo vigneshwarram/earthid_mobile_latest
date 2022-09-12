@@ -1,9 +1,16 @@
 import { values } from "lodash";
 import React, { useEffect } from "react";
-import { View, StyleSheet, Text, FlatList, Alert } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  FlatList,
+  ScrollView,
+  Image,
+} from "react-native";
 import CircularProgress from "react-native-circular-progress-indicator";
 import { EventRegister } from "react-native-event-listeners";
-import { ScrollView } from "react-native-gesture-handler";
+
 import Avatar from "../../../components/Avatar";
 import Card from "../../../components/Card";
 import Header from "../../../components/Header";
@@ -42,6 +49,7 @@ const HomeScreen = ({ navigation }: IHomeScreenProps) => {
   const _renderItem = ({ item }: any) => {
     return (
       <Avatar
+        isCategory={true}
         isUploaded={false}
         text={item.title}
         iconSource={item.uri}
@@ -83,65 +91,74 @@ const HomeScreen = ({ navigation }: IHomeScreenProps) => {
 
   const _keyExtractor = ({ title }: any) => title.toString();
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-      <View style={styles.sectionContainer}>
-        <Header
-          leftIconSource={LocalImages.logoImage}
-          rewardPoints={"50"}
-          rightIconSource={LocalImages.giftBoxImage}
-          isAvatar
-          profileName={
-            userDetails?.responseData?.firstName +
-            " " +
-            userDetails?.responseData?.lastName
-          }
-          avatarClick={_avatarClick}
-          onpress={() => {
-            _toggleDrawer();
-          }}
-          linearStyle={styles.linearStyle}
-        ></Header>
-        <View style={styles.flatPanel}>
-          <View style={styles.alignCenter}>
-            <Text style={[styles.label, { fontSize: 12 }]}>
-              {SCREENS.HOMESCREEN.appName}
-            </Text>
-            <Text style={[styles.label, { fontSize: 16 }]}>
-              {userDetails?.responseData?.earthId}
-            </Text>
-          </View>
-          <CircularProgress
-            value={60}
-            radius={30}
-            activeStrokeWidth={5}
-            activeStrokeColor={Screens.colors.primary}
-          />
-        </View>
-        <GenericText style={[styles.categoryHeaderText, { fontSize: 13 }]}>
-          {SCREENS.HOMESCREENTITLES.CATEGORIES}
-        </GenericText>
-        <View style={[styles.flatPanel, { height: 130, marginTop: -10 }]}>
-          <FlatList<any>
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            data={categoryList}
-            renderItem={_renderItem}
-            keyExtractor={_keyExtractor}
-          />
-        </View>
-        <GenericText style={[styles.categoryHeaderText, { fontSize: 13 }]}>
-          {SCREENS.HOMESCREEN.documentLabel}
-        </GenericText>
+    <View style={styles.sectionContainer}>
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{
+          flexGrow: 1,
+          paddingBottom: 200,
+          backgroundColor: "#fff",
+        }}
+      >
         <View>
-          <FlatList<any>
+          <Header
+            leftIconSource={LocalImages.logoImage}
+            rewardPoints={"50"}
+            rightIconSource={LocalImages.giftBoxImage}
+            isAvatar
+            avatarClick={_avatarClick}
+            onpress={() => {
+              _toggleDrawer();
+            }}
+            linearStyle={styles.linearStyle}
+          ></Header>
+          <View style={styles.flatPanel}>
+            <View style={styles.alignCenter}>
+              <Text style={[styles.label, { fontSize: 12 }]}>
+                {SCREENS.HOMESCREEN.appName}
+              </Text>
+              <Text style={[styles.label, { fontSize: 16 }]}>
+                {userDetails?.responseData?.earthId}
+              </Text>
+            </View>
+            <CircularProgress
+              value={60}
+              radius={30}
+              activeStrokeWidth={5}
+              activeStrokeColor={Screens.colors.primary}
+            />
+          </View>
+          <GenericText style={[styles.categoryHeaderText, { fontSize: 13 }]}>
+            {SCREENS.HOMESCREENTITLES.CATEGORIES}
+          </GenericText>
+          <View style={[styles.flatPanel, { height: 130, marginTop: -10 }]}>
+            <FlatList<any>
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              data={categoryList}
+              renderItem={_renderItem}
+              keyExtractor={_keyExtractor}
+            />
+          </View>
+          <GenericText style={[styles.categoryHeaderText, { fontSize: 13 }]}>
+            {SCREENS.HOMESCREEN.documentLabel}
+          </GenericText>
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <Image
+              resizeMode="contain"
+              style={[styles.logoContainer]}
+              source={LocalImages.recent}
+            ></Image>
+            {/* <FlatList<any>
             scrollEnabled={false}
             data={documentList}
             renderItem={_renderItemDocuments}
             keyExtractor={_keyExtractor}
-          />
+          /> */}
+          </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 };
 
@@ -151,7 +168,7 @@ const styles = StyleSheet.create({
     backgroundColor: Screens.colors.background,
   },
   linearStyle: {
-    height: 250,
+    height: 330,
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
     elevation: 4,
@@ -159,6 +176,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 2,
     shadowColor: "#000",
+  },
+  logoContainer: {
+    width: 200,
+    height: 150,
+    resizeMode: "contain",
   },
   flatPanel: {
     marginHorizontal: 25,

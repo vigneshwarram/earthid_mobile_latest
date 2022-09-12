@@ -14,7 +14,7 @@ const persistConfig = {
   key: "root",
   keyPrefix: "",
   storage: AsyncStorage,
-  whitelist: ["contract", "user", "Documents", "saveData"],
+  whitelist: ["contract", "user", "Documents", "saveData", "account"],
 };
 const rootReducer = combineReducers({
   user: userReducer,

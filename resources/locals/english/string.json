@@ -19,7 +19,7 @@
   "education": "Education",
   "insurance": "Insurance",
   "travel": "Travel",
-  "useddocument": "BY MOST FREQUENTLY USED DOCUMENTS",
+  "useddocument": "RECENT ACTIVITY",
   "passport": "Passport",
   "nationalid": "National ID",
   "uploaddoc": "UPLOADED DOCUMENTS",
@@ -85,10 +85,10 @@
   "continue": "Continue",
   "enrollface": "Enroll Face",
   "forbestresults": "For best results, keep the device 20cm to 50cm from your face in an environment that is not too bright or too dim.",
-  "passcordauth":"Passcord Authentication",
-  "plsenterpass":"Please enter your passcode",
-  "plsentervalid":"Please Enter valid code",
-  "submitt":"Submit",
-  "setpass":"Set Passcord",
-  "passcord":"Passcord"
+  "passcordauth": "Passcord Authentication",
+  "plsenterpass": "Please enter your passcode",
+  "plsentervalid": "Please Enter valid code",
+  "submitt": "Submit",
+  "setpass": "Set Passcord",
+  "passcord": "Passcord"
 }

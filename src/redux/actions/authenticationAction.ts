@@ -109,7 +109,8 @@ export const approveOTP =
         type: ACTION_TYPES.APPROVE_OTP,
       });
       const response = await postCall(approveOTPEmail, requestPayload);
-      responseData = await _responseHandler(response);
+      responseData = await response.json();
+      console.log("responseData==>", responseData);
 
       dispatch({
         type: ACTION_TYPES.APPROVEOTP_RESPONSE,
