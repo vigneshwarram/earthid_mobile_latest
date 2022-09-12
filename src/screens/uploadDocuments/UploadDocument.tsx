@@ -16,12 +16,13 @@ import { Screens } from "../../themes/index";
 import DocumentMask from "../uploadDocuments/DocumentMask";
 import RNFS from "react-native-fs";
 import GenericText from "../../components/Text";
+import { useFormData } from "../../hooks/use-form-fetch";
 
 const UploadDocument = (props: any) => {
   const _handleBarCodeRead = (barCodeData: any) => {};
   const { colors } = useTheme();
   const camRef: any = useRef();
-
+  const { loading, data, error, fetch } = useFormData();
   const _takePicture = async () => {
     const options = { quality: 0.1, base64: true };
     const data = await camRef.current.takePictureAsync(options);
@@ -56,12 +57,8 @@ const UploadDocument = (props: any) => {
       });
       console.log("destPath", resp);
       let fileUri = resp[0].uri;
-      RNFS.readFile(fileUri, "base64").then((res) => {
-        console.log("res", res);
-        props.navigation.navigate("DocumentPreviewScreen", {
-          fileUri: { uri: `data:image/png;base64,${res}`, base64: res },
-        });
-      });
+      const requestData = {};
+      fetch("");
     } catch (err) {
       console.log("data==>", err);
     }

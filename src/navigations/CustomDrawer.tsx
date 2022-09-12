@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -20,11 +20,17 @@ import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { FlushData } from "../redux/actions/authenticationAction";
 import { useFetch } from "../hooks/use-fetch";
 import { deleteUserApi } from "../utils/earthid_account";
+import { EARTHID_DEV_BASE } from "../constants/URLContstants";
 
 const CustomDrawer = (props: any) => {
   const dispatch = useAppDispatch();
   const userDetails = useAppSelector((state) => state.account);
-  const { loading, data, error, fetch,deletefetch ,fetchApi} = useFetch();
+  const {
+    loading,
+    data: deletedRespopnse,
+    error,
+    fetch: deleteFetch,
+  } = useFetch();
 
   const aboutList = values(ABOUT_ROUTES).map(
     ({
@@ -58,18 +64,22 @@ const CustomDrawer = (props: any) => {
     }
   };
 
-
-
   const deleteuserData = () => {
-    var deleteData = {
-      earthId: userDetails?.responseData?.earthId,
+    const paramsUrl = `${EARTHID_DEV_BASE}/user/deleteUser?earthId=${userDetails?.responseData?.earthId}&publicKey=${userDetails?.responseData?.publicKey}`;
+    console.log("paramsUrl", paramsUrl);
+    const requestBoady = {
       publicKey: userDetails?.responseData?.publicKey,
     };
-    fetchApi(deleteUserApi, deleteData, "DELETE");
-    dispatch(FlushData()).then(() => {
-      props.navigation.dispatch(StackActions.replace("AuthStack"));
-    });
+    deleteFetch(paramsUrl, requestBoady, "DELETE");
   };
+
+  useEffect(() => {
+    if (deletedRespopnse) {
+      dispatch(FlushData()).then(() => {
+        props.navigation.dispatch(StackActions.replace("AuthStack"));
+      });
+    }
+  }, [deletedRespopnse]);
 
   const deleteUser = () => {
     Alert.alert(
@@ -79,7 +89,7 @@ const CustomDrawer = (props: any) => {
         {
           text: "Yes",
           onPress: async () => {
-            deleteuserData()
+            deleteuserData();
           },
           style: "cancel",
         },
@@ -92,7 +102,6 @@ const CustomDrawer = (props: any) => {
     );
   };
 
-
   const _signOutAsync = () => {
     Alert.alert(
       "Delete Identity?",
@@ -104,7 +113,7 @@ const CustomDrawer = (props: any) => {
             // dispatch(FlushData()).then(() => {
             //   props.navigation.dispatch(StackActions.replace("AuthStack"));
             // });
-            deleteuserData()
+            deleteuserData();
           },
           style: "cancel",
         },

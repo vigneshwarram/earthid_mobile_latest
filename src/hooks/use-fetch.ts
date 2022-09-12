@@ -1,13 +1,12 @@
 import { useState } from "react";
-import { deleteCall, getCall, postCall } from "../utils/service";
+import { SnackBar } from "../components/SnackBar";
+import { fetchParams, getCall, postCall } from "../utils/service";
 
 export type IResponse = {
   data?: any;
   loading?: boolean;
   error?: string;
   fetch?: any;
-  deletefetch?:any
-  fetchApi?:any
 };
 
 const useFetch = (): IResponse => {
@@ -15,80 +14,35 @@ const useFetch = (): IResponse => {
   const [data, setData] = useState<any>(undefined);
   const [error, serError] = useState<any>(undefined);
 
-  const fetch = async (url: string, reuestData?: any, methodName = "POST") => {
+  const fetch = async (url: string, payLoad?: any, methodName = "POST") => {
     setloading(true);
     try {
-      const response =
-        methodName === "POST"
-          ? await postCall(url, reuestData)
-          : await getCall(url);
-      console.log("response", response);
-      if (response.status === 201 || response.status === 200) {
-        const JsonResponse = await response.json();
-        console.log("JsonResponse", JsonResponse);
-        setData(JsonResponse);
-      } else {
-        const JsonResponse = await response.json();
-        throw new Error(JsonResponse.message);
-      }
-    } catch (error) {
-      console.log("error", error);
-      serError(error);
-    }
-    setloading(false);
-  };
-
-
-  const fetchApi = async (url: string, reuestData?: any, methodName?:string) => {
-    setloading(true);
-    try {
-      let response
-       switch(methodName){
+      let response;
+      switch (methodName) {
         case "POST":
-          response = await postCall(url, reuestData)
+          response = await postCall(url, payLoad);
           break;
         case "DELETE":
-          response = await deleteCall(url, reuestData)
+          response = await fetchParams(url, payLoad, methodName);
           break;
         case "GET":
-          response = await getCall(url, reuestData)
+          response = await getCall(url, payLoad);
           break;
       }
       console.log("response", response);
-      if (response.status === 201 || response.status === 200) {
+      if ((response && response?.status === 201) || response?.status === 200) {
         const JsonResponse = await response.json();
         console.log("JsonResponse", JsonResponse);
         setData(JsonResponse);
       } else {
         const JsonResponse = await response.json();
-        throw new Error(JsonResponse.message);
+        console.log("error", JsonResponse);
+        throw new Error(JsonResponse?.message);
       }
-    } catch (error) {
-      console.log("error", error);
-      serError(error);
-    }
-    setloading(false);
-  };
-
-
-  const deletefetch = async (url: string, reuestData?: any, methodName = "DELETE") => {
-    setloading(true);
-    try {
-      const response =
-        methodName === "DELETE"
-          ? await deleteCall(url, reuestData)
-          : await getCall(url);
-      console.log("response", response);
-      if (response.status === 201 || response.status === 200) {
-        const JsonResponse = await response.json();
-        console.log("JsonResponse", JsonResponse);
-        setData(JsonResponse);
-      } else {
-        const JsonResponse = await response.json();
-        throw new Error(JsonResponse.message);
-      }
-    } catch (error) {
-      console.log("error", error);
+    } catch (error: any) {
+      SnackBar({
+        indicationMessage: error?.message,
+      });
       serError(error);
     }
     setloading(false);
@@ -99,8 +53,6 @@ const useFetch = (): IResponse => {
     loading,
     error,
     fetch,
-    deletefetch,
-    fetchApi
   };
 };
 

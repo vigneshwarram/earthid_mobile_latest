@@ -42,19 +42,16 @@ export const postCall = (
   });
 };
 
-export const deleteCall = (
+export const fetchParams = (
   uri: string,
-  payload?: any,
+  payload: any,
   method: string = "DELETE"
 ): Promise<any> => {
-  console.log("url==>", uri);
-  console.log("request==>", JSON.stringify(payload));
-
+  console.log("method coming");
   return fetch(uri, {
     method,
     headers: {
       "Content-Type": "application/json",
-      authkey: "fae2622d-7b73-4fc6-a536-202cabe75187",
     },
     body: JSON.stringify(payload),
   });
