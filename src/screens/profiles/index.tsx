@@ -156,6 +156,7 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
           />
 
           <Info
+          
           tailIcon={LocalImages.editIcon}
           subTitlePress={mobileVerifyAction}
             title={"mobileno"}
