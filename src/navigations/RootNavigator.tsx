@@ -19,6 +19,7 @@ import facePlaceHolderWidget from "../screens/FaceRegister/facePlaceHolderWidget
 import RegisterFace from "../screens/FaceRegister/RegisterFace";
 import SuccessFaceRegister from "../screens/FaceRegister/SuccessFaceRegister";
 import FingerPrintInstructionScreen from "../screens/FingerPrintRegister/FingerPrintInstructionScreen";
+import UploadDocument from "../screens/uploadDocuments/UploadDocument";
 // Before rendering any navigation stack
 const animations: any = SlidAnimation;
 export default function RootNavigator() {
@@ -37,6 +38,7 @@ export default function RootNavigator() {
     ConfirmPincode: ConfirmPincode,
     uploadDocumentsScreen: uploadDocumentsScreen,
     SuccessFaceRegister: SuccessFaceRegister,
+    UploadDocument: UploadDocument,
   };
 
   function AuthStack() {

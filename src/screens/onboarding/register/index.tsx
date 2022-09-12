@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { View, StyleSheet, ScrollView, Platform } from "react-native";
+import { View, StyleSheet, ScrollView, Platform, Alert } from "react-native";
 import Header from "../../../components/Header";
 import { LocalImages } from "../../../constants/imageUrlConstants";
 import { SCREENS } from "../../../constants/Labels";
@@ -109,21 +109,25 @@ const Register = ({ navigation }: IRegister) => {
     setopenDatePicker(true);
   };
   const _registerAction = async ({ publicKey }: any) => {
-    const token = await getDeviceId();
-    const deviceName = await getDeviceName();
-    const payLoad: IUserAccountRequest = {
-      firstName: firstName,
-      lastName: lastName,
-      deviceID: token + Math.random(),
-      deviceIMEI: token,
-      deviceName: deviceName,
-      email: email,
-      phone: mobileNumber,
-      countryCode: callingCode,
-      publicKey,
-      deviceOS: Platform.OS === "android" ? "android" : "ios",
-    };
-    dispatch(createAccount(payLoad));
+    try {
+      const token = await getDeviceId();
+      const deviceName = await getDeviceName();
+      const payLoad: IUserAccountRequest = {
+        firstName: firstName,
+        lastName: lastName,
+        deviceID: token + Math.random(),
+        deviceIMEI: token,
+        deviceName: deviceName,
+        email: email,
+        phone: mobileNumber,
+        countryCode: callingCode,
+        publicKey,
+        deviceOS: Platform.OS === "android" ? "android" : "ios",
+      };
+      dispatch(createAccount(payLoad));
+    } catch (error: any) {
+      Alert.alert("error", error?.message);
+    }
   };
   if (keys && keys?.isGeneratedKeySuccess) {
     keys.isGeneratedKeySuccess = false;

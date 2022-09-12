@@ -78,7 +78,7 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
               {SCREENS.LANDINGSCREEN.instruction}
             </GenericText>
             <Button
-              onPress={() => navigation.navigate("uploadDocumentsScreen")}
+              onPress={() => navigation.navigate("UploadDocument")}
               style={{
                 buttonContainer: {
                   backgroundColor: Screens.pureWhite,

@@ -7,12 +7,14 @@ import { ssiApiKey } from "./earthid_account";
  */
 export const postFormData = async (requestURI: string, payload: any) => {
   const formData = new FormData();
-  Object.keys(payload).map((property) =>
-    formData.append(property, payload[property])
-  );
+
+  formData.append("image", payload);
 
   return await fetch(requestURI, {
     method: "POST",
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
     body: formData,
   });
 };
