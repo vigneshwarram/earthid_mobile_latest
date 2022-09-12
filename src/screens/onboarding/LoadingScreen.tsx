@@ -24,7 +24,7 @@ const optionalConfigObject = {
   passcodeFallback: false, // iOS - allows the device to fall back to using the passcode, if faceid/touch is not available. this does not mean that if touchid/faceid fails the first few times it will revert to passcode, rather that if the former are not enrolled, then it will use the passcode.
 };
 const LoadingScreen = ({ navigation }: ILoadingScreen) => {
-  const isAlreadyLoggedIn = useAppSelector((state) => state?.contract);
+  const userDetails = useAppSelector((state) => state.account);
   const aunthenticateBioMetricInfo = () => {
     TouchID.isSupported(optionalConfigObject)
       .then(async (biometryType) => {
@@ -48,6 +48,7 @@ const LoadingScreen = ({ navigation }: ILoadingScreen) => {
   };
   const checkAuth = async () => {
     const fingerPrint = await AsyncStorage.getItem("fingerprint");
+    console.log("fingerPrint", fingerPrint);
     const getItem = await AsyncStorage.getItem("passcode");
 
     console.log("getItem", getItem);
@@ -59,14 +60,14 @@ const LoadingScreen = ({ navigation }: ILoadingScreen) => {
       navigation.dispatch(StackActions.replace("AuthStack"));
     }
   };
-  console.log("isAlreadyLoggedIn", isAlreadyLoggedIn);
+  console.log("userDetails", userDetails);
   useEffect(() => {
-    if (isAlreadyLoggedIn?.responseData) {
+    if (userDetails?.responseData) {
       checkAuth();
     } else {
       navigation.dispatch(StackActions.replace("AuthStack"));
     }
-  }, [isAlreadyLoggedIn]);
+  }, [userDetails]);
   return (
     <View style={[styles.container, styles.horizontal]}>
       <ActivityIndicator size="large" />

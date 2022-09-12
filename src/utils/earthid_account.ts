@@ -4,7 +4,7 @@ import CryptoJS from "react-native-crypto-js";
 export const isTestnet = true;
 const BASE_URL = "http://35.154.54.127:3000";
 export const api = BASE_URL + "/verification/sendEmailOTP";
-export const changeContactApi = BASE_URL + "/otp/sendOTPChangeRequest";
+export const phoneOtp = BASE_URL + "/verification/sendPhoneOTP";
 export const createAccountApi = BASE_URL + "/authorize/createAccount";
 export const getRecordByTxApi = BASE_URL + "/authorize/getRecordByTx?txId";
 export const cryptoTransferApi = BASE_URL + "/authorize/cryptoTransfer";

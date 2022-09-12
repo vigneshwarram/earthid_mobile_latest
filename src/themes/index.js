@@ -18,7 +18,7 @@ export const Screens = {
   lightGray: "#F8F8F8",
   thickGray: "#EDF1F4",
   colors: {
-    background: "#F5F5F5",
+    background: "#fff",
     primary: "#293FEE",
     ScanButton: {
       startColor: "#8319FF",

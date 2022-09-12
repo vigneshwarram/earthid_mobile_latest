@@ -1,9 +1,12 @@
 export const LocalImages = {
   homeImage: require("../../resources/images/user.png"),
   moreImage: require("../../resources/images/more.png"),
+  email: require("../../resources/images/mail.png"),
+  phone: require("../../resources/images/phone.png"),
   historyImage: require("../../resources/images/history.png"),
   scanImage: require("../../resources/images/scan.png"),
   logoImage: require("../../resources/images/logo.png"),
+  recent: require("../../resources/images/norecentactivity.png"),
   closeImage: require("../../resources/images/close.png"),
   logoutImage: require("../../resources/images/logout.png"),
   sideArrowImage: require("../../resources/images/sidearrow.png"),

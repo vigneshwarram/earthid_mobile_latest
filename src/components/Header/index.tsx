@@ -8,6 +8,7 @@ import {
   View,
 } from "react-native";
 import { LocalImages } from "../../constants/imageUrlConstants";
+import { useAppSelector } from "../../hooks/hooks";
 import { Screens } from "../../themes";
 import Avatar from "../Avatar";
 import LinearGradients from "../GradientsPanel/LinearGradient";
@@ -38,138 +39,145 @@ const Header = ({
   headingText,
   isBack = false,
   rightIconPress,
-}: IHeaderProps) => (
-  <View style={containerStyle}>
-    <LinearGradients
-      horizontalGradient={false}
-      endColor={Screens.colors.header.endColor}
-      middleColor={Screens.colors.header.middleColor}
-      startColor={Screens.colors.header.startColor}
-      style={linearStyle}
-    >
-      {headingText ? (
-        <GenericText
-          style={{
-            fontWeight: "bold",
-            textAlign: "center",
-            fontSize: 20,
-            color: Screens.pureWhite,
-            marginTop: 30,
-          }}
-        >
-          {headingText}
-        </GenericText>
-      ) : isLogoAlone ? (
-        <View style={{ alignItems: "center" }}>
-          <Image
-            resizeMode="contain"
-            style={[styles.logoContainer, containerStyle.iconStyle]}
-            source={LocalImages.logoImage}
-          ></Image>
-        </View>
-      ) : (
-        <View>
-          <View style={styles.sectionHeaderContainer}>
-            <TouchableOpacity
-              style={containerStyle.iconContainer}
-              disabled={letfIconPress ? false : true}
-              onPress={letfIconPress}
-            >
+}: IHeaderProps) => {
+  const userDetails = useAppSelector((state) => state.account);
+  return (
+    <View style={containerStyle}>
+      <LinearGradients
+        horizontalGradient={false}
+        endColor={Screens.colors.header.endColor}
+        middleColor={Screens.colors.header.middleColor}
+        startColor={Screens.colors.header.startColor}
+        style={linearStyle}
+      >
+        {headingText ? (
+          <GenericText
+            style={{
+              fontWeight: "bold",
+              textAlign: "center",
+              fontSize: 20,
+              color: Screens.pureWhite,
+              marginTop: 30,
+            }}
+          >
+            {headingText}
+          </GenericText>
+        ) : isLogoAlone ? (
+          <View style={{ alignItems: "center" }}>
+            <Image
+              resizeMode="contain"
+              style={[styles.logoContainer, containerStyle.iconStyle]}
+              source={LocalImages.logoImage}
+            ></Image>
+          </View>
+        ) : (
+          <View>
+            <View style={styles.sectionHeaderContainer}>
+              <TouchableOpacity
+                style={containerStyle.iconContainer}
+                disabled={letfIconPress ? false : true}
+                onPress={letfIconPress}
+              >
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <View
+                    style={{ justifyContent: "center", alignItems: "center" }}
+                  >
+                    {isBack && (
+                      <Image
+                        resizeMode="contain"
+                        style={{ width: 15, height: 15 }}
+                        source={LocalImages.backImage}
+                      ></Image>
+                    )}
+                  </View>
+
+                  <Image
+                    resizeMode="contain"
+                    style={[styles.logoContainer]}
+                    source={LocalImages.logoImage}
+                  ></Image>
+                </View>
+              </TouchableOpacity>
+
               <View
                 style={{
                   flexDirection: "row",
-                  justifyContent: "space-between",
                 }}
               >
                 <View
-                  style={{ justifyContent: "center", alignItems: "center" }}
+                  style={{
+                    flexDirection: "row",
+                  }}
                 >
-                  {isBack && (
+                  <TouchableOpacity
+                    style={styles.closeContainer}
+                    onPress={rightIconPress}
+                  >
                     <Image
                       resizeMode="contain"
-                      style={{ width: 15, height: 15 }}
-                      source={LocalImages.backImage}
+                      style={styles.close}
+                      source={rightIconSource}
                     ></Image>
+                  </TouchableOpacity>
+                  {rewardPoints !== "" && (
+                    <View
+                      style={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                        marginLeft: 10,
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontWeight: "bold",
+                          marginLeft: -5,
+                          color: Screens.pureWhite,
+                        }}
+                      >
+                        {rewardPoints}
+                      </Text>
+                    </View>
                   )}
                 </View>
 
-                <Image
-                  resizeMode="contain"
-                  style={[styles.logoContainer]}
-                  source={LocalImages.logoImage}
-                ></Image>
-              </View>
-            </TouchableOpacity>
-
-            <View
-              style={{
-                flexDirection: "row",
-              }}
-            >
-              <View
-                style={{
-                  flexDirection: "row",
-                }}
-              >
                 <TouchableOpacity
-                  style={styles.closeContainer}
-                  onPress={rightIconPress}
+                  style={[styles.closeContainer, { marginLeft: 10 }]}
+                  onPress={onpress}
                 >
                   <Image
                     resizeMode="contain"
                     style={styles.close}
-                    source={rightIconSource}
+                    source={actionIcon}
                   ></Image>
                 </TouchableOpacity>
-                {rewardPoints !== "" && (
-                  <View
-                    style={{
-                      justifyContent: "center",
-                      alignItems: "center",
-                      marginLeft: 10,
-                    }}
-                  >
-                    <Text
-                      style={{
-                        fontWeight: "bold",
-                        marginLeft: -5,
-                        color: Screens.pureWhite,
-                      }}
-                    >
-                      {rewardPoints}
-                    </Text>
-                  </View>
-                )}
               </View>
-
-              <TouchableOpacity
-                style={[styles.closeContainer, { marginLeft: 10 }]}
-                onPress={onpress}
-              >
-                <Image
-                  resizeMode="contain"
-                  style={styles.close}
-                  source={actionIcon}
-                ></Image>
-              </TouchableOpacity>
             </View>
+            {isAvatar && (
+              <Avatar
+                avatarClick={avatarClick}
+                style={{ text: { color: Screens.pureWhite } }}
+                absoluteCircleInnerImage={absoluteCircleInnerImage}
+                isProfileAvatar={isProfileAvatar}
+                isUploaded={isUploaded}
+                text={
+                  userDetails?.responseData?.firstName +
+                  " " +
+                  userDetails?.responseData?.lastName
+                }
+                iconSource={LocalImages.avatarImage}
+              ></Avatar>
+            )}
           </View>
-          {isAvatar && (
-            <Avatar
-              avatarClick={avatarClick}
-              style={{ text: { color: Screens.pureWhite } }}
-              absoluteCircleInnerImage={absoluteCircleInnerImage}
-              isProfileAvatar={isProfileAvatar}
-              isUploaded={isUploaded}
-              text={profileName}
-              iconSource={LocalImages.avatarImage}
-            ></Avatar>
-          )}
-        </View>
-      )}
-    </LinearGradients>
-  </View>
-);
+        )}
+      </LinearGradients>
+    </View>
+  );
+};
 
 export default Header;
 

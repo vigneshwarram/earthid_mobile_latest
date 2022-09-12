@@ -1,5 +1,8 @@
 import React from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Image, View } from "react-native";
+import { LocalImages } from "../../constants/imageUrlConstants";
+
+import { useAppSelector } from "../../hooks/hooks";
 import Icon from "../Icon";
 import GenericText from "../Text";
 import { IAvatarProps } from "./IAvatarProps";
@@ -17,30 +20,73 @@ const Avatar = ({
   isProfileAvatar = false,
   absoluteCircleInnerImage,
   avatarClick,
-}: IAvatarProps) => (
-  <Pressable onPress={avatarClick}>
-    <Icon
-      onPress={avatarClick}
-      absoluteCircleInnerImage={absoluteCircleInnerImage}
-      isProfileAvatar={isProfileAvatar}
-      isUploaded={isUploaded}
-      src={iconSource}
-      style={{
-        container: [styles.container, style.container],
-        image: [styles.avatar, style.imgContainer],
-        uploadImageStyle: style.uploadImageStyle,
-      }}
-    />
-    {text !== "" && (
-      <GenericText style={[styles.text, style.text]}>{text}</GenericText>
-    )}
-  </Pressable>
-);
+  isCategory = false,
+}: IAvatarProps) => {
+  const userDetails = useAppSelector((state) => state.account);
+  return (
+    <Pressable onPress={avatarClick}>
+      <Icon
+        onPress={avatarClick}
+        absoluteCircleInnerImage={absoluteCircleInnerImage}
+        isProfileAvatar={isProfileAvatar}
+        isUploaded={isUploaded}
+        src={iconSource}
+        style={{
+          container: [styles.container, style.container],
+          image: [styles.avatar, style.imgContainer],
+          uploadImageStyle: style.uploadImageStyle,
+        }}
+      />
+      {text !== "" && (
+        <View>
+          <GenericText style={[styles.text, style.text]}>{text}</GenericText>
+          {!isCategory && (
+            <View style={styles.row}>
+              <View style={{ justifyContent: "center", alignItems: "center" }}>
+                <Image
+                  source={LocalImages.email}
+                  style={{ width: 15, height: 15, marginTop: 10 }}
+                ></Image>
+              </View>
+
+              <GenericText
+                style={[styles.text, style.text, { marginLeft: 10 }]}
+              >
+                {userDetails?.responseData?.email}
+              </GenericText>
+            </View>
+          )}
+
+          {!isCategory && (
+            <View style={styles.row}>
+              <View style={{ justifyContent: "center", alignItems: "center" }}>
+                <Image
+                  source={LocalImages.phone}
+                  style={{ width: 15, height: 15, marginTop: 10 }}
+                ></Image>
+              </View>
+              <GenericText
+                style={[styles.text, style.text, { marginLeft: 10 }]}
+              >
+                {userDetails?.responseData?.phone}
+              </GenericText>
+            </View>
+          )}
+        </View>
+      )}
+    </Pressable>
+  );
+};
 
 export default Avatar;
 
 const styles = StyleSheet.create({
   container: {
+    justifyContent: "center",
+    alignContent: "center",
+  },
+  row: {
+    flexDirection: "row",
     justifyContent: "center",
     alignContent: "center",
   },
