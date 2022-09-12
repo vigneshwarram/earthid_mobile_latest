@@ -16,11 +16,16 @@ import Card from "../components/Card";
 import { ABOUT_ROUTES } from "../constants/Routes";
 import { StackActions } from "@react-navigation/native";
 import GenericText from "../components/Text";
-import { useAppDispatch } from "../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { FlushData } from "../redux/actions/authenticationAction";
+import { useFetch } from "../hooks/use-fetch";
+import { deleteUserApi } from "../utils/earthid_account";
 
 const CustomDrawer = (props: any) => {
   const dispatch = useAppDispatch();
+  const userDetails = useAppSelector((state) => state.account);
+  const { loading, data, error, fetch,deletefetch ,fetchApi} = useFetch();
+
   const aboutList = values(ABOUT_ROUTES).map(
     ({
       CARD: card,
@@ -45,13 +50,48 @@ const CustomDrawer = (props: any) => {
         props.navigation.dispatch(StackActions.replace("AuthStack"));
       });
     } else if (item.route === "delete") {
-      _signOutAsync();
+      deleteUser();
     } else if (item.route === "about" || item.route === "terms") {
       Linking.openURL("https://www.myearth.id");
     } else {
       props.navigation.navigate(item.route);
     }
   };
+
+
+
+  const deleteuserData = () => {
+    var deleteData = {
+      earthId: userDetails?.responseData?.earthId,
+      publicKey: userDetails?.responseData?.publicKey,
+    };
+    fetchApi(deleteUserApi, deleteData, "DELETE");
+    dispatch(FlushData()).then(() => {
+      props.navigation.dispatch(StackActions.replace("AuthStack"));
+    });
+  };
+
+  const deleteUser = () => {
+    Alert.alert(
+      "Delete Identity?",
+      "Are you sure you want to delete your EarthId? Once deleted you won't be able to recover it later.",
+      [
+        {
+          text: "Yes",
+          onPress: async () => {
+            deleteuserData()
+          },
+          style: "cancel",
+        },
+        {
+          text: "No",
+          onPress: async () => {},
+        },
+      ],
+      { cancelable: false }
+    );
+  };
+
 
   const _signOutAsync = () => {
     Alert.alert(
@@ -61,9 +101,10 @@ const CustomDrawer = (props: any) => {
         {
           text: "Yes",
           onPress: async () => {
-            dispatch(FlushData()).then(() => {
-              props.navigation.dispatch(StackActions.replace("AuthStack"));
-            });
+            // dispatch(FlushData()).then(() => {
+            //   props.navigation.dispatch(StackActions.replace("AuthStack"));
+            // });
+            deleteuserData()
           },
           style: "cancel",
         },

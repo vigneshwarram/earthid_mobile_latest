@@ -6,4 +6,5 @@ export interface IInfoProps {
   subtitleRowText?: string;
   subTitlePress?: any;
   tailIcon?:any;
+  tailIconPress?:any
 }
