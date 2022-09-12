@@ -54,9 +54,6 @@ const useFetch = (): IResponse => {
           response = await getCall(url, reuestData)
           break;
       }
-        // methodName === "POST"
-        //   ? await postCall(url, reuestData)
-        //   : await getCall(url);
       console.log("response", response);
       if (response.status === 201 || response.status === 200) {
         const JsonResponse = await response.json();
@@ -72,7 +69,6 @@ const useFetch = (): IResponse => {
     }
     setloading(false);
   };
-
 
 
   const deletefetch = async (url: string, reuestData?: any, methodName = "DELETE") => {
@@ -105,7 +101,6 @@ const useFetch = (): IResponse => {
     fetch,
     deletefetch,
     fetchApi
-
   };
 };
 
