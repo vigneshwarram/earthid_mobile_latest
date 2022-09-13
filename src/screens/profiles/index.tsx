@@ -42,6 +42,17 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
     navigation.goBack();
   };
 
+  const _navigateEditMobile = () => {
+     navigation.navigate("EditMobileNumber");
+   
+  };
+
+  const _navigateEditEmail = () => {
+    navigation.navigate("EditEmailAddress");
+  
+ };
+
+
   const socialMedialList = values(SCREENS.HOMESCREEN.SocialMedialList).map(
     ({ TITLE: title, URI: uri }: any) => ({
       title,
@@ -156,7 +167,7 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
           />
 
           <Info
-          
+          tailIconPress={_navigateEditMobile}
           tailIcon={LocalImages.editIcon}
           subTitlePress={mobileVerifyAction}
             title={"mobileno"}
@@ -183,6 +194,7 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
             }}
           />
           <Info
+            tailIconPress={_navigateEditEmail}
             tailIcon={LocalImages.editIcon}
             subTitlePress={emailVerifyAction}
             title={"email"}

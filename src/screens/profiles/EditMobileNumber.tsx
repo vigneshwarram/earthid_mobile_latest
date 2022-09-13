@@ -1,0 +1,163 @@
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, { useRef, useState } from 'react'
+import { Screens } from '../../themes'
+import { LocalImages } from '../../constants/imageUrlConstants'
+import PhoneInput from 'react-native-phone-number-input'
+import Button from '../../components/Button'
+import AnimatedLoader from '../../components/Loader/AnimatedLoader'
+import GenericText from '../../components/Text'
+
+const EditMobileNumber = (props:any) => {
+
+  const [callingCode, setcallingCode] = useState<string>("+91");
+  const [mobileNumber, setmobileNumber] = useState<string>("");
+  const phoneInput: any = useRef();
+
+  const navigateAction = () => {
+    props.navigation.navigate("EditMobileNumOtp");
+  };
+
+  return (
+    <View style={styles.sectionContainer}>
+      <View style={styles.sectionHeaderContainer}>
+
+       <TouchableOpacity
+        onPress={()=>props.navigation.goBack()}
+        >
+
+        <Image
+          resizeMode="contain"
+          style={styles.logoContainer}
+          source={LocalImages.backImage}
+        ></Image>
+        </TouchableOpacity>
+        <GenericText
+          style={[
+            {
+              fontSize: 20,
+              color: Screens.pureWhite,
+              fontWeight: "500",
+              marginLeft:-10
+            },
+          ]}
+        >
+          {"Update Mobile Number"}
+        </GenericText>
+
+       
+        <View />
+      </View>
+
+      <GenericText
+          style={[
+            {
+              fontSize: 16,
+              color: Screens.black,
+              fontWeight: "500",
+              alignSelf:'center',
+              marginTop:15
+           
+            },
+          ]}
+        >
+          {"Please enter your new mobile number"}
+        </GenericText> 
+
+        <GenericText
+          style={[
+            {
+              fontSize: 13,
+              marginTop:20,
+              paddingHorizontal:15
+            },
+          ]}
+        >
+          {"Mobile Number"}
+        </GenericText> 
+
+        <PhoneInput
+              onChangeCountry={(code) => {
+                const { callingCode } = code;
+                setcallingCode(callingCode[0]);
+                console.log("code==>", callingCode[0]);
+              }}
+              autoFocus={false}
+              ref={phoneInput}
+              defaultValue={""}
+              defaultCode="IN"
+              layout="first"
+              onChangeText={(text: any) => {
+                setmobileNumber(text);
+              }}
+              containerStyle={{
+                borderColor: Screens.darkGray,
+                width: "90%",
+                borderWidth: 2,
+                borderRadius: 5,
+                height: 55,
+                marginLeft: 15,
+                marginEnd:15,
+                marginTop:12
+              }}
+              flagButtonStyle={{ backgroundColor: Screens.thickGray }}
+              textInputStyle={{ fontSize: 16, padding: 0, margin: 0 }}
+              codeTextStyle={{ fontSize: 16, padding: 0, margin: 0 }}
+              textContainerStyle={{
+                height: 55,
+                padding: 0,
+                margin: 0,
+              }}
+              withShadow
+            />
+        <View style={{paddingHorizontal:15,marginTop:100}}>
+
+        <Button
+        onPress={navigateAction}
+            style={{
+              buttonContainer: {
+                elevation: 5,
+              },
+              text: {
+                color: Screens.pureWhite,
+              },
+              iconStyle: {
+                tintColor: Screens.pureWhite,
+              },
+            }}
+            title={"SUBMIT"}
+          ></Button>
+        </View>
+
+
+          <AnimatedLoader
+            loadingText="Loading..."
+          />
+     
+    </View>
+  )
+}
+
+export default EditMobileNumber
+
+const styles = StyleSheet.create({
+  sectionContainer: {
+    flex: 1,
+    backgroundColor: Screens.colors.background,
+  },
+  logoContainer: {
+    width: 25,
+    height: 25,
+    tintColor: "#fff",
+  },
+  sectionHeaderContainer: {
+    flexDirection: "row",
+    height: 120,
+    backgroundColor: "#8b88db",
+    borderBottomRightRadius: 25,
+    borderBottomLeftRadius: 25,
+    justifyContent: "space-between",
+    paddingHorizontal: 10,
+    alignItems: "center",
+  },
+
+})
