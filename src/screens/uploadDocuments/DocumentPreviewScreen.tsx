@@ -13,12 +13,37 @@ import AnimatedLoader from "../../components/Loader/AnimatedLoader";
 import { LocalImages } from "../../constants/imageUrlConstants";
 import { useFetch } from "../../hooks/use-fetch";
 import { Screens } from "../../themes/index";
-import { validateDocsApi } from "../../utils/earthid_account";
+import { uploadDocument, validateDocsApi } from "../../utils/earthid_account";
 
 const DocumentPreviewScreen = (props: any) => {
   const { fileUri } = props.route.params;
-  const { loading, data, error, fetch } = useFetch();
+  const { type } = props.route.params;
+  const { loading,
+     data ,
+     error, 
+     fetch : postFormfetch
+    } = useFetch();
   const [successResponse, setsuccessResponse] = useState(false);
+
+
+  const uploadDoc = async () => {
+    const requestedData = {
+      IsDocumentExtracted: false,
+      Source: 1,
+      InputImages: [
+        {
+          Name: "WhiteImage",
+          ImageFormat: "JPEG",
+          Data: fileUri?.base64,
+        },
+      ],
+    };
+    postFormfetch(uploadDocument, requestedData, "POST");
+    console.log("upload Document==>",'Success')
+   
+  };
+
+
   const navigateToAction = async () => {
     const requestedData = {
       IsDocumentExtracted: false,
@@ -32,7 +57,7 @@ const DocumentPreviewScreen = (props: any) => {
       ],
     };
     console.log("data====>", JSON.stringify(requestedData));
-    fetch(validateDocsApi, requestedData, "POST");
+    postFormfetch(validateDocsApi, requestedData, "POST");
   };
 
   useEffect(() => {
@@ -40,7 +65,8 @@ const DocumentPreviewScreen = (props: any) => {
       setsuccessResponse(true);
       setTimeout(() => {
         setsuccessResponse(false);
-        props.navigation.navigate("categoryScreen", { fileUri });
+      //  props.navigation.navigate("categoryScreen", { fileUri });
+        props.navigation.navigate("DrawerNavigator", { fileUri });
       }, 3000);
     }
   }, [data]);
@@ -93,7 +119,7 @@ const DocumentPreviewScreen = (props: any) => {
           title={"ReTake"}
         ></Button>
         <Button
-          onPress={navigateToAction}
+          onPress={uploadDoc}
           style={{
             buttonContainer: {
               elevation: 5,

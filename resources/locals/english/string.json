@@ -90,5 +90,7 @@
   "plsentervalid": "Please Enter valid code",
   "submitt": "Submit",
   "setpass": "Set Passcord",
-  "passcord": "Passcord"
+  "passcord": "Passcord",
+  "updatemobileno":"Update Mobile Number",
+  "plsenternewmobile":"Please enter your new mobile number"
 }

@@ -25,8 +25,9 @@ const UploadScreen = (props: any) => {
   const _takePicture = async () => {
     const options = { quality: 0.1, base64: true };
     const data = await camRef.current.takePictureAsync(options);
+    var doc="lic"
     if (data) {
-      props.navigation.navigate("DocumentPreviewScreen", { fileUri: data });
+      props.navigation.navigate("DocumentPreviewScreen", { fileUri: data,});
     }
   };
   const requestPermission = async () => {

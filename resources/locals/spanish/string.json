@@ -89,5 +89,7 @@
   "plsentervalid":"Por favor Ingrese un código válido",
   "submitt":"Enviar",
   "setpass":"Configurar la clave",
-  "passcord":"Contraseña"
+  "passcord":"Contraseña",
+  "updatemobileno":"Actualizar número de móvil",
+  "plsenternewmobile":"Por favor, introduzca su nuevo número de móvil"
 }

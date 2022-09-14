@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { SnackBar } from "../components/SnackBar";
-import { fetchParams, getCall, postCall } from "../utils/service";
+import { fetchParams, getCall, postCall, postFormData } from "../utils/service";
 
 export type IResponse = {
   data?: any;
@@ -29,6 +29,8 @@ const useFetch = (): IResponse => {
           response = await getCall(url, payLoad);
           break;
       }
+      methodName ==="POST" ? response = await postFormData(url, payLoad) : response = await getCall(url, payLoad);
+
       console.log("response", response);
       if ((response && response?.status === 201) || response?.status === 200) {
         const JsonResponse = await response.json();

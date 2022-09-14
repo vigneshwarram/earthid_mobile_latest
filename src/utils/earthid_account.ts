@@ -21,6 +21,7 @@ export const generateIssuerDid = "https://ssi-gbg.myearth.id/api/issuer/did";
 export const generateCryptograph = BASE_URL + "/tech5/cryptoEncode";
 export const apiAuthorization = "fae2622d-7b73-4fc6-a536-202cabe75187";
 export const deleteUserApi = BASE_URL + "/user/deleteUser";
+export const uploadDocument = BASE_URL + "/user/upload";
 
 
 // icca api to post specific data
