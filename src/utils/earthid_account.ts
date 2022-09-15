@@ -5,6 +5,7 @@ export const isTestnet = true;
 const BASE_URL = "https://apiv2.myearth.id";
 export const api = BASE_URL + "/verification/sendEmailOTP";
 export const phoneOtp = BASE_URL + "/verification/sendPhoneOTP";
+export const updatephoneOtp = BASE_URL + "/verification/sendVerifiedPhoneOTP";
 export const updateEmailOtp = BASE_URL + "/verification/sendVerifiedEmailOTP";
 export const updateEmail = BASE_URL + "/verification/verifiedEmailVerify";
 

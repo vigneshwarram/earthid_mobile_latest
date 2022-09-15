@@ -9,7 +9,7 @@ export const postFormData = async (requestURI: string, payload: any) => {
   const formData = new FormData();
 
   formData.append("image", payload);
-
+  console.log("FormData==>", "FormData");
   return await fetch(requestURI, {
     method: "POST",
     headers: {
