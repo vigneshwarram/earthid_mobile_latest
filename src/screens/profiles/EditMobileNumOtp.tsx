@@ -1,22 +1,55 @@
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import GenericText from '../../components/Text'
 import { Screens } from '../../themes'
 import { LocalImages } from '../../constants/imageUrlConstants'
 import PhoneInput from 'react-native-phone-number-input'
-import { useAppSelector } from '../../hooks/hooks'
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
 import SmoothPinCodeInput from "react-native-smooth-pincode-input";
 import Button from '../../components/Button'
 import AnimatedLoader from '../../components/Loader/AnimatedLoader'
+import { useFetch } from '../../hooks/use-fetch'
+import { updatePhone } from '../../utils/earthid_account'
+import { byPassUserDetailsRedux } from '../../redux/actions/authenticationAction'
 
 
 const EditMobileNumOtp = (props:any) => {
 
-    const userDetails = useAppSelector((state) => state.account);
-    const [code, setCode] = useState();
-    const onPinCodeChange = (code: any) => {
-      setCode(code);
+  const userDetails = useAppSelector((state) => state.account);
+  const { loading, data, error, fetch } = useFetch();
+  const dispatch = useAppDispatch();
+  const { newPhone } = props.route.params;
+  const [oldCode, setOldCode] = useState();
+  const [newCode, setNewCode] = useState();
+  const onPinCodeChangeForOld = (code: any) => {
+    setOldCode(code);
+  };
+  const onPinCodeChangeForNew = (code: any) => {
+    setNewCode(code);
+  };
+
+
+  const verfified = () => {
+    var postData = {
+      oldEmailOTP: oldCode,
+      newEmailOTP: newCode,
+      earthId: userDetails?.responseData?.earthId,
+      publicKey: userDetails?.responseData?.publicKey,
     };
+    fetch(updatePhone, postData, "POST");
+  };
+  useEffect(() => {
+    console.log("data", data);
+    if (data) {
+      let overallResponseData = {
+        ...userDetails.responseData,
+        ...{ phone: newPhone },
+      };
+      dispatch(byPassUserDetailsRedux(overallResponseData)).then(() => {
+        props.navigation.navigate("ProfileScreen");
+      });
+    }
+  }, [data]);
 
   return (
     <View style={styles.sectionContainer}>
@@ -97,8 +130,8 @@ const EditMobileNumOtp = (props:any) => {
               password
               cellSize={50}
               codeLength={6}
-              value={code}
-              onTextChange={onPinCodeChange}
+              value={oldCode}
+              onTextChange={onPinCodeChangeForOld}
             />
           </View>
 
@@ -148,7 +181,7 @@ const EditMobileNumOtp = (props:any) => {
             },
           ]}
         >
-          {userDetails.responseData.phone}
+          {newPhone}
         </GenericText> 
 
 
@@ -167,8 +200,8 @@ const EditMobileNumOtp = (props:any) => {
               password
               cellSize={50}
               codeLength={6}
-              value={code}
-              onTextChange={onPinCodeChange}
+              value={newCode}
+              onTextChange={onPinCodeChangeForNew}
             />
           </View>
 
@@ -193,6 +226,7 @@ const EditMobileNumOtp = (props:any) => {
         <View style={{paddingHorizontal:15,marginTop:10}}>
 
         <Button
+        onPress={verfified}
             style={{
             buttonContainer: {
                 elevation: 5,

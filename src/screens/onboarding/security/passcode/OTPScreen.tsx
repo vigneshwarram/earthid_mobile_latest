@@ -16,6 +16,7 @@ import {
   byPassUserDetailsRedux,
 } from "../../../../redux/actions/authenticationAction";
 import GenericText from "../../../../components/Text";
+import { is } from "immer/dist/internal";
 
 interface IHomeScreenProps {
   navigation?: any;
@@ -42,6 +43,7 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
       email: userDetails?.responseData?.email,
       earthId: userDetails?.responseData?.earthId,
       publicKey: userDetails?.responseData?.publicKey,
+    
     };
     fetch(api, postData, "POST");
   };
@@ -51,6 +53,7 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
       phone: userDetails?.responseData?.phone,
       earthId: userDetails?.responseData?.earthId,
       publicKey: userDetails?.responseData?.publicKey,
+      countryCode:userDetails?.responseData?.countryCode
     };
     fetch(phoneOtp, postPhoneData, "POST");
   };
@@ -70,14 +73,45 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
   if (ApproveOtpResponse?.isApproveOtpSuccess) {
     ApproveOtpResponse.isApproveOtpSuccess = false;
     let isEmailApproved = true;
-    let overallResponseData = {
+    let ismobileApproved = true;
+    let overallResponseData = { 
       ...userDetails.responseData,
       ...{ emailApproved: isEmailApproved },
+      ...{ mobileApproved: ismobileApproved },
     };
     dispatch(byPassUserDetailsRedux(overallResponseData)).then(() => {
       navigation.navigate("ProfileScreen");
     });
   }
+
+  // if (ApproveOtpResponse?.isApproveOtpSuccess) {
+  //   ApproveOtpResponse.isApproveOtpSuccess = false;
+  //   let isEmailApproved = true;
+  //   let ismobileApproved = true;
+    
+  //   if(ismobileApproved===true){
+
+  //     let overallResponseData = { 
+  //         ...userDetails.responseData,
+  //       //  ...{ emailApproved: isEmailApproved },
+  //         ...{ mobileApproved: ismobileApproved },
+          
+  //       };
+  //       dispatch(byPassUserDetailsRedux(overallResponseData)).then(() => {
+  //         navigation.navigate("ProfileScreen");
+  //       });
+  //   }else if(isEmailApproved==true){
+  //     let overallResponseData = { 
+  //       ...userDetails.responseData,
+  //       ...{ emailApproved: isEmailApproved },
+  //    //   ...{ mobileApproved: ismobileApproved },
+        
+  //     };
+  //     dispatch(byPassUserDetailsRedux(overallResponseData)).then(() => {
+  //       navigation.navigate("ProfileScreen");
+  //     });
+  //   }
+  // }
 
   const approveOtp = () => {
     const request = {

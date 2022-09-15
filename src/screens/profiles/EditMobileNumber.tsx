@@ -1,21 +1,49 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Screens } from '../../themes'
 import { LocalImages } from '../../constants/imageUrlConstants'
 import PhoneInput from 'react-native-phone-number-input'
 import Button from '../../components/Button'
 import AnimatedLoader from '../../components/Loader/AnimatedLoader'
 import GenericText from '../../components/Text'
+import { useAppSelector } from '../../hooks/hooks'
+import { useFetch } from '../../hooks/use-fetch'
+import { updatephoneOtp } from '../../utils/earthid_account'
 
 const EditMobileNumber = (props:any) => {
 
   const [callingCode, setcallingCode] = useState<string>("+91");
-  const [mobileNumber, setmobileNumber] = useState<string>("");
   const phoneInput: any = useRef();
+  const userDetails=useAppSelector((state)=>state.account)
+  const { loading, data, error, fetch } = useFetch();
+  const [phone, setPhone] = useState<string>("");
+
+
+
+
+  const sentOtp=()=>{
+    var postData={
+      oldPhone: userDetails?.responseData?.phone,
+      newPhone: phone,
+      newCountryCode: callingCode,
+      earthId: userDetails?.responseData?.earthId,
+      publicKey: userDetails?.responseData?.publicKey,
+      oldCountryCode:userDetails?.responseData?.countryCode
+    }
+    fetch(updatephoneOtp,postData,"POST")
+
+  }
 
   const navigateAction = () => {
-    props.navigation.navigate("EditMobileNumOtp");
+    sentOtp()
   };
+
+  useEffect(() => {
+    console.log("data", data);
+    if (data) {
+      props.navigation.navigate("EditMobileNumOtp", { newPhone: phone });
+    }
+  }, [data]);
 
   return (
     <View style={styles.sectionContainer}>
@@ -87,7 +115,7 @@ const EditMobileNumber = (props:any) => {
               defaultCode="IN"
               layout="first"
               onChangeText={(text: any) => {
-                setmobileNumber(text);
+                setPhone(text);
               }}
               containerStyle={{
                 borderColor: Screens.darkGray,
@@ -130,6 +158,7 @@ const EditMobileNumber = (props:any) => {
 
 
           <AnimatedLoader
+            isLoaderVisible={loading}
             loadingText="Loading..."
           />
      
