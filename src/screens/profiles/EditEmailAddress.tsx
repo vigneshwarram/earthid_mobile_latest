@@ -1,33 +1,60 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useRef, useState } from 'react'
-import GenericText from '../../components/Text'
-import { Screens } from '../../themes'
-import { LocalImages } from '../../constants/imageUrlConstants'
-import PhoneInput from 'react-native-phone-number-input'
-import Button from '../../components/Button'
-import AnimatedLoader from '../../components/Loader/AnimatedLoader'
-import TextInput from '../../components/TextInput'
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import GenericText from "../../components/Text";
+import { Screens } from "../../themes";
+import { LocalImages } from "../../constants/imageUrlConstants";
+import PhoneInput from "react-native-phone-number-input";
+import Button from "../../components/Button";
+import AnimatedLoader from "../../components/Loader/AnimatedLoader";
+import TextInput from "../../components/TextInput";
+import { useFetch } from "../../hooks/use-fetch";
+import { useAppSelector } from "../../hooks/hooks";
+import { updateEmailOtp } from "../../utils/earthid_account";
+import useFormInput from "../../hooks/use-text-input";
+import { emailValidator } from "../../utils/inputValidations";
 
-
-const EditEmailAddress = (props:any) => {
-
+const EditEmailAddress = (props: any) => {
+  const { loading, data, error, fetch } = useFetch();
+  const userDetails = useAppSelector((state) => state.account);
   const navigateAction = () => {
-    props.navigation.navigate("EditEmailAddOtp");
+    sendOtp();
   };
+  const sendOtp = () => {
+    var postData = {
+      oldEmail: userDetails?.responseData?.email,
+      newEmail: email,
+      earthId: userDetails?.responseData?.earthId,
+      publicKey: userDetails?.responseData?.publicKey,
+    };
+    fetch(updateEmailOtp, postData, "POST");
+  };
+  useEffect(() => {
+    console.log("data", data);
+    if (data) {
+      props.navigation.navigate("EditEmailAddOtp", { newEmail: email });
+    }
+  }, [data]);
+  const {
+    value: email,
+    isFocused: emailFocus,
+    validationResult: {
+      hasError: isemailError,
+      errorMessage: isemailErrorMessage,
+    },
+    valueChangeHandler: emailChangeHandler,
+    inputFocusHandler: emailFocusHandlur,
+    inputBlurHandler: emailBlurHandler,
+  } = useFormInput("", true, emailValidator);
 
   return (
     <View style={styles.sectionContainer}>
       <View style={styles.sectionHeaderContainer}>
-
-       <TouchableOpacity
-        onPress={()=>props.navigation.goBack()}
-        >
-
-        <Image
-          resizeMode="contain"
-          style={styles.logoContainer}
-          source={LocalImages.backImage}
-        ></Image>
+        <TouchableOpacity onPress={() => props.navigation.goBack()}>
+          <Image
+            resizeMode="contain"
+            style={styles.logoContainer}
+            source={LocalImages.backImage}
+          ></Image>
         </TouchableOpacity>
         <GenericText
           style={[
@@ -35,79 +62,80 @@ const EditEmailAddress = (props:any) => {
               fontSize: 20,
               color: Screens.pureWhite,
               fontWeight: "500",
-              marginLeft:-10
+              marginLeft: -10,
             },
           ]}
         >
           {"Update Email Address"}
         </GenericText>
 
-       
         <View />
       </View>
 
       <GenericText
-          style={[
-            {
-              fontSize: 16,
-              color: Screens.black,
-              fontWeight: "500",
-              alignSelf:'center',
-              marginTop:15
-           
-            },
-          ]}
-        >
-          {"Please enter your new Email Address"}
-        </GenericText> 
+        style={[
+          {
+            fontSize: 16,
+            color: Screens.black,
+            fontWeight: "500",
+            alignSelf: "center",
+            marginTop: 15,
+          },
+        ]}
+      >
+        {"Please enter your new Email Address"}
+      </GenericText>
 
-        <GenericText
-          style={[
-            {
-              fontSize: 13,
-              marginTop:20,
-              paddingHorizontal:15
-            },
-          ]}
-        >
-          {"Email"}
-        </GenericText> 
+      <GenericText
+        style={[
+          {
+            fontSize: 13,
+            marginTop: 20,
+            paddingHorizontal: 15,
+          },
+        ]}
+      >
+        {"Email"}
+      </GenericText>
 
-        <TextInput
-              style={{
-                container: styles.textInputContainer,
-              }}
-            />
+      <TextInput
+        style={{
+          container: styles.textInputContainer,
+        }}
+        isError={isemailError}
+        errorText={isemailErrorMessage}
+        onFocus={emailFocusHandlur}
+        onBlur={emailBlurHandler}
+        maxLength={60}
+        isFocused={emailFocus}
+        value={email}
+        onChangeText={emailChangeHandler}
+      />
 
-        <View style={{paddingHorizontal:15,marginTop:100}}>
-
-          <Button
+      <View style={{ paddingHorizontal: 15, marginTop: 100 }}>
+        <Button
           onPress={navigateAction}
-              style={{
-                buttonContainer: {
-                  elevation: 5,
-                },
-                text: {
-                  color: Screens.pureWhite,
-                },
-                iconStyle: {
-                  tintColor: Screens.pureWhite,
-                },
-              }}
-              title={"SUBMIT"}
-            ></Button>
-          </View>
+          style={{
+            buttonContainer: {
+              elevation: 5,
+            },
+            text: {
+              color: Screens.pureWhite,
+            },
+            iconStyle: {
+              tintColor: Screens.pureWhite,
+            },
+          }}
+          title={"SUBMIT"}
+        ></Button>
+      </View>
 
-
-            <AnimatedLoader
-              loadingText="Loading..."
-            />
-     
+      <AnimatedLoader isLoaderVisible={loading} loadingText="Loading..." />
     </View>
-  )
-}
+  );
+};
 
-export default EditEmailAddress
+export default EditEmailAddress;
 
 const styles = StyleSheet.create({
   sectionContainer: {
@@ -136,5 +164,4 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginTop: 10,
   },
-
-})
+});

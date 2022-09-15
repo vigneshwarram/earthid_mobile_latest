@@ -29,7 +29,6 @@ const useFetch = (): IResponse => {
           response = await getCall(url, payLoad);
           break;
       }
-      methodName ==="POST" ? response = await postFormData(url, payLoad) : response = await getCall(url, payLoad);
 
       console.log("response", response);
       if ((response && response?.status === 201) || response?.status === 200) {
@@ -42,6 +41,7 @@ const useFetch = (): IResponse => {
         throw new Error(JsonResponse?.message);
       }
     } catch (error: any) {
+      console.log("error", error);
       SnackBar({
         indicationMessage: error?.message,
       });

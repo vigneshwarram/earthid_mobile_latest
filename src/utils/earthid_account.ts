@@ -2,9 +2,12 @@ import { Platform, Alert } from "react-native";
 import CryptoJS from "react-native-crypto-js";
 
 export const isTestnet = true;
-const BASE_URL = "http://35.154.54.127:3000";
+const BASE_URL = "https://apiv2.myearth.id";
 export const api = BASE_URL + "/verification/sendEmailOTP";
 export const phoneOtp = BASE_URL + "/verification/sendPhoneOTP";
+export const updateEmailOtp = BASE_URL + "/verification/sendVerifiedEmailOTP";
+export const updateEmail = BASE_URL + "/verification/verifiedEmailVerify";
+
 export const createAccountApi = BASE_URL + "/authorize/createAccount";
 export const getRecordByTxApi = BASE_URL + "/authorize/getRecordByTx?txId";
 export const cryptoTransferApi = BASE_URL + "/authorize/cryptoTransfer";
@@ -22,7 +25,6 @@ export const generateCryptograph = BASE_URL + "/tech5/cryptoEncode";
 export const apiAuthorization = "fae2622d-7b73-4fc6-a536-202cabe75187";
 export const deleteUserApi = BASE_URL + "/user/deleteUser";
 export const uploadDocument = BASE_URL + "/user/upload";
-
 
 // icca api to post specific data
 export const iccaPostApi = "https://icca.flexsin.org/api/user_key_data";

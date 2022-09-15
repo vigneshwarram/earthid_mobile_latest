@@ -1,5 +1,5 @@
 // @ts-ignore
-export const EARTHID_DEV_BASE = "http://35.154.54.127:3000";
+export const EARTHID_DEV_BASE = "https://apiv2.myearth.id";
 
 export const URI = {
   ACCOUNT: {
