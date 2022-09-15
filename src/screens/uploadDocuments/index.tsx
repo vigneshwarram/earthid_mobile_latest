@@ -25,9 +25,9 @@ const UploadScreen = (props: any) => {
   const _takePicture = async () => {
     const options = { quality: 0.1, base64: true };
     const data = await camRef.current.takePictureAsync(options);
-    var doc="lic"
+    console.log("data", data);
     if (data) {
-      props.navigation.navigate("DocumentPreviewScreen", { fileUri: data,});
+      // props.navigation.navigate("DocumentPreviewScreen", { fileUri: data,});
     }
   };
   const requestPermission = async () => {
@@ -55,12 +55,16 @@ const UploadScreen = (props: any) => {
         type: [DocumentPicker.types.images, DocumentPicker.types.pdf],
         readContent: true,
       });
-      console.log("destPath", resp);
+
       let fileUri = resp[0].uri;
       RNFS.readFile(fileUri, "base64").then((res) => {
-        console.log("res", res);
+        console.log("res", resp);
         props.navigation.navigate("DocumentPreviewScreen", {
-          fileUri: { uri: `data:image/png;base64,${res}`, base64: res },
+          fileUri: {
+            uri: `data:image/png;base64,${res}`,
+            base64: res,
+            file: resp[0],
+          },
         });
       });
     } catch (err) {

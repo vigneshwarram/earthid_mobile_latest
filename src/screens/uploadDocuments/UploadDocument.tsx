@@ -55,10 +55,6 @@ const UploadDocument = (props: any) => {
         type: [DocumentPicker.types.images, DocumentPicker.types.pdf],
         readContent: true,
       });
-      console.log("destPath", resp);
-      let fileUri = resp[0].uri;
-      const requestData = {};
-      fetch("");
     } catch (err) {
       console.log("data==>", err);
     }

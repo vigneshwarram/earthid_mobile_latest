@@ -27,6 +27,8 @@ const useFetch = (): IResponse => {
           break;
         case "GET":
           response = await getCall(url, payLoad);
+        case "FORM-DATA":
+          response = await postFormData(url, payLoad);
           break;
       }
 
@@ -37,7 +39,6 @@ const useFetch = (): IResponse => {
         setData(JsonResponse);
       } else {
         const JsonResponse = await response.json();
-        console.log("error", JsonResponse);
         throw new Error(JsonResponse?.message);
       }
     } catch (error: any) {
@@ -45,7 +46,7 @@ const useFetch = (): IResponse => {
       SnackBar({
         indicationMessage: error?.message,
       });
-      serError(error);
+      serError({ message: error });
     }
     setloading(false);
   };

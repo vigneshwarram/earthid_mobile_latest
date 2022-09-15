@@ -17,55 +17,26 @@ import { uploadDocument, validateDocsApi } from "../../utils/earthid_account";
 
 const DocumentPreviewScreen = (props: any) => {
   const { fileUri } = props.route.params;
-  const { type } = props.route.params;
-  const { loading,
-     data ,
-     error, 
-     fetch : postFormfetch
-    } = useFetch();
-  const [successResponse, setsuccessResponse] = useState(false);
 
+  const { loading, data, error, fetch: postFormfetch } = useFetch();
+  const [successResponse, setsuccessResponse] = useState(false);
 
   const uploadDoc = async () => {
     const requestedData = {
-      IsDocumentExtracted: false,
-      Source: 1,
-      InputImages: [
-        {
-          Name: "WhiteImage",
-          ImageFormat: "JPEG",
-          Data: fileUri?.base64,
-        },
-      ],
+      type: fileUri?.file?.type,
+      name: fileUri?.file?.name,
+      uri: fileUri?.file?.uri,
     };
-    postFormfetch(uploadDocument, requestedData, "POST");
-    console.log("upload Document==>",'Success')
-   
-  };
-
-
-  const navigateToAction = async () => {
-    const requestedData = {
-      IsDocumentExtracted: false,
-      Source: 1,
-      InputImages: [
-        {
-          Name: "WhiteImage",
-          ImageFormat: "JPEG",
-          Data: fileUri?.base64,
-        },
-      ],
-    };
-    console.log("data====>", JSON.stringify(requestedData));
-    postFormfetch(validateDocsApi, requestedData, "POST");
+    postFormfetch(uploadDocument, requestedData, "FORM-DATA");
   };
 
   useEffect(() => {
-    if (data) {
+    console.log("requestedData", error);
+    if (data !== undefined) {
       setsuccessResponse(true);
       setTimeout(() => {
         setsuccessResponse(false);
-      //  props.navigation.navigate("categoryScreen", { fileUri });
+        //  props.navigation.navigate("categoryScreen", { fileUri });
         props.navigation.navigate("DrawerNavigator", { fileUri });
       }, 3000);
     }
@@ -102,7 +73,7 @@ const DocumentPreviewScreen = (props: any) => {
         }}
       >
         <Button
-        onPress={()=>props.navigation.goBack()}
+          onPress={() => props.navigation.goBack()}
           style={{
             buttonContainer: {
               elevation: 5,

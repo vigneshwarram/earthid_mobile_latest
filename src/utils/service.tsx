@@ -7,7 +7,7 @@ import { ssiApiKey } from "./earthid_account";
  */
 export const postFormData = async (requestURI: string, payload: any) => {
   const formData = new FormData();
-
+  console.log("payload", payload);
   formData.append("image", payload);
 
   return await fetch(requestURI, {

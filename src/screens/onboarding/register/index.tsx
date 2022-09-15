@@ -81,7 +81,7 @@ const Register = ({ navigation }: IRegister) => {
     valueChangeHandler: emailChangeHandler,
     inputFocusHandler: emailFocusHandlur,
     inputBlurHandler: emailBlurHandler,
-  } = useFormInput("", true, emailValidator);
+  } = useFormInput("", false, emailValidator);
 
   const _navigateAction = () => {
     if (isValid()) {
