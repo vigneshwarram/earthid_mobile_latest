@@ -14,6 +14,7 @@ import { saveDocuments } from "../../redux/actions/authenticationAction";
 import { Screens } from "../../themes/index";
 import {
   cryptoTransferApi,
+  facialDataLivenessAPI,
   MD5,
   selfieeverifyAPI,
 } from "../../utils/earthid_account";
@@ -43,14 +44,34 @@ const VerifiDocumentScreen = (props: any) => {
   var uploadedDocumentsBase64 = `data:image/png;base64,${uploadedDocuments?.base64}`;
 
   const validateImages = () => {
-    setLoad(true);
-    const dataHashed = MD5(uploadedDocuments?.base64);
     const request = {
-      memo: dataHashed,
-      isTestnet: true,
+      selfieBase64: faceImageData?.base64,
+      docPhotoUrl: uploadedDocuments,
     };
-    fetch(cryptoTransferApi, request, "POST").then(() => {
-      setLoad(false);
+    fetch(facialDataLivenessAPI, request, "POST").then(() => {
+      var date = dateTime();
+      const filePath = RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
+      var documentDetails: IDocumentProps = {
+        name: "Adhaar",
+        path: filePath,
+        date: date?.date,
+        time: date?.time,
+        txId: data?.result,
+        docType: "pdf",
+        docExt: ".jpg",
+        processedDoc: "",
+      };
+
+      var DocumentList = documentsDetailsList?.responseData
+        ? documentsDetailsList?.responseData
+        : [];
+      DocumentList.push(documentDetails);
+      dispatch(saveDocuments(DocumentList));
+      setsuccessResponse(true);
+      setTimeout(() => {
+        setsuccessResponse(false);
+        props.navigation.navigate("Documents");
+      }, 2000);
     });
   };
   useEffect(() => {
@@ -149,10 +170,7 @@ const VerifiDocumentScreen = (props: any) => {
         </TouchableOpacity>
       </View>
 
-      <AnimatedLoader
-        isLoaderVisible={loading || load}
-        loadingText="verifying..."
-      />
+      <AnimatedLoader isLoaderVisible={loading} loadingText="verifying..." />
       <SuccessPopUp
         isLoaderVisible={successResponse}
         loadingText={"Verification succeeded"}

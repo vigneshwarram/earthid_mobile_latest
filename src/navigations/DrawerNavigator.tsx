@@ -20,7 +20,7 @@ import OTPScreen from "../screens/onboarding/security/passcode/OTPScreen";
 import ViewCredential from "../screens/bottomTabs/documentTab/ViewCredebtials";
 import CustomizeQr from "../screens/profiles/CustomizeQr";
 import backupIdentity from "../screens/onboarding/backupIdentity";
-
+import Document from "../screens/bottomTabs/documentTab/index";
 import language from "../screens/settings/Language";
 import UpdateAuthentication from "../screens/onboarding/security/UpdateAuthentication";
 import AuthBackupIdentity from "../screens/onboarding/backupIdentity/AuthIdentity";
@@ -52,11 +52,10 @@ const dashBoardStack = {
   backupIdentity: backupIdentity,
   language: language,
   UpdateAuthentication: UpdateAuthentication,
-  EditMobileNumber:EditMobileNumber,
-  EditEmailAddress:EditEmailAddress,
-  EditMobileNumOtp:EditMobileNumOtp,
-  EditEmailAddOtp:EditEmailAddOtp
-
+  EditMobileNumber: EditMobileNumber,
+  EditEmailAddress: EditEmailAddress,
+  EditMobileNumOtp: EditMobileNumOtp,
+  EditEmailAddOtp: EditEmailAddOtp,
 };
 
 const tabs = {

@@ -27,17 +27,18 @@ const DocumentPreviewScreen = (props: any) => {
       name: fileUri?.file?.name,
       uri: fileUri?.file?.uri,
     };
-    postFormfetch(uploadDocument, requestedData, "FORM-DATA");
+    postFormfetch(uploadDocument, requestedData, "FORM-DATA").then(() => {
+      props.navigation.navigate("categoryScreen", { fileUri });
+    });
   };
 
   useEffect(() => {
     console.log("requestedData", error);
-    if (data !== undefined) {
+    if (data) {
       setsuccessResponse(true);
       setTimeout(() => {
         setsuccessResponse(false);
-        //  props.navigation.navigate("categoryScreen", { fileUri });
-        props.navigation.navigate("DrawerNavigator", { fileUri });
+        props.navigation.navigate("categoryScreen", { fileUri });
       }, 3000);
     }
   }, [data]);

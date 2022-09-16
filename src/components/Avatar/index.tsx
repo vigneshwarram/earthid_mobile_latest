@@ -20,7 +20,7 @@ const Avatar = ({
   isProfileAvatar = false,
   absoluteCircleInnerImage,
   avatarClick,
-  isCategory = false,
+  isCategory = true,
 }: IAvatarProps) => {
   const userDetails = useAppSelector((state) => state.account);
   return (

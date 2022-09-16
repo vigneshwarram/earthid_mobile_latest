@@ -8,6 +8,8 @@ export const phoneOtp = BASE_URL + "/verification/sendPhoneOTP";
 export const updatephoneOtp = BASE_URL + "/verification/sendVerifiedPhoneOTP";
 export const updateEmailOtp = BASE_URL + "/verification/sendVerifiedEmailOTP";
 export const updateEmail = BASE_URL + "/verification/verifiedEmailVerify";
+export const getCategoriesApi = BASE_URL + "/user/getCategories";
+export const facialDataLivenessAPI = BASE_URL + "/user/liveness";
 
 export const createAccountApi = BASE_URL + "/authorize/createAccount";
 export const getRecordByTxApi = BASE_URL + "/authorize/getRecordByTx?txId";

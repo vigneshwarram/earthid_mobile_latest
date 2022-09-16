@@ -94,7 +94,7 @@ const LivenessCameraScreen = (props: any) => {
 
             faceDetected = true;
             const options = {
-              quality: 0.5,
+              quality: 0.2,
               base64: true,
             };
             const data = await camRef.current.takePictureAsync(options);

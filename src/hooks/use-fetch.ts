@@ -27,26 +27,27 @@ const useFetch = (): IResponse => {
           break;
         case "GET":
           response = await getCall(url, payLoad);
+          break;
         case "FORM-DATA":
           response = await postFormData(url, payLoad);
           break;
       }
-
-      console.log("response", response);
+      console.log("raw response ========>;;;", response);
       if ((response && response?.status === 201) || response?.status === 200) {
         const JsonResponse = await response.json();
-        console.log("JsonResponse", JsonResponse);
+        console.log("success JsonResponse=========>:::::", JsonResponse);
         setData(JsonResponse);
       } else {
         const JsonResponse = await response.json();
+        console.log("else error JsonResponse==========>::::", JsonResponse);
         throw new Error(JsonResponse?.message);
       }
     } catch (error: any) {
-      console.log("error", error);
+      console.log("error==============>:::", error);
       SnackBar({
         indicationMessage: error?.message,
       });
-      serError({ message: error });
+      serError(error);
     }
     setloading(false);
   };

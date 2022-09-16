@@ -159,6 +159,7 @@ const Header = ({
             </View>
             {isAvatar && (
               <Avatar
+                isCategory={false}
                 avatarClick={avatarClick}
                 style={{ text: { color: Screens.pureWhite } }}
                 absoluteCircleInnerImage={absoluteCircleInnerImage}
