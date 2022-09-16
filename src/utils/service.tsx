@@ -66,6 +66,16 @@ export const getCall = (uri: string, method: string = "GET"): any => {
   return fetch(uri);
 };
 
+export const getCallWithHeader = (uri: string, method: string = "GET"): any => {
+  return fetch(uri, {
+    method: "GET", // or 'PUT'
+    headers: {
+      "Content-Type": "application/json",
+      authkey: "fae2622d-7b73-4fc6-a536-202cabe75187",
+    },
+  });
+};
+
 /**
  * @function getCall - function to call the backend with the request and fetches response
  * @param uri - string uri of the request

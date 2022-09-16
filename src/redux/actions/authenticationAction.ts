@@ -1,4 +1,4 @@
-import { getCall, postCall } from "../../utils/service";
+import { getCall, getCallWithHeader, postCall } from "../../utils/service";
 import { ACTION_TYPES } from "./types";
 import { URI } from "../../constants/URLContstants";
 import { ICreateAccount } from "../../typings/AccountCreation/ICreateAccount";
@@ -21,10 +21,11 @@ export const GeneratedKeysAction =
       dispatch({
         type: ACTION_TYPES.GENERATED_KEYS_LOADING,
       });
-      const response = await getCall(
+      const response = await getCallWithHeader(
         "https://api-stage.myearth.id/contract/generateKeys"
       );
       responseData = await _responseHandler(response);
+      console.log("responseData", responseData);
       dispatch({
         type: ACTION_TYPES.GENERATED_KEYS_RESPONSE,
         payload: {

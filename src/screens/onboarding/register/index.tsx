@@ -61,14 +61,7 @@ const Register = ({ navigation }: IRegister) => {
   } = useFormInput("", true, nameValidator);
 
   const {
-    value: dateOfBirth,
-    isFocused: dateOfBirthFocus,
-    validationResult: {
-      hasError: dateOfBirthError,
-      errorMessage: dateOfBirthErrorMessage,
-    },
     valueChangeHandler: dateOfBirthChangeHandler,
-    inputFocusHandler: dateOfBirthocusHandlur,
     inputBlurHandler: dateOfBirthlurHandler,
   } = useFormInput("", true, nameValidator);
   const {
@@ -105,9 +98,6 @@ const Register = ({ navigation }: IRegister) => {
     return false;
   };
 
-  const onDatePickerOpen = () => {
-    setopenDatePicker(true);
-  };
   const _registerAction = async ({ publicKey }: any) => {
     try {
       const token = await getDeviceId();
