@@ -14,6 +14,7 @@ import { useAppDispatch } from "../../../hooks/hooks";
 import BottomSheet from "../../../components/Bottomsheet";
 import il8n, { getUserLanguagePreference } from "../.././../utils/i18n";
 import { AppLanguage } from "../../../typings/enums/AppLanguage";
+import { alertBox } from "../../../utils/earthid_account";
 
 const UpdateAuthentication = (props: any) => {
   const dispatch = useAppDispatch();
@@ -22,6 +23,8 @@ const UpdateAuthentication = (props: any) => {
   const _navigateAction = (item: any) => {
     if (item.CARD === "language") {
       setLanguageVisible(true);
+    } else {
+      props.navigation.navigate(item.card);
     }
   };
   useEffect(() => {
@@ -38,18 +41,21 @@ const UpdateAuthentication = (props: any) => {
       COLOR: "#D7EFFB",
       icon: LocalImages.faceImage,
       selection: true,
+      card: "UpdateFaceId",
     },
     {
       label: "passcord",
       COLOR: "#FFDD9B",
       icon: LocalImages.passcordImage,
       selection: false,
+      card: "OldPincode",
     },
     {
       label: "touchid",
       COLOR: "#F6BDE9",
       icon: LocalImages.touchImage,
       selection: false,
+      card: "UpdateTouchId",
     },
   ]);
 
@@ -104,16 +110,12 @@ const UpdateAuthentication = (props: any) => {
   return (
     <View style={styles.sectionContainer}>
       <View style={styles.sectionHeaderContainer}>
-
-       <TouchableOpacity
-        onPress={()=>props.navigation.goBack()}
-        >
-
-        <Image
-          resizeMode="contain"
-          style={styles.logoContainer}
-          source={LocalImages.backImage}
-        ></Image>
+        <TouchableOpacity onPress={() => props.navigation.goBack()}>
+          <Image
+            resizeMode="contain"
+            style={styles.logoContainer}
+            source={LocalImages.backImage}
+          ></Image>
         </TouchableOpacity>
         <GenericText
           style={[

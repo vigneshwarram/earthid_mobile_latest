@@ -33,7 +33,19 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
   const ApproveOtpResponse = useAppSelector((state) => state.ApproveOtp);
 
   const { type } = route.params;
-  const { loading, data, error, fetch } = useFetch();
+  const {
+    loading: sendEmailLoading,
+    data: emailResponse,
+    error: isEmailError,
+    fetch: sendEmailOtp,
+  } = useFetch();
+
+  const {
+    loading: sendPhoneLoading,
+    data: phoneResponse,
+    error: sendPhoneError,
+    fetch: sendPhoneOtpAPI,
+  } = useFetch();
   const [code, setCode] = useState();
   const onPinCodeChange = (code: any) => {
     setCode(code);
@@ -43,9 +55,8 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
       email: userDetails?.responseData?.email,
       earthId: userDetails?.responseData?.earthId,
       publicKey: userDetails?.responseData?.publicKey,
-    
     };
-    fetch(api, postData, "POST");
+    sendEmailOtp(api, postData, "POST");
   };
 
   const sendPhoneOtp = () => {
@@ -53,65 +64,42 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
       phone: userDetails?.responseData?.phone,
       earthId: userDetails?.responseData?.earthId,
       publicKey: userDetails?.responseData?.publicKey,
-      countryCode:userDetails?.responseData?.countryCode
+      countryCode: userDetails?.responseData?.countryCode,
     };
-    fetch(phoneOtp, postPhoneData, "POST");
+    sendPhoneOtpAPI(phoneOtp, postPhoneData, "POST");
   };
 
   useEffect(() => {
-    console.log("data", data);
-    if (!data?.success) {
-      if (type == "phone") {
-        sendPhoneOtp();
-      } else if (type == "email") {
+    console.log("data", emailResponse);
+    if (!emailResponse?.success) {
+      if (type == "email") {
         sendOtp();
       }
     }
-  }, [data]);
+  }, [emailResponse]);
+
+  useEffect(() => {
+    console.log("data", phoneResponse);
+    if (!phoneResponse?.success) {
+      if (type !== "email") {
+        sendPhoneOtp();
+      }
+    }
+  }, [phoneResponse]);
 
   console.log("ApproveOtpResponse", ApproveOtpResponse);
   if (ApproveOtpResponse?.isApproveOtpSuccess) {
     ApproveOtpResponse.isApproveOtpSuccess = false;
     let isEmailApproved = true;
-    let ismobileApproved = true;
-    let overallResponseData = { 
+
+    let overallResponseData = {
       ...userDetails.responseData,
       ...{ emailApproved: isEmailApproved },
-      ...{ mobileApproved: ismobileApproved },
     };
     dispatch(byPassUserDetailsRedux(overallResponseData)).then(() => {
       navigation.navigate("ProfileScreen");
     });
   }
-
-  // if (ApproveOtpResponse?.isApproveOtpSuccess) {
-  //   ApproveOtpResponse.isApproveOtpSuccess = false;
-  //   let isEmailApproved = true;
-  //   let ismobileApproved = true;
-    
-  //   if(ismobileApproved===true){
-
-  //     let overallResponseData = { 
-  //         ...userDetails.responseData,
-  //       //  ...{ emailApproved: isEmailApproved },
-  //         ...{ mobileApproved: ismobileApproved },
-          
-  //       };
-  //       dispatch(byPassUserDetailsRedux(overallResponseData)).then(() => {
-  //         navigation.navigate("ProfileScreen");
-  //       });
-  //   }else if(isEmailApproved==true){
-  //     let overallResponseData = { 
-  //       ...userDetails.responseData,
-  //       ...{ emailApproved: isEmailApproved },
-  //    //   ...{ mobileApproved: ismobileApproved },
-        
-  //     };
-  //     dispatch(byPassUserDetailsRedux(overallResponseData)).then(() => {
-  //       navigation.navigate("ProfileScreen");
-  //     });
-  //   }
-  // }
 
   const approveOtp = () => {
     const request = {
@@ -127,7 +115,7 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
       <ScrollView contentContainerStyle={styles.sectionContainer}>
         <Header
           isLogoAlone={true}
-          headingText={"setpass"}
+          headingText={"Enter OTP"}
           linearStyle={styles.linearStyle}
           containerStyle={{
             iconStyle: {
@@ -165,20 +153,7 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
                 },
               ]}
             >
-              {SCREENS.SECURITYSCREEN.passcordInstruction}
-            </GenericText>
-            <GenericText
-              style={[
-                styles.categoryHeaderText,
-                {
-                  fontSize: 13,
-                  fontWeight: "500",
-                  textAlign: "center",
-                  color: Screens.grayShadeColor,
-                },
-              ]}
-            >
-              {SCREENS.SECURITYSCREEN.passcordInstructions}
+              {"Please enter OTP"}
             </GenericText>
           </View>
           <View style={{ alignSelf: "center" }}>

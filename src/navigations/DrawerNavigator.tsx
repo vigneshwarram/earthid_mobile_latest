@@ -28,6 +28,11 @@ import EditMobileNumber from "../screens/profiles/EditMobileNumber";
 import EditEmailAddress from "../screens/profiles/EditEmailAddress";
 import EditMobileNumOtp from "../screens/profiles/EditMobileNumOtp";
 import EditEmailAddOtp from "../screens/profiles/EditEmailAddOtp";
+import UpdateFaceId from "../screens/FaceRegister/UpdateFaceId";
+import OldPincode from "../screens/onboarding/security/passcode/UpdatePincode/OldPincode";
+import UpdateConfirmPincode from "../screens/onboarding/security/passcode/UpdatePincode/UpdateConfirmPincode";
+import UpdateNewPin from "../screens/onboarding/security/passcode/UpdatePincode/UpdateNewPin";
+import UpdateTouchId from "../screens/onboarding/security/UpdateTouchId";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -56,6 +61,11 @@ const dashBoardStack = {
   EditEmailAddress: EditEmailAddress,
   EditMobileNumOtp: EditMobileNumOtp,
   EditEmailAddOtp: EditEmailAddOtp,
+  UpdateFaceId: UpdateFaceId,
+  OldPincode: OldPincode,
+  UpdateConfirmPincode: UpdateConfirmPincode,
+  UpdateNewPin: UpdateNewPin,
+  UpdateTouchId: UpdateTouchId,
 };
 
 const tabs = {

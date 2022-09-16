@@ -21,7 +21,7 @@ export const ABOUT_ROUTES = {
     URI: LocalImages.documentsImage,
     CARD: "MerchantAgreement",
     TITLE: SCREENS.DRAWERMENUTITLES.DOCUMENT,
-    SCREEN: "Document",
+    SCREEN: "Documents",
     COLOR: "#C5BDF6",
   },
   HISTORY: {

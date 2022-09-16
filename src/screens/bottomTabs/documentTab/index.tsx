@@ -35,6 +35,8 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
     setisBottomSheetForSideOptionVisible,
   ] = useState<boolean>(false);
 
+  const [searchText, setsearchText] = useState();
+
   const [isBottomSheetForFilterVisible, setisBottomSheetForFilterVisible] =
     useState<boolean>(false);
 
@@ -103,7 +105,9 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
     </View>
   );
 
-  const onChangeHandler = () => {};
+  const onChangeHandler = (text: React.SetStateAction<undefined>) => {
+    setsearchText(text);
+  };
   const onPressNavigateTo = () => {
     navigation.navigate("uploadDocumentsScreen");
   };
@@ -127,7 +131,7 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
         isError={false}
         isNumeric={false}
         placeholder={"Search documents"}
-        value={""}
+        value={searchText}
         onChangeText={onChangeHandler}
       />
       <View style={{ flexDirection: "row" }}>
