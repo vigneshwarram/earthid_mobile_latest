@@ -66,8 +66,20 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
       domain,
     })
   );
+  const [medialList, setmedialList] = useState(socialMedialList);
 
-  const _renderItem = ({ item }: any) => {
+  const onChangeHandler = (text: string, indexofItem: number) => {
+    const mediListLocal = socialMedialList.map((item, index) => {
+      if (indexofItem === index) {
+        item.domain = text;
+      }
+
+      return item;
+    });
+    setmedialList([...mediListLocal]);
+  };
+
+  const _renderItem = ({ item, index }: any) => {
     return (
       <View>
         <Text style={[styles.categoryHeaderText, { fontSize: 13 }]}>
@@ -86,7 +98,7 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
           }}
           leftIcon={item.uri}
           value={item.domain}
-          onChangeText={dateOfBirthChangeHandler}
+          onChangeText={(text) => onChangeHandler(text, index)}
         />
       </View>
     );
@@ -138,93 +150,14 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
         ></Header>
         <View style={styles.category}>
           <Info
-            title={"Full Name"}
+            title={"User Name"}
             style={{
               title: styles.title,
               subtitle: styles.subtitle,
               container: styles.textContainer,
             }}
           />
-          <TextInput
-            style={{
-              container: styles.textInputContainer,
-            }}
-            isError={isfullNameError}
-            errorText={isfullNameErrorMessage}
-            onFocus={fullNameFocusHandlur}
-            onBlur={fullNameBlurHandler}
-            maxLength={60}
-            isFocused={fullNameFocus}
-            value={fullName}
-            onChangeText={fullNameChangeHandler}
-          />
-          <Info
-            title={"Date of Birth"}
-            style={{
-              title: styles.title,
-              subtitle: styles.subtitle,
-              container: styles.textContainer,
-            }}
-          />
-          <TextInput
-            style={{
-              container: styles.textInputContainer,
-            }}
-            rightIcon={LocalImages.calendarImage}
-            isError={dateOfBirthError}
-            errorText={dateOfBirthErrorMessage}
-            onFocus={dateOfBirthocusHandlur}
-            onBlur={dateOfBirthlurHandler}
-            maxLength={60}
-            isFocused={dateOfBirthFocus}
-            value={dateOfBirth}
-            onChangeText={dateOfBirthChangeHandler}
-          />
-          <Info
-            title={"Mobile Number"}
-            style={{
-              title: styles.title,
-              subtitle: styles.subtitle,
-              container: styles.textContainer,
-              subtitleNearText: styles.subtitleNearText,
-            }}
-          />
-          <PhoneInput
-            ref={phoneInput}
-            defaultValue={"0000000"}
-            defaultCode="IN"
-            layout="first"
-            onChangeText={(text: any) => {
-              setmobileNumber(text);
-            }}
-            containerStyle={{
-              borderColor: Screens.colors.primary,
-              width: 320,
-              borderWidth: 2.2,
-              borderRadius: 5,
-              height: 65,
-              marginLeft: 10,
-            }}
-            flagButtonStyle={{ backgroundColor: Screens.thickGray }}
-            textInputStyle={{ fontSize: 16, padding: 0, margin: 0 }}
-            codeTextStyle={{ fontSize: 16, padding: 0, margin: 0 }}
-            textContainerStyle={{
-              height: 55,
-              padding: 0,
-              margin: 0,
-            }}
-            withShadow
-            autoFocus
-          />
-          <Info
-            title={"Email"}
-            style={{
-              title: styles.title,
-              subtitle: styles.subtitle,
-              container: styles.textContainer,
-              subtitleNearText: styles.subtitleNearText,
-            }}
-          />
+
           <TextInput
             style={{
               container: styles.textInputContainer,
@@ -265,7 +198,7 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
         <View style={styles.socialMediaContainer}>
           <FlatList<any>
             nestedScrollEnabled
-            data={socialMedialList}
+            data={medialList}
             renderItem={_renderItem}
             keyExtractor={_keyExtractor}
           />
