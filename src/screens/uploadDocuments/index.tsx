@@ -1,5 +1,5 @@
 import { useTheme } from "@react-navigation/native";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -16,11 +16,23 @@ import { Screens } from "../../themes/index";
 import DocumentMask from "../uploadDocuments/DocumentMask";
 import RNFS from "react-native-fs";
 import GenericText from "../../components/Text";
+import { launchImageLibrary } from "react-native-image-picker";
+
+
+const ImagePicker = require('react-native-image-picker');
 
 const UploadScreen = (props: any) => {
   const _handleBarCodeRead = (barCodeData: any) => {};
   const { colors } = useTheme();
   const camRef: any = useRef();
+
+
+
+
+  const[message,Setmessage]=useState<string>("ooo")
+  const[data,SetData]=useState(null)
+  const[source,setSource]=useState({})
+  const [filePath, setFilePath] = useState();
 
   const _takePicture = async () => {
     const options = { quality: 0.1, base64: true };
@@ -64,7 +76,9 @@ const UploadScreen = (props: any) => {
             uri: `data:image/png;base64,${res}`,
             base64: res,
             file: resp[0],
+            type:"qrRreader"
           },
+         
         });
       });
     } catch (err) {
@@ -72,6 +86,52 @@ const UploadScreen = (props: any) => {
     }
   };
 
+
+  // const openFilePicker = async () => {
+  //   let options:any = {
+  //     title: 'Select Image',
+  //     customButtons: [
+  //       {
+  //         name: 'customOptionKey',
+  //         title: 'Choose Photo from Custom Option'
+  //       },
+  //     ],
+  //     storageOptions: {
+  //       skipBackup: true,
+  //       path: 'images',
+  //     },
+  //   };
+  //   launchImageLibrary(options,(response: { didCancel: any; }) => {
+  //     console.log('Response = ', response);
+  
+  //     if (response.didCancel) {
+  //       console.log('User cancelled image picker');
+  //     }else {
+  //       let items:any=""
+  //       let source :any =response;
+  //       var item =source.assets.map((i:any)=>{
+  //         Setmessage(i.bitrate)
+  //         setFilePath(i.uri);
+  //         items=i.uri
+  //       })
+  //       // You can also display the image using data:
+  //       // let source = {
+  //       //   uri: 'data:image/jpeg;base64,' + response.data
+  //       // };
+  
+  //       console.log(item)
+
+  //       props.navigation.navigate("DocumentPreviewScreen", {
+  //                  value: {
+  //                     path:items
+  //                  },        
+  //                });
+  //     }
+  //   });
+  // };
+
+
+  
   return (
     <View style={styles.sectionContainer}>
       <View style={{ position: "absolute", top: 20, right: 20, zIndex: 100 }}>

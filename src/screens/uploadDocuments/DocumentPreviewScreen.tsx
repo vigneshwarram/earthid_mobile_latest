@@ -14,26 +14,76 @@ import { LocalImages } from "../../constants/imageUrlConstants";
 import { useFetch } from "../../hooks/use-fetch";
 import { Screens } from "../../themes/index";
 import { uploadDocument, validateDocsApi } from "../../utils/earthid_account";
+import { QRreader } from 'react-native-qr-decode-image-camera';
 
 const DocumentPreviewScreen = (props: any) => {
-  const { fileUri } = props.route.params;
+  const { fileUri ,type} = props.route.params;
+  const { value} = props.route.params;
 
   const { loading, data, error, fetch: postFormfetch } = useFetch();
   const [successResponse, setsuccessResponse] = useState(false);
+  const[message,Setmessage]=useState("ooo")
+  const[datas,SetData]=useState(null)
+  const[source,setSource]=useState({})
+  const [filePath, setFilePath] = useState();
+
+  
+  
 
   const uploadDoc = async () => {
-    const requestedData = {
-      type: fileUri?.file?.type,
-      name: fileUri?.file?.name,
-      uri: fileUri?.file?.uri,
-    };
-    postFormfetch(uploadDocument, requestedData, "FORM-DATA").then(() => {
-      props.navigation.navigate("categoryScreen", { fileUri });
-    });
+
+    let type ="qrRreader"
+
+    if(type==fileUri.type){
+      console.log("Data===>",fileUri.file.uri +"/"+ fileUri.file.name)
+      console.log("DataNAme===>", fileUri.file.uri)
+      
+        if(fileUri.file.uri){
+        QRreader(fileUri.file.uri)
+        .then((data:any) => {
+         Setmessage("praveen")
+         SetData(data)
+         console.log("Dataname===>",data)
+  
+          setTimeout(() => {
+            SetData(data)
+            Setmessage("outt")
+          }, 6000);
+        })
+        .catch((err: any)=> {
+         console.log("DataError===>","ErrorRes")
+         console.log("error==>",err)
+        });
+        
+      }
+
+    }
+    else{
+
+      const requestedData = {
+        type: fileUri?.file?.type,
+        name: fileUri?.file?.name,
+        uri: fileUri?.file?.uri,
+      };
+      postFormfetch(uploadDocument, requestedData, "FORM-DATA").then(() => {
+        props.navigation.navigate("categoryScreen", { fileUri });
+      });
+    }
+
   };
+
+  const goBack=()=>{
+     props.navigation.goBack()
+   
+  }
+
+
 
   useEffect(() => {
     console.log("requestedData", error);
+    console.log("requestedData==>", fileUri.uri);
+    console.log("requestedDataValue==>", fileUri.type);
+    console.log("Data==>", datas);
     if (data) {
       setsuccessResponse(true);
       setTimeout(() => {
@@ -74,7 +124,7 @@ const DocumentPreviewScreen = (props: any) => {
         }}
       >
         <Button
-          onPress={() => props.navigation.goBack()}
+          onPress={goBack}
           style={{
             buttonContainer: {
               elevation: 5,

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -35,13 +35,13 @@ const Register = ({ navigation }: IHomeScreenProps) => {
   const viewShot: any = useRef();
 
   let qrData = {
-    accountId: accountDetails?.responseData.earthId,
+    earthId: accountDetails?.responseData.earthId,
   };
-  var encryptedString: any = CryptoJS.AES.encrypt(
-    JSON.stringify(qrData),
-    AES_ENCRYPTION_SALT
-  );
-  encryptedString = encryptedString.toString();
+  // var encryptedString: any = CryptoJS.AES.encrypt(
+  //   JSON.stringify(qrData),
+  //   AES_ENCRYPTION_SALT
+  // );
+  // encryptedString = encryptedString.toString();
 
   const capturePicture = () => {
     console.log("Capturing picture..");
@@ -104,6 +104,10 @@ const Register = ({ navigation }: IHomeScreenProps) => {
     );
   };
 
+  useEffect(()=>{
+    console.log("qrValue",qrData.earthId)
+  },[])
+
   return (
     <View style={styles.sectionContainer}>
       <ScrollView contentContainerStyle={styles.sectionContainer}>
@@ -163,7 +167,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
                   qrBase64 = base64;
                   setBase64(base64);
                 }}
-                value={encryptedString}
+                value={qrData.earthId}
                 size={250}
               />
             </ViewShot>
