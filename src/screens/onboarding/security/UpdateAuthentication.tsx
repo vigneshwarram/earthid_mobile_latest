@@ -44,7 +44,7 @@ const UpdateAuthentication = (props: any) => {
       card: "UpdateFaceId",
     },
     {
-      label: "passcord",
+      label: "Passcode",
       COLOR: "#FFDD9B",
       icon: LocalImages.passcordImage,
       selection: false,

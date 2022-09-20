@@ -381,7 +381,7 @@ const CameraScreen = (props: any) => {
             maxHeight={300}
             labelField="label"
             valueField="value"
-            placeholder={"Expirational Time (default 1 day)"}
+            placeholder={"Expiry Time (default 1 day)"}
             searchPlaceholder="Search..."
             value={"value"}
             onChange={(item) => {
@@ -479,7 +479,7 @@ const CameraScreen = (props: any) => {
             maxHeight={300}
             labelField="label"
             valueField="value"
-            placeholder={"Expirational Time (default 1 day)"}
+            placeholder={"Expiry Time (default 1 day)"}
             searchPlaceholder="Search..."
             value={"value"}
             onChange={(item) => {
@@ -573,7 +573,7 @@ const CameraScreen = (props: any) => {
             maxHeight={300}
             labelField="label"
             valueField="value"
-            placeholder={"Expirational Time (default 1 day)"}
+            placeholder={"Expiry Time (default 1 day)"}
             searchPlaceholder="Search..."
             value={"value"}
             onChange={(item) => {

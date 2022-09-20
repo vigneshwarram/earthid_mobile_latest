@@ -34,7 +34,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
       <ScrollView contentContainerStyle={styles.sectionContainer}>
         <Header
           isLogoAlone={true}
-          headingText={"Set Passcord"}
+          headingText={"Set Passcode"}
           linearStyle={styles.linearStyle}
           containerStyle={{
             iconStyle: {
@@ -72,7 +72,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
                 },
               ]}
             >
-              {SCREENS.SECURITYSCREEN.passcordInstruction}
+              {SCREENS.SECURITYSCREEN.PasscodeInstruction}
             </GenericText>
             <GenericText
               style={[
@@ -85,7 +85,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
                 },
               ]}
             >
-              {SCREENS.SECURITYSCREEN.passcordInstructions}
+              {SCREENS.SECURITYSCREEN.PasscodeInstructions}
             </GenericText>
           </View>
           <SmoothPinCodeInput

@@ -44,6 +44,8 @@ const VerifiDocumentScreen = (props: any) => {
   var uploadedDocumentsBase64 = `data:image/png;base64,${uploadedDocuments?.base64}`;
 
   const validateImages = () => {
+    setLoad(true);
+    //  const dataHashed = MD5(uploadedDocuments?.base64);
     const request = {
       selfieBase64: faceImageData?.base64,
       docPhotoUrl: uploadedDocuments,
@@ -97,7 +99,7 @@ const VerifiDocumentScreen = (props: any) => {
       setsuccessResponse(true);
       setTimeout(() => {
         setsuccessResponse(false);
-        props.navigation.navigate("Document");
+        props.navigation.navigate("Documents");
       }, 2000);
     }
   }, [data]);
@@ -151,7 +153,8 @@ const VerifiDocumentScreen = (props: any) => {
           flex: 0.17,
           flexDirection: "row",
           paddingHorizontal: 5,
-          justifyContent: "space-between",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
         <TouchableOpacity
@@ -160,20 +163,21 @@ const VerifiDocumentScreen = (props: any) => {
             elevation: 5,
             margin: 20,
             width: 300,
+            height: 50,
             borderRadius: 50,
             backgroundColor: Screens.colors.primary,
             justifyContent: "center",
             alignItems: "center",
           }}
         >
-          <Text style={{ color: "#fff" }}>Sumbit</Text>
+          <Text style={{ color: "#fff" }}>Submit</Text>
         </TouchableOpacity>
       </View>
 
       <AnimatedLoader isLoaderVisible={loading} loadingText="verifying..." />
       <SuccessPopUp
         isLoaderVisible={successResponse}
-        loadingText={"Verification succeeded"}
+        loadingText={"Verification successful"}
       />
     </View>
   );

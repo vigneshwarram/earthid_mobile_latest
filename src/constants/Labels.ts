@@ -3,7 +3,7 @@ import { LocalImages } from "./imageUrlConstants";
 export const SCREENS = {
   HOMESCREEN: {
     avatarName: "Robert Downey",
-    appName: "Earth ID",
+    appName: "EarthID",
     category: "CATEGORIES",
     documentLabel: "useddocument",
     upload: "uploaddoc",
@@ -216,8 +216,8 @@ export const SCREENS = {
   SECURITYSCREEN: {
     instruction: "securityscreeninstruction",
     instructions: "securityscreeninstructions",
-    passcordInstruction: "securityscreeninstructions",
-    passcordInstructions: "passcodeinstruction",
+    PasscodeInstruction: "securityscreeninstructions",
+    PasscodeInstructions: "passcodeinstruction",
     confirmInstruction: "confirminstruction",
   },
   SHOWQRSCREEN: {

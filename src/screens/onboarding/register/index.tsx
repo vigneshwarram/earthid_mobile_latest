@@ -253,7 +253,6 @@ const Register = ({ navigation }: IRegister) => {
               }}
               autoFocus={false}
               ref={phoneInput}
-              defaultValue={""}
               defaultCode="IN"
               layout="first"
               onChangeText={(text: any) => {
@@ -261,10 +260,10 @@ const Register = ({ navigation }: IRegister) => {
               }}
               containerStyle={{
                 borderColor: Screens.darkGray,
-                width: 320,
+                width: 310,
                 borderWidth: 2.2,
                 borderRadius: 5,
-                height: 65,
+                height: 60,
                 marginLeft: 10,
               }}
               flagButtonStyle={{ backgroundColor: Screens.thickGray }}
