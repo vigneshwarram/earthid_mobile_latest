@@ -1,14 +1,26 @@
-import React, { useContext, useEffect } from "react";
-import { View, StyleSheet, Text, ScrollView, Linking } from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import {
+  View,
+  StyleSheet,
+  Text,
+  ScrollView,
+  Linking,
+  TouchableOpacity,
+  Image,
+  AsyncStorage,
+} from "react-native";
 import Header from "../../../components/Header";
 import { LocalImages } from "../../../constants/imageUrlConstants";
 import { SCREENS } from "../../../constants/Labels";
 import { Screens } from "../../../themes";
 import Button from "../../../components/Button";
 import Snackbar from "react-native-snackbar";
+
 import { LanguageContext } from "../../../components/LanguageContext/LanguageContextProvider";
-import { getUserLanguagePreference } from "../../../utils/i18n";
+import il8n, { getUserLanguagePreference } from "../.././../utils/i18n";
 import GenericText from "../../../components/Text";
+import BottomSheet from "../../../components/Bottomsheet";
+import { AppLanguage } from "../../../typings/enums/AppLanguage";
 
 interface IHomeScreenProps {
   navigation?: any;
@@ -18,7 +30,16 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
   const navigateAction = async () => {
     navigation.navigate("RegisterScreen");
   };
-
+  const [languageVisible, setLanguageVisible] = useState(false);
+  const [langugeList, setLanguageList] = useState([
+    { label: "English", value: AppLanguage.ENGLISH, selection: true },
+    { label: "Spanish", value: AppLanguage.SPANISH, selection: false },
+  ]);
+  useEffect(() => {
+    setTimeout(() => {
+      setLanguageVisible(true);
+    }, 500);
+  }, []);
   const initializeUserPreferences = async () => {
     const { languageCode, changeLanguagePreference } =
       useContext(LanguageContext);
@@ -29,7 +50,19 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
       changeLanguagePreference(storedUserLanguagePref, "SplashScreen");
     }
   };
-
+  const selectLanguage = async (item: any) => {
+    il8n.changeLanguage(item.value);
+    await AsyncStorage.setItem("setLanguage", item.value);
+    const languageList = langugeList.map((itemData, inde) => {
+      if (itemData.label === item.label) {
+        itemData.selection = !itemData.selection;
+      } else {
+        itemData.selection = false;
+      }
+      return itemData;
+    });
+    setLanguageList(languageList);
+  };
   useEffect(() => {
     initializeUserPreferences();
   }, []);
@@ -159,6 +192,68 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
               </GenericText>
             </View>
           </View>
+          <BottomSheet
+            onClose={() => setLanguageVisible(false)}
+            height={200}
+            isVisible={languageVisible}
+          >
+            <View
+              style={{
+                height: 220,
+                width: "100%",
+                paddingHorizontal: 10,
+              }}
+            >
+              <GenericText
+                style={[
+                  {
+                    fontSize: 18,
+                    marginHorizontal: 20,
+                    marginVertical: 25,
+                    color: Screens.black,
+                    fontWeight: "500",
+                  },
+                ]}
+              >
+                {"selectLanguages"}
+              </GenericText>
+              {langugeList.map((item, index) => (
+                <TouchableOpacity onPress={() => selectLanguage(item)}>
+                  <View
+                    style={{
+                      marginVertical: 7,
+                      backgroundColor: item.selection ? "#e6ffe6" : "#fff",
+                      padding: 10,
+                      borderRadius: 8,
+                      justifyContent: "space-between",
+                      flexDirection: "row",
+                    }}
+                  >
+                    <GenericText
+                      style={[
+                        {
+                          fontSize: 18,
+                          marginHorizontal: 20,
+                          color: Screens.black,
+                          fontWeight: "500",
+                        },
+                      ]}
+                    >
+                      {item?.label}
+                    </GenericText>
+                    <Image
+                      resizeMode="contain"
+                      style={[
+                        styles.avatarImageContainer,
+                        { tintColor: item.selection ? "green" : "#fff" },
+                      ]}
+                      source={LocalImages.successTikImage}
+                    ></Image>
+                  </View>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </BottomSheet>
         </View>
       </ScrollView>
     </View>

@@ -46,7 +46,7 @@ const PasswordCheck = ({ navigation, route }: IHomeScreenProps) => {
       <ScrollView contentContainerStyle={styles.sectionContainer}>
         <Header
           isLogoAlone={true}
-          headingText={"passcordauth"}
+          headingText={"Passcodeauth"}
           linearStyle={styles.linearStyle}
           containerStyle={{
             iconStyle: {

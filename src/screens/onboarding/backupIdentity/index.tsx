@@ -139,19 +139,6 @@ const Register = ({ navigation }: IHomeScreenProps) => {
             >
               {SCREENS.BACKUPIDENTYSCREEN.instruction}
             </GenericText>
-            <GenericText
-              style={[
-                styles.categoryHeaderText,
-                {
-                  fontSize: 14,
-                  fontWeight: "500",
-                  textAlign: "center",
-                  color: Screens.black,
-                },
-              ]}
-            >
-              {SCREENS.BACKUPIDENTYSCREEN.instructions}
-            </GenericText>
           </View>
           <View style={{ justifyContent: "center", alignItems: "center" }}>
             <ViewShot

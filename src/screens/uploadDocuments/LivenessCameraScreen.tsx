@@ -71,15 +71,9 @@ const LivenessCameraScreen = (props: any) => {
           if (displacement > 30) {
             hasMoved = true;
             if (stillToast) {
-              SnackBar({
-                indicationMessage: "Be still like a stone !",
-              });
               setmaskedColor("red");
             } else {
               setmaskedColor("red");
-              SnackBar({
-                indicationMessage: "I can still see you moving",
-              });
             }
             break;
           }
@@ -89,7 +83,7 @@ const LivenessCameraScreen = (props: any) => {
           if (min < threshold && faceId === faceArray.faces[0].faceID) {
             setmaskedColor("green");
             SnackBar({
-              indicationMessage: "Aww, Thank you",
+              indicationMessage: "Thank you",
             });
 
             faceDetected = true;
@@ -102,9 +96,6 @@ const LivenessCameraScreen = (props: any) => {
               setData(data);
             }
           } else {
-            SnackBar({
-              indicationMessage: "I can still see you moving",
-            });
           }
         }
         faceOrigin = [];

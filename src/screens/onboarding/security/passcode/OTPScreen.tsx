@@ -193,10 +193,10 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
             isLoaderVisible={ApproveOtpResponse.isApproveLoading}
             loadingText="Loading..."
           />
-          {/* <SuccessPopUp
-            isLoaderVisible={ApproveOtpResponse.isLoading}
-            loadingText={"Email verification succeeded"}
-          /> */}
+          <SuccessPopUp
+            isLoaderVisible={ApproveOtpResponse?.responseData ? true : false}
+            loadingText={"Email verification successful"}
+          />
         </View>
       </ScrollView>
     </View>
