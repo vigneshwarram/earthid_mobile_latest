@@ -20,7 +20,9 @@ import Button from "../../../components/Button";
 import Share from "react-native-share";
 import { AES_ENCRYPTION_SALT } from "../../../utils/earthid_account";
 import GenericText from "../../../components/Text";
-import { useAppSelector } from "../../../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
+import { IUserSchemaRequest } from "../../../typings/AccountCreation/IUserSchema";
+import { createSchema } from "../../../redux/actions/authenticationAction";
 
 interface IHomeScreenProps {
   navigation?: any;
@@ -32,7 +34,10 @@ const Register = ({ navigation }: IHomeScreenProps) => {
   let [qrBase64, setBase64] = useState("");
   const getGeneratedKeys = useAppSelector((state) => state.user);
   const accountDetails = useAppSelector((state) => state.account);
+  const schemaDetails = useAppSelector((state) => state.schema);
   const viewShot: any = useRef();
+  const dispatch = useAppDispatch();
+
 
   let qrData = {
     earthId: accountDetails?.responseData.earthId,
@@ -42,6 +47,13 @@ const Register = ({ navigation }: IHomeScreenProps) => {
   //   AES_ENCRYPTION_SALT
   // );
   // encryptedString = encryptedString.toString();
+
+  let data={
+    email:accountDetails?.responseData.email,
+    mobile:accountDetails?.responseData.phone,
+    firstName:accountDetails?.responseData.firstName,
+    lastName:accountDetails?.responseData.lastName,
+  }
 
   const capturePicture = () => {
     console.log("Capturing picture..");
@@ -104,8 +116,85 @@ const Register = ({ navigation }: IHomeScreenProps) => {
     );
   };
 
+
+
+  const schemaAction=async()=>{
+    try {
+      const payLoad: IUserSchemaRequest = {
+
+        schemaName:"test",
+        description:"it is god",
+        attributes:[
+      
+        {
+          attributeName: data.firstName+data.lastName,
+          type: "alphanumeric",
+          description: "Username of the user",
+          required: true,
+          maxLength: "12"
+        },
+
+        {
+          attributeName: data.firstName,
+          type: "alphanumeric",
+          description: "First of the user",
+          required: true,
+          maxLength: "12"
+        },
+        {
+          attributeName: data.lastName,
+          type: "alphanumeric",
+          description: "Last of the user",
+          required: true,
+          maxLength: "12"
+        },
+        {
+          attributeName: data.email,
+          type: "email",
+          description: "email of the user",
+          required: true,
+        },
+        {
+          attributeName: "membershipType",
+          type: "alphanumeric",
+          description: "membershipType of the user",
+          required: true,
+        },
+        {
+          attributeName:"salary",
+          type: "number",
+          description: "salary of the user",
+          required: true,
+        },
+        {
+          attributeName:"dateOfBirth",
+          type: "date",
+          description: "Date of Birth of the user",
+          required: true,
+        },
+      ],
+        expiration:{
+          value:1,
+          unit:"years"
+        },
+        dependantSchemas:[]
+      };
+      dispatch(createSchema(payLoad))
+    } catch (error:any) {
+      console.log("error", error?.message)
+    }
+  }
+
   useEffect(()=>{
     console.log("qrValue",qrData.earthId)
+    console.log("email=>",data.email)
+    console.log("firstname==>",data.firstName)
+    console.log("lastname==>",data.lastName)
+    console.log("mobile==>",data.mobile)
+    
+
+    schemaAction()
+
   },[])
 
   return (

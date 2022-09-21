@@ -63,6 +63,37 @@ export const accountReducer = (state = {}, { type, payload }: any) => {
   }
 };
 
+
+export const schemaReducer = (state = {}, { type, payload }: any) => {
+  switch (type) {
+    case ACTION_TYPES.CREATEDSCHEMA:
+      return {
+        ...state,
+        isLoading: true,
+        isAccountCreatedSuccess: false,
+        isAccountCreatedFailure: false,
+      };
+    case ACTION_TYPES.CREATED_SCHEMA_RESPONSE:
+      return {
+        ...state,
+        ...payload,
+        isAccountCreatedSuccess: true,
+        isLoading: false,
+        isAccountCreatedFailure: false,
+      };
+    case ACTION_TYPES.CREATED_SCHEMA_ERROR:
+      return {
+        ...state,
+        ...payload,
+        isLoading: false,
+        isAccountCreatedSuccess: false,
+        isAccountCreatedFailure: true,
+      };
+    default:
+      return state;
+  }
+};
+
 export const contractReducer = (state = {}, { type, payload }: any) => {
   switch (type) {
     case ACTION_TYPES.CONTRACT_CALL:

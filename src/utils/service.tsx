@@ -90,3 +90,26 @@ export const ssiGetCall = (uri: string, method: string = "GET"): any => {
     },
   });
 };
+
+export const ssiPostCall = (
+  uri: string,
+  payload?: any,
+  method: string = "POST",
+  data:any={
+    payload
+  }
+): Promise<any> => {
+  console.log("url==>", uri);
+  console.log("requests==>", JSON.stringify(payload));
+  console.log("ssis");
+  console.log("ssis==>",payload);
+
+  return fetch(uri,{
+    method,
+    headers: {
+      "Content-Type": "application/json",
+      "X-API-KEY": ssiApiKey,
+    },
+    body: JSON.stringify(payload),
+  });
+};

@@ -7,6 +7,7 @@ import {
   contractReducer,
   approveOTPReducer,
   documentListReducer,
+  schemaReducer,
 } from "./reducer/user.reducer";
 import { SavedQrData } from "./reducer/saveDataReducer";
 
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
   ApproveOtp: approveOTPReducer,
   Documents: documentListReducer,
   saveData: SavedQrData,
+  schema:schemaReducer
 });
 
 const appreducer = (state: any, action: any) => {

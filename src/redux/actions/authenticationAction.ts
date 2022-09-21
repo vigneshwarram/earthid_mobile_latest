@@ -1,10 +1,11 @@
-import { getCall, getCallWithHeader, postCall } from "../../utils/service";
+import { getCall, getCallWithHeader, postCall, ssiPostCall } from "../../utils/service";
 import { ACTION_TYPES } from "./types";
 import { URI } from "../../constants/URLContstants";
 import { ICreateAccount } from "../../typings/AccountCreation/ICreateAccount";
 import { SnackBar } from "../../components/SnackBar";
 import { getUserDetails } from "../../utils/encryption";
 import { IUserAccountRequest } from "../../typings/AccountCreation/IUserAccount";
+import { IUserSchemaRequest } from "../../typings/AccountCreation/IUserSchema";
 const {
   ACCOUNT: {
     CREATE_ACCOUNT: createAccountUrl,
@@ -12,6 +13,8 @@ const {
     APPROVE_EMAIL_OTP: approveOTPEmail,
   },
 } = URI;
+
+let createSchemaUrl=" https://ssi-gbg.myearth.id/api/issuer/createSchema"
 
 export const GeneratedKeysAction =
   () =>
@@ -68,6 +71,37 @@ export const createAccount =
       console.log("create account API catch ===>", error);
       dispatch({
         type: ACTION_TYPES.CREATED_ACCOUNT_ERROR,
+        payload: {
+          errorMesssage: error,
+        },
+      });
+    }
+  };
+
+
+  export const createSchema =
+  (requestPayload: IUserSchemaRequest) =>
+  async (dispatch: any): Promise<any> => {
+    let responseData;
+    try {
+      dispatch({
+        type: ACTION_TYPES.CREATEDSCHEMA,
+      });
+      const response = await ssiPostCall(createSchemaUrl, requestPayload);
+      responseData = await _responseHandler(response);
+      console.log("responseData", responseData);
+      dispatch({
+        type: ACTION_TYPES.CREATED_SCHEMA_RESPONSE,
+        payload: {
+          responseData,
+          isLoading: false,
+          errorMesssage: "",
+        },
+      });
+    } catch (error) {
+      console.log("create account API catch ===>", error);
+      dispatch({
+        type: ACTION_TYPES.CREATED_SCHEMA_ERROR,
         payload: {
           errorMesssage: error,
         },
