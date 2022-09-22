@@ -120,65 +120,64 @@ const Register = ({ navigation }: IHomeScreenProps) => {
 
   const schemaAction=async()=>{
     try {
-      const payLoad: IUserSchemaRequest = {
-
-        schemaName:"test",
-        description:"it is god",
-        attributes:[
-      
-        {
-          attributeName: data.firstName+data.lastName,
+      const payLoad: IUserSchemaRequest =
+      {
+        schemaName: "testschema22344o11aaa",
+        description: "Membership Document for GBA Credential",
+        attributes: [
+         {
+          attributeName: data.firstName+""+data.lastName,
           type: "alphanumeric",
           description: "Username of the user",
           required: true,
           maxLength: "12"
-        },
-
-        {
+         },
+         {
           attributeName: data.firstName,
-          type: "alphanumeric",
-          description: "First of the user",
+          type: "alphabet",
+          description: "First name of the user",
           required: true,
           maxLength: "12"
-        },
-        {
+         },
+         {
           attributeName: data.lastName,
-          type: "alphanumeric",
-          description: "Last of the user",
+          type: "alphabet",
+          description: "Last name of the user",
           required: true,
           maxLength: "12"
-        },
-        {
-          attributeName: data.email,
+         },
+         {
+          attributeName: "email",
           type: "email",
-          description: "email of the user",
-          required: true,
-        },
-        {
+          description: "Email of the user",
+          required: true
+         },
+         {
           attributeName: "membershipType",
-          type: "alphanumeric",
-          description: "membershipType of the user",
-          required: true,
-        },
-        {
-          attributeName:"salary",
+          type: "alphabet",
+          description: "Membership Type of the user",
+          required: true
+         },
+         {
+          attributeName: "salary",
           type: "number",
-          description: "salary of the user",
-          required: true,
-        },
-        {
-          attributeName:"dateOfBirth",
+          description: "Salary of the user",
+          required: true
+         },
+         {
+          attributeName: "dateOfBirth",
           type: "date",
           description: "Date of Birth of the user",
-          required: true,
-        },
-      ],
-        expiration:{
-          value:1,
-          unit:"years"
-        },
-        dependantSchemas:[]
-      };
+          required: true
+         }
+        ],
+          expiration: {
+            value: 1,
+            unit: "years"
+          },
+          dependantSchemas: []
+        }
+        
       dispatch(createSchema(payLoad))
     } catch (error:any) {
       console.log("error", error?.message)

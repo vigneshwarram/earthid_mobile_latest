@@ -14,7 +14,7 @@ const {
   },
 } = URI;
 
-let createSchemaUrl=" https://ssi-gbg.myearth.id/api/issuer/createSchema"
+let createSchemaUrl="https://ssi-gbg.myearth.id/api/issuer/createSchema"
 
 export const GeneratedKeysAction =
   () =>
