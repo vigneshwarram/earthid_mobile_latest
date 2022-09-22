@@ -95,16 +95,13 @@ export const ssiPostCall = (
   uri: string,
   payload?: any,
   method: string = "POST",
-  data:any={
-    payload
+  data: any = {
+    payload,
   }
 ): Promise<any> => {
-  console.log("url==>", uri);
   console.log("requests==>", JSON.stringify(payload));
-  console.log("ssis");
-  console.log("ssis==>",payload);
 
-  return fetch(uri,{
+  return fetch(uri, {
     method,
     headers: {
       "Content-Type": "application/json",

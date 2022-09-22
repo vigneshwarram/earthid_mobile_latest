@@ -38,7 +38,6 @@ const Register = ({ navigation }: IHomeScreenProps) => {
   const viewShot: any = useRef();
   const dispatch = useAppDispatch();
 
-
   let qrData = {
     earthId: accountDetails?.responseData.earthId,
   };
@@ -48,12 +47,12 @@ const Register = ({ navigation }: IHomeScreenProps) => {
   // );
   // encryptedString = encryptedString.toString();
 
-  let data={
-    email:accountDetails?.responseData.email,
-    mobile:accountDetails?.responseData.phone,
-    firstName:accountDetails?.responseData.firstName,
-    lastName:accountDetails?.responseData.lastName,
-  }
+  let data = {
+    email: accountDetails?.responseData.email,
+    mobile: accountDetails?.responseData.phone,
+    firstName: accountDetails?.responseData.firstName,
+    lastName: accountDetails?.responseData.lastName,
+  };
 
   const capturePicture = () => {
     console.log("Capturing picture..");
@@ -116,85 +115,50 @@ const Register = ({ navigation }: IHomeScreenProps) => {
     );
   };
 
-
-
-  const schemaAction=async()=>{
+  const schemaAction = async () => {
     try {
-      const payLoad: IUserSchemaRequest =
-      {
-        schemaName: "testschema22344o11aaa",
+      const payLoad: IUserSchemaRequest = {
+        schemaName: `testschema${data.firstName + data.lastName}`,
         description: "Membership Document for GBA Credential",
         attributes: [
-         {
-          attributeName: data.firstName+""+data.lastName,
-          type: "alphanumeric",
-          description: "Username of the user",
-          required: true,
-          maxLength: "12"
-         },
-         {
-          attributeName: data.firstName,
-          type: "alphabet",
-          description: "First name of the user",
-          required: true,
-          maxLength: "12"
-         },
-         {
-          attributeName: data.lastName,
-          type: "alphabet",
-          description: "Last name of the user",
-          required: true,
-          maxLength: "12"
-         },
-         {
-          attributeName: "email",
-          type: "email",
-          description: "Email of the user",
-          required: true
-         },
-         {
-          attributeName: "membershipType",
-          type: "alphabet",
-          description: "Membership Type of the user",
-          required: true
-         },
-         {
-          attributeName: "salary",
-          type: "number",
-          description: "Salary of the user",
-          required: true
-         },
-         {
-          attributeName: "dateOfBirth",
-          type: "date",
-          description: "Date of Birth of the user",
-          required: true
-         }
-        ],
-          expiration: {
-            value: 1,
-            unit: "years"
+          {
+            attributeName: data.firstName + "" + data.lastName,
+            type: "alphanumeric",
+            description: "Username of the user",
+            required: true,
+            maxLength: "12",
           },
-          dependantSchemas: []
-        }
-        
-      dispatch(createSchema(payLoad))
-    } catch (error:any) {
-      console.log("error", error?.message)
+          {
+            attributeName: data.firstName,
+            type: "alphabet",
+            description: "First name of the user",
+            required: true,
+            maxLength: "12",
+          },
+          {
+            attributeName: data.lastName,
+            type: "alphabet",
+            description: "Last name of the user",
+            required: true,
+            maxLength: "12",
+          },
+        ],
+        expiration: {
+          value: 1,
+          unit: "years",
+        },
+        dependantSchemas: [],
+      };
+
+      dispatch(createSchema(payLoad));
+    } catch (error: any) {
+      console.log("error", error?.message);
     }
-  }
+  };
 
-  useEffect(()=>{
-    console.log("qrValue",qrData.earthId)
-    console.log("email=>",data.email)
-    console.log("firstname==>",data.firstName)
-    console.log("lastname==>",data.lastName)
-    console.log("mobile==>",data.mobile)
-    
-
-    schemaAction()
-
-  },[])
+  useEffect(() => {
+    schemaAction();
+  }, []);
 
   return (
     <View style={styles.sectionContainer}>

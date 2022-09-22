@@ -1,9 +1,7 @@
-import { getCall, getCallWithHeader, postCall, ssiPostCall } from "../../utils/service";
+import { getCallWithHeader, postCall, ssiPostCall } from "../../utils/service";
 import { ACTION_TYPES } from "./types";
 import { URI } from "../../constants/URLContstants";
-import { ICreateAccount } from "../../typings/AccountCreation/ICreateAccount";
 import { SnackBar } from "../../components/SnackBar";
-import { getUserDetails } from "../../utils/encryption";
 import { IUserAccountRequest } from "../../typings/AccountCreation/IUserAccount";
 import { IUserSchemaRequest } from "../../typings/AccountCreation/IUserSchema";
 const {
@@ -14,7 +12,7 @@ const {
   },
 } = URI;
 
-let createSchemaUrl="https://ssi-gbg.myearth.id/api/issuer/createSchema"
+let createSchemaUrl = "https://ssi-gbg.myearth.id/api/issuer/createSchema";
 
 export const GeneratedKeysAction =
   () =>
@@ -78,8 +76,7 @@ export const createAccount =
     }
   };
 
-
-  export const createSchema =
+export const createSchema =
   (requestPayload: IUserSchemaRequest) =>
   async (dispatch: any): Promise<any> => {
     let responseData;
@@ -108,32 +105,6 @@ export const createAccount =
       });
     }
   };
-
-// export const contractCall =
-//   (requestPayload: any) =>
-//   async (dispatch: any): Promise<any> => {
-//     let responseData, userDetails;
-//     try {
-//       dispatch({
-//         type: ACTION_TYPES.CONTRACT_CALL,
-//       });
-//       const response = await postCall(contractUrl, requestPayload);
-//       responseData = await _responseHandler(response);
-//       userDetails = getUserDetails(responseData);
-//       dispatch({
-//         type: ACTION_TYPES.CONTRACT_CALL_RESPONSE,
-//         payload: {
-//           isLoading: false,
-//           responseData: userDetails,
-//         },
-//       });
-//     } catch (error) {
-//       dispatch({
-//         type: ACTION_TYPES.CONTRACT_CALL_ERROR,
-//       });
-//       console.log("Contarct API catch ===>", error);
-//     }
-//   };
 
 export const approveOTP =
   (requestPayload: any) =>
