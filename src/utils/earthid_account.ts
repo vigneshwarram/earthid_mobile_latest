@@ -10,6 +10,7 @@ export const updateEmailOtp = BASE_URL + "/verification/sendVerifiedEmailOTP";
 export const updateEmail = BASE_URL + "/verification/verifiedEmailVerify";
 export const getCategoriesApi = BASE_URL + "/user/getCategories";
 export const facialDataLivenessAPI = BASE_URL + "/user/liveness";
+export const CreateHistory = BASE_URL + "/user/createHistory";
 
 export const createAccountApi = BASE_URL + "/authorize/createAccount";
 export const getRecordByTxApi = BASE_URL + "/authorize/getRecordByTx?txId";

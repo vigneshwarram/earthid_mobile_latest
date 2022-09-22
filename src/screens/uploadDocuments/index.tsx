@@ -18,20 +18,16 @@ import RNFS from "react-native-fs";
 import GenericText from "../../components/Text";
 import { launchImageLibrary } from "react-native-image-picker";
 
-
-const ImagePicker = require('react-native-image-picker');
+const ImagePicker = require("react-native-image-picker");
 
 const UploadScreen = (props: any) => {
   const _handleBarCodeRead = (barCodeData: any) => {};
   const { colors } = useTheme();
   const camRef: any = useRef();
 
-
-
-
-  const[message,Setmessage]=useState<string>("ooo")
-  const[data,SetData]=useState(null)
-  const[source,setSource]=useState({})
+  const [message, Setmessage] = useState<string>("ooo");
+  const [data, SetData] = useState(null);
+  const [source, setSource] = useState({});
   const [filePath, setFilePath] = useState();
 
   const _takePicture = async () => {
@@ -39,7 +35,7 @@ const UploadScreen = (props: any) => {
     const data = await camRef.current.takePictureAsync(options);
     console.log("data", data);
     if (data) {
-      // props.navigation.navigate("DocumentPreviewScreen", { fileUri: data,});
+      props.navigation.navigate("DocumentPreviewScreen", { fileUri: data });
     }
   };
   const requestPermission = async () => {
@@ -76,16 +72,14 @@ const UploadScreen = (props: any) => {
             uri: `data:image/png;base64,${res}`,
             base64: res,
             file: resp[0],
-            type:"qrRreader"
+            type: "qrRreader",
           },
-         
         });
       });
     } catch (err) {
       console.log("data==>", err);
     }
   };
-
 
   // const openFilePicker = async () => {
   //   let options:any = {
@@ -103,7 +97,7 @@ const UploadScreen = (props: any) => {
   //   };
   //   launchImageLibrary(options,(response: { didCancel: any; }) => {
   //     console.log('Response = ', response);
-  
+
   //     if (response.didCancel) {
   //       console.log('User cancelled image picker');
   //     }else {
@@ -118,20 +112,18 @@ const UploadScreen = (props: any) => {
   //       // let source = {
   //       //   uri: 'data:image/jpeg;base64,' + response.data
   //       // };
-  
+
   //       console.log(item)
 
   //       props.navigation.navigate("DocumentPreviewScreen", {
   //                  value: {
   //                     path:items
-  //                  },        
+  //                  },
   //                });
   //     }
   //   });
   // };
 
-
-  
   return (
     <View style={styles.sectionContainer}>
       <View style={{ position: "absolute", top: 20, right: 20, zIndex: 100 }}>

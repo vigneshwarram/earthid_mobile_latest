@@ -63,7 +63,6 @@ export const accountReducer = (state = {}, { type, payload }: any) => {
   }
 };
 
-
 export const schemaReducer = (state = {}, { type, payload }: any) => {
   switch (type) {
     case ACTION_TYPES.CREATEDSCHEMA:
@@ -146,6 +145,36 @@ export const approveOTPReducer = (state = {}, { type, payload }: any) => {
         isApproveLoading: false,
         isApproveOtpSuccess: false,
         isApproveOtpFailure: true,
+      };
+    default:
+      return state;
+  }
+};
+
+export const getHistoryReducer = (state = {}, { type, payload }: any) => {
+  switch (type) {
+    case ACTION_TYPES.GET_HISTORY_CALL:
+      return {
+        ...state,
+        isLoading: true,
+        isSuccess: false,
+        isError: false,
+      };
+    case ACTION_TYPES.GET_HISTORY_CALL_RESPONSE:
+      return {
+        ...state,
+        ...payload,
+        isLoading: false,
+        isSuccess: true,
+        isError: false,
+      };
+    case ACTION_TYPES.GET_HISTORY_CALL_ERROR:
+      return {
+        ...state,
+        ...payload,
+        isLoading: false,
+        isSuccess: false,
+        isError: true,
       };
     default:
       return state;

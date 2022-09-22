@@ -8,9 +8,13 @@ import Header from "../../components/Header";
 import SuccessPopUp from "../../components/Loader";
 import AnimatedLoader from "../../components/Loader/AnimatedLoader";
 import { LocalImages } from "../../constants/imageUrlConstants";
+import { CreateHistory } from "../../utils/earthid_account";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { useFetch } from "../../hooks/use-fetch";
-import { saveDocuments } from "../../redux/actions/authenticationAction";
+import {
+  getHistory,
+  saveDocuments,
+} from "../../redux/actions/authenticationAction";
 import { Screens } from "../../themes/index";
 import {
   cryptoTransferApi,
@@ -36,6 +40,16 @@ const VerifiDocumentScreen = (props: any) => {
   const { uploadedDocuments } = props.route.params;
   const { faceImageData } = props.route.params;
   const { loading, data, error, fetch } = useFetch();
+  const userDetails = useAppSelector((state) => state.account);
+  const getHistoryReducer = useAppSelector((state) => state.getHistoryReducer);
+  console.log("getHistoryReducer===>", getHistoryReducer);
+  const {
+    loading: documentaDDINGerror,
+    data: DataAdded,
+    error: documentAddedError,
+    fetch: AddDocumehtfetch,
+  } = useFetch();
+
   const [load, setLoad] = useState(false);
   const dispatch = useAppDispatch();
   const [successResponse, setsuccessResponse] = useState(false);
@@ -69,13 +83,36 @@ const VerifiDocumentScreen = (props: any) => {
         : [];
       DocumentList.push(documentDetails);
       dispatch(saveDocuments(DocumentList));
+      const payLoad = {
+        documentName: `ID Card_${Math.random()}`,
+        event: "UPLOADED",
+        earthId: userDetails?.responseData?.earthId,
+        publicKey: userDetails?.responseData?.publicKey,
+      };
+      AddDocumehtfetch(CreateHistory, payLoad, "POST");
       setsuccessResponse(true);
-      setTimeout(() => {
-        setsuccessResponse(false);
-        props.navigation.navigate("Documents");
-      }, 2000);
     });
   };
+
+  useEffect(() => {
+    console.log("DataAdded===>", DataAdded);
+    if (DataAdded) {
+      const PayLoad = {
+        earthId: userDetails?.responseData?.earthId,
+        publicKey: userDetails?.responseData?.publicKey,
+      };
+      dispatch(getHistory(PayLoad));
+    }
+  }, [DataAdded]);
+
+  if (getHistoryReducer?.isSuccess) {
+    getHistoryReducer.isSuccess = false;
+    setTimeout(() => {
+      setsuccessResponse(false);
+      props.navigation.navigate("Documents");
+    }, 2000);
+  }
+
   useEffect(() => {
     if (data) {
       var date = dateTime();
@@ -97,12 +134,16 @@ const VerifiDocumentScreen = (props: any) => {
       DocumentList.push(documentDetails);
       dispatch(saveDocuments(DocumentList));
       setsuccessResponse(true);
-      setTimeout(() => {
-        setsuccessResponse(false);
-        props.navigation.navigate("Documents");
-      }, 2000);
+      const payLoad = {
+        documentName: "Adhaar",
+        event: "DocumentAdded",
+        earthId: userDetails?.responseData?.earthId,
+        publicKey: userDetails?.responseData?.publicKey,
+      };
+      AddDocumehtfetch(CreateHistory, payLoad, "POST");
     }
   }, [data]);
+
   return (
     <View style={styles.sectionContainer}>
       <Header
@@ -174,7 +215,10 @@ const VerifiDocumentScreen = (props: any) => {
         </TouchableOpacity>
       </View>
 
-      <AnimatedLoader isLoaderVisible={loading} loadingText="verifying..." />
+      <AnimatedLoader
+        isLoaderVisible={loading || getHistoryReducer?.isLoading}
+        loadingText="verifying..."
+      />
       <SuccessPopUp
         isLoaderVisible={successResponse}
         loadingText={"Verification successful"}

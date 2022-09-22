@@ -14,10 +14,12 @@ import { EventRegister } from "react-native-event-listeners";
 import Avatar from "../../../components/Avatar";
 import Card from "../../../components/Card";
 import Header from "../../../components/Header";
+import AnimatedLoader from "../../../components/Loader/AnimatedLoader";
 import GenericText from "../../../components/Text";
 import { LocalImages } from "../../../constants/imageUrlConstants";
 import { SCREENS } from "../../../constants/Labels";
-import { useAppSelector } from "../../../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
+import { getHistory } from "../../../redux/actions/authenticationAction";
 import { Screens } from "../../../themes";
 import { alertBox } from "../../../utils/earthid_account";
 
@@ -27,6 +29,8 @@ interface IHomeScreenProps {
 
 const HomeScreen = ({ navigation }: IHomeScreenProps) => {
   const userDetails = useAppSelector((state) => state.account);
+  const getHistoryReducer = useAppSelector((state) => state.getHistoryReducer);
+  const dispatch = useAppDispatch();
   const _toggleDrawer = () => {
     navigation.openDrawer();
   };
@@ -89,7 +93,41 @@ const HomeScreen = ({ navigation }: IHomeScreenProps) => {
     };
   });
 
-  const _keyExtractor = ({ title }: any) => title.toString();
+  useEffect(() => {
+    const PayLoad = {
+      earthId: userDetails?.responseData?.earthId,
+      publicKey: userDetails?.responseData?.publicKey,
+    };
+    dispatch(getHistory(PayLoad));
+  }, []);
+
+  const _renderItemHistory = ({ item }: any) => {
+    return (
+      <Card
+        leftAvatar={LocalImages.documentsImage}
+        absoluteCircleInnerImage={LocalImages.upImage}
+        rightIconSrc={LocalImages.menuImage}
+        title={item?.documentName}
+        subtitle={`       Uploaded  : ${item.createdAt}`}
+        style={{
+          ...styles.cardContainers,
+          ...{
+            avatarContainer: {
+              backgroundColor: "rgba(245, 188, 232, 1)",
+              width: 50,
+              height: 50,
+              borderRadius: 25,
+              marginTop: 25,
+            },
+            uploadImageStyle: {
+              backgroundColor: "rgba(245, 188, 232, 1)",
+            },
+          },
+        }}
+      />
+    );
+  };
+
   return (
     <View style={styles.sectionContainer}>
       <ScrollView
@@ -137,25 +175,33 @@ const HomeScreen = ({ navigation }: IHomeScreenProps) => {
               showsHorizontalScrollIndicator={false}
               data={categoryList}
               renderItem={_renderItem}
-              keyExtractor={_keyExtractor}
             />
           </View>
           <GenericText style={[styles.categoryHeaderText, { fontSize: 13 }]}>
             {SCREENS.HOMESCREEN.documentLabel}
           </GenericText>
-          <View style={{ justifyContent: "center", alignItems: "center" }}>
-            <Image
-              resizeMode="contain"
-              style={[styles.logoContainer]}
-              source={LocalImages.recent}
-            ></Image>
-            {/* <FlatList<any>
-            scrollEnabled={false}
-            data={documentList}
-            renderItem={_renderItemDocuments}
-            keyExtractor={_keyExtractor}
-          /> */}
-          </View>
+          <FlatList<any>
+            showsHorizontalScrollIndicator={false}
+            data={
+              getHistoryReducer && getHistoryReducer?.responseData
+                ? getHistoryReducer.responseData
+                : []
+            }
+            renderItem={_renderItemHistory}
+          />
+          <AnimatedLoader
+            isLoaderVisible={getHistoryReducer?.isLoading}
+            loadingText="loading"
+          />
+          {!getHistoryReducer && !getHistoryReducer?.responseData && (
+            <View style={{ justifyContent: "center", alignItems: "center" }}>
+              <Image
+                resizeMode="contain"
+                style={[styles.logoContainer]}
+                source={LocalImages.recent}
+              ></Image>
+            </View>
+          )}
         </View>
       </ScrollView>
     </View>
@@ -236,6 +282,33 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginVertical: 5,
     borderRadius: 20,
+  },
+  cardContainers: {
+    flex: 1,
+    marginHorizontal: 20,
+    marginVertical: 10,
+    elevation: 10,
+
+    alignItems: "center",
+    borderRadius: 20,
+    backgroundColor: Screens.pureWhite,
+    title: {
+      color: Screens.black,
+    },
+    textContainer: {
+      justifyContent: "center",
+      alignItems: "center",
+    },
+
+    avatarImageContainer: {
+      width: 25,
+      height: 30,
+      marginTop: 5,
+    },
+    avatarTextContainer: {
+      fontSize: 13,
+      fontWeight: "500",
+    },
   },
 });
 

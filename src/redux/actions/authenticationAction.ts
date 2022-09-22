@@ -1,4 +1,9 @@
-import { getCallWithHeader, postCall, ssiPostCall } from "../../utils/service";
+import {
+  getCall,
+  getCallWithHeader,
+  postCall,
+  ssiPostCall,
+} from "../../utils/service";
 import { ACTION_TYPES } from "./types";
 import { URI } from "../../constants/URLContstants";
 import { SnackBar } from "../../components/SnackBar";
@@ -9,6 +14,7 @@ const {
     CREATE_ACCOUNT: createAccountUrl,
     GENERATE_KEYS: generateKeyUrl,
     APPROVE_EMAIL_OTP: approveOTPEmail,
+    GET_HISTORY: get_History,
   },
 } = URI;
 
@@ -135,6 +141,39 @@ export const approveOTP =
       });
     }
   };
+
+export const getHistory =
+  (requestPayload: any) =>
+  async (dispatch: any): Promise<any> => {
+    let responseData;
+    try {
+      dispatch({
+        type: ACTION_TYPES.GET_HISTORY_CALL,
+      });
+      const response = await getCall(
+        `${get_History}?earthId=${requestPayload?.earthId}&publicKey=${requestPayload?.publicKey}`
+      );
+      responseData = await _responseHandler(response);
+      console.log("responseData==>", responseData);
+
+      dispatch({
+        type: ACTION_TYPES.GET_HISTORY_CALL_RESPONSE,
+        payload: {
+          responseData,
+          errorMesssage: "",
+        },
+      });
+    } catch (error) {
+      console.log("error", error);
+      dispatch({
+        type: ACTION_TYPES.GET_HISTORY_CALL_ERROR,
+        payload: {
+          errorMesssage: error,
+        },
+      });
+    }
+  };
+
 export const byPassUserDetailsRedux =
   (userDetails: any) =>
   async (dispatch: any): Promise<any> => {

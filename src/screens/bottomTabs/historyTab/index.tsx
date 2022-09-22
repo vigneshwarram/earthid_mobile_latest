@@ -1,12 +1,15 @@
 import { values } from "lodash";
-import React from "react";
+import React, { useEffect } from "react";
 import { View, StyleSheet, Text, FlatList, Image } from "react-native";
 
 import Card from "../../../components/Card";
 import Header from "../../../components/Header";
+import AnimatedLoader from "../../../components/Loader/AnimatedLoader";
 import GenericText from "../../../components/Text";
 import { LocalImages } from "../../../constants/imageUrlConstants";
 import { SCREENS } from "../../../constants/Labels";
+import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
+import { getHistory } from "../../../redux/actions/authenticationAction";
 import { Screens } from "../../../themes";
 
 interface IDocumentScreenProps {
@@ -14,50 +17,41 @@ interface IDocumentScreenProps {
 }
 
 const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
+  const getHistoryReducer = useAppSelector((state) => state.getHistoryReducer);
+  const userDetails = useAppSelector((state) => state.account);
+  const dispatch = useAppDispatch();
   const _toggleDrawer = () => {
     navigation.openDrawer();
   };
 
-  const documentsDetailsList = values(
-    SCREENS.HOMESCREEN.documentsDetailsList
-  ).map(
-    ({
-      TITLE: title,
-      URI: uri,
-      COLOR: color,
-      SUBTITLE: subtitle,
-      ID: id,
-      UPLOADIMAGECOLOR: sub_color,
-    }: any) => ({
-      title,
-      uri,
-      color,
-      subtitle,
-      id,
-      sub_color,
-    })
-  );
+  useEffect(() => {
+    const PayLoad = {
+      earthId: userDetails?.responseData?.earthId,
+      publicKey: userDetails?.responseData?.publicKey,
+    };
+    dispatch(getHistory(PayLoad));
+  }, []);
 
   const _renderItem = ({ item }: any) => {
     return (
       <Card
-        titleIcon={LocalImages.vcImage}
-        leftAvatar={item.uri}
+        leftAvatar={LocalImages.documentsImage}
         absoluteCircleInnerImage={LocalImages.upImage}
-        title={item.title}
-        subtitle={item.subtitle}
+        rightIconSrc={LocalImages.menuImage}
+        title={item?.documentName}
+        subtitle={`       Uploaded  : ${item.createdAt}`}
         style={{
           ...styles.cardContainer,
           ...{
             avatarContainer: {
-              backgroundColor: item.color,
-              width: 60,
-              height: 60,
-              borderRadius: 20,
+              backgroundColor: "rgba(245, 188, 232, 1)",
+              width: 50,
+              height: 50,
+              borderRadius: 25,
               marginTop: 25,
             },
             uploadImageStyle: {
-              backgroundColor: item.sub_color,
+              backgroundColor: "rgba(245, 188, 232, 1)",
             },
           },
         }}
@@ -78,12 +72,21 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
       <GenericText style={[styles.categoryHeaderText, { fontSize: 13 }]}>
         {SCREENS.HOMESCREEN.History}
       </GenericText>
-      {/* <FlatList<any>
+
+      <FlatList<any>
         showsHorizontalScrollIndicator={false}
-        data={documentsDetailsList}
+        data={
+          getHistoryReducer && getHistoryReducer?.responseData
+            ? getHistoryReducer.responseData
+            : []
+        }
         renderItem={_renderItem}
         keyExtractor={_keyExtractor}
-      /> */}
+      />
+      <AnimatedLoader
+        isLoaderVisible={getHistoryReducer?.isLoading}
+        loadingText="loading"
+      />
     </View>
   );
 };
