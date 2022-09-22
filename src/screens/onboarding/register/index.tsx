@@ -91,7 +91,8 @@ const Register = ({ navigation }: IRegister) => {
     if (
       !nameValidator(firstName, true).hasError &&
       !nameValidator(lastName, true).hasError &&
-      !emailValidator(email, true).hasError
+      !emailValidator(email, true).hasError &&
+      mobileNumber !== ""
     ) {
       return true;
     }
@@ -260,11 +261,10 @@ const Register = ({ navigation }: IRegister) => {
               }}
               containerStyle={{
                 borderColor: Screens.darkGray,
-                width: 310,
                 borderWidth: 2.2,
                 borderRadius: 5,
                 height: 60,
-                marginLeft: 10,
+                marginHorizontal: 10,
               }}
               flagButtonStyle={{ backgroundColor: Screens.thickGray }}
               textInputStyle={{ fontSize: 16, padding: 0, margin: 0 }}
