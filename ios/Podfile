@@ -47,7 +47,7 @@ pod 'react-native-camera', path: '../node_modules/react-native-camera', subspecs
 
   pod 'react-native-image-base64', :path => '../node_modules/react-native-image-base64'
 
-  pod 'react-native-fingerprint-scanner', :path => '../node_modules/react-native-fingerprint-scanner'
+
 
   target 'earthidnewTests' do
     inherit! :complete
