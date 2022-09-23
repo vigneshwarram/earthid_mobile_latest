@@ -55,6 +55,8 @@
 	</array>
 	<key>NSFaceIDUsageDescription</key>
 <string>$(PRODUCT_NAME) requires FaceID access to allows you quick and secure access.</string>
+<key>NSPhotoLibraryUsageDescription</key>
+<string>$(PRODUCT_NAME) uses photos</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 </dict>

@@ -90,7 +90,6 @@ const Register = ({ navigation }: IRegister) => {
   const isValid = () => {
     if (
       !nameValidator(firstName, true).hasError &&
-      !nameValidator(lastName, true).hasError &&
       !emailValidator(email, true).hasError &&
       mobileNumber !== ""
     ) {
@@ -104,8 +103,7 @@ const Register = ({ navigation }: IRegister) => {
       const token = await getDeviceId();
       const deviceName = await getDeviceName();
       const payLoad: IUserAccountRequest = {
-        firstName: firstName,
-        lastName: lastName,
+        username: firstName,
         deviceID: token + Math.random(),
         deviceIMEI: token,
         deviceName: deviceName,
@@ -174,7 +172,7 @@ const Register = ({ navigation }: IRegister) => {
               {SCREENS.LANDINGSCREEN.setUpId}
             </GenericText>
             <Info
-              title={"firstname"}
+              title={"username"}
               style={{
                 title: styles.title,
                 subtitle: styles.subtitle,
@@ -194,27 +192,7 @@ const Register = ({ navigation }: IRegister) => {
               value={firstName}
               onChangeText={firstNameChangeHandler}
             />
-            <Info
-              title={"lastname"}
-              style={{
-                title: styles.title,
-                subtitle: styles.subtitle,
-                container: styles.textContainer,
-              }}
-            />
-            <TextInput
-              style={{
-                container: styles.textInputContainer,
-              }}
-              isError={isLastNameError}
-              errorText={isLastNameErrorMessahe}
-              onFocus={lastNameFocusHandlur}
-              onBlur={lastNameBlurHandler}
-              maxLength={60}
-              isFocused={lastNameFocus}
-              value={lastName}
-              onChangeText={lastNameChangeHandler}
-            />
+
             {/* <Info
               title={"dob"}
               style={{
@@ -298,41 +276,43 @@ const Register = ({ navigation }: IRegister) => {
               onChangeText={emailChangeHandler}
             />
           </View>
-          <Button
-            onPress={_navigateAction}
-            style={{
-              buttonContainer: {
-                elevation: 5,
-              },
-              text: {
-                color: Screens.pureWhite,
-              },
-              iconStyle: {
-                tintColor: Screens.pureWhite,
-              },
-            }}
-            title={"generateeathid"}
-          ></Button>
 
-          <View style={{ flexDirection: "row", alignSelf: "center" }}>
-            <GenericText
-              style={[
-                styles.categoryHeaderText,
-                {
-                  fontSize: 13,
-                  fontWeight: "500",
-                  textAlign: "center",
-                  color: Screens.black,
+          <View>
+            <Button
+              onPress={_navigateAction}
+              style={{
+                buttonContainer: {
+                  elevation: 5,
                 },
-              ]}
-            >
-              {"alreadyhavemy"}
-            </GenericText>
-            <GenericText
-              style={{ color: Screens.colors.primary, alignSelf: "center" }}
-            >
-              {"GlobalId"}
-            </GenericText>
+                text: {
+                  color: Screens.pureWhite,
+                },
+                iconStyle: {
+                  tintColor: Screens.pureWhite,
+                },
+              }}
+              title={"generateeathid"}
+            ></Button>
+            <View style={{ flexDirection: "row", alignSelf: "center" }}>
+              <GenericText
+                style={[
+                  styles.categoryHeaderText,
+                  {
+                    fontSize: 13,
+                    fontWeight: "500",
+                    textAlign: "center",
+                    color: Screens.black,
+                  },
+                ]}
+              >
+                {"alreadyhavemy"}
+              </GenericText>
+              <GenericText
+                style={{ color: Screens.colors.primary, alignSelf: "center" }}
+              >
+                {"GlobalId"}
+              </GenericText>
+            </View>
           </View>
 
           <Loader

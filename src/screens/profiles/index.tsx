@@ -43,15 +43,12 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
   };
 
   const _navigateEditMobile = () => {
-     navigation.navigate("EditMobileNumber");
-   
+    navigation.navigate("EditMobileNumber");
   };
 
   const _navigateEditEmail = () => {
     navigation.navigate("EditEmailAddress");
-  
- };
-
+  };
 
   const socialMedialList = values(SCREENS.HOMESCREEN.SocialMedialList).map(
     ({ TITLE: title, URI: uri }: any) => ({
@@ -95,7 +92,6 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
   const _avatarClick = () => {
     setisCameraOptionVisible(true);
   };
-
 
   const mobileVerifyAction = () => {
     navigation.navigate("OTPScreen", { type: "phone" });
@@ -154,11 +150,7 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
         <View style={styles.category}>
           <Info
             title={"UserName"}
-            subtitle={
-              userDetails?.responseData?.firstName +
-              " " +
-              userDetails?.responseData?.lastName
-            }
+            subtitle={userDetails?.responseData?.username}
             style={{
               title: styles.title,
               subtitle: styles.subtitle,
@@ -167,9 +159,9 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
           />
 
           <Info
-          tailIconPress={_navigateEditMobile}
-          tailIcon={LocalImages.editIcon}
-          subTitlePress={mobileVerifyAction}
+            tailIconPress={_navigateEditMobile}
+            tailIcon={LocalImages.editIcon}
+            subTitlePress={mobileVerifyAction}
             title={"mobileno"}
             subtitle={
               userDetails?.responseData?.countryCode +

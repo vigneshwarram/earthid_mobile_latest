@@ -50,8 +50,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
   let data = {
     email: accountDetails?.responseData.email,
     mobile: accountDetails?.responseData.phone,
-    firstName: accountDetails?.responseData.firstName,
-    lastName: accountDetails?.responseData.lastName,
+    username: accountDetails?.responseData.username,
   };
 
   const capturePicture = () => {
@@ -118,27 +117,20 @@ const Register = ({ navigation }: IHomeScreenProps) => {
   const schemaAction = async () => {
     try {
       const payLoad: IUserSchemaRequest = {
-        schemaName: `testschema${data.firstName + data.lastName}`,
+        schemaName: `testschema${data.username}`,
         description: "Membership Document for GBA Credential",
         attributes: [
           {
-            attributeName: data.firstName + "" + data.lastName,
+            attributeName: data.username,
             type: "alphanumeric",
             description: "Username of the user",
             required: true,
             maxLength: "12",
           },
           {
-            attributeName: data.firstName,
+            attributeName: data.username,
             type: "alphabet",
             description: "First name of the user",
-            required: true,
-            maxLength: "12",
-          },
-          {
-            attributeName: data.lastName,
-            type: "alphabet",
-            description: "Last name of the user",
             required: true,
             maxLength: "12",
           },

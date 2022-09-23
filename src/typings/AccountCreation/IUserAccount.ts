@@ -1,6 +1,6 @@
 export interface IUserAccountRequest {
-  firstName: string;
-  lastName: string;
+  username: string;
+
   deviceID: string;
   deviceIMEI: string;
   deviceName: string;

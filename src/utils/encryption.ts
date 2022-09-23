@@ -12,12 +12,12 @@ export const encrptedEmail = (email: string): string => {
   ).toString();
 };
 export const getDeviceId = async () => {
-  const deviceToken = await DeviceInfo.getDeviceToken();
+  const deviceToken = await DeviceInfo.getDeviceId();
   return deviceToken;
 };
 
 export const getDeviceName = async () => {
-  const deviceToken = await DeviceInfo.getDeviceName();
+  const deviceToken = await DeviceInfo.getApplicationName();
   return deviceToken;
 };
 
