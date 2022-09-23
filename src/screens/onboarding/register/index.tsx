@@ -331,7 +331,7 @@ const Register = ({ navigation }: IRegister) => {
             <GenericText
               style={{ color: Screens.colors.primary, alignSelf: "center" }}
             >
-              {"EarthID"}
+              {"GlobalId"}
             </GenericText>
           </View>
 

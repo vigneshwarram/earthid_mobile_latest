@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
   sectionHeaderContainer: {
     flexDirection: "row",
     height: 120,
-    backgroundColor: "#8b88db",
+    backgroundColor: "#D9E3EC",
     borderBottomRightRadius: 25,
     borderBottomLeftRadius: 25,
     justifyContent: "space-between",

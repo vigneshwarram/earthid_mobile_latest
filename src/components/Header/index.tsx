@@ -56,7 +56,7 @@ const Header = ({
               fontWeight: "bold",
               textAlign: "center",
               fontSize: 20,
-              color: Screens.pureWhite,
+              color: Screens.black,
               marginTop: 30,
             }}
           >
@@ -136,7 +136,7 @@ const Header = ({
                         style={{
                           fontWeight: "bold",
                           marginLeft: -5,
-                          color: Screens.pureWhite,
+                          color: Screens.black,
                         }}
                       >
                         {rewardPoints}
@@ -161,7 +161,7 @@ const Header = ({
               <Avatar
                 isCategory={false}
                 avatarClick={avatarClick}
-                style={{ text: { color: Screens.pureWhite } }}
+                style={{ text: { color: Screens.black } }}
                 absoluteCircleInnerImage={absoluteCircleInnerImage}
                 isProfileAvatar={isProfileAvatar}
                 isUploaded={isUploaded}
@@ -211,6 +211,6 @@ const styles = StyleSheet.create({
   close: {
     width: 25,
     height: 25,
-    tintColor: Screens.pureWhite,
+    tintColor: Screens.black,
   },
 });

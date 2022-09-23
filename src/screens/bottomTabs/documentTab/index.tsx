@@ -138,15 +138,15 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
         <GenericText style={[styles.categoryHeaderText, { fontSize: 13 }]}>
           {SCREENS.HOMESCREEN.upload}
         </GenericText>
-        <GenericText
+        {/* <GenericText
           style={[
             styles.categoryHeaderText,
             { fontSize: 13, color: Screens.colors.primary },
           ]}
         >
           {"presshold"}
-        </GenericText>
-        <TouchableOpacity
+        </GenericText> */}
+        {/* <TouchableOpacity
           style={{ justifyContent: "center", alignItems: "center" }}
           onPress={() => setisBottomSheetForFilterVisible(true)}
         >
@@ -157,7 +157,7 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
               source={LocalImages.filter}
             ></Image>
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
 
       <FlatList<any>
@@ -166,7 +166,7 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
         renderItem={_renderItem}
         keyExtractor={_keyExtractor}
       />
-      <BottomSheet
+      {/* <BottomSheet
         onClose={() => setisBottomSheetForSideOptionVisible(false)}
         height={150}
         isVisible={isBottomSheetForSideOptionVisible}
@@ -175,7 +175,7 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
           <RowOption title={"Share"} icon={LocalImages.shareImage} />
           <RowOption title={"Delete"} icon={LocalImages.deleteImage} />
         </View>
-      </BottomSheet>
+      </BottomSheet> */}
       <BottomSheet
         onClose={() => setisBottomSheetForFilterVisible(false)}
         height={150}

@@ -45,7 +45,12 @@ const Avatar = ({
               <View style={{ justifyContent: "center", alignItems: "center" }}>
                 <Image
                   source={LocalImages.email}
-                  style={{ width: 15, height: 15, marginTop: 10 }}
+                  style={{
+                    width: 15,
+                    height: 15,
+                    marginTop: 10,
+                    tintColor: "#000",
+                  }}
                 ></Image>
               </View>
 
@@ -62,7 +67,12 @@ const Avatar = ({
               <View style={{ justifyContent: "center", alignItems: "center" }}>
                 <Image
                   source={LocalImages.phone}
-                  style={{ width: 15, height: 15, marginTop: 10 }}
+                  style={{
+                    width: 15,
+                    height: 15,
+                    marginTop: 10,
+                    tintColor: "#000",
+                  }}
                 ></Image>
               </View>
               <GenericText
@@ -95,7 +105,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "bold",
     borderRadius: 25,
-    fontSize: 18,
+    fontSize: 16,
     color: "#000",
     marginTop: 10,
   },

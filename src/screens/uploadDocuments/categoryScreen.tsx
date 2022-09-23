@@ -215,7 +215,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
             style={{
               justifyContent: "center",
               alignItems: "center",
-              backgroundColor: "#8059D0",
+
               width: deviceWidth / 1.5,
             }}
           >
@@ -325,8 +325,8 @@ const styles = StyleSheet.create({
     backgroundColor: Screens.pureWhite,
   },
   logoContainer: {
-    width: 100,
-    height: 100,
+    width: 130,
+    height: 130,
   },
 });
 

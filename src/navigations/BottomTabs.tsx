@@ -92,9 +92,9 @@ export const BottomMenus = (propss: any) => {
               <View style={styles.circle}>
                 <LinearGradients
                   horizontalGradient
-                  endColor={Screens.colors.header.endColor}
-                  middleColor={Screens.colors.header.middleColor}
-                  startColor={Screens.colors.header.startColor}
+                  endColor={"#3393e2"}
+                  middleColor={"#7036f8"}
+                  startColor={"#801ffe"}
                   style={[styles.Innercircle]}
                 >
                   <Image
