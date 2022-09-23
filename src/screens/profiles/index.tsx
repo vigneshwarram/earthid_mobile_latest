@@ -341,7 +341,7 @@ const styles = StyleSheet.create({
     color: Screens.black,
   },
   category: {
-    flex: 0.8,
+    flex: 0.95,
     backgroundColor: Screens.pureWhite,
     padding: 10,
     marginVertical: 20,
