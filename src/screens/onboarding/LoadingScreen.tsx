@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import TouchID from "react-native-touch-id";
 import { useAppSelector } from "../../hooks/hooks";
+import SplashScreen from "react-native-splash-screen";
 
 interface ILoadingScreen {
   navigation: any;
@@ -68,6 +69,9 @@ const LoadingScreen = ({ navigation }: ILoadingScreen) => {
       navigation.dispatch(StackActions.replace("AuthStack"));
     }
   }, [userDetails]);
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);
   return (
     <View style={[styles.container, styles.horizontal]}>
       <ActivityIndicator size="large" />

@@ -49,6 +49,8 @@ pod 'react-native-camera', path: '../node_modules/react-native-camera', subspecs
 
 
 
+  pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
+
   target 'earthidnewTests' do
     inherit! :complete
     # Pods for testing
