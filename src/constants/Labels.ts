@@ -3,7 +3,7 @@ import { LocalImages } from "./imageUrlConstants";
 export const SCREENS = {
   HOMESCREEN: {
     avatarName: "Robert Downey",
-    appName: "EarthID",
+    appName: "GlobalId",
     category: "CATEGORIES",
     documentLabel: "useddocument",
     upload: "uploaddoc",

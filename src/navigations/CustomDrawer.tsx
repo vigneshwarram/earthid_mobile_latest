@@ -84,7 +84,7 @@ const CustomDrawer = (props: any) => {
   const deleteUser = () => {
     Alert.alert(
       "Delete Identity?",
-      "Are you sure you want to delete your EarthId? Once deleted you won't be able to recover it later.",
+      "Are you sure you want to delete your GlobalId? Once deleted you won't be able to recover it later.",
       [
         {
           text: "Yes",
