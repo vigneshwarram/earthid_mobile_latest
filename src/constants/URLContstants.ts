@@ -7,7 +7,7 @@ export const URI = {
     CREATE_ACCOUNT: `${EARTHID_DEV_BASE}/user/registration`,
     APPROVE_EMAIL_OTP: `${EARTHID_DEV_BASE}/verification/emailVerify`,
     CONTRACT_CALL: `${EARTHID_DEV_BASE}/contract/functionCall`,
-    GET_HISTORY: `${EARTHID_DEV_BASE}/user/getHistory`,
+    GET_HISTORY: `${EARTHID_DEV_BASE}/history/getHistory`,
   },
 };
 
