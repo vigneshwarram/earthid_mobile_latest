@@ -18,17 +18,17 @@ export const Screens = {
   lightGray: "#F8F8F8",
   thickGray: "#EDF1F4",
   colors: {
-    background: "#fff",
-    primary: "#293FEE",
+    background: "#F5F5F5",
+    primary: "#50A0D9",
     ScanButton: {
       startColor: "#8319FF",
       middleColor: "#8319FF",
       endColor: "#2AA2DE",
     },
     header: {
-      startColor: "#805bd0",
-      middleColor: "#887ed9",
-      endColor: "#8f99e0",
+      startColor: "#f0f4f7",
+      middleColor: "#dbe4ee",
+      endColor: "#c0cfdd",
     },
     bottomFocusedBackground: {
       color: "#EDF1F4",
