@@ -13,6 +13,8 @@ import useFormInput from "../../hooks/use-text-input";
 import { nameValidator } from "../../utils/inputValidations";
 import TextInput from "../../components/TextInput";
 import Loader from "../../components/Loader";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { byPassUserDetailsRedux } from "../../redux/actions/authenticationAction";
 
 interface IHomeScreenProps {
   navigation?: any;
@@ -21,20 +23,28 @@ interface IHomeScreenProps {
 const EditProfile = ({ navigation }: IHomeScreenProps) => {
   const [isCameraOptionVisible, setisCameraOptionVisible] =
     useState<boolean>(false);
-  const [mobileNumber, setmobileNumber] = useState();
+  const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const phoneInput: any = useRef();
+  const userDetails = useAppSelector((state) => state.account);
 
   const _letfIconPress = () => {
     navigation.goBack();
   };
   const _navigateAction = () => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      navigation.goBack();
-    }, 5000);
+    let overallResponseData = {
+      ...userDetails.responseData,
+      ...{ username: fullName },
+    };
+    dispatch(byPassUserDetailsRedux(overallResponseData)).then(() => {
+      setIsLoading(true);
+      setTimeout(() => {
+        setIsLoading(false);
+        navigation.goBack();
+      }, 5000);
+    });
   };
+
   const {
     value: fullName,
     isFocused: fullNameFocus,
@@ -45,7 +55,7 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
     valueChangeHandler: fullNameChangeHandler,
     inputFocusHandler: fullNameFocusHandlur,
     inputBlurHandler: fullNameBlurHandler,
-  } = useFormInput("RobertDowney", true, nameValidator);
+  } = useFormInput(userDetails?.responseData?.username, true, nameValidator);
 
   const {
     value: dateOfBirth,
