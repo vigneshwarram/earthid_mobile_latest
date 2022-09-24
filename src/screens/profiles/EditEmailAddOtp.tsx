@@ -15,13 +15,19 @@ import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import SmoothPinCodeInput from "react-native-smooth-pincode-input";
 import Button from "../../components/Button";
 import AnimatedLoader from "../../components/Loader/AnimatedLoader";
-import { updateEmail } from "../../utils/earthid_account";
+import { updateEmail, updateEmailOtp } from "../../utils/earthid_account";
 import { useFetch } from "../../hooks/use-fetch";
 import { byPassUserDetailsRedux } from "../../redux/actions/authenticationAction";
 
 const EditEmailAddOtp = (props: any) => {
   const userDetails = useAppSelector((state) => state.account);
   const { loading, data, error, fetch } = useFetch();
+  const {
+    loading: loadingData,
+    data: updateEmailData,
+    error: errorOtp,
+    fetch: updateEmails,
+  } = useFetch();
   const dispatch = useAppDispatch();
   const { newEmail } = props.route.params;
   const [oldCode, setOldCode] = useState();
@@ -40,11 +46,10 @@ const EditEmailAddOtp = (props: any) => {
       earthId: userDetails?.responseData?.earthId,
       publicKey: userDetails?.responseData?.publicKey,
     };
-    fetch(updateEmail, postData, "POST");
+    updateEmails(updateEmail, postData, "POST");
   };
   useEffect(() => {
-    console.log("data", data);
-    if (data) {
+    if (updateEmailData) {
       let overallResponseData = {
         ...userDetails.responseData,
         ...{ email: newEmail },
@@ -53,7 +58,18 @@ const EditEmailAddOtp = (props: any) => {
         props.navigation.navigate("ProfileScreen");
       });
     }
-  }, [data]);
+  }, [updateEmailData]);
+
+  const _reSend = () => {
+    var postData = {
+      oldEmail: userDetails?.responseData?.email,
+      newEmail: newEmail,
+      earthId: userDetails?.responseData?.earthId,
+      publicKey: userDetails?.responseData?.publicKey,
+    };
+    fetch(updateEmailOtp, postData, "POST");
+  };
+
   return (
     <View style={styles.sectionContainer}>
       <ScrollView contentContainerStyle={styles.sectionContainer}>
@@ -126,7 +142,7 @@ const EditEmailAddOtp = (props: any) => {
           />
         </View>
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => _reSend()}>
           <GenericText
             style={[
               {
@@ -189,7 +205,7 @@ const EditEmailAddOtp = (props: any) => {
           />
         </View>
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => _reSend()}>
           <GenericText
             style={[
               {

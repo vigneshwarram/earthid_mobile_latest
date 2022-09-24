@@ -1,24 +1,29 @@
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
-import GenericText from '../../components/Text'
-import { Screens } from '../../themes'
-import { LocalImages } from '../../constants/imageUrlConstants'
-import PhoneInput from 'react-native-phone-number-input'
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import GenericText from "../../components/Text";
+import { Screens } from "../../themes";
+import { LocalImages } from "../../constants/imageUrlConstants";
+import PhoneInput from "react-native-phone-number-input";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import SmoothPinCodeInput from "react-native-smooth-pincode-input";
-import Button from '../../components/Button'
-import AnimatedLoader from '../../components/Loader/AnimatedLoader'
-import { useFetch } from '../../hooks/use-fetch'
-import { updatePhone } from '../../utils/earthid_account'
-import { byPassUserDetailsRedux } from '../../redux/actions/authenticationAction'
+import Button from "../../components/Button";
+import AnimatedLoader from "../../components/Loader/AnimatedLoader";
+import { useFetch } from "../../hooks/use-fetch";
+import { updatePhone, updatephoneOtp } from "../../utils/earthid_account";
+import { byPassUserDetailsRedux } from "../../redux/actions/authenticationAction";
 
-
-const EditMobileNumOtp = (props:any) => {
-
+const EditMobileNumOtp = (props: any) => {
   const userDetails = useAppSelector((state) => state.account);
   const { loading, data, error, fetch } = useFetch();
   const dispatch = useAppDispatch();
-  const { newPhone } = props.route.params;
+  const { newPhone, callingCode } = props.route.params;
   const [oldCode, setOldCode] = useState();
   const [newCode, setNewCode] = useState();
   const onPinCodeChangeForOld = (code: any) => {
@@ -27,7 +32,6 @@ const EditMobileNumOtp = (props:any) => {
   const onPinCodeChangeForNew = (code: any) => {
     setNewCode(code);
   };
-
 
   const verfified = () => {
     var postData = {
@@ -51,110 +55,107 @@ const EditMobileNumOtp = (props:any) => {
     }
   }, [data]);
 
+  const _reSend = () => {
+    var postData = {
+      oldPhone: userDetails?.responseData?.phone,
+      newPhone: newPhone,
+      newCountryCode: "+" + callingCode,
+      earthId: userDetails?.responseData?.earthId,
+      publicKey: userDetails?.responseData?.publicKey,
+      oldCountryCode: "+" + userDetails?.responseData?.countryCode,
+    };
+    fetch(updatephoneOtp, postData, "POST");
+  };
+
   return (
     <View style={styles.sectionContainer}>
-       <ScrollView
-        contentContainerStyle={styles.sectionContainer}
-       >
+      <ScrollView contentContainerStyle={styles.sectionContainer}>
+        <View style={styles.sectionHeaderContainer}>
+          <TouchableOpacity onPress={() => props.navigation.goBack()}>
+            <Image
+              resizeMode="contain"
+              style={styles.logoContainer}
+              source={LocalImages.backImage}
+            ></Image>
+          </TouchableOpacity>
+          <GenericText
+            style={[
+              {
+                fontSize: 20,
+                color: Screens.pureWhite,
+                fontWeight: "500",
+                marginLeft: -10,
+              },
+            ]}
+          >
+            {"Update Mobile Number"}
+          </GenericText>
 
-      <View style={styles.sectionHeaderContainer}>
+          <View />
+        </View>
 
-       <TouchableOpacity
-        onPress={()=>props.navigation.goBack()}
-        >
-
-        <Image
-          resizeMode="contain"
-          style={styles.logoContainer}
-          source={LocalImages.backImage}
-        ></Image>
-        </TouchableOpacity>
         <GenericText
-          style={[
-            {
-              fontSize: 20,
-              color: Screens.pureWhite,
-              fontWeight: "500",
-              marginLeft:-10
-            },
-          ]}
-        >
-          {"Update Mobile Number"}
-        </GenericText>
-
-       
-        <View />
-      </View>
-
-      <GenericText
           style={[
             {
               fontSize: 16,
               color: Screens.grayShadeColor,
               fontWeight: "500",
-              alignSelf:'center',
-              marginTop:15
-           
+              alignSelf: "center",
+              marginTop: 15,
             },
           ]}
         >
           {"Enter OTP you reciered on your old mobile"}
-        </GenericText> 
+        </GenericText>
         <GenericText
           style={[
             {
               fontSize: 16,
               color: Screens.grayShadeColor,
               fontWeight: "500",
-              alignSelf:'center',
-          
+              alignSelf: "center",
             },
           ]}
         >
           {userDetails.responseData.phone}
-        </GenericText> 
+        </GenericText>
 
+        <View style={{ alignSelf: "center", marginTop: 25 }}>
+          <SmoothPinCodeInput
+            cellStyle={{
+              borderWidth: 0.5,
+              borderColor: Screens.grayShadeColor,
+              borderRadius: 5,
+            }}
+            cellStyleFocused={{
+              borderColor: Screens.colors.primary,
+              borderWidth: 2,
+            }}
+            password
+            cellSize={50}
+            codeLength={6}
+            value={oldCode}
+            onTextChange={onPinCodeChangeForOld}
+          />
+        </View>
 
-        <View style={{ alignSelf: "center",marginTop:25 }}>
-            <SmoothPinCodeInput
-              cellStyle={{
-                borderWidth: 0.5,
-                borderColor: Screens.grayShadeColor,
-                borderRadius: 5,
-                
-              }}
-              cellStyleFocused={{
-                borderColor: Screens.colors.primary,
-                borderWidth: 2,
-              }}
-              password
-              cellSize={50}
-              codeLength={6}
-              value={oldCode}
-              onTextChange={onPinCodeChangeForOld}
-            />
-          </View>
-
-           <TouchableOpacity>
-
+        <TouchableOpacity onPress={() => _reSend()}>
           <GenericText
-          style={[
-            {
-              fontSize: 13,
-              color: "#293FEE",
-              fontWeight: "500",
-              alignSelf:"flex-end",
-              marginRight:35,
-              marginTop:8,
-              textDecorationLine: 'underline'
-                
-            },
-          ]}
-        >
-          {"Re-Send Code"}
-         </GenericText> 
-        </TouchableOpacity>   
-
+            style={[
+              {
+                fontSize: 13,
+                color: "#293FEE",
+                fontWeight: "500",
+                alignSelf: "flex-end",
+                marginRight: 35,
+                marginTop: 8,
+                textDecorationLine: "underline",
+              },
+            ]}
+          >
+            {"Re-Send Code"}
+          </GenericText>
+        </TouchableOpacity>
 
         <GenericText
           style={[
@@ -162,98 +163,87 @@ const EditMobileNumOtp = (props:any) => {
               fontSize: 16,
               color: Screens.grayShadeColor,
               fontWeight: "500",
-              alignSelf:'center',
-              marginTop:40
-           
+              alignSelf: "center",
+              marginTop: 40,
             },
           ]}
         >
           {"Enter OTP you reciered on your new mobile"}
-        </GenericText> 
+        </GenericText>
         <GenericText
           style={[
             {
               fontSize: 16,
               color: Screens.grayShadeColor,
               fontWeight: "500",
-              alignSelf:'center',
-          
+              alignSelf: "center",
             },
           ]}
         >
           {newPhone}
-        </GenericText> 
+        </GenericText>
 
-
-        <View style={{ alignSelf: "center",marginTop:25 }}>
-            <SmoothPinCodeInput
-              cellStyle={{
-                borderWidth: 0.5,
-                borderColor: Screens.grayShadeColor,
-                borderRadius: 5,
-                
-              }}
-              cellStyleFocused={{
-                borderColor: Screens.colors.primary,
-                borderWidth: 2,
-              }}
-              password
-              cellSize={50}
-              codeLength={6}
-              value={newCode}
-              onTextChange={onPinCodeChangeForNew}
-            />
-          </View>
-
-           <TouchableOpacity>
-          <GenericText
-          style={[
-            {
-              fontSize: 13,
-              color: "#293FEE",
-              fontWeight: "500",
-              alignSelf:"flex-end",
-              marginRight:35,
-              marginTop:8,
-              textDecorationLine: 'underline'
-                
-            },
-          ]}
-        >
-          {"Re-Send Code"}
-         </GenericText> 
-        </TouchableOpacity>   
-        <View style={{paddingHorizontal:15,marginTop:10}}>
-
-        <Button
-        onPress={verfified}
-            style={{
-            buttonContainer: {
-                elevation: 5,
-            },
-            text: {
-                color: Screens.pureWhite,
-            },
-            iconStyle: {
-                tintColor: Screens.pureWhite,
-            },
+        <View style={{ alignSelf: "center", marginTop: 25 }}>
+          <SmoothPinCodeInput
+            cellStyle={{
+              borderWidth: 0.5,
+              borderColor: Screens.grayShadeColor,
+              borderRadius: 5,
             }}
-            title={"SUBMIT"}
-        ></Button>
+            cellStyleFocused={{
+              borderColor: Screens.colors.primary,
+              borderWidth: 2,
+            }}
+            password
+            cellSize={50}
+            codeLength={6}
+            value={newCode}
+            onTextChange={onPinCodeChangeForNew}
+          />
         </View>
 
+        <TouchableOpacity onPress={() => _reSend()}>
+          <GenericText
+            style={[
+              {
+                fontSize: 13,
+                color: "#293FEE",
+                fontWeight: "500",
+                alignSelf: "flex-end",
+                marginRight: 35,
+                marginTop: 8,
+                textDecorationLine: "underline",
+              },
+            ]}
+          >
+            {"Re-Send Code"}
+          </GenericText>
+        </TouchableOpacity>
+        <View style={{ paddingHorizontal: 15, marginTop: 10 }}>
+          <Button
+            onPress={verfified}
+            style={{
+              buttonContainer: {
+                elevation: 5,
+              },
+              text: {
+                color: Screens.pureWhite,
+              },
+              iconStyle: {
+                tintColor: Screens.pureWhite,
+              },
+            }}
+            title={"SUBMIT"}
+          ></Button>
+        </View>
 
-        <AnimatedLoader
-            loadingText="Loading..."
-        />
-
-    </ScrollView> 
-     
+        <AnimatedLoader loadingText="Loading..." />
+      </ScrollView>
     </View>
-  )
-}
+  );
+};
 
-export default EditMobileNumOtp
+export default EditMobileNumOtp;
 
 const styles = StyleSheet.create({
   sectionContainer: {
@@ -275,5 +265,4 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     alignItems: "center",
   },
-
-})
+});

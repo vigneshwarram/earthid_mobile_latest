@@ -14,6 +14,7 @@ const {
     CREATE_ACCOUNT: createAccountUrl,
     GENERATE_KEYS: generateKeyUrl,
     APPROVE_EMAIL_OTP: approveOTPEmail,
+    APPROVE_PHONE_OTP: approvePhoneOtp,
     GET_HISTORY: get_History,
   },
 } = URI;
@@ -71,12 +72,14 @@ export const createAccount =
           errorMesssage: "",
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       console.log("create account API catch ===>", error);
+
       dispatch({
         type: ACTION_TYPES.CREATED_ACCOUNT_ERROR,
         payload: {
           errorMesssage: error,
+          isLoading: false,
         },
       });
     }
@@ -102,7 +105,7 @@ export const createSchema =
         },
       });
     } catch (error) {
-      console.log("create account API catch ===>", error);
+      console.log(" API catch ===>", error);
       dispatch({
         type: ACTION_TYPES.CREATED_SCHEMA_ERROR,
         payload: {
@@ -113,14 +116,21 @@ export const createSchema =
   };
 
 export const approveOTP =
-  (requestPayload: any) =>
+  (requestPayload: any, type: string) =>
   async (dispatch: any): Promise<any> => {
+    console.log("type", type);
     let responseData;
     try {
       dispatch({
         type: ACTION_TYPES.APPROVE_OTP,
       });
-      const response = await postCall(approveOTPEmail, requestPayload);
+      let response;
+      if (type === "phone") {
+        response = await postCall(approvePhoneOtp, requestPayload);
+      } else {
+        response = await postCall(approveOTPEmail, requestPayload);
+      }
+
       responseData = await _responseHandler(response);
       console.log("responseData==>", responseData);
 
@@ -214,10 +224,6 @@ const _responseHandler = async (response: any): Promise<any> => {
       return resolve(responseData);
     } else {
       const responseData = await response.json();
-      console.log("coming==>", "comingerror");
-      SnackBar({
-        indicationMessage: responseData?.message,
-      });
       reject(responseData.message);
     }
   });

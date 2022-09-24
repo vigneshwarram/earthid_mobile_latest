@@ -47,8 +47,9 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
   const _renderItem = ({ item }: any) => {
     return (
       <TouchableOpacity
-        disabled={!item?.isVc}
-        onPress={() => navigation.navigate("ViewCredential")}
+        onPress={() =>
+          navigation.navigate("ViewCredential", { documentDetails: item })
+        }
       >
         <Card
           titleIcon={item?.isVc ? LocalImages.vcImage : null}

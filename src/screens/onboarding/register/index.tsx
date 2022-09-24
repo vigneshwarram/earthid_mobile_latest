@@ -23,6 +23,8 @@ import { getDeviceId, getDeviceName } from "../../../utils/encryption";
 import AnimatedLoader from "../../../components/Loader/AnimatedLoader";
 import GenericText from "../../../components/Text";
 import { SnackBar } from "../../../components/SnackBar";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { isArray } from "lodash";
 interface IRegister {
   navigation: any;
 }
@@ -35,7 +37,7 @@ const Register = ({ navigation }: IRegister) => {
   const keys = useAppSelector((state) => state.user);
   const [successResponse, setsuccessResponse] = useState(false);
   const [openDatePicker, setopenDatePicker] = useState<boolean>();
-  const [callingCode, setcallingCode] = useState<string>("+91");
+  const [callingCode, setcallingCode] = useState<string>("+1");
 
   const {
     value: firstName,
@@ -99,25 +101,23 @@ const Register = ({ navigation }: IRegister) => {
   };
 
   const _registerAction = async ({ publicKey }: any) => {
-    try {
-      const token = await getDeviceId();
-      const deviceName = await getDeviceName();
-      const payLoad: IUserAccountRequest = {
-        username: firstName,
-        deviceID: token + Math.random(),
-        deviceIMEI: token,
-        deviceName: deviceName,
-        email: email,
-        phone: mobileNumber,
-        countryCode: callingCode,
-        publicKey,
-        deviceOS: Platform.OS === "android" ? "android" : "ios",
-      };
-      dispatch(createAccount(payLoad));
-    } catch (error: any) {
-      Alert.alert("error", error?.message);
-    }
+    const token = await getDeviceId();
+    const deviceName = await getDeviceName();
+    const payLoad: IUserAccountRequest = {
+      username: firstName,
+      deviceID: token + Math.random(),
+      deviceIMEI: token,
+      deviceName: deviceName,
+      email: email,
+      orgId: "35942e1e-e65d-443e-af09-f3c0b330be1e",
+      phone: mobileNumber,
+      countryCode: callingCode,
+      publicKey,
+      deviceOS: Platform.OS === "android" ? "android" : "ios",
+    };
+    dispatch(createAccount(payLoad));
   };
+
   if (keys && keys?.isGeneratedKeySuccess) {
     keys.isGeneratedKeySuccess = false;
     _registerAction(keys?.responseData?.result);
@@ -136,9 +136,15 @@ const Register = ({ navigation }: IRegister) => {
   }
   if (userDetails && userDetails?.isAccountCreatedFailure) {
     userDetails.isAccountCreatedFailure = false;
-    SnackBar({
-      indicationMessage: userDetails?.errorMesssage,
-    });
+    if (userDetails?.errorMesssage && isArray(userDetails?.errorMesssage)) {
+      SnackBar({
+        indicationMessage: userDetails?.errorMesssage[0],
+      });
+    } else {
+      SnackBar({
+        indicationMessage: userDetails?.errorMesssage,
+      });
+    }
   }
 
   return (
@@ -172,7 +178,7 @@ const Register = ({ navigation }: IRegister) => {
               {SCREENS.LANDINGSCREEN.setUpId}
             </GenericText>
             <Info
-              title={"username"}
+              title={"Username"}
               style={{
                 title: styles.title,
                 subtitle: styles.subtitle,
@@ -183,6 +189,7 @@ const Register = ({ navigation }: IRegister) => {
               style={{
                 container: styles.textInputContainer,
               }}
+              placeholder={"Enter Username"}
               isError={isfirstNameError}
               errorText={isfirstNameErrorMessage}
               onFocus={firstNameFocusHandlur}
@@ -232,7 +239,7 @@ const Register = ({ navigation }: IRegister) => {
               }}
               autoFocus={false}
               ref={phoneInput}
-              defaultCode="IN"
+              defaultCode="US"
               layout="first"
               onChangeText={(text: any) => {
                 setmobileNumber(text);
@@ -266,6 +273,7 @@ const Register = ({ navigation }: IRegister) => {
               style={{
                 container: styles.textInputContainer,
               }}
+              placeholder={"Enter your mail"}
               isError={isemailError}
               errorText={isemailErrorMessage}
               onFocus={emailFocusHandlur}
@@ -277,7 +285,7 @@ const Register = ({ navigation }: IRegister) => {
             />
           </View>
 
-          <View>
+          <View style={{ marginHorizontal: 20 }}>
             <Button
               onPress={_navigateAction}
               style={{
@@ -293,26 +301,32 @@ const Register = ({ navigation }: IRegister) => {
               }}
               title={"generateeathid"}
             ></Button>
-            <View style={{ flexDirection: "row", alignSelf: "center" }}>
-              <GenericText
-                style={[
-                  styles.categoryHeaderText,
-                  {
-                    fontSize: 13,
-                    fontWeight: "500",
-                    textAlign: "center",
-                    color: Screens.black,
-                  },
-                ]}
-              >
-                {"alreadyhavemy"}
-              </GenericText>
-              <GenericText
-                style={{ color: Screens.colors.primary, alignSelf: "center" }}
-              >
-                {"GlobalId"}
-              </GenericText>
-            </View>
+            <TouchableOpacity onPress={() => navigation.goBack(null)}>
+              <View style={{ flexDirection: "row", alignSelf: "center" }}>
+                <GenericText
+                  style={[
+                    styles.categoryHeaderText,
+                    {
+                      fontSize: 13,
+                      fontWeight: "500",
+                      textAlign: "center",
+                      color: Screens.black,
+                    },
+                  ]}
+                >
+                  {"alreadyhavemy"}
+                </GenericText>
+                <GenericText
+                  style={{
+                    color: Screens.colors.primary,
+                    alignSelf: "center",
+                    textDecorationLine: "underline",
+                  }}
+                >
+                  {"GlobalId"}
+                </GenericText>
+              </View>
+            </TouchableOpacity>
           </View>
 
           <Loader
@@ -374,7 +388,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
   },
   linearStyle: {
-    height: 250,
+    height: 400,
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
     elevation: 4,
@@ -410,11 +424,11 @@ const styles = StyleSheet.create({
   category: {
     backgroundColor: Screens.pureWhite,
     padding: 10,
-    marginTop: -100,
+    marginTop: -250,
     marginHorizontal: 15,
     elevation: 5,
     borderRadius: 30,
-    flex: 0.95,
+    flex: 0.3,
     justifyContent: "space-between",
   },
   loading: {

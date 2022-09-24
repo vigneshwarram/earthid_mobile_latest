@@ -64,7 +64,7 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
       phone: userDetails?.responseData?.phone,
       earthId: userDetails?.responseData?.earthId,
       publicKey: userDetails?.responseData?.publicKey,
-      countryCode: userDetails?.responseData?.countryCode,
+      countryCode: `+${userDetails?.responseData?.countryCode}`,
     };
     sendPhoneOtpAPI(phoneOtp, postPhoneData, "POST");
   };
@@ -90,12 +90,20 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
   console.log("ApproveOtpResponse", ApproveOtpResponse);
   if (ApproveOtpResponse?.isApproveOtpSuccess) {
     ApproveOtpResponse.isApproveOtpSuccess = false;
-    let isEmailApproved = true;
 
-    let overallResponseData = {
-      ...userDetails.responseData,
-      ...{ emailApproved: isEmailApproved },
-    };
+    let overallResponseData;
+    if (type === "phone") {
+      overallResponseData = {
+        ...userDetails.responseData,
+        ...{ mobileApproved: true },
+      };
+    } else {
+      overallResponseData = {
+        ...userDetails.responseData,
+        ...{ emailApproved: true },
+      };
+    }
+
     dispatch(byPassUserDetailsRedux(overallResponseData)).then(() => {
       navigation.navigate("ProfileScreen");
     });
@@ -107,7 +115,8 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
       earthId: userDetails?.responseData?.earthId,
       publicKey: userDetails?.responseData?.publicKey,
     };
-    dispatch(approveOTP(request));
+
+    dispatch(approveOTP(request, type));
   };
 
   return (
@@ -194,8 +203,17 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
             loadingText="Loading..."
           />
           <SuccessPopUp
-            isLoaderVisible={ApproveOtpResponse?.responseData ? true : false}
-            loadingText={"Email verification successful"}
+            isLoaderVisible={
+              ApproveOtpResponse?.responseData &&
+              ApproveOtpResponse.isApproveOtpSuccess
+                ? true
+                : false
+            }
+            loadingText={
+              type === "phone"
+                ? "Mobile number verification successful"
+                : "Email verification successful"
+            }
           />
         </View>
       </ScrollView>

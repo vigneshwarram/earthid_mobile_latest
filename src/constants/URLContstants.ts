@@ -6,6 +6,7 @@ export const URI = {
     GENERATE_KEYS: `${EARTHID_DEV_BASE}/contract/generateKeys`,
     CREATE_ACCOUNT: `${EARTHID_DEV_BASE}/user/registration`,
     APPROVE_EMAIL_OTP: `${EARTHID_DEV_BASE}/verification/emailVerify`,
+    APPROVE_PHONE_OTP: `${EARTHID_DEV_BASE}/verification/phoneVerify`,
     CONTRACT_CALL: `${EARTHID_DEV_BASE}/contract/functionCall`,
     GET_HISTORY: `${EARTHID_DEV_BASE}/history/getHistory`,
   },

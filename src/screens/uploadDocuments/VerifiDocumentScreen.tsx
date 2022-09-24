@@ -35,6 +35,7 @@ export interface IDocumentProps {
   processedDoc: string;
   vc: any;
   isVc: boolean;
+  base64: any;
 }
 const VerifiDocumentScreen = (props: any) => {
   const { uploadedDocuments } = props.route.params;
@@ -68,7 +69,7 @@ const VerifiDocumentScreen = (props: any) => {
       var date = dateTime();
       const filePath = RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
       var documentDetails: IDocumentProps = {
-        name: "Adhaar",
+        name: `ID Card_${Math.random()}`,
         path: filePath,
         date: date?.date,
         time: date?.time,
@@ -76,6 +77,7 @@ const VerifiDocumentScreen = (props: any) => {
         docType: "pdf",
         docExt: ".jpg",
         processedDoc: "",
+        base64: uploadedDocumentsBase64,
       };
 
       var DocumentList = documentsDetailsList?.responseData
@@ -84,9 +86,9 @@ const VerifiDocumentScreen = (props: any) => {
       DocumentList.push(documentDetails);
       dispatch(saveDocuments(DocumentList));
       const payLoad = {
-        documentName: `ID Card_${Math.random()}`,
-        event: "UPLOADED",
-        earthId: userDetails?.responseData?.earthId,
+        eventValue: `ID Card_${Math.random()}`,
+        eventType: "VC_CREATED",
+        userId: userDetails?.responseData?.Id,
         publicKey: userDetails?.responseData?.publicKey,
       };
       AddDocumehtfetch(CreateHistory, payLoad, "POST");
@@ -118,7 +120,7 @@ const VerifiDocumentScreen = (props: any) => {
       var date = dateTime();
       const filePath = RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
       var documentDetails: IDocumentProps = {
-        name: "Adhaar",
+        name: `ID Card_${Math.random()}`,
         path: filePath,
         date: date?.date,
         time: date?.time,
@@ -126,6 +128,7 @@ const VerifiDocumentScreen = (props: any) => {
         docType: "pdf",
         docExt: ".jpg",
         processedDoc: "",
+        base64: uploadedDocumentsBase64,
       };
 
       var DocumentList = documentsDetailsList?.responseData
@@ -135,9 +138,9 @@ const VerifiDocumentScreen = (props: any) => {
       dispatch(saveDocuments(DocumentList));
       setsuccessResponse(true);
       const payLoad = {
-        documentName: "Adhaar",
-        event: "DocumentAdded",
-        earthId: userDetails?.responseData?.earthId,
+        eventValue: `ID Card_${Math.random()}`,
+        eventType: "VC_CREATED",
+        userId: userDetails?.responseData?.Id,
         publicKey: userDetails?.responseData?.publicKey,
       };
       AddDocumehtfetch(CreateHistory, payLoad, "POST");

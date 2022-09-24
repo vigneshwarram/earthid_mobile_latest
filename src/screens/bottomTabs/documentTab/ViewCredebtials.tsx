@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Image, TouchableOpacity, Text } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 
 import Button from "../../../components/Button";
 import SuccessPopUp from "../../../components/Loader";
@@ -7,11 +13,23 @@ import AnimatedLoader from "../../../components/Loader/AnimatedLoader";
 import { LocalImages } from "../../../constants/imageUrlConstants";
 import { useFetch } from "../../../hooks/use-fetch";
 import { Screens } from "../../../themes/index";
-import { validateDocsApi } from "../../../utils/earthid_account";
+import {
+  uploadDocument,
+  validateDocsApi,
+} from "../../../utils/earthid_account";
+import { QRreader } from "react-native-qr-decode-image-camera";
 
 const DocumentPreviewScreen = (props: any) => {
-  const { loading, data, error, fetch } = useFetch();
+  const { fileUri, type } = props.route.params;
+  const { documentDetails } = props.route.params;
+  console.log("documentDetails", documentDetails);
+
+  const { loading, data, error, fetch: postFormfetch } = useFetch();
   const [successResponse, setsuccessResponse] = useState(false);
+  const [message, Setmessage] = useState("ooo");
+  const [datas, SetData] = useState(null);
+  const [source, setSource] = useState({});
+  const [filePath, setFilePath] = useState();
 
   return (
     <View style={styles.sectionContainer}>
@@ -24,12 +42,25 @@ const DocumentPreviewScreen = (props: any) => {
           ></Image>
         </TouchableOpacity>
       </View>
-      <View style={{ padding: 10, marginTop: 100 }}>
-        <Text style={{ fontWeight: "bold" }}>
-          Token :
-          sdsds4AAQSkZJRgABAQAAAQABAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/2wBDAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/wAARCAEYARgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJy
-        </Text>
+      <View style={{ flex: 0.8, paddingHorizontal: 10, marginLeft: 20 }}>
+        <Image
+          resizeMode={"contain"}
+          style={{
+            width: 330,
+            height: "100%",
+          }}
+          source={{ uri: documentDetails.base64 }}
+        ></Image>
       </View>
+
+      <View
+        style={{
+          flex: 0.2,
+          flexDirection: "row",
+          paddingHorizontal: 10,
+          justifyContent: "space-between",
+        }}
+      ></View>
       <AnimatedLoader
         isLoaderVisible={loading}
         loadingText="Uploading Documents..."
@@ -45,7 +76,7 @@ const DocumentPreviewScreen = (props: any) => {
 const styles = StyleSheet.create({
   sectionContainer: {
     flex: 1,
-    backgroundColor: Screens.pureWhite,
+    backgroundColor: Screens.black,
   },
   loading: {
     position: "absolute",
@@ -64,7 +95,7 @@ const styles = StyleSheet.create({
   logoContainer: {
     width: 15,
     height: 15,
-    tintColor: "#000",
+    tintColor: "#fff",
   },
 });
 

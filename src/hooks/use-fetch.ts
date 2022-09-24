@@ -15,6 +15,7 @@ const useFetch = (): IResponse => {
   const [error, serError] = useState<any>(undefined);
 
   const fetch = async (url: string, payLoad?: any, methodName = "POST") => {
+    console.log("raw response ========>;;;", url);
     setloading(true);
     try {
       let response;
