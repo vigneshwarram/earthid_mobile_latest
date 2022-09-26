@@ -23,7 +23,9 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
   const _toggleDrawer = () => {
     navigation.openDrawer();
   };
-
+  if (getHistoryReducer?.isSuccess) {
+    getHistoryReducer.isSuccess = false;
+  }
   useEffect(() => {
     const PayLoad = {
       userId: userDetails?.responseData?.Id,

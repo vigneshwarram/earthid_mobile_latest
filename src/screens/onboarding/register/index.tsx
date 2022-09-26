@@ -342,7 +342,7 @@ const Register = ({ navigation }: IRegister) => {
                     textDecorationLine: "underline",
                   }}
                 >
-                  {"EarthId"}
+                  {"GlobalId"}
                 </GenericText>
               </View>
             </TouchableOpacity>

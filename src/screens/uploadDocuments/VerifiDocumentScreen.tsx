@@ -102,7 +102,14 @@ const VerifiDocumentScreen = (props: any) => {
         userId: userDetails?.responseData?.Id,
         publicKey: userDetails?.responseData?.publicKey,
       };
-      dispatch(getHistory(PayLoad));
+      dispatch(getHistory(PayLoad)).then(() => {
+        setsuccessResponse(true);
+        getHistoryReducer.isSuccess = false;
+        setTimeout(() => {
+          setsuccessResponse(false);
+          props.navigation.navigate("Documents");
+        }, 2000);
+      });
     }
   }, [DataAdded]);
 

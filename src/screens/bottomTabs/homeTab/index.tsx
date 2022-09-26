@@ -34,7 +34,7 @@ const HomeScreen = ({ navigation }: IHomeScreenProps) => {
   const _toggleDrawer = () => {
     navigation.openDrawer();
   };
-  console.log("userDetails", userDetails);
+  console.log("getHistoryReduce====>r", getHistoryReducer);
   const categoryList = values(SCREENS.HOMESCREEN.categoryList).map(
     ({ TITLE: title, URI: uri, COLOR: color }: any) => ({
       title,
@@ -81,7 +81,9 @@ const HomeScreen = ({ navigation }: IHomeScreenProps) => {
   const _avatarClick = () => {
     navigation.navigate("ProfileScreen");
   };
-
+  if (getHistoryReducer?.isSuccess) {
+    getHistoryReducer.isSuccess = false;
+  }
   useEffect(() => {
     const listener: any = EventRegister.addEventListener("OpenDrawer", () => {
       navigation.openDrawer();
@@ -193,15 +195,17 @@ const HomeScreen = ({ navigation }: IHomeScreenProps) => {
             isLoaderVisible={getHistoryReducer?.isLoading}
             loadingText="loading"
           /> */}
-          {!getHistoryReducer && !getHistoryReducer?.responseData && (
-            <View style={{ justifyContent: "center", alignItems: "center" }}>
-              <Image
-                resizeMode="contain"
-                style={[styles.logoContainer]}
-                source={LocalImages.recent}
-              ></Image>
-            </View>
-          )}
+          {getHistoryReducer &&
+            getHistoryReducer?.responseData &&
+            getHistoryReducer?.responseData.length === 0 && (
+              <View style={{ justifyContent: "center", alignItems: "center" }}>
+                <Image
+                  resizeMode="contain"
+                  style={[styles.logoContainer]}
+                  source={LocalImages.recent}
+                ></Image>
+              </View>
+            )}
         </View>
       </ScrollView>
     </View>

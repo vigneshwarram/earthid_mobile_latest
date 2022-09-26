@@ -221,7 +221,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
               style={{
                 justifyContent: "center",
                 alignItems: "center",
-                backgroundColor: "#8059D0",
+
                 width: deviceWidth / 1.5,
               }}
             >
