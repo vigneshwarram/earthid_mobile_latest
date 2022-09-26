@@ -16,8 +16,21 @@ import { emailValidator } from "../../utils/inputValidations";
 const EditEmailAddress = (props: any) => {
   const { loading, data, error, fetch } = useFetch();
   const userDetails = useAppSelector((state) => state.account);
-  const navigateAction = () => {
-    sendOtp();
+  const navigateAction = () => {};
+
+  const _navigateAction = () => {
+    if (isValid()) {
+      sendOtp();
+    } else {
+      emailBlurHandler();
+    }
+  };
+
+  const isValid = () => {
+    if (!emailValidator(email, true).hasError) {
+      return true;
+    }
+    return false;
   };
   const sendOtp = () => {
     var postData = {
@@ -114,7 +127,7 @@ const EditEmailAddress = (props: any) => {
 
       <View style={{ paddingHorizontal: 15, marginTop: 100 }}>
         <Button
-          onPress={navigateAction}
+          onPress={_navigateAction}
           style={{
             buttonContainer: {
               elevation: 5,

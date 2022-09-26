@@ -21,6 +21,7 @@ const Avatar = ({
   absoluteCircleInnerImage,
   avatarClick,
   isCategory = true,
+  subCatSideArrowVisible = false,
 }: IAvatarProps) => {
   const userDetails = useAppSelector((state) => state.account);
   return (
@@ -38,48 +39,117 @@ const Avatar = ({
         }}
       />
       {text !== "" && (
-        <View>
-          <GenericText style={[styles.text, style.text]}>{text}</GenericText>
-          {!isCategory && (
-            <View style={styles.row}>
-              <View style={{ justifyContent: "center", alignItems: "center" }}>
-                <Image
-                  source={LocalImages.email}
-                  style={{
-                    width: 15,
-                    height: 15,
-                    marginTop: 10,
-                    tintColor: "#000",
-                  }}
-                ></Image>
-              </View>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <View>
+            <GenericText style={[styles.text, style.text]}>{text}</GenericText>
+            {!isCategory && (
+              <View style={styles.row}>
+                <View
+                  style={{ justifyContent: "center", alignItems: "center" }}
+                >
+                  <Image
+                    source={LocalImages.email}
+                    style={{
+                      width: 15,
+                      height: 15,
+                      marginTop: 10,
+                      tintColor: "#000",
+                    }}
+                  ></Image>
+                </View>
 
-              <GenericText
-                style={[styles.text, style.text, { marginLeft: 10 }]}
-              >
-                {userDetails?.responseData?.email}
-              </GenericText>
-            </View>
-          )}
-
-          {!isCategory && (
-            <View style={styles.row}>
-              <View style={{ justifyContent: "center", alignItems: "center" }}>
-                <Image
-                  source={LocalImages.phone}
-                  style={{
-                    width: 15,
-                    height: 15,
-                    marginTop: 10,
-                    tintColor: "#000",
-                  }}
-                ></Image>
+                <GenericText
+                  style={[
+                    styles.text,
+                    style.text,
+                    { marginLeft: 10, fontWeight: "500" },
+                  ]}
+                >
+                  {userDetails?.responseData?.email}
+                </GenericText>
+                {userDetails?.responseData?.emailApproved && (
+                  <View
+                    style={{
+                      justifyContent: "center",
+                      alignItems: "center",
+                      backgroundColor: "#fff",
+                      width: 12,
+                      height: 12,
+                      marginTop: 15,
+                      marginLeft: 10,
+                    }}
+                  >
+                    <Image
+                      source={LocalImages.successTikImage}
+                      style={{ width: 20, height: 20, marginTop: 2 }}
+                    ></Image>
+                  </View>
+                )}
               </View>
-              <GenericText
-                style={[styles.text, style.text, { marginLeft: 10 }]}
-              >
-                {userDetails?.responseData?.phone}
-              </GenericText>
+            )}
+
+            {!isCategory && (
+              <View style={styles.row}>
+                <View
+                  style={{ justifyContent: "center", alignItems: "center" }}
+                >
+                  <Image
+                    source={LocalImages.phone}
+                    style={{
+                      width: 15,
+                      height: 15,
+                      marginTop: 10,
+                      tintColor: "#000",
+                    }}
+                  ></Image>
+                </View>
+                <GenericText
+                  style={[
+                    styles.text,
+                    style.text,
+                    { marginLeft: 10, fontWeight: "500" },
+                  ]}
+                >
+                  {userDetails?.responseData?.phone}
+                </GenericText>
+                {userDetails?.responseData?.mobileApproved && (
+                  <View
+                    style={{
+                      justifyContent: "center",
+                      alignItems: "center",
+                      backgroundColor: "#fff",
+                      width: 12,
+                      height: 12,
+                      marginTop: 15,
+                      marginLeft: 10,
+                    }}
+                  >
+                    <Image
+                      source={LocalImages.successTikImage}
+                      style={{ width: 20, height: 20, marginTop: 2 }}
+                    ></Image>
+                  </View>
+                )}
+              </View>
+            )}
+          </View>
+          {subCatSideArrowVisible && (
+            <View style={{ position: "absolute", right: 25, top: 20 }}>
+              <Image
+                source={LocalImages.sideArrowImage}
+                style={{
+                  width: 14,
+                  height: 13,
+                  marginTop: 10,
+                  tintColor: "#fff",
+                }}
+              ></Image>
             </View>
           )}
         </View>
@@ -105,7 +175,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "bold",
     borderRadius: 25,
-    fontSize: 16,
+    fontSize: 18,
     color: "#000",
     marginTop: 10,
   },

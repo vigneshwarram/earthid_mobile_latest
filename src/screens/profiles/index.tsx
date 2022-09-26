@@ -111,6 +111,7 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
     <View style={styles.sectionContainer}>
       <ScrollView contentContainerStyle={styles.sectionContainer}>
         <Header
+          subCatSideArrowVisible
           actionIcon={LocalImages.editImage}
           avatarClick={_avatarClick}
           absoluteCircleInnerImage={LocalImages.cameraImage}
@@ -161,7 +162,11 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
           <Info
             tailIconPress={_navigateEditMobile}
             tailIcon={LocalImages.editIcon}
-            subTitlePress={mobileVerifyAction}
+            subTitlePress={
+              userDetails?.responseData?.mobileApproved
+                ? null
+                : mobileVerifyAction
+            }
             title={"mobileno"}
             subtitle={
               userDetails?.responseData?.countryCode +
@@ -188,7 +193,11 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
           <Info
             tailIconPress={_navigateEditEmail}
             tailIcon={LocalImages.editIcon}
-            subTitlePress={emailVerifyAction}
+            subTitlePress={
+              userDetails?.responseData?.emailApproved
+                ? null
+                : emailVerifyAction
+            }
             title={"email"}
             subtitle={userDetails?.responseData?.email}
             subtitleRowText={

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { View, StyleSheet, ScrollView, Platform, Alert } from "react-native";
 import Header from "../../../components/Header";
 import { LocalImages } from "../../../constants/imageUrlConstants";
@@ -25,6 +25,8 @@ import GenericText from "../../../components/Text";
 import { SnackBar } from "../../../components/SnackBar";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { isArray } from "lodash";
+import { useFetch } from "../../../hooks/use-fetch";
+import { superAdminApi } from "../../../utils/earthid_account";
 interface IRegister {
   navigation: any;
 }
@@ -32,6 +34,11 @@ interface IRegister {
 const Register = ({ navigation }: IRegister) => {
   const phoneInput: any = useRef();
   const dispatch = useAppDispatch();
+  const {
+    loading: superAdminLoading,
+    data: superAdminResponse,
+    fetch: getSuperAdminApiCall,
+  } = useFetch();
   const [mobileNumber, setmobileNumber] = useState<string>("");
   const userDetails = useAppSelector((state) => state.account);
   const keys = useAppSelector((state) => state.user);
@@ -78,6 +85,10 @@ const Register = ({ navigation }: IRegister) => {
     inputBlurHandler: emailBlurHandler,
   } = useFormInput("", false, emailValidator);
 
+  useEffect(() => {
+    getSuperAdminApiCall(superAdminApi, {}, "GET");
+  }, []);
+
   const _navigateAction = () => {
     if (isValid()) {
       dispatch(GeneratedKeysAction());
@@ -103,23 +114,31 @@ const Register = ({ navigation }: IRegister) => {
   const _registerAction = async ({ publicKey }: any) => {
     const token = await getDeviceId();
     const deviceName = await getDeviceName();
-    const payLoad: IUserAccountRequest = {
-      username: firstName,
-      deviceID: token + Math.random(),
-      deviceIMEI: token,
-      deviceName: deviceName,
-      email: email,
-      orgId: "35942e1e-e65d-443e-af09-f3c0b330be1e",
-      phone: mobileNumber,
-      countryCode: "+" + callingCode,
-      publicKey,
-      deviceOS: Platform.OS === "android" ? "android" : "ios",
-    };
-    dispatch(createAccount(payLoad));
+    if (superAdminResponse && superAdminResponse[0]?.Id) {
+      const payLoad: IUserAccountRequest = {
+        username: firstName,
+        deviceID: token + Math.random(),
+        deviceIMEI: token,
+        deviceName: deviceName,
+        email: email,
+        orgId: superAdminResponse[0]?.Id,
+        phone: mobileNumber,
+        countryCode: "+" + callingCode,
+        publicKey,
+        deviceOS: Platform.OS === "android" ? "android" : "ios",
+      };
+      dispatch(createAccount(payLoad));
+    } else {
+      SnackBar({
+        indicationMessage: "Registered Id is not generated ,please try again",
+      });
+      getSuperAdminApiCall(superAdminApi, {}, "GET");
+    }
   };
 
   if (keys && keys?.isGeneratedKeySuccess) {
     keys.isGeneratedKeySuccess = false;
+
     _registerAction(keys?.responseData?.result);
   }
 

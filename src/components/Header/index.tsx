@@ -39,6 +39,7 @@ const Header = ({
   headingText,
   isBack = false,
   rightIconPress,
+  subCatSideArrowVisible = false,
 }: IHeaderProps) => {
   const userDetails = useAppSelector((state) => state.account);
   return (
@@ -159,6 +160,7 @@ const Header = ({
             </View>
             {isAvatar && (
               <Avatar
+                subCatSideArrowVisible={subCatSideArrowVisible}
                 isCategory={false}
                 avatarClick={avatarClick}
                 style={{ text: { color: Screens.black } }}

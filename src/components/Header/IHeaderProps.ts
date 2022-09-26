@@ -17,4 +17,5 @@ export interface IHeaderProps {
   profileName?: string;
   rightIconPress?: any;
   isBack?: boolean;
+  subCatSideArrowVisible?: boolean;
 }

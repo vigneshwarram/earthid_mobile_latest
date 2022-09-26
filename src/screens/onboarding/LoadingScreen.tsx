@@ -36,7 +36,12 @@ const LoadingScreen = ({ navigation }: ILoadingScreen) => {
           TouchID.authenticate("", optionalConfigObject)
             .then(async (success: any) => {
               console.log("success", success);
-              navigation.dispatch(StackActions.replace("DrawerNavigator"));
+              const getItem = await AsyncStorage.getItem("passcode");
+              if (getItem) {
+                navigation.dispatch(StackActions.replace("PasswordCheck"));
+              } else {
+                navigation.dispatch(StackActions.replace("DrawerNavigator"));
+              }
             })
             .catch((e: any) => {
               aunthenticateBioMetricInfo();

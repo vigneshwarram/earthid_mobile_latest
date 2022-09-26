@@ -7,4 +7,5 @@ export interface IAvatarProps {
   absoluteCircleInnerImage?: any;
   avatarClick?: any;
   isCategory?: boolean;
+  subCatSideArrowVisible?: boolean;
 }

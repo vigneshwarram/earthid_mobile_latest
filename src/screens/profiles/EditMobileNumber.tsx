@@ -1,4 +1,11 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Alert,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { Screens } from "../../themes";
 import { LocalImages } from "../../constants/imageUrlConstants";
@@ -30,7 +37,11 @@ const EditMobileNumber = (props: any) => {
   };
 
   const navigateAction = () => {
-    sentOtp();
+    if (phone.length === 10) {
+      sentOtp();
+    } else {
+      Alert.alert("Invalid mobile number");
+    }
   };
 
   useEffect(() => {

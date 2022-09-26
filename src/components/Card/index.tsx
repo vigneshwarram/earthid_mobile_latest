@@ -75,7 +75,7 @@ const Card = ({
           onPress={rightIconOnPress}
           src={rightIconSrc}
           style={{
-            container: styles.rightIconContainer,
+            container: [styles.rightIconContainer, style.rightIconStyle],
             image: { width: 15, height: 15 },
           }}
         />

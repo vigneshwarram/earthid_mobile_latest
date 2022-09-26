@@ -48,12 +48,13 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
   useEffect(() => {
     if (getCategoryData) {
       var localCategories: any = [];
-      var InternalArray: { title: any }[] = [];
+
       Object.keys(getCategoryData).map((itemKey, indexOfKey) => {
+        var InternalArray: { title: any }[] = [];
         getCategoryData[itemKey].map((item: any) => {
           InternalArray.push({ title: item });
         });
-        console.log("InternalArray", InternalArray);
+
         localCategories.push({
           key: itemKey,
           value: InternalArray,
@@ -68,7 +69,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const selectCategory = (selectedItem: string, selectedIndex: number) => {
     var localCategories = [];
     localCategories = categoryList.map((item: any, index: number) => {
-      if (index === selectedIndex && selectedItem === item) {
+      if (index === selectedIndex) {
         item.isSelected = true;
       } else {
         item.isSelected = false;
@@ -77,7 +78,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
     });
     console.log("localCategories", localCategories);
     setCategoryList([...localCategories]);
-    setIsPrceedForLivenessTest(true);
+    //
   };
 
   const selectCategoryChildren = (
@@ -98,6 +99,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
     });
 
     setCategoryList([...localCategories]);
+    setIsPrceedForLivenessTest(true);
   };
 
   const _renderItem = ({ item, index }: any) => {
@@ -137,6 +139,8 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
       <TouchableOpacity onPress={() => selectCategoryChildren(item, index)}>
         <View style={styles.documentContainer}>
           <Card
+            rightIconSrc={item?.isSelected && LocalImages.successTikImage}
+            leftIconSrc={LocalImages.documentsImage}
             title={item?.title}
             style={[
               styles.cardContainer1,
@@ -154,44 +158,47 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
 
   return (
     <View style={styles.sectionContainer}>
-      <View style={{ flex: 0.8 }}>
-        <ScrollView contentContainerStyle={{ flex: 1 }}>
-          <Header
-            leftIconSource={LocalImages.backImage}
-            onpress={() => {
-              _toggleDrawer();
-            }}
-            headingText={"Choose Category"}
-            linearStyle={styles.linearStyle}
-            containerStyle={{
-              iconStyle: {
-                width: 15,
-                height: 15,
-              },
-            }}
-          ></Header>
-          <View>
-            <FlatList<any>
-              numColumns={3}
-              nestedScrollEnabled
-              showsHorizontalScrollIndicator={false}
-              data={categoryList}
-              renderItem={_renderItem}
-            />
-
+      <ScrollView contentContainerStyle={{ flex: 1 }}>
+        <View style={{ flex: 1 }}>
+          <View style={{ flex: 0.25 }}>
+            <Header
+              leftIconSource={LocalImages.backImage}
+              onpress={() => {
+                _toggleDrawer();
+              }}
+              headingText={"Choose Category"}
+              linearStyle={styles.linearStyle}
+              containerStyle={{
+                iconStyle: {
+                  width: 15,
+                  height: 15,
+                },
+              }}
+            ></Header>
+            <View>
+              <FlatList<any>
+                numColumns={3}
+                nestedScrollEnabled
+                showsHorizontalScrollIndicator={false}
+                data={categoryList}
+                renderItem={_renderItem}
+              />
+            </View>
+          </View>
+          <View style={{ flex: 0.75 }}>
             <GenericText
               style={[
                 styles.categoryHeaderText,
-                { fontSize: 15, fontWeight: "400" },
+                { fontSize: 14, fontWeight: "700" },
               ]}
             >
               {"SELECT DOCUMENT"}
             </GenericText>
-            {categoryList.map((item: any) => {
-              if (item?.isSelected) {
+            {categoryList.map((item: any, index: number) => {
+              if (item.isSelected) {
+                console.log(`item===>index${index}`, item);
                 return (
                   <FlatList<any>
-                    style={{ flex: 1 }}
                     nestedScrollEnabled
                     scrollEnabled={true}
                     data={item?.value}
@@ -201,59 +208,59 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
               }
             })}
           </View>
-        </ScrollView>
-      </View>
-      <ModalView height={250} isModalVisible={isPrceedForLivenessTest}>
-        <View
-          style={{
-            flex: 1,
-            paddingHorizontal: 5,
-            justifyContent: "space-between",
-          }}
-        >
+        </View>
+        <ModalView height={250} isModalVisible={isPrceedForLivenessTest}>
           <View
             style={{
-              justifyContent: "center",
-              alignItems: "center",
-
-              width: deviceWidth / 1.5,
+              flex: 1,
+              paddingHorizontal: 5,
+              justifyContent: "space-between",
             }}
           >
-            <Image
-              resizeMode="contain"
-              style={[styles.logoContainer]}
-              source={LocalImages.logoImage}
-            ></Image>
-          </View>
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "#8059D0",
+                width: deviceWidth / 1.5,
+              }}
+            >
+              <Image
+                resizeMode="contain"
+                style={[styles.logoContainer]}
+                source={LocalImages.logoImage}
+              ></Image>
+            </View>
 
-          <Button
-            onPress={() => {
-              setIsPrceedForLivenessTest(false);
-              setTimeout(() => {
-                navigation.navigate("LivenessCameraScreen", { fileUri });
-              }, 100);
-            }}
-            style={{
-              buttonContainer: {
-                elevation: 5,
-                marginHorizontal: 10,
-              },
-              text: {
-                color: Screens.pureWhite,
-                fontSize: 12,
-              },
-              iconStyle: {
-                tintColor: Screens.pureWhite,
-              },
-            }}
-            title={"PROCEED FOR LIVENESS TEST"}
-          ></Button>
-        </View>
-      </ModalView>
-      <AnimatedLoader
-        isLoaderVisible={isCategoryLoading}
-        loadingText="Loading..."
-      />
+            <Button
+              onPress={() => {
+                setIsPrceedForLivenessTest(false);
+                setTimeout(() => {
+                  navigation.navigate("LivenessCameraScreen", { fileUri });
+                }, 100);
+              }}
+              style={{
+                buttonContainer: {
+                  elevation: 5,
+                  marginHorizontal: 10,
+                },
+                text: {
+                  color: Screens.pureWhite,
+                  fontSize: 12,
+                },
+                iconStyle: {
+                  tintColor: Screens.pureWhite,
+                },
+              }}
+              title={"PROCEED FOR LIVENESS TEST"}
+            ></Button>
+          </View>
+        </ModalView>
+        <AnimatedLoader
+          isLoaderVisible={isCategoryLoading}
+          loadingText="Loading..."
+        />
+      </ScrollView>
     </View>
   );
 };
@@ -262,7 +269,6 @@ const styles = StyleSheet.create({
   sectionContainer: {
     flex: 1,
     backgroundColor: Screens.colors.background,
-    paddingBottom: 200,
   },
   linearStyle: {
     height: 80,
@@ -293,8 +299,8 @@ const styles = StyleSheet.create({
     borderColor: "transparent",
   },
   categoryHeaderText: {
-    marginHorizontal: 30,
-    marginVertical: 10,
+    marginHorizontal: 10,
+    marginVertical: 5,
     color: "#000",
   },
 
@@ -312,14 +318,14 @@ const styles = StyleSheet.create({
     padding: 3,
     backgroundColor: Screens.pureWhite,
     borderColor: Screens.grayShadeColor,
-    justifyContent: "space-between",
+
     margin: 5,
     borderRadius: 8,
 
     borderWidth: 1,
   },
   documentContainer: {
-    marginHorizontal: 10,
+    marginHorizontal: 5,
 
     padding: 8,
     backgroundColor: Screens.pureWhite,
