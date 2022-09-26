@@ -161,7 +161,7 @@ export const getHistory =
         type: ACTION_TYPES.GET_HISTORY_CALL,
       });
       const response = await getCall(
-        `${get_History}?earthId=${requestPayload?.earthId}&publicKey=${requestPayload?.publicKey}`
+        `${get_History}?userId=${requestPayload?.userId}&publicKey=${requestPayload?.publicKey}`
       );
       responseData = await _responseHandler(response);
       console.log("responseData==>", responseData);

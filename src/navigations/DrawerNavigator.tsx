@@ -21,7 +21,7 @@ import ViewCredential from "../screens/bottomTabs/documentTab/ViewCredebtials";
 import CustomizeQr from "../screens/profiles/CustomizeQr";
 import backupIdentity from "../screens/onboarding/backupIdentity";
 import Document from "../screens/bottomTabs/documentTab/index";
-import language from "../screens/settings/Language";
+
 import UpdateAuthentication from "../screens/onboarding/security/UpdateAuthentication";
 import AuthBackupIdentity from "../screens/onboarding/backupIdentity/AuthIdentity";
 import EditMobileNumber from "../screens/profiles/EditMobileNumber";
@@ -55,7 +55,7 @@ const dashBoardStack = {
   ViewCredential: ViewCredential,
   CustomizeQr: CustomizeQr,
   backupIdentity: backupIdentity,
-  language: language,
+
   UpdateAuthentication: UpdateAuthentication,
   EditMobileNumber: EditMobileNumber,
   EditEmailAddress: EditEmailAddress,

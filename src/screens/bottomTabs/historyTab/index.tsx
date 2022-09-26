@@ -29,6 +29,7 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
       userId: userDetails?.responseData?.Id,
       publicKey: userDetails?.responseData?.publicKey,
     };
+    console.log("PayLoad", PayLoad);
     dispatch(getHistory(PayLoad));
   }, []);
 
@@ -38,7 +39,7 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
         leftAvatar={LocalImages.documentsImage}
         absoluteCircleInnerImage={LocalImages.upImage}
         rightIconSrc={LocalImages.menuImage}
-        title={item?.documentName}
+        title={item?.eventValue}
         subtitle={`       Uploaded  : ${item.createdAt}`}
         style={{
           ...styles.cardContainer,

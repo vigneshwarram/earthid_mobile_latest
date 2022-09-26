@@ -62,6 +62,7 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
       return itemData;
     });
     setLanguageList(languageList);
+    setLanguageVisible(false);
   };
   useEffect(() => {
     initializeUserPreferences();

@@ -130,6 +130,7 @@ const CustomDrawer = (props: any) => {
       return itemData;
     });
     setLanguageList(languageList);
+    setLanguageVisible(false);
   };
 
   const _keyExtractor = ({ TITLE }: any) => TITLE.toString();
