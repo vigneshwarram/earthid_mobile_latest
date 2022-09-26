@@ -38,7 +38,9 @@ const LoadingScreen = ({ navigation }: ILoadingScreen) => {
               console.log("success", success);
               navigation.dispatch(StackActions.replace("DrawerNavigator"));
             })
-            .catch((e: any) => console.log(e));
+            .catch((e: any) => {
+              aunthenticateBioMetricInfo();
+            });
           console.log("TouchID is supported.");
         }
       })

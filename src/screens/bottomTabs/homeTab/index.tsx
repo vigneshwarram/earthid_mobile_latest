@@ -189,10 +189,10 @@ const HomeScreen = ({ navigation }: IHomeScreenProps) => {
             }
             renderItem={_renderItemHistory}
           />
-          <AnimatedLoader
+          {/* <AnimatedLoader
             isLoaderVisible={getHistoryReducer?.isLoading}
             loadingText="loading"
-          />
+          /> */}
           {!getHistoryReducer && !getHistoryReducer?.responseData && (
             <View style={{ justifyContent: "center", alignItems: "center" }}>
               <Image

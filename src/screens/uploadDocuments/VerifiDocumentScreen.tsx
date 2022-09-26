@@ -92,7 +92,6 @@ const VerifiDocumentScreen = (props: any) => {
         publicKey: userDetails?.responseData?.publicKey,
       };
       AddDocumehtfetch(CreateHistory, payLoad, "POST");
-      setsuccessResponse(true);
     });
   };
 
@@ -108,6 +107,7 @@ const VerifiDocumentScreen = (props: any) => {
   }, [DataAdded]);
 
   if (getHistoryReducer?.isSuccess) {
+    setsuccessResponse(true);
     getHistoryReducer.isSuccess = false;
     setTimeout(() => {
       setsuccessResponse(false);
