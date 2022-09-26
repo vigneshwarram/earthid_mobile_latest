@@ -59,10 +59,10 @@ const EditMobileNumOtp = (props: any) => {
     var postData = {
       oldPhone: userDetails?.responseData?.phone,
       newPhone: newPhone,
-      newCountryCode: "+" + callingCode,
+      newCountryCode: callingCode,
       earthId: userDetails?.responseData?.earthId,
       publicKey: userDetails?.responseData?.publicKey,
-      oldCountryCode: "+" + userDetails?.responseData?.countryCode,
+      oldCountryCode: userDetails?.responseData?.countryCode,
     };
     fetch(updatephoneOtp, postData, "POST");
   };

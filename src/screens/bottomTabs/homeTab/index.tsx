@@ -95,7 +95,7 @@ const HomeScreen = ({ navigation }: IHomeScreenProps) => {
 
   useEffect(() => {
     const PayLoad = {
-      earthId: userDetails?.responseData?.earthId,
+      userId: userDetails?.responseData?.Id,
       publicKey: userDetails?.responseData?.publicKey,
     };
     dispatch(getHistory(PayLoad));

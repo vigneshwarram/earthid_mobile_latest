@@ -37,7 +37,7 @@ const Register = ({ navigation }: IRegister) => {
   const keys = useAppSelector((state) => state.user);
   const [successResponse, setsuccessResponse] = useState(false);
   const [openDatePicker, setopenDatePicker] = useState<boolean>();
-  const [callingCode, setcallingCode] = useState<string>("+1");
+  const [callingCode, setcallingCode] = useState<string>("1");
 
   const {
     value: firstName,
@@ -111,7 +111,7 @@ const Register = ({ navigation }: IRegister) => {
       email: email,
       orgId: "35942e1e-e65d-443e-af09-f3c0b330be1e",
       phone: mobileNumber,
-      countryCode: callingCode,
+      countryCode: "+" + callingCode,
       publicKey,
       deviceOS: Platform.OS === "android" ? "android" : "ios",
     };
@@ -323,7 +323,7 @@ const Register = ({ navigation }: IRegister) => {
                     textDecorationLine: "underline",
                   }}
                 >
-                  {"GlobalId"}
+                  {"EarthId"}
                 </GenericText>
               </View>
             </TouchableOpacity>

@@ -11,7 +11,7 @@ import { useFetch } from "../../hooks/use-fetch";
 import { updatephoneOtp } from "../../utils/earthid_account";
 
 const EditMobileNumber = (props: any) => {
-  const [callingCode, setcallingCode] = useState<string>("+1");
+  const [callingCode, setcallingCode] = useState<string>("1");
   const phoneInput: any = useRef();
   const userDetails = useAppSelector((state) => state.account);
   const { loading, data, error, fetch } = useFetch();
@@ -21,10 +21,10 @@ const EditMobileNumber = (props: any) => {
     var postData = {
       oldPhone: userDetails?.responseData?.phone,
       newPhone: phone,
-      newCountryCode: "+" + callingCode,
+      newCountryCode: callingCode,
       earthId: userDetails?.responseData?.earthId,
       publicKey: userDetails?.responseData?.publicKey,
-      oldCountryCode: "+" + userDetails?.responseData?.countryCode,
+      oldCountryCode: userDetails?.responseData?.countryCode,
     };
     fetch(updatephoneOtp, postData, "POST");
   };
