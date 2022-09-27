@@ -2,8 +2,12 @@ import React from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 import { Screens } from "../../themes";
 import QrCodeMask from "react-native-qrcode-mask";
+import GenericText from "../../components/Text";
 const { height, width } = Dimensions.get("window");
 export const QrScannerMaskedWidget = () => {
+
+
+
   return (
     <View style={styles.maskOutter}>
       <QrCodeMask
@@ -16,7 +20,7 @@ export const QrScannerMaskedWidget = () => {
         edgeWidth={30}
         edgeHeight={30}
         overlayOpacity={1}
-        bottomTitle="Scan this code"
+        bottomTitle={"Scan this code"}
       />
     </View>
   );

@@ -88,7 +88,7 @@ const EditMobileNumOtp = (props: any) => {
               },
             ]}
           >
-            {"Update Mobile Number"}
+            {"updatemobileno"}
           </GenericText>
 
           <View />
@@ -105,7 +105,7 @@ const EditMobileNumOtp = (props: any) => {
             },
           ]}
         >
-          {"Enter OTP you reciered on your old mobile"}
+          {"enterotprevoldmobile"}
         </GenericText>
         <GenericText
           style={[
@@ -153,7 +153,7 @@ const EditMobileNumOtp = (props: any) => {
               },
             ]}
           >
-            {"Re-Send Code"}
+            {"resendcode"}
           </GenericText>
         </TouchableOpacity>
 
@@ -168,7 +168,7 @@ const EditMobileNumOtp = (props: any) => {
             },
           ]}
         >
-          {"Enter OTP you reciered on your new mobile"}
+          {"enterotprevnewmobile"}
         </GenericText>
         <GenericText
           style={[
@@ -216,7 +216,7 @@ const EditMobileNumOtp = (props: any) => {
               },
             ]}
           >
-            {"Re-Send Code"}
+            {"resendcode"}
           </GenericText>
         </TouchableOpacity>
         <View style={{ paddingHorizontal: 15, marginTop: 10 }}>
@@ -233,11 +233,11 @@ const EditMobileNumOtp = (props: any) => {
                 tintColor: Screens.pureWhite,
               },
             }}
-            title={"SUBMIT"}
+            title={"submt"}
           ></Button>
         </View>
 
-        <AnimatedLoader loadingText="Loading..." />
+        <AnimatedLoader loadingText={"loading"} />
       </ScrollView>
     </View>
   );

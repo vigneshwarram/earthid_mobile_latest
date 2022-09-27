@@ -92,5 +92,17 @@
   "setpass": "Configurar la clave",
   "Passcode": "Contraseña",
   "updatemobileno": "Actualizar número de móvil",
-  "plsenternewmobile": "Por favor, introduzca su nuevo número de móvil"
+  "plsenternewmobile": "Por favor, introduzca su nuevo número de móvil",
+  "plsenterotp":"Por favor ingrese OTP",
+  "enterotp":"Ingresar OTP",
+  "submt":"ENVIAR",
+  "enterotprevoldmobile":"Introduce la OTP que recibiste en tu antiguo móvil",
+  "resendcode":"Reenviar codigo",
+  "enterotprevnewmobile":"Ingrese OTP que recibió en su nuevo móvil",
+  "updateemailadd":"actualizar Email Dirección",
+  "plsenternewemailadd":"Ingrese su nueva email dirección",
+  "enterotprevoldemail":"Introduce la OTP que recibiste en tu antiguo email",
+  "enterotprevnewemail":"Ingrese OTP que recibió en su nuevo email",
+  "username":"Nombre de usuario"
+
 }

@@ -74,7 +74,7 @@ const EditMobileNumber = (props: any) => {
             },
           ]}
         >
-          {"Update Mobile Number"}
+          {"updatemobileno"}
         </GenericText>
 
         <View />
@@ -91,7 +91,7 @@ const EditMobileNumber = (props: any) => {
           },
         ]}
       >
-        {"Please enter your new mobile number"}
+        {"plsenternewmobile"}
       </GenericText>
 
       <GenericText
@@ -103,7 +103,7 @@ const EditMobileNumber = (props: any) => {
           },
         ]}
       >
-        {"Mobile Number"}
+        {"mobileno"}
       </GenericText>
 
       <PhoneInput
@@ -154,7 +154,7 @@ const EditMobileNumber = (props: any) => {
               tintColor: Screens.pureWhite,
             },
           }}
-          title={"SUBMIT"}
+          title={"submt"}
         ></Button>
       </View>
 

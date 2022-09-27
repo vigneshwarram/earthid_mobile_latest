@@ -15,8 +15,8 @@ import {
   approveOTP,
   byPassUserDetailsRedux,
 } from "../../../../redux/actions/authenticationAction";
-import GenericText from "../../../../components/Text";
 import { is } from "immer/dist/internal";
+import GenericText from "../../../../components/Text";
 
 interface IHomeScreenProps {
   navigation?: any;
@@ -124,7 +124,7 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
       <ScrollView contentContainerStyle={styles.sectionContainer}>
         <Header
           isLogoAlone={true}
-          headingText={"Enter OTP"}
+          headingText={"enterotp"}
           linearStyle={styles.linearStyle}
           containerStyle={{
             iconStyle: {
@@ -162,7 +162,7 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
                 },
               ]}
             >
-              {"Please enter OTP"}
+              {"plsenterotp"}
             </GenericText>
           </View>
           <View style={{ alignSelf: "center" }}>
@@ -196,7 +196,7 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
                 tintColor: Screens.pureWhite,
               },
             }}
-            title={"SUBMIT"}
+            title={"submt"}
           ></Button>
           <AnimatedLoader
             isLoaderVisible={ApproveOtpResponse.isApproveLoading}

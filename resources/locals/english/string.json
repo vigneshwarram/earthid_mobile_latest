@@ -36,7 +36,6 @@
   "lastname": "Last Name",
   "dob": "Date of Birth",
   "mobileno": "Mobile Number",
-
   "email": "Email",
   "generateeathid": "GENERATE GLOBALID",
   "alreadyhavemy": "I Already have my ",
@@ -93,5 +92,17 @@
   "setpass": "Set Passcode",
   "Passcode": "Passcode",
   "updatemobileno": "Update Mobile Number",
-  "plsenternewmobile": "Please enter your new mobile number"
+  "plsenternewmobile": "Please enter your new mobile number",
+  "plsenterotp":"Please enter OTP",
+  "enterotp":"Enter OTP",
+  "submt":"SUBMIT",
+  "enterotprevoldmobile":"Enter OTP you recieved on your old mobile",
+  "resendcode":"Re-Send Code",
+  "enterotprevnewmobile":"Enter OTP you recieved on your new mobile",
+  "updateemailadd":"Update Email Address",
+  "plsenternewemailadd":"Please enter your new Email Address",
+  "enterotprevoldemail":"Enter OTP you recieved on your old email",
+  "enterotprevnewemail":"Enter OTP you reciered on your new email",
+  "username":"UserName"
+
 }

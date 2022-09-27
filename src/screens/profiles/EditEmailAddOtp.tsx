@@ -91,7 +91,7 @@ const EditEmailAddOtp = (props: any) => {
               },
             ]}
           >
-            {"Update Email Address"}
+            {"updateemailadd"}
           </GenericText>
 
           <View />
@@ -108,7 +108,7 @@ const EditEmailAddOtp = (props: any) => {
             },
           ]}
         >
-          {"Enter OTP you reciered on your old email"}
+          {"enterotprevoldemail"}
         </GenericText>
         <GenericText
           style={[
@@ -156,7 +156,7 @@ const EditEmailAddOtp = (props: any) => {
               },
             ]}
           >
-            {"Re-Send Code"}
+            {"resendcode"}
           </GenericText>
         </TouchableOpacity>
 
@@ -171,7 +171,7 @@ const EditEmailAddOtp = (props: any) => {
             },
           ]}
         >
-          {"Enter OTP you reciered on your new email"}
+          {"enterotprevnewemail"}
         </GenericText>
         <GenericText
           style={[
@@ -219,7 +219,7 @@ const EditEmailAddOtp = (props: any) => {
               },
             ]}
           >
-            {"Re-Send Code"}
+            {"resendcode"}
           </GenericText>
         </TouchableOpacity>
         <View style={{ paddingHorizontal: 15, marginTop: 10 }}>
@@ -236,7 +236,7 @@ const EditEmailAddOtp = (props: any) => {
                 tintColor: Screens.pureWhite,
               },
             }}
-            title={"SUBMIT"}
+            title={"submt"}
           ></Button>
         </View>
 

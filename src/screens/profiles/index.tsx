@@ -150,7 +150,7 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
         </View>
         <View style={styles.category}>
           <Info
-            title={"UserName"}
+            title={"username"}
             subtitle={userDetails?.responseData?.username}
             style={{
               title: styles.title,

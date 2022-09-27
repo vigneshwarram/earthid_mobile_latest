@@ -79,7 +79,7 @@ const EditEmailAddress = (props: any) => {
             },
           ]}
         >
-          {"Update Email Address"}
+          {"updateemailadd"}
         </GenericText>
 
         <View />
@@ -96,7 +96,7 @@ const EditEmailAddress = (props: any) => {
           },
         ]}
       >
-        {"Please enter your new Email Address"}
+        {"plsenternewemailadd"}
       </GenericText>
 
       <GenericText
@@ -108,7 +108,7 @@ const EditEmailAddress = (props: any) => {
           },
         ]}
       >
-        {"Email"}
+        {"email"}
       </GenericText>
 
       <TextInput
@@ -139,7 +139,7 @@ const EditEmailAddress = (props: any) => {
               tintColor: Screens.pureWhite,
             },
           }}
-          title={"SUBMIT"}
+          title={"submt"}
         ></Button>
       </View>
 
