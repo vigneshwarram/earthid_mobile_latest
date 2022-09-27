@@ -1,4 +1,4 @@
-package com.earthidnew;
+package com.globalidiqtechandroid;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

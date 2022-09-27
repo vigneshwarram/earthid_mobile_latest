@@ -1,4 +1,4 @@
-package com.earthidnew;
+package com.globalidiqtechandroid;
 
 import android.app.Application;
 import android.content.Context;
@@ -23,7 +23,7 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.config.ReactFeatureFlags;
 import com.facebook.soloader.SoLoader;
-import com.earthidnew.newarchitecture.MainApplicationReactNativeHost;
+import com.globalidiqtechandroid.newarchitecture.MainApplicationReactNativeHost;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 

@@ -135,12 +135,12 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
-        applicationId "com.earthidnew"
+        applicationId "com.globalidiqtechandroid"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         missingDimensionStrategy 'react-native-camera', 'mlkit'
         versionCode 1
-        versionName "1.0"
+        versionName "0.1"
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
 
         if (isNewArchitectureEnabled()) {
@@ -227,10 +227,10 @@ android {
     }
     signingConfigs {
         release {
-            storeFile file("myearthid.keystore")
-            storePassword "Rejolut@123"
-            keyAlias "myearthid"
-            keyPassword "Rejolut@123"
+           storeFile file("my-globalid-key.keystore")
+            storePassword "globalid"
+            keyAlias "globalid"
+            keyPassword "globalid"
         }
     }
     buildTypes {
@@ -240,7 +240,7 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
