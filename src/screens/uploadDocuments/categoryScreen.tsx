@@ -160,7 +160,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
     <View style={styles.sectionContainer}>
       <ScrollView contentContainerStyle={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
-          <View style={{ flex: 0.25 }}>
+          <View style={{ flex: 0.3 }}>
             <Header
               leftIconSource={LocalImages.backImage}
               onpress={() => {

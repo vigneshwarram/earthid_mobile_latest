@@ -117,6 +117,7 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
           absoluteCircleInnerImage={LocalImages.cameraImage}
           isProfileAvatar={true}
           isUploaded={true}
+          isBack
           letfIconPress={_letfIconPress}
           rewardPoints={"50"}
           leftIconSource={LocalImages.backImage}
@@ -285,7 +286,7 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
 
 const styles = StyleSheet.create({
   sectionContainer: {
-    flex: 1,
+    flexGrow: 1,
     backgroundColor: Screens.colors.background,
   },
   title: {
@@ -339,6 +340,13 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
   },
   logoContainers: {
     width: 30,
@@ -350,7 +358,6 @@ const styles = StyleSheet.create({
     color: Screens.black,
   },
   category: {
-    flex: 0.95,
     backgroundColor: Screens.pureWhite,
     padding: 10,
     marginVertical: 20,

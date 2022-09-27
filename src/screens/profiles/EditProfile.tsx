@@ -254,6 +254,13 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: "center",
     paddingBottom: 30,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
   },
   subtitleNearText: {
     color: Screens.success,
@@ -267,10 +274,17 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
   },
   linearStyle: {
-    height: 250,
+    height: 310,
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
     elevation: 4,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
   },
   categoryHeaderText: {
     marginHorizontal: 20,
@@ -290,6 +304,13 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
   },
   logoContainers: {
     width: 30,
@@ -308,6 +329,13 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     elevation: 5,
     borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
   },
   avatarContainer: {
     width: 60,
