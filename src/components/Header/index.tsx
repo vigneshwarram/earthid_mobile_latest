@@ -64,7 +64,12 @@ const Header = ({
             {headingText}
           </GenericText>
         ) : isLogoAlone ? (
-          <View style={{ alignItems: "center" }}>
+          <View style={{ alignItems: "center", flexDirection: "row" }}>
+            <Image
+              resizeMode="contain"
+              style={{ width: 10, height: 10, resizeMode: "contain" }}
+              source={LocalImages.backImage}
+            ></Image>
             <Image
               resizeMode="contain"
               style={[styles.logoContainer, containerStyle.iconStyle]}
