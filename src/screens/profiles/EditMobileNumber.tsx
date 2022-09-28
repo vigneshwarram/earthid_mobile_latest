@@ -28,11 +28,12 @@ const EditMobileNumber = (props: any) => {
     var postData = {
       oldPhone: userDetails?.responseData?.phone,
       newPhone: phone,
-      newCountryCode: callingCode,
+      newCountryCode: "+" + callingCode,
       earthId: userDetails?.responseData?.earthId,
       publicKey: userDetails?.responseData?.publicKey,
       oldCountryCode: userDetails?.responseData?.countryCode,
     };
+    console.log("postData", postData);
     fetch(updatephoneOtp, postData, "POST");
   };
 

@@ -116,7 +116,9 @@ const Avatar = ({
                     { marginLeft: 10, fontWeight: "500" },
                   ]}
                 >
-                  {userDetails?.responseData?.phone}
+                  {userDetails?.responseData?.countryCode +
+                    " " +
+                    userDetails?.responseData?.phone}
                 </GenericText>
                 {userDetails?.responseData?.mobileApproved && (
                   <View

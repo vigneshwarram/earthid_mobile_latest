@@ -64,7 +64,7 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
       phone: userDetails?.responseData?.phone,
       earthId: userDetails?.responseData?.earthId,
       publicKey: userDetails?.responseData?.publicKey,
-      countryCode: `+${userDetails?.responseData?.countryCode}`,
+      countryCode: `${userDetails?.responseData?.countryCode}`,
     };
     sendPhoneOtpAPI(phoneOtp, postPhoneData, "POST");
   };

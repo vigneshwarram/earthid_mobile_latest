@@ -133,6 +133,7 @@ const Register = ({ navigation }: IRegister) => {
         publicKey,
         deviceOS: Platform.OS === "android" ? "android" : "ios",
       };
+
       dispatch(createAccount(payLoad));
     } else {
       SnackBar({
