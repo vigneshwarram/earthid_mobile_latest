@@ -1,5 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import { View, StyleSheet, ScrollView, Platform, Alert } from "react-native";
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  Platform,
+  ActivityIndicator,
+} from "react-native";
 import Header from "../../../components/Header";
 import { LocalImages } from "../../../constants/imageUrlConstants";
 import { SCREENS } from "../../../constants/Labels";
@@ -143,10 +149,10 @@ const Register = ({ navigation }: IRegister) => {
   }
 
   if (userDetails && userDetails?.isAccountCreatedSuccess) {
+    setsuccessResponse(true);
     userDetails.isAccountCreatedSuccess = false;
     console.log("userDetails", userDetails);
     if (userDetails?.responseData) {
-      setsuccessResponse(true);
       setTimeout(() => {
         setsuccessResponse(false);
         navigation.navigate("BackupIdentity");
@@ -353,10 +359,16 @@ const Register = ({ navigation }: IRegister) => {
             Status="status"
             isLoaderVisible={successResponse}
           ></Loader>
-          <AnimatedLoader
+          {userDetails?.isLoading && (
+            <View style={styles.loading}>
+              <ActivityIndicator color={Screens.colors.primary} size="large" />
+            </View>
+          )}
+
+          {/* <AnimatedLoader
             isLoaderVisible={userDetails?.isLoading}
             loadingText="loading"
-          />
+          /> */}
         </View>
         <DatePicker
           modal
