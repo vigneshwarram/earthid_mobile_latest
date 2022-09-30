@@ -24,7 +24,7 @@ const UpdateAuthentication = (props: any) => {
     if (item.CARD === "language") {
       setLanguageVisible(true);
     } else {
-      props.navigation.navigate(item.card);
+      props.navigation.navigate(item.card,{type:"pass"});
     }
   };
   useEffect(() => {
@@ -131,6 +131,11 @@ const UpdateAuthentication = (props: any) => {
         </GenericText>
         <View />
       </View>
+      <GenericText
+      style={{marginLeft:12,marginTop:10,fontSize:15,color:"gray",marginBottom:5}}
+      >
+        {"selectsecurity"}
+      </GenericText>
       <FlatList<any>
         data={authenticationList}
         renderItem={_renderItem}

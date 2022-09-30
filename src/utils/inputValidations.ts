@@ -24,7 +24,7 @@ export const nameValidator = (
   } else {
     return {
       hasError: true,
-      errorMessage: "Special characters are bot allowed",
+      errorMessage: "Special characters are not allowed",
     };
   }
 };

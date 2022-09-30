@@ -26,7 +26,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
   };
   const _navigateAction = async () => {
     if (code.length === 6) {
-      navigation.navigate("UpdateConfirmPincode", { setCode: code });
+      navigation.navigate("UpdateConfirmPincode", { setCode: code ,type:"pass"});
     }
   };
   return (

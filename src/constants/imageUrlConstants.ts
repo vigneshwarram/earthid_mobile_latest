@@ -45,6 +45,7 @@ export const LocalImages = {
   facedetection: require("../../resources/images/facedetection.png"),
   fingerprint: require("../../resources/images/fingerprint.png"),
   editIcon: require("../../resources/images/editIcon.png"),
+  backupicon: require("../../resources/images/backupicon.png"),
 
   //categories
   CATEGORIES: {

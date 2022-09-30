@@ -151,7 +151,8 @@ const CustomDrawer = (props: any) => {
 
               color: Screens.pureWhite,
               fontWeight: "500",
-              marginLeft: -10,
+              marginRight:20
+              
             },
           ]}
         >

@@ -56,7 +56,7 @@ export const ABOUT_ROUTES = {
   },
   IDENTITY: {
     RIGHT_ICON: LocalImages.sideArrowImage,
-    URI: LocalImages.historyImage,
+    URI: LocalImages.backupicon,
     CARD: "AcceptableUsePolicy",
     TITLE: SCREENS.DRAWERMENUTITLES.BACKUP,
     SCREEN: "AuthBackupIdentity",

@@ -134,7 +134,7 @@ const DocumentPreviewScreen = (props: any) => {
               tintColor: Screens.pureWhite,
             },
           }}
-          title={"ReTake"}
+          title={"retake"}
         ></Button>
         <Button
           onPress={uploadDoc}
@@ -155,11 +155,11 @@ const DocumentPreviewScreen = (props: any) => {
       </View>
       <AnimatedLoader
         isLoaderVisible={loading}
-        loadingText="Uploading Documents..."
+        loadingText={"uploaddocs"}
       />
       <SuccessPopUp
         isLoaderVisible={successResponse}
-        loadingText={"Document Validated !"}
+        loadingText={"docvalidated"}
       />
     </View>
   );

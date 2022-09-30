@@ -76,19 +76,19 @@ export const SCREENS = {
     ],
     CategoryCustomiseList: [
       {
-        TITLE: "fullname",
+        TITLE: "username",
         VALUE: "Roberty Dowry",
         URI: LocalImages.SOCIAL_MEDIA_.webImage,
         DOMAIN: "https://yourdomain.com",
         CHECKED: true,
       },
-      {
-        TITLE: "dob",
-        VALUE: "25/12/1965",
-        URI: LocalImages.SOCIAL_MEDIA_.webImage,
-        DOMAIN: "https://yourdomain.com",
-        CHECKED: true,
-      },
+      // {
+      //   TITLE: "dob",
+      //   VALUE: "25/12/1965",
+      //   URI: LocalImages.SOCIAL_MEDIA_.webImage,
+      //   DOMAIN: "https://yourdomain.com",
+      //   CHECKED: true,
+      // },
       {
         TITLE: "mobileno",
         VALUE: "+91 7373834595",
@@ -105,14 +105,14 @@ export const SCREENS = {
       },
 
       {
-        TITLE: "website",
+        TITLE: "Website",
         URI: LocalImages.SOCIAL_MEDIA_.webImage,
         VALUE: "https://yourdomain.com",
         DOMAIN: "https://yourdomain.com",
         CHECKED: true,
       },
       {
-        TITLE: "facebook",
+        TITLE: "Facebook",
         URI: LocalImages.SOCIAL_MEDIA_.facebookImage,
         VALUE: "https://yourdomain.com",
         DOMAIN: "https://yourdomain.com",
@@ -126,21 +126,21 @@ export const SCREENS = {
         CHECKED: true,
       },
       {
-        TITLE: "instagram",
+        TITLE: "Instagram",
         URI: LocalImages.SOCIAL_MEDIA_.instagramImage,
         VALUE: "https://yourdomain.com",
         DOMAIN: "https://yourdomain.com",
         CHECKED: true,
       },
       {
-        TITLE: "linkeid",
+        TITLE: "LinkedIn",
         URI: LocalImages.SOCIAL_MEDIA_.linkdInImage,
         VALUE: "https://yourdomain.com",
         DOMAIN: "https://yourdomain.com",
         CHECKED: true,
       },
       {
-        TITLE: "telegram",
+        TITLE: "Telegram",
         URI: LocalImages.SOCIAL_MEDIA_.telegramImage,
         VALUE: "https://yourdomain.com",
         DOMAIN: "https://yourdomain.com",

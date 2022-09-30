@@ -26,9 +26,10 @@ import { createSchema } from "../../../redux/actions/authenticationAction";
 
 interface IHomeScreenProps {
   navigation?: any;
+  route?:any
 }
 
-const Register = ({ navigation }: IHomeScreenProps) => {
+const Register = ({ navigation, route }: IHomeScreenProps) => {
   const [mobileNumber, setmobileNumber] = useState();
   const [isLoading, setIsLoading] = useState(false);
   let [qrBase64, setBase64] = useState("");
@@ -37,6 +38,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
   const schemaDetails = useAppSelector((state) => state.schema);
   const viewShot: any = useRef();
   const dispatch = useAppDispatch();
+  const {type} = route.params;
 
   let qrData = {
     earthId: accountDetails?.responseData.earthId,
@@ -149,6 +151,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
   };
 
   useEffect(() => {
+    console.log("typeee==>",type)
     schemaAction();
   }, []);
 

@@ -60,7 +60,7 @@ const CustomDrawer = (props: any) => {
     } else if (item.route === "about" || item.route === "terms") {
       Linking.openURL("https://www.myearth.id");
     } else {
-      props.navigation.navigate(item.route);
+      props.navigation.navigate(item.route, { type:item.route});
     }
   };
 

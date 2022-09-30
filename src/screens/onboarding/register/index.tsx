@@ -258,7 +258,7 @@ const Register = ({ navigation }: IRegister) => {
               }}
             />
             <PhoneInput
-              onChangeCountry={(code) => {
+              onChangeCountry={(code) => {                
                 const { callingCode } = code;
                 setcallingCode(callingCode[0]);
                 console.log("code==>", callingCode[0]);
@@ -299,7 +299,7 @@ const Register = ({ navigation }: IRegister) => {
               style={{
                 container: styles.textInputContainer,
               }}
-              placeholder={"Enter your mail"}
+              placeholder={"Enter your Email"}
               isError={isemailError}
               errorText={isemailErrorMessage}
               onFocus={emailFocusHandlur}
@@ -349,7 +349,7 @@ const Register = ({ navigation }: IRegister) => {
                     textDecorationLine: "underline",
                   }}
                 >
-                  {"GlobalId"}
+                  {"GlobalID"}
                 </GenericText>
               </View>
             </TouchableOpacity>

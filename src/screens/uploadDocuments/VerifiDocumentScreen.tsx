@@ -227,11 +227,11 @@ const VerifiDocumentScreen = (props: any) => {
 
       <AnimatedLoader
         isLoaderVisible={loading || getHistoryReducer?.isLoading}
-        loadingText="verifying..."
+        loadingText={"verifying"}
       />
       <SuccessPopUp
         isLoaderVisible={successResponse}
-        loadingText={"Verification successful"}
+        loadingText={"verificationsuccess"}
       />
     </View>
   );

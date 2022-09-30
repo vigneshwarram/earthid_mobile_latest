@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -26,6 +26,7 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
   const [code, setCode] = useState();
   const [isError, setisError] = useState(false);
   const savedCode = route.params?.setCode;
+  const {type} = route.params;
   const onPinCodeChange = (code: any) => {
     setisError(false);
     setCode(code);
@@ -43,6 +44,11 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
       setisError(true);
     }
   };
+
+  useEffect(()=>{
+    console.log("type==>",type)
+  },[])
+  
   return (
     <View style={styles.sectionContainer}>
       <ScrollView contentContainerStyle={styles.sectionContainer}>
@@ -134,7 +140,7 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
                 tintColor: Screens.pureWhite,
               },
             }}
-            title={"CREATE PASSCODE"}
+            title={"confirm"}
           ></Button>
           <Loader
             loadingText="Passcode Generated successfully !"

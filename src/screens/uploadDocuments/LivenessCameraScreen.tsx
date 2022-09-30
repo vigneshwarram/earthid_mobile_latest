@@ -13,6 +13,7 @@ import { RNCamera } from "react-native-camera";
 
 import Button from "../../components/Button";
 import { SnackBar } from "../../components/SnackBar";
+import GenericText from "../../components/Text";
 import { LocalImages } from "../../constants/imageUrlConstants";
 import { Screens } from "../../themes/index";
 import DocumentMask from "../uploadDocuments/DocumentMask";
@@ -161,7 +162,7 @@ const LivenessCameraScreen = (props: any) => {
       >
         <DocumentMask color={maskedColor} />
       </RNCamera>
-      <Text
+      <GenericText
         style={{
           textAlign: "center",
           paddingVertical: 5,
@@ -170,11 +171,11 @@ const LivenessCameraScreen = (props: any) => {
           color: "#fff",
         }}
       >
-        Capture
-      </Text>
-      <Text style={{ textAlign: "center", paddingVertical: 5, color: "#fff" }}>
-        Place your face inside the live box!
-      </Text>
+        {"capture"}
+      </GenericText>
+      <GenericText style={{ textAlign: "center", paddingVertical: 5, color: "#fff" }}>
+       {"placeurfacelivebox"}
+      </GenericText>
       <TouchableOpacity onPress={data && handlingFacialData}>
         <View
           style={{
