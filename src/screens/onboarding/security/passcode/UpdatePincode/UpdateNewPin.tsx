@@ -117,7 +117,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
                 tintColor: Screens.pureWhite,
               },
             }}
-            title={"CREATE PASSCODE"}
+            title={"createpasscord"}
           ></Button>
         </View>
       </ScrollView>

@@ -115,6 +115,12 @@
   "docvalidated":"Document Validated !",
   "prodetailsupdatesuccess":"our Profile Details Updated successfully.",
   "confirm":"CONFIRM",
-  "selectsecurity":"Select security options"
+  "selectsecurity":"Select security options",
+  "confirmpassword":"Confirm Passcode",
+  "createpasscord":"CREATE PASSCODE",
+  "confirmpasscord":"Confirm Passcord",
+  "passupdatessuccess":"Passcord Updated successfully !",
+  "setpasscord":"Set Passcord",
+  "passcordgenerate":"Passcode Generated successfully !"
 
 }

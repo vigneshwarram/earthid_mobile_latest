@@ -54,7 +54,7 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
       <ScrollView contentContainerStyle={styles.sectionContainer}>
         <Header
           isLogoAlone={true}
-          headingText={"Confirm Passcode"}
+          headingText={"confirmpassword"}
           linearStyle={styles.linearStyle}
           containerStyle={{
             iconStyle: {
@@ -123,7 +123,7 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
                 },
               ]}
             >
-              {"Please Enter valid code"}
+              {"plsentervalid"}
             </GenericText>
           )}
 
@@ -143,8 +143,8 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
             title={"confirm"}
           ></Button>
           <Loader
-            loadingText="Passcode Generated successfully !"
-            Status="Success !"
+            loadingText="passcordgenerate"
+            Status={"status"}
             isLoaderVisible={isLoading}
           ></Loader>
         </View>
