@@ -4,7 +4,6 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
-  Alert,
   Text,
   Dimensions,
 } from "react-native";
@@ -18,15 +17,14 @@ import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { useFetch } from "../../hooks/use-fetch";
 import { Dropdown } from "react-native-element-dropdown";
 import CheckBox from "@react-native-community/checkbox";
-import { useSendData } from "../../hooks/use-sendData";
+
 import { Screens } from "../../themes/index";
-import CryptoJS from "react-native-crypto-js";
-import { serviceProviderApi, userDataApi } from "../../utils/earthid_account";
+import { serviceProviderApi, QrcodeApis } from "../../utils/earthid_account";
 import QrScannerMaskedWidget from "../Camera/QrScannerMaskedWidget";
-import { useCreateScehma } from "../../hooks/use-create-shecma";
 import { saveDocuments } from "../../redux/actions/authenticationAction";
 import { IDocumentProps } from "../uploadDocuments/VerifiDocumentScreen";
 import GenericText from "../../components/Text";
+import Loader from "../../components/Loader";
 const data = [
   { label: " 1", value: "1" },
   { label: " 2", value: "2" },
@@ -56,10 +54,14 @@ const CameraScreen = (props: any) => {
     fetch: getScheme,
   } = useFetch();
 
-  const { loading: sendDataLoading, fetch: sendDataFetch } = useSendData();
+  const {
+    loading: sendDataLoading,
+    fetch: sendDataFetch,
+    data: sendData,
+  } = useFetch();
 
   const dispatch = useAppDispatch();
-  const userDetails = useAppSelector((state) => state.contract);
+  const userDetails = useAppSelector((state) => state.account);
   const [successResponse, setsuccessResponse] = useState(false);
   const [isDocumentModal, setisDocumentModal] = useState(false);
   const documentsDetailsList = useAppSelector((state) => state.Documents);
@@ -110,6 +112,7 @@ const CameraScreen = (props: any) => {
   const getSchemeDetails = () => {
     getScheme();
   };
+
   useEffect(() => {
     console.log("issuerDataResponse", issuerDataResponse);
     if (issuerDataResponse?.status === "success") {
@@ -181,34 +184,17 @@ const CameraScreen = (props: any) => {
 
   const getData = () => {
     if (barCodeDataDetails) {
-      const encrypted_object = {
-        earthId: userDetails?.responseData?.earthId,
-        fname: userDetails?.responseData?.name,
-        userEmail: userDetails?.responseData?.email,
-        userMobileNo: userDetails?.responseData?.mobile,
-        emailVerified: userDetails?.responseData?.emailApproved,
-        trustScore: "33",
-        mobileVerified: userDetails?.responseData?.mobileApproved,
-        pressed: false,
-        dob: "22/02/1995",
-        requestType: barCodeDataDetails?.requestType,
-        duration: "220",
-        documents: documentsDetailsList?.responseData,
-      };
-      console.log("encrypted_object", encrypted_object);
-      let ciphertext: any = CryptoJS.AES.encrypt(
-        JSON.stringify(encrypted_object),
-        barCodeDataDetails?.encryptionkey
-      ).toString();
       let data = {
-        reqNo: barCodeDataDetails.reqNo,
-        testnet: true,
+        sessionKey: barCodeDataDetails?.sessionKey,
         encrypted_object: {
-          ciphertext,
           earthId: userDetails?.responseData?.earthId,
+          pressed: false,
         },
       };
-      sendDataFetch(userDataApi, data, "POST");
+      console.log("data==>", data);
+      sendDataFetch(QrcodeApis, data, "POST").then(() => {
+        props.navigation.navigate("Home");
+      });
     }
   };
 
@@ -603,6 +589,11 @@ const CameraScreen = (props: any) => {
           </View>
         </View>
       </ModalView>
+      <Loader
+        loadingText="Login successfully"
+        Status="Success !"
+        isLoaderVisible={sendDataLoading}
+      ></Loader>
     </View>
   );
 };

@@ -64,17 +64,23 @@ const Header = ({
             {headingText}
           </GenericText>
         ) : isLogoAlone ? (
-          <View style={{ alignItems: "center", flexDirection: "row" }}>
-            <Image
-              resizeMode="contain"
-              style={{ width: 10, height: 10, resizeMode: "contain" }}
-              source={LocalImages.backImage}
-            ></Image>
-            <Image
-              resizeMode="contain"
-              style={[styles.logoContainer, containerStyle.iconStyle]}
-              source={LocalImages.logoImage}
-            ></Image>
+          <View>
+            {isBack && (
+              <View style={{ position: "absolute", top: 50, left: 10 }}>
+                <Image
+                  resizeMode="contain"
+                  style={{ width: 20, height: 20, resizeMode: "contain" }}
+                  source={LocalImages.backImage}
+                ></Image>
+              </View>
+            )}
+            <View style={{ justifyContent: "center", alignItems: "center" }}>
+              <Image
+                resizeMode="contain"
+                style={[styles.logoContainer, containerStyle.iconStyle]}
+                source={LocalImages.logoImage}
+              ></Image>
+            </View>
           </View>
         ) : (
           <View>
@@ -96,7 +102,7 @@ const Header = ({
                     {isBack && (
                       <Image
                         resizeMode="contain"
-                        style={{ width: 15, height: 15 }}
+                        style={{ width: 15, height: 15, resizeMode: "contain" }}
                         source={LocalImages.backImage}
                       ></Image>
                     )}

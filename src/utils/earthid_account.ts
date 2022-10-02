@@ -13,6 +13,7 @@ export const getCategoriesApi = BASE_URL + "/user/getCategories";
 export const facialDataLivenessAPI = BASE_URL + "/user/liveness";
 export const CreateHistory = BASE_URL + "/history/createHistory";
 export const updatePhone = BASE_URL + "/verification/verifiedPhoneVerify";
+export const QrcodeApis = BASE_URL + "/customer/shareDoc";
 
 export const createAccountApi = BASE_URL + "/authorize/createAccount";
 export const getRecordByTxApi = BASE_URL + "/authorize/getRecordByTx?txId";

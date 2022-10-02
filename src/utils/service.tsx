@@ -30,7 +30,7 @@ export const postCall = (
   method: string = "POST"
 ): Promise<any> => {
   console.log("url==>", uri);
-  console.log("request==>", JSON.stringify(payload));
+  console.log("request==>::::::::::::", JSON.stringify(payload));
 
   return fetch(uri, {
     method,

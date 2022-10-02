@@ -138,8 +138,8 @@ const Register = ({ navigation }: IRegister) => {
     } else {
       SnackBar({
         indicationMessage: "Registered Id is not generated ,please try again",
+        doRetry: getSuperAdminApiCall(superAdminApi, {}, "GET"),
       });
-      getSuperAdminApiCall(superAdminApi, {}, "GET");
     }
   };
 
@@ -258,7 +258,7 @@ const Register = ({ navigation }: IRegister) => {
               }}
             />
             <PhoneInput
-              onChangeCountry={(code) => {                
+              onChangeCountry={(code) => {
                 const { callingCode } = code;
                 setcallingCode(callingCode[0]);
                 console.log("code==>", callingCode[0]);
