@@ -58,7 +58,7 @@ const Header = ({
               textAlign: "center",
               fontSize: 20,
               color: Screens.black,
-              marginTop: 30,
+              marginTop: 35,
             }}
           >
             {headingText}
@@ -102,7 +102,7 @@ const Header = ({
                     {isBack && (
                       <Image
                         resizeMode="contain"
-                        style={{ width: 15, height: 15, resizeMode: "contain" }}
+                        style={{ width: 20, height: 20, resizeMode: "contain",marginRight:10 }}
                         source={LocalImages.backImage}
                       ></Image>
                     )}
@@ -207,7 +207,6 @@ const styles = StyleSheet.create({
   sectionHeaderContainer: {
     flexDirection: "row",
     height: 120,
-
     borderBottomRightRadius: 25,
     borderBottomLeftRadius: 25,
     justifyContent: "space-between",

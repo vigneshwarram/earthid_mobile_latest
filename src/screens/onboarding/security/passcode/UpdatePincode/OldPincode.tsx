@@ -7,6 +7,7 @@ import {
   Image,
   AsyncStorage,
   Alert,
+  TouchableOpacity,
 } from "react-native";
 import Header from "../../../../../components/Header";
 import { SCREENS } from "../../../../../constants/Labels";
@@ -37,6 +38,11 @@ const Register = ({ navigation }: IHomeScreenProps) => {
       navigation.navigate("UpdateNewPin", { setCode: code });
     }
   };
+
+  const navgoBack=()=>{
+    navigation.goBack()
+  }
+
   return (
     <View style={styles.sectionContainer}>
       <ScrollView contentContainerStyle={styles.sectionContainer}>
@@ -51,8 +57,24 @@ const Register = ({ navigation }: IHomeScreenProps) => {
               marginTop: 30,
             },
             iconContainer: styles.alignCenter,
+            
           }}
         ></Header>
+          <TouchableOpacity
+          onPress={navgoBack}
+          style={{
+              position:"absolute",
+              marginTop:35,
+              marginLeft:20,
+          }}
+          >
+          <Image
+            source={LocalImages.backImage}
+            style={{height:20,
+              width:20,
+              resizeMode:"contain",}}
+          />
+           </TouchableOpacity>        
         <View style={styles.category}>
           <View>
             <View
@@ -112,6 +134,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
             value={code}
             onTextChange={onPinCodeChange}
           />
+        
           <Button
             onPress={_navigateAction}
             style={{

@@ -6,6 +6,8 @@ import {
   PermissionsAndroid,
   Alert,
   BackHandler,
+  TouchableOpacity,
+  Image,
 } from "react-native";
 import Header from "../../../components/Header";
 import { SCREENS } from "../../../constants/Labels";
@@ -23,6 +25,7 @@ import GenericText from "../../../components/Text";
 import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
 import { IUserSchemaRequest } from "../../../typings/AccountCreation/IUserSchema";
 import { createSchema } from "../../../redux/actions/authenticationAction";
+import { LocalImages } from "../../../constants/imageUrlConstants";
 
 interface IHomeScreenProps {
   navigation?: any;
@@ -168,6 +171,21 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
             iconContainer: styles.alignCenter,
           }}
         ></Header>
+         <TouchableOpacity
+          onPress={()=>navigation.goBack()}
+          style={{
+              position:"absolute",
+              marginTop:35,
+              marginLeft:20,
+          }}
+          >
+          <Image
+            source={LocalImages.backImage}
+            style={{height:20,
+              width:20,
+              resizeMode:"contain",}}
+          />
+           </TouchableOpacity>   
         <View style={styles.category}>
           <View>
             <GenericText

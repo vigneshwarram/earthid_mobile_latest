@@ -120,7 +120,7 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
           isBack
           letfIconPress={_letfIconPress}
           rewardPoints={"50"}
-          leftIconSource={LocalImages.backImage}
+          // leftIconSource={LocalImages.backImage}
           rightIconSource={LocalImages.giftBoxImage}
           isAvatar
           onpress={_navigateAction}

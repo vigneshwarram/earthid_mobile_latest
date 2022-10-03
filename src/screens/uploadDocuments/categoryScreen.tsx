@@ -175,6 +175,21 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
                 },
               }}
             ></Header>
+        <TouchableOpacity
+          onPress={()=>navigation.goBack()}
+          style={{
+              position:"absolute",
+              marginTop:35,
+              marginLeft:20,
+          }}
+          >
+          <Image
+            source={LocalImages.backImage}
+            style={{height:20,
+              width:20,
+              resizeMode:"contain",}}
+          />
+           </TouchableOpacity>  
             <View>
               <FlatList<any>
                 numColumns={3}

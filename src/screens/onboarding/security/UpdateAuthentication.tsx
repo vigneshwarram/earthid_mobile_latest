@@ -99,7 +99,7 @@ const UpdateAuthentication = (props: any) => {
           <Image
             resizeMode="contain"
             style={styles.avatarImageContainer}
-            source={item.RIGHT_ICON}
+            source={LocalImages.sideArrowImage}
           ></Image>
         </View>
       </View>

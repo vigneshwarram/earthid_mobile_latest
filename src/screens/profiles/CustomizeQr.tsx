@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet, FlatList } from "react-native";
+import { View, StyleSheet, FlatList, TouchableOpacity, Image } from "react-native";
 import ToggleSwitch from "toggle-switch-react-native";
 import Header from "../../components/Header";
 import GenericText from "../../components/Text";
@@ -8,6 +8,8 @@ import { SCREENS } from "../../constants/Labels";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { savingCustomQrData } from "../../redux/actions/LocalSavingActions";
 import { Screens } from "../../themes";
+import { useDrawerStatus } from "@react-navigation/drawer";
+
 
 interface IDocumentScreenProps {
   navigation?: any;
@@ -22,9 +24,11 @@ const CustomizeQr = ({ navigation }: IDocumentScreenProps) => {
   }
 
   const dispatch = useAppDispatch();
+
   const _toggleDrawer = () => {
-    navigation.openDrawer();
-  };
+    navigation.openDrawer()
+    console.log("drawer==>", "ooo")
+    };
 
   let documentsDetailsList = useAppSelector((state) => state.Documents);
 
@@ -87,18 +91,37 @@ const CustomizeQr = ({ navigation }: IDocumentScreenProps) => {
   const onChangeHandler = () => {};
   const onPressNavigateTo = () => {
     navigation.navigate("uploadDocumentsScreen");
+
   };
 
   return (
     <View style={styles.sectionContainer}>
       <Header
-        rightIconPress={onPressNavigateTo}
-        leftIconSource={LocalImages.logoImage}
-        onpress={() => {
-          _toggleDrawer();
-        }}
+        isBack
+        headingText="customizeqrcode"
+        letfIconPress={()=>navigation.goBack()}
         linearStyle={styles.linearStyle}
+        containerStyle={
+          {
+            iconContainer: styles.alignCenter,
+          }
+        }
       ></Header>
+       <TouchableOpacity
+          onPress={()=>navigation.goBack()}
+          style={{
+              position:"absolute",
+              marginTop:40,
+              marginLeft:20,
+          }}
+          >
+          <Image
+            source={LocalImages.backImage}
+            style={{height:20,
+              width:20,
+              resizeMode:"contain",}}
+          />
+           </TouchableOpacity>   
       <GenericText
         style={[styles.label, { fontSize: 14, textAlign: "center" }]}
       >
@@ -119,7 +142,7 @@ const styles = StyleSheet.create({
     backgroundColor: Screens.colors.background,
   },
   linearStyle: {
-    height: 120,
+    height: 108,
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
     elevation: 4,
@@ -136,7 +159,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 20,
   },
-  alignCenter: { justifyContent: "center", alignItems: "center" },
+  alignCenter: { justifyContent: "center", alignItems: "center", },
   label: {
     padding: 10,
     color: Screens.black,
