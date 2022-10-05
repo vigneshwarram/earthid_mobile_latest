@@ -30,12 +30,12 @@ const Register = ({ navigation }: IHomeScreenProps) => {
     let oldPin = await AsyncStorage.getItem("passcode");
     if (oldPin) {
       if (oldPin === code) {
-        navigation.navigate("UpdateNewPin", { setCode: code });
+        navigation.navigate("UpdateNewPin", { setCode: code ,type:"new"});
       } else {
         Alert.alert("Invalid Pincode");
       }
     } else {
-      navigation.navigate("UpdateNewPin", { setCode: code });
+      navigation.navigate("UpdateNewPin", { setCode: code,type:"new" });
     }
   };
 
@@ -91,7 +91,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
               ></Image>
             </View>
 
-            <GenericText
+            {/* <GenericText
               style={[
                 styles.categoryHeaderText,
                 {
@@ -102,8 +102,8 @@ const Register = ({ navigation }: IHomeScreenProps) => {
                 },
               ]}
             >
-              {SCREENS.SECURITYSCREEN.passcordInstruction}
-            </GenericText>
+              {SCREENS.SECURITYSCREEN.PasscodeInstruction}
+            </GenericText> */}
             <GenericText
               style={[
                 styles.categoryHeaderText,
@@ -115,7 +115,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
                 },
               ]}
             >
-              {"Please enter your Old pincode"}
+              {"plsenteroldpincode"}
             </GenericText>
           </View>
           <SmoothPinCodeInput
@@ -148,7 +148,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
                 tintColor: Screens.pureWhite,
               },
             }}
-            title={"CREATE PASSCODE"}
+            title={"createpasscord"}
           ></Button>
         </View>
       </ScrollView>

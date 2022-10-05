@@ -16,7 +16,7 @@ export const nameValidator = (
   if (isEmpty(value) && isRequired) {
     return {
       hasError: true,
-      errorMessage: "Please fill the details",
+      errorMessage: "Please enter your username",
     };
   }
   if (REGEX.ADDRESS_LINE.test(value)) {
@@ -43,7 +43,7 @@ export const emailValidator = (
   } else {
     return {
       hasError: true,
-      errorMessage: "Invalid email adress",
+      errorMessage: "Please enter your Email Address",
     };
   }
 };

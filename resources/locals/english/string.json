@@ -121,6 +121,8 @@
   "confirmpasscord":"Confirm Passcord",
   "passupdatessuccess":"Passcord Updated successfully !",
   "setpasscord":"Set Passcord",
-  "passcordgenerate":"Passcode Generated successfully !"
+  "passcordgenerate":"Passcode Generated successfully !",
+  "plsenteroldpincode":"Please enter your Old pincode",
+  "enternewcode":"Enter your new 6-digit passcode"
 
 }

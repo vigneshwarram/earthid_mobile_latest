@@ -121,6 +121,8 @@
   "confirmpasscord":"Confirmar contraseña",
   "passupdatessuccess":"Contraseña actualizada con éxito!",
   "setpasscord":"Código de acceso establecido",
-  "passcordgenerate":"Código de acceso generado con éxito!"
+  "passcordgenerate":"Código de acceso generado con éxito!",
+  "plsenteroldpincode":"Ingrese su código PIN anterior",
+  "enternewcode":"Ingrese su nueva contraseña de 6 dígitos"
 
 }

@@ -19,6 +19,7 @@ import GenericText from "../../../../../components/Text";
 
 interface IHomeScreenProps {
   navigation?: any;
+  route?: any;
 }
 
 const Register = ({ navigation, route }: IHomeScreenProps) => {
@@ -47,7 +48,7 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
   };
 
   useEffect(()=>{
-    console.log("savedtype==>", type);
+    console.log("savedtype==>", route);
   },[])
 
   return (

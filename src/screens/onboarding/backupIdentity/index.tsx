@@ -29,9 +29,10 @@ import { LocalImages } from "../../../constants/imageUrlConstants";
 
 interface IHomeScreenProps {
   navigation?: any;
+  route?:any
 }
 
-const Register = ({ navigation, route }: IHomeScreenProps) => {
+const Register = ({ navigation }: IHomeScreenProps) => {
   const [mobileNumber, setmobileNumber] = useState();
   const [isLoading, setIsLoading] = useState(false);
   let [qrBase64, setBase64] = useState("");

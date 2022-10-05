@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState,useEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -17,9 +17,10 @@ import GenericText from "../../../../../components/Text";
 
 interface IHomeScreenProps {
   navigation?: any;
+  route?: any;
 }
 
-const Register = ({ navigation }: IHomeScreenProps) => {
+const Register = ({ navigation,route }: IHomeScreenProps) => {
   const [code, setCode] = useState();
   const onPinCodeChange = (code: any) => {
     setCode(code);
@@ -29,6 +30,11 @@ const Register = ({ navigation }: IHomeScreenProps) => {
       navigation.navigate("UpdateConfirmPincode", { setCode: code ,type:"pass"});
     }
   };
+
+  useEffect(()=>{
+    console.log("savedtype==>", route);
+  },[])
+
   return (
     <View style={styles.sectionContainer}>
       <ScrollView contentContainerStyle={styles.sectionContainer}>
@@ -61,7 +67,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
               ></Image>
             </View>
 
-            <GenericText
+            {/* <GenericText
               style={[
                 styles.categoryHeaderText,
                 {
@@ -72,8 +78,8 @@ const Register = ({ navigation }: IHomeScreenProps) => {
                 },
               ]}
             >
-              {SCREENS.SECURITYSCREEN.passcordInstruction}
-            </GenericText>
+              {SCREENS.SECURITYSCREEN.PasscodeInstruction}
+            </GenericText> */}
             <GenericText
               style={[
                 styles.categoryHeaderText,
@@ -85,7 +91,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
                 },
               ]}
             >
-              {SCREENS.SECURITYSCREEN.passcordInstructions}
+              {route.name=="UpdateNewPin"? "enternewcode" :SCREENS.SECURITYSCREEN.PasscodeInstructions }
             </GenericText>
           </View>
           <SmoothPinCodeInput

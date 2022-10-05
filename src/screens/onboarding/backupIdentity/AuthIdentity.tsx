@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -24,9 +24,10 @@ import { useAppSelector } from "../../../hooks/hooks";
 
 interface IHomeScreenProps {
   navigation?: any;
+  route?: any;
 }
 
-const AuthBackupIdentity = ({ navigation }: IHomeScreenProps) => {
+const AuthBackupIdentity = ({ navigation,route }: IHomeScreenProps) => {
   const [mobileNumber, setmobileNumber] = useState();
   const [isLoading, setIsLoading] = useState(false);
   let [qrBase64, setBase64] = useState("");
@@ -103,12 +104,16 @@ const AuthBackupIdentity = ({ navigation }: IHomeScreenProps) => {
     );
   };
 
+  useEffect(()=>{
+    console.log("route==>",route)
+  },[])
+
   return (
     <View style={styles.sectionContainer}>
       <ScrollView contentContainerStyle={styles.sectionContainer}>
         <Header
           isLogoAlone={true}
-          headingText={"important"}
+          headingText={route.name=="AuthBackupIdentity"?"backupidentity":"important"}
           linearStyle={styles.linearStyle}
           containerStyle={{
             iconStyle: {

@@ -61,7 +61,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
               ></Image>
             </View>
 
-            <GenericText
+            {/* <GenericText
               style={[
                 styles.categoryHeaderText,
                 {
@@ -73,7 +73,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
               ]}
             >
               {SCREENS.SECURITYSCREEN.PasscodeInstruction}
-            </GenericText>
+            </GenericText> */}
             <GenericText
               style={[
                 styles.categoryHeaderText,
@@ -117,7 +117,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
                 tintColor: Screens.pureWhite,
               },
             }}
-            title={"CREATE PASSCODE"}
+            title={"createpasscord"}
           ></Button>
         </View>
       </ScrollView>
