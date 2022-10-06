@@ -153,6 +153,9 @@ const Register = ({ navigation }: IHomeScreenProps) => {
   };
 
   useEffect(() => {
+   
+      console.log("Qr==>", qrData.earthId);
+    
     schemaAction();
   }, []);
 
