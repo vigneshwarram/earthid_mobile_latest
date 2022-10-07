@@ -39,17 +39,6 @@ const DocumentPreviewScreen = (props: any) => {
     fetch: getUser,
   } = useFetch();
 
-  //Qr Code Reader From the image
-
-  RNQRGenerator.detect({
-    uri: fileUri.file.name,
-  })
-    .then((response) => {
-      const { values } = response; // Array of detected QR code values. Empty if nothing found.
-      console.log("responseQR", response);
-    })
-    .catch((error) => console.log("Cannot detect QR code in image", error));
-
   const uploadDoc = async () => {
     let type = "qrRreader";
 
