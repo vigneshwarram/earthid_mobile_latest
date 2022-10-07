@@ -35,6 +35,7 @@ export const apiAuthorization = "fae2622d-7b73-4fc6-a536-202cabe75187";
 export const deleteUserApi = BASE_URL + "/user/deleteUser";
 export const uploadDocument = BASE_URL + "/user/upload";
 
+
 // icca api to post specific data
 export const iccaPostApi = "https://icca.flexsin.org/api/user_key_data";
 // verifier website url for verifying the shared link
