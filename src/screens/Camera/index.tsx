@@ -94,12 +94,13 @@ const CameraScreen = (props: any) => {
       setisDocumentModalkyc(true);
     }
     if (serviceData.requestType === "generateCredentials") {
-      const { apikey, reqNo, requestType } = serviceData;
-      issuerFetch(
-        `${serviceProviderApi}?apikey=${apikey}&reqNo=${reqNo}&requestType=${requestType}`,
-        {},
-        "GET"
-      );
+      setisDocumentModalkyc(true);
+      // const { apikey, reqNo, requestType } = serviceData;
+      // issuerFetch(
+      //   `${serviceProviderApi}?apikey=${apikey}&reqNo=${reqNo}&requestType=${requestType}`,
+      //   {},
+      //   "GET"
+      // );
     }
   };
   useEffect(() => {
@@ -120,8 +121,7 @@ const CameraScreen = (props: any) => {
       if (barCodeDataDetails?.requestType === "login") {
         props.navigation.navigate.goBack(null);
       } else if (barCodeDataDetails?.requestType === "generateCredentials") {
-        // setisDocumentModalGenerateCredientials(true);
-        getSchemeDetails();
+        setisDocumentModalGenerateCredientials(true);
       } else if (barCodeDataDetails?.requestType === "document") {
         setsuccessResponse(true);
         var documentDetails: IDocumentProps = {
@@ -174,12 +174,7 @@ const CameraScreen = (props: any) => {
     );
   };
   const shareCredientials = () => {
-    const { apikey, reqNo, requestType } = barCodeDataDetails;
-    shareCredientialFetch(
-      `${serviceProviderApi}?apikey=${apikey}&reqNo=${reqNo}&requestType=${requestType}`,
-      {},
-      "GET"
-    );
+    getSchemeDetails();
   };
 
   const getData = () => {

@@ -1,9 +1,9 @@
 import { Platform, Alert } from "react-native";
 import CryptoJS from "react-native-crypto-js";
-
+import { EARTHID_DEV_BASE } from "../constants/URLContstants";
 export const isTestnet = true;
-//const BASE_URL = "https://apiv2.myearth.id";
-export const BASE_URL = "https://stage-apiv2.myearth.id";
+const BASE_URL = EARTHID_DEV_BASE;
+
 export const api = BASE_URL + "/verification/sendEmailOTP";
 export const superAdminApi = BASE_URL + "/admin/getSuperAdmin";
 export const phoneOtp = BASE_URL + "/verification/sendPhoneOTP";
@@ -15,6 +15,7 @@ export const facialDataLivenessAPI = BASE_URL + "/user/liveness";
 export const CreateHistory = BASE_URL + "/history/createHistory";
 export const updatePhone = BASE_URL + "/verification/verifiedPhoneVerify";
 export const QrcodeApis = BASE_URL + "/customer/shareDoc";
+export const generateCredientials = BASE_URL + "/api/issuer/schemas";
 
 export const createAccountApi = BASE_URL + "/authorize/createAccount";
 export const getRecordByTxApi = BASE_URL + "/authorize/getRecordByTx?txId";
