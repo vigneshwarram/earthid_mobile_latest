@@ -37,11 +37,11 @@ const AuthBackupIdentity = ({ navigation,route }: IHomeScreenProps) => {
   let qrData = {
     accountId: userDetails?.responseData?.earthId,
   };
-  var encryptedString: any = CryptoJS.AES.encrypt(
-    JSON.stringify(qrData),
-    AES_ENCRYPTION_SALT
-  );
-  encryptedString = encryptedString.toString();
+  // var encryptedString: any = CryptoJS.AES.encrypt(
+  //   JSON.stringify(qrData),
+  //   AES_ENCRYPTION_SALT
+  // );
+  // encryptedString = encryptedString.toString();
 
   const capturePicture = () => {
     console.log("Capturing picture..");
@@ -154,7 +154,7 @@ const AuthBackupIdentity = ({ navigation,route }: IHomeScreenProps) => {
                   qrBase64 = base64;
                   setBase64(base64);
                 }}
-                value={encryptedString}
+                value={qrData.accountId}
                 size={250}
               />
             </ViewShot>

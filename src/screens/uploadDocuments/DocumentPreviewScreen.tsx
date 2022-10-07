@@ -13,22 +13,44 @@ import AnimatedLoader from "../../components/Loader/AnimatedLoader";
 import { LocalImages } from "../../constants/imageUrlConstants";
 import { useFetch } from "../../hooks/use-fetch";
 import { Screens } from "../../themes/index";
-import { uploadDocument, validateDocsApi } from "../../utils/earthid_account";
+import { BASE_URL, uploadDocument, validateDocsApi } from "../../utils/earthid_account";
 import { QRreader } from "react-native-qr-decode-image-camera";
 import RNQRGenerator from "rn-qr-generator";
+import { useAppSelector } from "../../hooks/hooks";
 
 const DocumentPreviewScreen = (props: any) => {
   const { fileUri, type } = props.route.params;
   const { value } = props.route.params;
-
+  const userDetails = useAppSelector((state) => state.account)  
   const { loading, data, error, fetch: postFormfetch } = useFetch();
   const [successResponse, setsuccessResponse] = useState(false);
   const [message, Setmessage] = useState("ooo");
   const [datas, SetData] = useState(null);
   const [source, setSource] = useState({});
   const [filePath, setFilePath] = useState();
+  const {
+    loading: getUserLoading,
+    data: getUserResponse,
+    error: getUserError,
+    fetch: getUser,
+  } = useFetch();
+
+
+
+   //Qr Code Reader From the image
+
+   RNQRGenerator.detect({
+    uri: fileUri.file.name
+  })
+    .then(response => {
+      const { values } = response; // Array of detected QR code values. Empty if nothing found.
+      console.log("responseQR",response)
+
+    })
+    .catch(error => console.log('Cannot detect QR code in image', error));
 
   const uploadDoc = async () => {
+
     let type = "qrRreader";
 
     if (!type == fileUri.type) {
@@ -37,28 +59,14 @@ const DocumentPreviewScreen = (props: any) => {
       setFilePath(fileUri.file.uri)
 
       if (filePath) {
-          // QRreader(filePath)
-          // .then((data: any) => {
-          //   Setmessage("praveen");
-          //   SetData(data);
-          //   console.log("Datanamepraveen===>", data);
-
-            // setTimeout(() => {
-            //   SetData(data);
-            //   Setmessage("outt");
-            // }, 6000);
-          //})
-          // .catch((err: any) => {
-          //   console.log("DataError===>", "ErrorRes");
-          //   console.log("error==>", err);
-          // }); 
-        const requestedData = {
-          // type: fileUri?.file?.type,
-          // name: fileUri?.file?.name,
-          image: fileUri?.file?.uri,
+        let url =`${BASE_URL}+/user/getUser?earthId=${userDetails?.responseData?.earthId}`
+        const getUserData = {
+           type: fileUri?.file?.type,
+           name: fileUri?.file?.name,
+           image: fileUri?.file?.uri,
         };
-        postFormfetch(uploadDocument, requestedData, "FORM-DATA").then(() => {
-        //  props.navigation.navigate("categoryScreen", { fileUri });
+        getUser(getUserData, url, "GET").then(() => {
+        props.navigation.navigate("DrawerNavigator", { fileUri });
         console.log("success==>","qrsuccess");
         });
       }
@@ -80,16 +88,7 @@ const DocumentPreviewScreen = (props: any) => {
   };
 
 
-  //Qr Code Reader From the image
-
-  RNQRGenerator.detect({
-    uri: fileUri.file.name
-  })
-    .then(response => {
-      const { values } = response; // Array of detected QR code values. Empty if nothing found.
-      console.log("responseQR",response)
-    })
-    .catch(error => console.log('Cannot detect QR code in image', error));
+ 
   
 
   useEffect(() => {
