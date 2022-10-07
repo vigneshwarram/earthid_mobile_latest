@@ -21,6 +21,7 @@ import SuccessFaceRegister from "../screens/FaceRegister/SuccessFaceRegister";
 import FingerPrintInstructionScreen from "../screens/FingerPrintRegister/FingerPrintInstructionScreen";
 import UploadDocument from "../screens/uploadDocuments/UploadDocument";
 import DocumentPreviewScreen from "../screens/uploadDocuments/DocumentPreviewScreen";
+import categoryScreen from "../screens/uploadDocuments/categoryScreen";
 
 // Before rendering any navigation stack
 const animations: any = SlidAnimation;
@@ -42,6 +43,7 @@ export default function RootNavigator() {
     SuccessFaceRegister: SuccessFaceRegister,
     UploadDocument: UploadDocument,
     DocumentPreviewScreen: DocumentPreviewScreen,
+    categoryScreen:categoryScreen
   };
 
   function AuthStack() {

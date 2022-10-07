@@ -31,7 +31,7 @@ const DocumentPreviewScreen = (props: any) => {
   const uploadDoc = async () => {
     let type = "qrRreader";
 
-    if (type == fileUri.type) {
+    if (!type == fileUri.type) {
       console.log("Data===>", fileUri.file.uri + "/" + fileUri.file.name);
       console.log("DataNAme===>", fileUri.file.uri);
       setFilePath(fileUri.file.uri)
@@ -52,9 +52,6 @@ const DocumentPreviewScreen = (props: any) => {
           //   console.log("DataError===>", "ErrorRes");
           //   console.log("error==>", err);
           // }); 
-
-          
-
         const requestedData = {
           // type: fileUri?.file?.type,
           // name: fileUri?.file?.name,
@@ -62,19 +59,18 @@ const DocumentPreviewScreen = (props: any) => {
         };
         postFormfetch(uploadDocument, requestedData, "FORM-DATA").then(() => {
         //  props.navigation.navigate("categoryScreen", { fileUri });
-
-        console.log("success==>","success");
+        console.log("success==>","qrsuccess");
         });
       }
     } else {
       const requestedData = {
-        // type: fileUri?.file?.type,
-        // name: fileUri?.file?.name,
+        type: fileUri?.file?.type,
+        name: fileUri?.file?.name,
         image: fileUri?.file?.uri,
       };
       postFormfetch(uploadDocument, requestedData, "FORM-DATA").then(() => {
-      //  props.navigation.navigate("categoryScreen", { fileUri });
-      console.log("success==>","fail");
+      props.navigation.navigate("categoryScreen", { fileUri });
+      console.log("success==>","Success");
       });
     }
   };
