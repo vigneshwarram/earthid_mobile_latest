@@ -1,6 +1,6 @@
 // @ts-ignore
-export const EARTHID_DEV_BASE = "https://apiv2.myearth.id";
-//export const EARTHID_DEV_BASE = "https://stage-apiv2.myearth.id";
+//export const EARTHID_DEV_BASE = "https://apiv2.myearth.id";
+export const EARTHID_DEV_BASE = "https://stage-apiv2.myearth.id";
 
 export const URI = {
   ACCOUNT: {

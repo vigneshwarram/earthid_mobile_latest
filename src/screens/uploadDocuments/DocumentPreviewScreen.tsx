@@ -32,34 +32,32 @@ const DocumentPreviewScreen = (props: any) => {
     let type = "qrRreader";
 
     if (!type == fileUri.type) {
-      console.log("Data===>", fileUri.file.uri + "/" + fileUri.file.name);
-      console.log("DataNAme===>", fileUri.file.uri);
-      setFilePath(fileUri.file.uri)
+      setFilePath(fileUri?.file?.uri);
 
       if (filePath) {
-          // QRreader(filePath)
-          // .then((data: any) => {
-          //   Setmessage("praveen");
-          //   SetData(data);
-          //   console.log("Datanamepraveen===>", data);
+        QRreader(filePath)
+          .then((data: any) => {
+            Setmessage("praveen");
+            SetData(data);
+            console.log("Datanamepraveen===>", data);
 
-            // setTimeout(() => {
-            //   SetData(data);
-            //   Setmessage("outt");
-            // }, 6000);
-          //})
-          // .catch((err: any) => {
-          //   console.log("DataError===>", "ErrorRes");
-          //   console.log("error==>", err);
-          // }); 
+            setTimeout(() => {
+              SetData(data);
+              Setmessage("outt");
+            }, 6000);
+          })
+          .catch((err: any) => {
+            console.log("DataError===>", "ErrorRes");
+            console.log("error==>", err);
+          });
         const requestedData = {
-          // type: fileUri?.file?.type,
-          // name: fileUri?.file?.name,
+          type: fileUri?.file?.type,
+          name: fileUri?.file?.name,
           image: fileUri?.file?.uri,
         };
         postFormfetch(uploadDocument, requestedData, "FORM-DATA").then(() => {
-        //  props.navigation.navigate("categoryScreen", { fileUri });
-        console.log("success==>","qrsuccess");
+          props.navigation.navigate("categoryScreen", { fileUri });
+          console.log("success==>", "qrsuccess");
         });
       }
     } else {
@@ -69,8 +67,8 @@ const DocumentPreviewScreen = (props: any) => {
         image: fileUri?.file?.uri,
       };
       postFormfetch(uploadDocument, requestedData, "FORM-DATA").then(() => {
-      props.navigation.navigate("categoryScreen", { fileUri });
-      console.log("success==>","Success");
+        props.navigation.navigate("categoryScreen", { fileUri });
+        console.log("success==>", "Success");
       });
     }
   };
@@ -79,26 +77,9 @@ const DocumentPreviewScreen = (props: any) => {
     props.navigation.goBack();
   };
 
-
   //Qr Code Reader From the image
 
-  RNQRGenerator.detect({
-    uri: fileUri.file.name
-  })
-    .then(response => {
-      const { values } = response; // Array of detected QR code values. Empty if nothing found.
-      console.log("responseQR",response)
-    })
-    .catch(error => console.log('Cannot detect QR code in image', error));
-  
-
   useEffect(() => {
-    console.log("requestedData", error);
-    console.log("requestedData==>", fileUri.file.uri + "/" + fileUri.file.name);
-    console.log("requestedDataValue==>", fileUri.type);
-    console.log("filepath==>", fileUri.file);
-    console.log("requestedDataValueBse==>", fileUri.base64);
-    console.log("Data==>", datas);
     if (data) {
       setsuccessResponse(true);
       setTimeout(() => {
@@ -172,10 +153,7 @@ const DocumentPreviewScreen = (props: any) => {
           title={"Upload"}
         ></Button>
       </View>
-      <AnimatedLoader
-        isLoaderVisible={loading}
-        loadingText={"uploaddocs"}
-      />
+      <AnimatedLoader isLoaderVisible={loading} loadingText={"uploaddocs"} />
       <SuccessPopUp
         isLoaderVisible={successResponse}
         loadingText={"docvalidated"}

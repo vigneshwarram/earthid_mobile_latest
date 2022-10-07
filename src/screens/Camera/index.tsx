@@ -19,7 +19,11 @@ import { Dropdown } from "react-native-element-dropdown";
 import CheckBox from "@react-native-community/checkbox";
 
 import { Screens } from "../../themes/index";
-import { serviceProviderApi, QrcodeApis } from "../../utils/earthid_account";
+import {
+  serviceProviderApi,
+  QrcodeApis,
+  alertBox,
+} from "../../utils/earthid_account";
 import QrScannerMaskedWidget from "../Camera/QrScannerMaskedWidget";
 import { saveDocuments } from "../../redux/actions/authenticationAction";
 import { IDocumentProps } from "../uploadDocuments/VerifiDocumentScreen";
@@ -111,7 +115,10 @@ const CameraScreen = (props: any) => {
     }
   }, [shareCredientialData]);
   const getSchemeDetails = () => {
-    getScheme();
+    getData();
+    setTimeout(() => {
+      alertBox("Creeditials has been generated successfully");
+    }, 2000);
   };
 
   useEffect(() => {
