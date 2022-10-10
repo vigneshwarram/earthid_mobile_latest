@@ -111,7 +111,6 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
     <View style={styles.sectionContainer}>
       <ScrollView contentContainerStyle={styles.sectionContainer}>
         <Header
-          subCatSideArrowVisible
           actionIcon={LocalImages.editImage}
           avatarClick={_avatarClick}
           absoluteCircleInnerImage={LocalImages.cameraImage}

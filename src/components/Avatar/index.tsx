@@ -142,14 +142,15 @@ const Avatar = ({
             )}
           </View>
           {subCatSideArrowVisible && (
-            <View style={{ position: "absolute", right: 25, top: 20 }}>
+            <View style={{ position: "absolute", right: 25, top: 30 }}>
               <Image
                 source={LocalImages.sideArrowImage}
                 style={{
-                  width: 14,
-                  height: 13,
-                  marginTop: 10,
+                  width: 15,
+                  height: 15,
+                  marginTop: 40,
                   tintColor: "#fff",
+                  resizeMode:"contain"
                 }}
               ></Image>
             </View>

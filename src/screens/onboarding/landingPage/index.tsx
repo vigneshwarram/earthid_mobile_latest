@@ -167,11 +167,11 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
                   tintColor: Screens.pureWhite,
                 },
               }}
-              leftIcon={LocalImages.qrcodeImage}
+              leftIcon={LocalImages.uploadqrimage}
               title={SCREENS.LANDINGSCREEN.BUTTON_LABEL}
             ></Button>
 
-            <View style={{ flexDirection: "column" }}>
+            <View style={{ flexDirection: "row" ,alignSelf:"center"}}>
               <GenericText
                 style={[
                   styles.categoryHeaderText,
@@ -182,15 +182,18 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
                     color: Screens.black,
                   },
                 ]}
-              >
-                {"continuetoagree"}
-              </GenericText>
 
-              <GenericText
-                style={{ color: Screens.colors.primary, alignSelf: "center" }}
+
+              >
+                {"continuetoagree"} 
+
+              </GenericText>
+              {/* <GenericText
+                style={{ color: Screens.colors.primary , fontSize: 13,}}
               >
                 {"termpolicy"}
-              </GenericText>
+              </GenericText> */}
+
             </View>
           </View>
           <BottomSheet
@@ -296,8 +299,8 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   categoryHeaderText: {
-    marginHorizontal: 20,
-    marginVertical: 10,
+    // marginHorizontal: 20,
+    // marginVertical: 10,
 
     color: Screens.headingtextColor,
   },

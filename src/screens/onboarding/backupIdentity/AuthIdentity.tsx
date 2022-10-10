@@ -6,6 +6,8 @@ import {
   PermissionsAndroid,
   Alert,
   BackHandler,
+  TouchableOpacity,
+  Image,
 } from "react-native";
 import Header from "../../../components/Header";
 import { SCREENS } from "../../../constants/Labels";
@@ -21,6 +23,7 @@ import Share from "react-native-share";
 import { AES_ENCRYPTION_SALT } from "../../../utils/earthid_account";
 import GenericText from "../../../components/Text";
 import { useAppSelector } from "../../../hooks/hooks";
+import { LocalImages } from "../../../constants/imageUrlConstants";
 
 interface IHomeScreenProps {
   navigation?: any;
@@ -124,6 +127,21 @@ const AuthBackupIdentity = ({ navigation,route }: IHomeScreenProps) => {
             iconContainer: styles.alignCenter,
           }}
         ></Header>
+         <TouchableOpacity
+          onPress={()=>navigation.goBack()}
+          style={{
+              position:"absolute",
+              marginTop:38,
+              marginLeft:20,
+          }}
+          >
+          <Image
+            source={LocalImages.backImage}
+            style={{height:20,
+              width:20,
+              resizeMode:"contain",}}
+          />
+           </TouchableOpacity> 
         <View style={styles.category}>
           <View>
             <GenericText

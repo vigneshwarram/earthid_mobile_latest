@@ -142,6 +142,7 @@ const HomeScreen = ({ navigation }: IHomeScreenProps) => {
       >
         <View>
           <Header
+           subCatSideArrowVisible
             leftIconSource={LocalImages.logoImage}
             rewardPoints={"50"}
             rightIconSource={LocalImages.giftBoxImage}

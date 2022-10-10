@@ -46,6 +46,7 @@ export const LocalImages = {
   fingerprint: require("../../resources/images/fingerprint.png"),
   editIcon: require("../../resources/images/editIcon.png"),
   backupicon: require("../../resources/images/backupicon.png"),
+  uploadqrimage: require("../../resources/images/uploadqrimage.png"),
 
   //categories
   CATEGORIES: {
