@@ -189,7 +189,7 @@ const LivenessCameraScreen = (props: any) => {
       <Text style={{ textAlign: "center", paddingVertical: 5, color: "#fff" }}>
         Place your face inside the live box!
       </Text>
-      <Button
+      {/* <Button
         onPress={() => {
           setData(undefined);
         }}
@@ -206,7 +206,7 @@ const LivenessCameraScreen = (props: any) => {
           },
         }}
         title={"Retry"}
-      ></Button>
+      ></Button> */}
     </View>
   );
 };
