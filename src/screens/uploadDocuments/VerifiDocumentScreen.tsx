@@ -23,6 +23,7 @@ import {
   selfieeverifyAPI,
 } from "../../utils/earthid_account";
 import { dateTime } from "../../utils/encryption";
+import GenericText from "../../components/Text";
 
 export interface IDocumentProps {
   name: string;
@@ -199,6 +200,33 @@ const VerifiDocumentScreen = (props: any) => {
         ></Image>
       </View>
 
+
+        <TouchableOpacity onPress={()=>props.navigation.goBack()}>
+        <View style={{flexDirection:"row",alignSelf:"center"}}>
+        <Image
+        source={LocalImages.cam}
+        style={{width:15,height:15,alignSelf:"center"}}
+        />
+          <GenericText
+            style={[
+              {
+                fontSize: 13,
+                color: "#293FEE",
+                fontWeight: "500",
+                textDecorationLine: "underline",
+                marginLeft:6
+              },
+            ]}
+          >
+            {"retakephoto"}
+          </GenericText>
+          </View>
+
+        </TouchableOpacity>
+
+       
+
+
       <View
         style={{
           flex: 0.17,
@@ -221,7 +249,7 @@ const VerifiDocumentScreen = (props: any) => {
             alignItems: "center",
           }}
         >
-          <Text style={{ color: "#fff" }}>Submit</Text>
+          <GenericText style={{ color: "#fff" }}>{"submitt"}</GenericText>
         </TouchableOpacity>
       </View>
 

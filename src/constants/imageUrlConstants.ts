@@ -47,6 +47,7 @@ export const LocalImages = {
   editIcon: require("../../resources/images/editIcon.png"),
   backupicon: require("../../resources/images/backupicon.png"),
   uploadqrimage: require("../../resources/images/uploadqrimage.png"),
+  cam: require("../../resources/images/cam.png"),
 
   //categories
   CATEGORIES: {

@@ -124,6 +124,7 @@
   "setpasscord":"Set Passcord",
   "passcordgenerate":"Passcode Generated successfully !",
   "plsenteroldpincode":"Please enter your Old pincode",
-  "enternewcode":"Enter your new 6-digit passcode"
+  "enternewcode":"Enter your new 6-digit passcode",
+  "retakephoto":"Re-take phone"
 
 }

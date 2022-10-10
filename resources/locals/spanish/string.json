@@ -124,6 +124,7 @@
   "setpasscord":"Código de acceso establecido",
   "passcordgenerate":"Código de acceso generado con éxito!",
   "plsenteroldpincode":"Ingrese su código PIN anterior",
-  "enternewcode":"Ingrese su nueva contraseña de 6 dígitos"
+  "enternewcode":"Ingrese su nueva contraseña de 6 dígitos",
+  "retakephoto":"volver a tomar el teléfono"
 
 }
