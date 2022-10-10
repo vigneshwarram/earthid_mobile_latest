@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Text,
   Dimensions,
+  Alert,
 } from "react-native";
 import { RNCamera } from "react-native-camera";
 import Button from "../../components/Button";
@@ -98,7 +99,9 @@ const CameraScreen = (props: any) => {
       setisDocumentModalkyc(true);
     }
     if (serviceData.requestType === "generateCredentials") {
-      setisDocumentModalkyc(true);
+      if (!isDocumentModalkyc) {
+        setisDocumentModalkyc(true);
+      }
       // const { apikey, reqNo, requestType } = serviceData;
       // issuerFetch(
       //   `${serviceProviderApi}?apikey=${apikey}&reqNo=${reqNo}&requestType=${requestType}`,
@@ -115,10 +118,8 @@ const CameraScreen = (props: any) => {
     }
   }, [shareCredientialData]);
   const getSchemeDetails = () => {
-    getData();
-    setTimeout(() => {
-      alertBox("Creeditials has been generated successfully");
-    }, 2000);
+    setisDocumentModalkyc(false);
+    documentShare();
   };
 
   useEffect(() => {
@@ -128,8 +129,6 @@ const CameraScreen = (props: any) => {
       if (barCodeDataDetails?.requestType === "login") {
         props.navigation.navigate.goBack(null);
       } else if (barCodeDataDetails?.requestType === "generateCredentials") {
-        setisDocumentModalGenerateCredientials(true);
-      } else if (barCodeDataDetails?.requestType === "document") {
         setsuccessResponse(true);
         var documentDetails: IDocumentProps = {
           name: "VC - KYC Token",
@@ -223,9 +222,7 @@ const CameraScreen = (props: any) => {
         androidCameraPermissionOptions={null}
         type={RNCamera.Constants.Type.back}
         captureAudio={false}
-        onBarCodeRead={(data) =>
-          !issuerLoading && !issuerLogin && _handleBarCodeRead(data)
-        }
+        onBarCodeRead={(data) => _handleBarCodeRead(data)}
       >
         <QrScannerMaskedWidget />
       </RNCamera>
@@ -440,7 +437,9 @@ const CameraScreen = (props: any) => {
                     fontWeight: "300",
                   }}
                 >
-                  {"kyctoken"}
+                  {barCodeDataDetails?.requestType === "generateCredentials"
+                    ? "Generate Credentials"
+                    : "kyctoken"}
                 </GenericText>
               </View>
             </View>
