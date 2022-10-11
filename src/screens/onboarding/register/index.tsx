@@ -264,6 +264,7 @@ const Register = ({ navigation }: IRegister) => {
                 console.log("code==>", callingCode[0]);
               }}
               autoFocus={false}
+              placeholder="Mobile number"
               ref={phoneInput}
               defaultCode="US"
               layout="first"
@@ -349,7 +350,7 @@ const Register = ({ navigation }: IRegister) => {
                     textDecorationLine: "underline",
                   }}
                 >
-                  {"GlobalID"}
+                  {"GlobaliD"}
                 </GenericText>
               </View>
             </TouchableOpacity>

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -19,9 +19,10 @@ import GenericText from "../../../../../components/Text";
 
 interface IHomeScreenProps {
   navigation?: any;
+  route?: any;
 }
 
-const Register = ({ navigation }: IHomeScreenProps) => {
+const Register = ({ navigation ,route}: IHomeScreenProps) => {
   const [code, setCode] = useState();
   const onPinCodeChange = (code: any) => {
     setCode(code);
@@ -43,12 +44,16 @@ const Register = ({ navigation }: IHomeScreenProps) => {
     navigation.goBack()
   }
 
+  useEffect(()=>{
+    console.log("route==>",route)
+  },[])
+
   return (
     <View style={styles.sectionContainer}>
       <ScrollView contentContainerStyle={styles.sectionContainer}>
         <Header
           isLogoAlone={true}
-          headingText={"setpasscord"}
+          headingText={route.name=="OldPincode"?"oldpasscode":"setpasscord"}
           linearStyle={styles.linearStyle}
           containerStyle={{
             iconStyle: {
@@ -64,7 +69,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
           onPress={navgoBack}
           style={{
               position:"absolute",
-              marginTop:35,
+              marginTop:40,
               marginLeft:20,
           }}
           >
