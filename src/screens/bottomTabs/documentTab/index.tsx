@@ -7,6 +7,7 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 
 import Avatar from "../../../components/Avatar";
@@ -115,31 +116,40 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
   const _keyExtractor = ({ path }: any) => path.toString();
   return (
     <View style={styles.sectionContainer}>
-      <Header
-        rightIconPress={onPressNavigateTo}
-        leftIconSource={LocalImages.logoImage}
-        rightIconSource={LocalImages.addImage}
-        onpress={() => {
-          _toggleDrawer();
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{
+          flexGrow: 1,
+          paddingBottom: 200,
+          backgroundColor: "#fff",
         }}
-        linearStyle={styles.linearStyle}
-      ></Header>
-      <TextInput
-        leftIcon={LocalImages.searchImage}
-        style={{
-          container: styles.textInputContainer,
-        }}
-        isError={false}
-        isNumeric={false}
-        placeholder={"Search documents"}
-        value={searchText}
-        onChangeText={onChangeHandler}
-      />
-      <View style={{ flexDirection: "row" }}>
-        <GenericText style={[styles.categoryHeaderText, { fontSize: 13 }]}>
-          {SCREENS.HOMESCREEN.upload}
-        </GenericText>
-        {/* <GenericText
+      >
+        <View>
+          <Header
+            rightIconPress={onPressNavigateTo}
+            leftIconSource={LocalImages.logoImage}
+            rightIconSource={LocalImages.addImage}
+            onpress={() => {
+              _toggleDrawer();
+            }}
+            linearStyle={styles.linearStyle}
+          ></Header>
+          <TextInput
+            leftIcon={LocalImages.searchImage}
+            style={{
+              container: styles.textInputContainer,
+            }}
+            isError={false}
+            isNumeric={false}
+            placeholder={"Search documents"}
+            value={searchText}
+            onChangeText={onChangeHandler}
+          />
+          <View style={{ flexDirection: "row" }}>
+            <GenericText style={[styles.categoryHeaderText, { fontSize: 13 }]}>
+              {SCREENS.HOMESCREEN.upload}
+            </GenericText>
+            {/* <GenericText
           style={[
             styles.categoryHeaderText,
             { fontSize: 13, color: Screens.colors.primary },
@@ -147,7 +157,7 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
         >
           {"presshold"}
         </GenericText> */}
-        {/* <TouchableOpacity
+            {/* <TouchableOpacity
           style={{ justifyContent: "center", alignItems: "center" }}
           onPress={() => setisBottomSheetForFilterVisible(true)}
         >
@@ -159,15 +169,14 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
             ></Image>
           </View>
         </TouchableOpacity> */}
-      </View>
+          </View>
 
-      <FlatList<any>
-        showsHorizontalScrollIndicator={false}
-        data={documentsDetailsList?.responseData}
-        renderItem={_renderItem}
-        keyExtractor={_keyExtractor}
-      />
-      {/* <BottomSheet
+          <FlatList<any>
+            data={documentsDetailsList?.responseData}
+            renderItem={_renderItem}
+            keyExtractor={_keyExtractor}
+          />
+          {/* <BottomSheet
         onClose={() => setisBottomSheetForSideOptionVisible(false)}
         height={150}
         isVisible={isBottomSheetForSideOptionVisible}
@@ -177,17 +186,19 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
           <RowOption title={"Delete"} icon={LocalImages.deleteImage} />
         </View>
       </BottomSheet> */}
-      <BottomSheet
-        onClose={() => setisBottomSheetForFilterVisible(false)}
-        height={150}
-        isVisible={isBottomSheetForFilterVisible}
-      >
-        <View style={{ height: 150, width: "100%", paddingHorizontal: 30 }}>
-          <RowOption title={"By Category"} />
-          <RowOption title={"By Date"} />
-          <RowOption title={"By Frequency"} />
+          <BottomSheet
+            onClose={() => setisBottomSheetForFilterVisible(false)}
+            height={150}
+            isVisible={isBottomSheetForFilterVisible}
+          >
+            <View style={{ height: 150, width: "100%", paddingHorizontal: 30 }}>
+              <RowOption title={"By Category"} />
+              <RowOption title={"By Date"} />
+              <RowOption title={"By Frequency"} />
+            </View>
+          </BottomSheet>
         </View>
-      </BottomSheet>
+      </ScrollView>
     </View>
   );
 };

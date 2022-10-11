@@ -149,8 +149,8 @@ const Avatar = ({
                   width: 15,
                   height: 15,
                   marginTop: 40,
-                  tintColor: "#fff",
-                  resizeMode:"contain"
+                  tintColor: "#000",
+                  resizeMode: "contain",
                 }}
               ></Image>
             </View>

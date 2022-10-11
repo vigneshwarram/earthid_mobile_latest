@@ -119,7 +119,44 @@ const CameraScreen = (props: any) => {
   }, [shareCredientialData]);
   const getSchemeDetails = () => {
     setisDocumentModalkyc(false);
-    documentShare();
+    getData();
+    var documentDetails: IDocumentProps = {
+      name: "Membership Credientials",
+      path: "filePath",
+      date: "1/08/2022",
+      time: "date?.time",
+      txId: "data?.result",
+      docType: "pdf",
+      docExt: ".jpg",
+      processedDoc: "",
+      isVc: true,
+      vc: JSON.stringify({
+        name: "Membership Credientials",
+        path: "filePath",
+        date: "1/08/2022",
+        time: "date?.time",
+        txId: "data?.result",
+        docType: "pdf",
+        docExt: ".jpg",
+        processedDoc: "",
+        isVc: true,
+      }),
+    };
+
+    var DocumentList = documentsDetailsList?.responseData
+      ? documentsDetailsList?.responseData
+      : [];
+
+    DocumentList.push(documentDetails);
+    console.log("documentsDetailsList", documentsDetailsList);
+    dispatch(saveDocuments(DocumentList));
+
+    setTimeout(() => {
+      setsuccessResponse(false);
+      setisDocumentModal(false);
+      setisDocumentModalkyc(false);
+      props.navigation.navigate("Document");
+    }, 2000);
   };
 
   useEffect(() => {
@@ -591,7 +628,11 @@ const CameraScreen = (props: any) => {
         </View>
       </ModalView>
       <Loader
-        loadingText="Login successfully"
+        loadingText={
+          barCodeDataDetails?.requestType === "generateCredentials"
+            ? "Credientials generated successfully"
+            : "Login successfully"
+        }
         Status="Success !"
         isLoaderVisible={sendDataLoading}
       ></Loader>
