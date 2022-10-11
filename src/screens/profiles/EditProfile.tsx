@@ -160,7 +160,7 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
         ></Header>
         <View style={styles.category}>
           <Info
-            title={"User Name"}
+            title={"username"}
             style={{
               title: styles.title,
               subtitle: styles.subtitle,

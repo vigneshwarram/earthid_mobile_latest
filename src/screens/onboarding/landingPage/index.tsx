@@ -21,12 +21,15 @@ import il8n, { getUserLanguagePreference } from "../.././../utils/i18n";
 import GenericText from "../../../components/Text";
 import BottomSheet from "../../../components/Bottomsheet";
 import { AppLanguage } from "../../../typings/enums/AppLanguage";
+import { useTranslation } from "react-i18next";
+
 
 interface IHomeScreenProps {
   navigation?: any;
 }
 
 const landingPage = ({ navigation }: IHomeScreenProps) => {
+  const { t } = useTranslation();
   const navigateAction = async () => {
     navigation.navigate("RegisterScreen");
   };
@@ -171,30 +174,29 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
               title={SCREENS.LANDINGSCREEN.BUTTON_LABEL}
             ></Button>
 
-            <View style={{ flexDirection: "row" ,alignSelf:"center"}}>
-              <GenericText
-                style={[
-                  styles.categoryHeaderText,
-                  {
-                    fontSize: 13,
-                    fontWeight: "500",
-                    textAlign: "center",
-                    color: Screens.black,
-                  },
-                ]}
+
+            <View style={{paddingHorizontal:15}}>
+              
+            <Text
+               style={[
+                styles.categoryHeaderText,
+                {
+                  fontSize: 13,
+                  fontWeight: "500",
+                  textAlign: "center",
+                  color: Screens.black,
+                },
+              ]}
+              >{t("continuetoagrees")} 
+              
+              <Text
+               style={{ color: Screens.colors.primary , fontSize: 13,}}
+               onPress={()=>Linking.openURL("https://www.myearth.id")}
+              > {t("termpolicy")}</Text>
+              </Text>
+              </View>  
 
 
-              >
-                {"continuetoagree"} 
-
-              </GenericText>
-              {/* <GenericText
-                style={{ color: Screens.colors.primary , fontSize: 13,}}
-              >
-                {"termpolicy"}
-              </GenericText> */}
-
-            </View>
           </View>
           <BottomSheet
             onClose={() => setLanguageVisible(false)}

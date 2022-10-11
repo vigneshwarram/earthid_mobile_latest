@@ -1,9 +1,12 @@
 import { LocalImages } from "./imageUrlConstants";
 
+
 export const SCREENS = {
+
+ 
   HOMESCREEN: {
     avatarName: "Robert Downey",
-    appName: "GlobalId",
+    appName: "GlobaliD",
     category: "CATEGORIES",
     documentLabel: "useddocument",
     upload: "uploaddoc",
@@ -79,7 +82,7 @@ export const SCREENS = {
         TITLE: "username",
         VALUE: "Roberty Dowry",
         URI: LocalImages.SOCIAL_MEDIA_.webImage,
-        DOMAIN: "https://yourdomain.com",
+        DOMAIN: "name",
         CHECKED: true,
       },
       // {
@@ -93,14 +96,14 @@ export const SCREENS = {
         TITLE: "mobileno",
         VALUE: "+91 7373834595",
         URI: LocalImages.SOCIAL_MEDIA_.webImage,
-        DOMAIN: "https://yourdomain.com",
+        DOMAIN: "mobile",
         CHECKED: true,
       },
       {
         TITLE: "email",
         VALUE: "vicky@yopmail.com",
         URI: LocalImages.SOCIAL_MEDIA_.webImage,
-        DOMAIN: "https://yourdomain.com",
+        DOMAIN: "email",
         CHECKED: true,
       },
 

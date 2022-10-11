@@ -179,7 +179,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
           onPress={()=>navigation.goBack()}
           style={{
               position:"absolute",
-              marginTop:35,
+              marginTop:40,
               marginLeft:20,
           }}
           >
@@ -240,6 +240,15 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
                 width: deviceWidth / 1.5,
               }}
             >
+
+              <GenericText
+              style={{color:"black",fontWeight:"700",fontSize:15,alignSelf:"center",marginTop:15}}
+              >
+
+             {"livetest"}
+
+              </GenericText>
+
               <Image
                 resizeMode="contain"
                 style={[styles.logoContainer]}
@@ -267,7 +276,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
                   tintColor: Screens.pureWhite,
                 },
               }}
-              title={"PROCEED FOR LIVENESS TEST"}
+              title={"submt"}
             ></Button>
           </View>
         </ModalView>

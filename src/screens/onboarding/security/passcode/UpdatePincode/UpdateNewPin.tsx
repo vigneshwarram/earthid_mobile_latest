@@ -6,6 +6,7 @@ import {
   ScrollView,
   Image,
   AsyncStorage,
+  TouchableOpacity,
 } from "react-native";
 import Header from "../../../../../components/Header";
 import { SCREENS } from "../../../../../constants/Labels";
@@ -40,7 +41,7 @@ const Register = ({ navigation,route }: IHomeScreenProps) => {
       <ScrollView contentContainerStyle={styles.sectionContainer}>
         <Header
           isLogoAlone={true}
-          headingText={"Set Passcord"}
+          headingText={route.name=="UpdateNewPin"?"newpasscode":"setpasscord"}
           linearStyle={styles.linearStyle}
           containerStyle={{
             iconStyle: {
@@ -51,6 +52,21 @@ const Register = ({ navigation,route }: IHomeScreenProps) => {
             iconContainer: styles.alignCenter,
           }}
         ></Header>
+        <TouchableOpacity
+          onPress={()=>navigation.goBack()}
+          style={{
+              position:"absolute",
+              marginTop:40,
+              marginLeft:20,
+          }}
+          >
+          <Image
+            source={LocalImages.backImage}
+            style={{height:20,
+              width:20,
+              resizeMode:"contain",}}
+          />
+           </TouchableOpacity> 
         <View style={styles.category}>
           <View>
             <View

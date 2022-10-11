@@ -17,6 +17,7 @@ interface IDocumentScreenProps {
 
 const CustomizeQr = ({ navigation }: IDocumentScreenProps) => {
   const qrListData = useAppSelector((state) => state.saveData);
+  const userDetails =useAppSelector((state)=>state.account)
   var ctList = SCREENS.HOMESCREEN.CategoryCustomiseList;
   console.log("documentsDetailsList", qrListData);
   if (qrListData && qrListData?.qrListData && qrListData?.qrListData) {
@@ -56,6 +57,8 @@ const CustomizeQr = ({ navigation }: IDocumentScreenProps) => {
     dispatch(savingCustomQrData([...categoriCustomize]));
   };
 
+
+
   const _renderItem = ({ item, index }: any) => {
     return (
       <View
@@ -72,7 +75,8 @@ const CustomizeQr = ({ navigation }: IDocumentScreenProps) => {
         <View>
           <GenericText style={[{ fontSize: 13 }]}>{item.TITLE}</GenericText>
           <GenericText style={[{ fontSize: 15, fontWeight: "900" }]}>
-            {item.DOMAIN}
+            {item.DOMAIN=="mobile"? userDetails?.responseData?.phone:item.DOMAIN =="name" ? userDetails?.responseData?.username :
+            item.DOMAIN =="email" ? userDetails?.responseData?.email :item.DOMAIN }
           </GenericText>
         </View>
         <View>

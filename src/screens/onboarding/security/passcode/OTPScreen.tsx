@@ -124,7 +124,7 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
       <ScrollView contentContainerStyle={styles.sectionContainer}>
         <Header
           isLogoAlone={true}
-          headingText={"enterotp"}
+          headingText={type=="phone"?"entermobotp":"enteremailotp"}
           linearStyle={styles.linearStyle}
           containerStyle={{
             iconStyle: {
