@@ -48,6 +48,8 @@ export const LocalImages = {
   backupicon: require("../../resources/images/backupicon.png"),
   uploadqrimage: require("../../resources/images/uploadqrimage.png"),
   cam: require("../../resources/images/cam.png"),
+  settingpic: require("../../resources/images/settingpic.png"),
+  settingimage: require("../../resources/images/settingimage.png"),
 
   //categories
   CATEGORIES: {

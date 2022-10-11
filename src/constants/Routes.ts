@@ -33,7 +33,7 @@ export const ABOUT_ROUTES = {
   },
   SETTINGS: {
     RIGHT_ICON: LocalImages.sideArrowImage,
-    URI: LocalImages.settingsImage,
+    URI: LocalImages.settingimage,
     CARD: "AcceptableUsePolicy",
     TITLE: SCREENS.DRAWERMENUTITLES.SETTING,
     SCREEN: "settings",

@@ -163,13 +163,13 @@ const VerifiDocumentScreen = (props: any) => {
         containerStyle={{
           iconStyle: {
             width: 150,
-            height: 72,
+            height: 80,
             marginTop: 0,
           },
           iconContainer: styles.alignCenter,
         }}
       ></Header>
-      <View style={{ position: "absolute", top: 20, right: 20, zIndex: 100 }}>
+      {/* <View style={{ position: "absolute", top: 20, right: 20, zIndex: 100 }}>
         <TouchableOpacity onPress={() => props.navigation.goBack()}>
           <Image
             resizeMode="contain"
@@ -177,7 +177,15 @@ const VerifiDocumentScreen = (props: any) => {
             source={LocalImages.closeImage}
           ></Image>
         </TouchableOpacity>
-      </View>
+      </View> */}
+
+      <GenericText
+              style={{color:"black",fontWeight:"bold",fontSize:20,alignSelf:"center",marginTop:15}}
+              >
+             {"livetest"}
+
+              </GenericText>
+
       <View style={styles.dashedLine}>
         <Image
           resizeMode={"contain"}
@@ -249,7 +257,7 @@ const VerifiDocumentScreen = (props: any) => {
             alignItems: "center",
           }}
         >
-          <GenericText style={{ color: "#fff" }}>{"submitt"}</GenericText>
+          <GenericText style={{ color: "#fff" }}>{"submt"}</GenericText>
         </TouchableOpacity>
       </View>
 

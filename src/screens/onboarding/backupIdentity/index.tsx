@@ -175,7 +175,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
             iconContainer: styles.alignCenter,
           }}
         ></Header>
-         <TouchableOpacity
+         {/* <TouchableOpacity
           onPress={()=>navigation.goBack()}
           style={{
               position:"absolute",
@@ -189,7 +189,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
               width:20,
               resizeMode:"contain",}}
           />
-           </TouchableOpacity>   
+           </TouchableOpacity>    */}
         <View style={styles.category}>
           <View>
             <GenericText
