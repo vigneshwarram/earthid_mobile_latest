@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  ActivityIndicator,
-} from "react-native";
+import { View, StyleSheet, Image, TouchableOpacity, Text } from "react-native";
 
 import Button from "../../../components/Button";
 import SuccessPopUp from "../../../components/Loader";
@@ -43,14 +37,20 @@ const DocumentPreviewScreen = (props: any) => {
         </TouchableOpacity>
       </View>
       <View style={{ flex: 0.8, paddingHorizontal: 10, marginLeft: 20 }}>
-        <Image
-          resizeMode={"contain"}
-          style={{
-            width: 330,
-            height: "100%",
-          }}
-          source={{ uri: documentDetails.base64 }}
-        ></Image>
+        {documentDetails.base64 ? (
+          <Image
+            resizeMode={"contain"}
+            style={{
+              width: 330,
+              height: "100%",
+            }}
+            source={{ uri: documentDetails.base64 }}
+          ></Image>
+        ) : (
+          <Text style={{ color: "#fff", marginVertical: 50 }}>
+            {JSON.stringify(documentDetails)}
+          </Text>
+        )}
       </View>
 
       <View
