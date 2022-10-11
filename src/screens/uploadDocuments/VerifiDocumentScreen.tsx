@@ -200,32 +200,32 @@ const VerifiDocumentScreen = (props: any) => {
         ></Image>
       </View>
 
-
-        <TouchableOpacity onPress={()=>props.navigation.goBack()}>
-        <View style={{flexDirection:"row",alignSelf:"center"}}>
-        <Image
-        source={LocalImages.cam}
-        style={{width:15,height:15,alignSelf:"center"}}
-        />
+      <TouchableOpacity onPress={() => props.navigation.goBack()}>
+        <View style={{ flexDirection: "row", alignSelf: "center" }}>
+          <Image
+            source={LocalImages.cam}
+            style={{
+              width: 15,
+              height: 15,
+              alignSelf: "center",
+              tintColor: Screens.colors.primary,
+            }}
+          />
           <GenericText
             style={[
               {
                 fontSize: 13,
-                color: "#293FEE",
+                color: Screens.colors.primary,
                 fontWeight: "500",
                 textDecorationLine: "underline",
-                marginLeft:6
+                marginLeft: 6,
               },
             ]}
           >
             {"retakephoto"}
           </GenericText>
-          </View>
-
-        </TouchableOpacity>
-
-       
-
+        </View>
+      </TouchableOpacity>
 
       <View
         style={{
