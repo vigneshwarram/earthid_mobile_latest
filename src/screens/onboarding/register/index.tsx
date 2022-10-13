@@ -271,22 +271,26 @@ const Register = ({ navigation }: IRegister) => {
               onChangeText={(text: any) => {
                 setmobileNumber(text);
               }}
+
               containerStyle={{
                 borderColor: Screens.darkGray,
                 borderWidth: 2.2,
-                borderRadius: 5,
+                borderRadius: 10,
                 height: 60,
                 marginHorizontal: 10,
               }}
-              flagButtonStyle={{ backgroundColor: Screens.thickGray }}
+              flagButtonStyle={{ backgroundColor: Screens.thickGray,borderBottomLeftRadius:9,borderTopLeftRadius:9 }}
               textInputStyle={{ fontSize: 16, padding: 0, margin: 0 }}
               codeTextStyle={{ fontSize: 16, padding: 0, margin: 0 }}
               textContainerStyle={{
                 height: 55,
                 padding: 0,
                 margin: 0,
+                borderBottomEndRadius: 9,
+                borderTopRightRadius:9,
+                backgroundColor:"#fff"
               }}
-              withShadow
+                    
             />
             <Info
               title={"email"}
@@ -503,6 +507,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     marginLeft: 10,
     marginTop: -2,
+    height:60
   },
 });
 

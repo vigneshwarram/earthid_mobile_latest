@@ -39,7 +39,7 @@ const UpdateAuthentication = (props: any) => {
     {
       label: "faceid",
       COLOR: "#D7EFFB",
-      icon: LocalImages.faceImage,
+      icon: LocalImages.faceidpic,
       selection: true,
       card: "UpdateFaceId",
     },
@@ -53,7 +53,7 @@ const UpdateAuthentication = (props: any) => {
     {
       label: "touchid",
       COLOR: "#F6BDE9",
-      icon: LocalImages.touchImage,
+      icon: LocalImages.touchidpic,
       selection: false,
       card: "UpdateTouchId",
     },

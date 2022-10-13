@@ -64,7 +64,7 @@ const Info = ({
               style={{position:"absolute",right:0}}
               >
               <Image
-              style={{position:"absolute",right:0}}
+              style={{position:"absolute",right:0,height:20,width:20}}
                 resizeMode="contain"
                 source={tailIcon}
               ></Image>
@@ -133,5 +133,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     paddingVertical: 1.5,
     marginLeft: -20,
+    
+    
   },
 });

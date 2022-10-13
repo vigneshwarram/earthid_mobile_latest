@@ -8,6 +8,7 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
+  AsyncStorage
 } from "react-native";
 
 import Avatar from "../../../components/Avatar";
@@ -46,6 +47,11 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
   };
 
   const _renderItem = ({ item }: any) => {
+
+    AsyncStorage.setItem("day",item.date)
+
+    console.log( "items==>",item);
+
     return (
       <TouchableOpacity
         onPress={() =>
@@ -59,21 +65,35 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
           rightIconSrc={LocalImages.menuImage}
           rightIconOnPress={_rightIconOnPress}
           title={item.name}
-          subtitle={`       Uploaded  : ${item.date}`}
+          subtitle={`      Uploaded  : ${item.date}`}
           style={{
             ...styles.cardContainer,
             ...{
               avatarContainer: {
                 backgroundColor: "rgba(245, 188, 232, 1)",
-                width: 50,
-                height: 50,
+                width: 62,
+                height: 62,
                 borderRadius: 20,
                 marginTop: 25,
+                marginLeft:10,
+                marginRight:5
               },
               uploadImageStyle: {
                 backgroundColor: "rgba(245, 188, 232, 1)",
               },
+              
             },
+            title:{
+              fontSize: 14,
+              marginTop:-10,
+              fontWeight:"bold"
+             
+            },
+            subtitle:{
+              fontSize: 13,
+                marginTop:5
+            },
+
           }}
         />
       </TouchableOpacity>

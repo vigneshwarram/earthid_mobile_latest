@@ -128,20 +128,23 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
               leftIcon={LocalImages.registerdocumentImage}
               title={"registerwithdoc"}
             ></Button>
-            <Button
+           <View style={{marginTop:-20}}>
+           <Button
               onPress={navigateAction}
               style={{
                 buttonContainer: {
                   backgroundColor: Screens.pureWhite,
                   elevation: 5,
+                  
                 },
                 iconStyle: {
                   tintColor: Screens.colors.primary,
                 },
               }}
-              leftIcon={LocalImages.registerdocumentImage}
+              leftIcon={LocalImages.manualIcon}
               title={"registermanually"}
             ></Button>
+           </View>
           </View>
           <View>
             <GenericText

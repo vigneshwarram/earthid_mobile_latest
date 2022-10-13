@@ -158,7 +158,7 @@ const Register = ({ navigation ,route}: IHomeScreenProps) => {
                 tintColor: Screens.pureWhite,
               },
             }}
-            title={"createpasscord"}
+            title={"submt"}
           ></Button>
         </View>
       </ScrollView>

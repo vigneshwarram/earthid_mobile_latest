@@ -18,7 +18,7 @@ export const ABOUT_ROUTES = {
     COLOR: "#FFDD9B",
   },
   DOCUMENT: {
-    URI: LocalImages.documentsImage,
+    URI: LocalImages.documentpic,
     CARD: "MerchantAgreement",
     TITLE: SCREENS.DRAWERMENUTITLES.DOCUMENT,
     SCREEN: "Documents",
