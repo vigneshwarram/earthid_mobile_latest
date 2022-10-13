@@ -89,6 +89,8 @@ const Register = ({ navigation }: IHomeScreenProps) => {
               leftIcon={LocalImages.touchImage}
               title={"usetouchid"}
             ></Button>
+
+              <View style={{marginTop:-20}}>
             <Button
               onPress={() => navigation.navigate("facePlaceHolderWidget")}
               style={{
@@ -103,6 +105,9 @@ const Register = ({ navigation }: IHomeScreenProps) => {
               leftIcon={LocalImages.faceImage}
               title={"usefaceid"}
             ></Button>
+              </View>
+
+              <View style={{marginTop:-20}}>                  
             <Button
               onPress={() => navigation.navigate("SetPin")}
               style={{
@@ -117,6 +122,8 @@ const Register = ({ navigation }: IHomeScreenProps) => {
               leftIcon={LocalImages.passcordImage}
               title={"usepasscode"}
             ></Button>
+              </View>
+
           </View>
         </View>
       </ScrollView>

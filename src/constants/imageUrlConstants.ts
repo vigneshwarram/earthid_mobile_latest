@@ -48,6 +48,12 @@ export const LocalImages = {
   backupicon: require("../../resources/images/backupicon.png"),
   uploadqrimage: require("../../resources/images/uploadqrimage.png"),
   cam: require("../../resources/images/cam.png"),
+  settingpic: require("../../resources/images/settingpic.png"),
+  settingimage: require("../../resources/images/settingimage.png"),
+  manualIcon: require("../../resources/images/manualIcon.png"),
+  documentpic: require("../../resources/images/documentpic.png"),
+  faceidpic: require("../../resources/images/faceidpic.png"),
+  touchidpic: require("../../resources/images/touchidpic.png"),
 
   //categories
   CATEGORIES: {

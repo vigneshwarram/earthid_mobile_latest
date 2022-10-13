@@ -122,22 +122,25 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
               {"plsenteroldpincode"}
             </GenericText>
           </View>
-          <SmoothPinCodeInput
-            cellStyle={{
-              borderWidth: 0.5,
-              borderColor: Screens.grayShadeColor,
-              borderRadius: 5,
-            }}
-            cellStyleFocused={{
-              borderColor: Screens.colors.primary,
-              borderWidth: 2,
-            }}
-            password
-            cellSize={50}
-            codeLength={6}
-            value={code}
-            onTextChange={onPinCodeChange}
-          />
+
+          <View style={{ alignSelf: "center" }}>
+            <SmoothPinCodeInput
+              cellStyle={{
+                borderWidth: 0.5,
+                borderColor: Screens.grayShadeColor,
+                borderRadius: 5,
+              }}
+              cellStyleFocused={{
+                borderColor: Screens.colors.primary,
+                borderWidth: 2,
+              }}
+              password
+              cellSize={50}
+              codeLength={6}
+              value={code}
+              onTextChange={onPinCodeChange}
+            />
+          </View>
 
           <Button
             onPress={_navigateAction}

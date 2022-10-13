@@ -153,6 +153,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
           />
         </View>
       </TouchableOpacity>
+      
     );
   };
 
@@ -175,6 +176,9 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
                 },
               }}
             ></Header>
+
+
+            
         <TouchableOpacity
           onPress={()=>navigation.goBack()}
           style={{
@@ -201,24 +205,47 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
             </View>
           </View>
           <View style={{ flex: 0.75 }}>
+
             <GenericText
               style={[
                 styles.categoryHeaderText,
                 { fontSize: 14, fontWeight: "700" },
               ]}
             >
-              {"SELECT DOCUMENT"}
+              {"selectDoc"}
             </GenericText>
             {categoryList.map((item: any, index: number) => {
               if (item.isSelected) {
                 console.log(`item===>index${index}`, item);
                 return (
-                  <FlatList<any>
-                    nestedScrollEnabled
-                    scrollEnabled={true}
-                    data={item?.value}
-                    renderItem={_renderItemDocuments}
-                  />
+                  <ScrollView>
+                    <FlatList<any>
+                      nestedScrollEnabled
+                      scrollEnabled={true}
+                      data={item?.value}
+                      renderItem={_renderItemDocuments}
+                    />
+
+                <View style={{alignSelf:"center",marginBottom:10,width:"90%",marginLeft:20,zIndex:999}}> 
+                    <Button
+                      style={{
+                        buttonContainer: {
+                          elevation: 5,
+                          
+                        },
+                        text: {
+                          color: Screens.pureWhite,
+                        },
+                        iconStyle: {
+                          tintColor: Screens.pureWhite,
+                        },
+                      }}
+                      title={"submt"}
+                    ></Button>
+          </View>
+
+
+                   </ScrollView> 
                 );
               }
             })}
@@ -278,6 +305,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
               }}
               title={"submt"}
             ></Button>
+
           </View>
         </ModalView>
         <AnimatedLoader

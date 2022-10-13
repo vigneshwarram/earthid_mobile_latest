@@ -18,7 +18,7 @@ export const ABOUT_ROUTES = {
     COLOR: "#FFDD9B",
   },
   DOCUMENT: {
-    URI: LocalImages.documentsImage,
+    URI: LocalImages.documentpic,
     CARD: "MerchantAgreement",
     TITLE: SCREENS.DRAWERMENUTITLES.DOCUMENT,
     SCREEN: "Documents",
@@ -33,7 +33,7 @@ export const ABOUT_ROUTES = {
   },
   SETTINGS: {
     RIGHT_ICON: LocalImages.sideArrowImage,
-    URI: LocalImages.settingsImage,
+    URI: LocalImages.settingimage,
     CARD: "AcceptableUsePolicy",
     TITLE: SCREENS.DRAWERMENUTITLES.SETTING,
     SCREEN: "settings",

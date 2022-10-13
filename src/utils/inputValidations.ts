@@ -2,7 +2,7 @@ import { isEmpty } from "lodash";
 import { IInputValidationResult } from "../typings/IInputValidationResult";
 
 const REGEX = {
-  ADDRESS_LINE: /^[\\\\0-9a-zA-Z\\/, -]*$/,
+  ADDRESS_LINE: /^[\\\\0-9a-zA-Z\\/, ]*$/,
   BUSINESS_NAME: /^[0-9a-zA-Z ]*$/,
   PINCODE: /(^\d{6}$)/,
   EMAIL:

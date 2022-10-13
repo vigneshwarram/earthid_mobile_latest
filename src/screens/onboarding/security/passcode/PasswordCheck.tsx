@@ -87,6 +87,10 @@ const PasswordCheck = ({ navigation, route }: IHomeScreenProps) => {
               {"plsenterpass"}
             </GenericText>
           </View>
+
+           <View style={{alignSelf:"center"}}>
+            
+            
           <SmoothPinCodeInput
             cellStyle={{
               borderWidth: isError ? 1.5 : 0.5,
@@ -103,6 +107,8 @@ const PasswordCheck = ({ navigation, route }: IHomeScreenProps) => {
             value={code}
             onTextChange={onPinCodeChange}
           />
+            </View>   
+
           {isError && (
             <GenericText
               style={[

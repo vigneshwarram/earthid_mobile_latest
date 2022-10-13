@@ -116,6 +116,7 @@ const EditMobileNumber = (props: any) => {
         autoFocus={false}
         ref={phoneInput}
         defaultValue={""}
+        placeholder="Mobile Number"
         defaultCode="US"
         layout="first"
         onChangeText={(text: any) => {

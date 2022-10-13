@@ -7,6 +7,7 @@ import {
   FlatList,
   ScrollView,
   Image,
+  AsyncStorage,
 } from "react-native";
 import CircularProgress from "react-native-circular-progress-indicator";
 import { EventRegister } from "react-native-event-listeners";
@@ -105,12 +106,15 @@ const HomeScreen = ({ navigation }: IHomeScreenProps) => {
   }, []);
 
   const _renderItemHistory = ({ item }: any) => {
+    console.log("items==>", item);
+
     return (
       <Card
         leftAvatar={LocalImages.documentsImage}
         absoluteCircleInnerImage={LocalImages.upImage}
+        // rightIconSrc={LocalImages.menuImage}
         title={item?.eventValue}
-        subtitle={`       Uploaded  : ${item.createdAt}`}
+        subtitle={`      Uploaded  : ${item.createdAt}`}
         style={{
           ...styles.cardContainers,
           ...{
@@ -118,7 +122,7 @@ const HomeScreen = ({ navigation }: IHomeScreenProps) => {
               backgroundColor: "rgba(245, 188, 232, 1)",
               width: 50,
               height: 50,
-              borderRadius: 25,
+              borderRadius: 15,
               marginTop: 25,
             },
             uploadImageStyle: {

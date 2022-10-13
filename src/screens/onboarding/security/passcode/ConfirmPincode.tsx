@@ -95,6 +95,9 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
               {SCREENS.SECURITYSCREEN.confirmInstruction}
             </GenericText>
           </View>
+
+          <View style={{alignSelf:"center"}}>
+            
           <SmoothPinCodeInput
             cellStyle={{
               borderWidth: isError ? 1.5 : 0.5,
@@ -111,6 +114,8 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
             value={code}
             onTextChange={onPinCodeChange}
           />
+            </View>    
+
           {isError && (
             <GenericText
               style={[

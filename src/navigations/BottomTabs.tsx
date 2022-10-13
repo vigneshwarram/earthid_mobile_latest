@@ -73,7 +73,7 @@ export const BottomMenus = (propss: any) => {
                       : colors.background,
                   },
                 ]}
-                source={LocalImages.documentsImage}
+                source={LocalImages.documentpic}
               />
             </View>
           ),
