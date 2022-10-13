@@ -1,4 +1,4 @@
-import React, { useRef, useState,useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -21,27 +21,32 @@ interface IHomeScreenProps {
   route?: any;
 }
 
-const Register = ({ navigation,route }: IHomeScreenProps) => {
+const Register = ({ navigation, route }: IHomeScreenProps) => {
   const [code, setCode] = useState();
   const onPinCodeChange = (code: any) => {
     setCode(code);
   };
   const _navigateAction = async () => {
     if (code.length === 6) {
-      navigation.navigate("UpdateConfirmPincode", { setCode: code ,type:"pass"});
+      navigation.navigate("UpdateConfirmPincode", {
+        setCode: code,
+        type: "pass",
+      });
     }
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log("savedtype==>", route);
-  },[])
+  }, []);
 
   return (
     <View style={styles.sectionContainer}>
       <ScrollView contentContainerStyle={styles.sectionContainer}>
         <Header
           isLogoAlone={true}
-          headingText={route.name=="UpdateNewPin"?"newpasscode":"setpasscord"}
+          headingText={
+            route.name == "UpdateNewPin" ? "newpasscode" : "setpasscord"
+          }
           linearStyle={styles.linearStyle}
           containerStyle={{
             iconStyle: {
@@ -53,20 +58,18 @@ const Register = ({ navigation,route }: IHomeScreenProps) => {
           }}
         ></Header>
         <TouchableOpacity
-          onPress={()=>navigation.goBack()}
+          onPress={() => navigation.goBack()}
           style={{
-              position:"absolute",
-              marginTop:40,
-              marginLeft:20,
+            position: "absolute",
+            marginTop: 40,
+            marginLeft: 20,
           }}
-          >
+        >
           <Image
             source={LocalImages.backImage}
-            style={{height:20,
-              width:20,
-              resizeMode:"contain",}}
+            style={{ height: 20, width: 20, resizeMode: "contain" }}
           />
-           </TouchableOpacity> 
+        </TouchableOpacity>
         <View style={styles.category}>
           <View>
             <View
@@ -107,7 +110,9 @@ const Register = ({ navigation,route }: IHomeScreenProps) => {
                 },
               ]}
             >
-              {route.name=="UpdateNewPin"? "enternewcode" :SCREENS.SECURITYSCREEN.PasscodeInstructions }
+              {route.name == "UpdateNewPin"
+                ? "enternewcode"
+                : SCREENS.SECURITYSCREEN.PasscodeInstructions}
             </GenericText>
           </View>
           <SmoothPinCodeInput
@@ -139,7 +144,7 @@ const Register = ({ navigation,route }: IHomeScreenProps) => {
                 tintColor: Screens.pureWhite,
               },
             }}
-            title={"createpasscord"}
+            title={"Submit"}
           ></Button>
         </View>
       </ScrollView>

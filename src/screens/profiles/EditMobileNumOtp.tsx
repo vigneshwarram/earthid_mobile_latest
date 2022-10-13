@@ -22,6 +22,12 @@ import { byPassUserDetailsRedux } from "../../redux/actions/authenticationAction
 const EditMobileNumOtp = (props: any) => {
   const userDetails = useAppSelector((state) => state.account);
   const { loading, data, error, fetch } = useFetch();
+  const {
+    loading: loadingResend,
+    data: reSendData,
+    error: resendError,
+    fetch: reSendfetch,
+  } = useFetch();
   const dispatch = useAppDispatch();
   const { newPhone, callingCode } = props.route.params;
   const [oldCode, setOldCode] = useState();
@@ -32,7 +38,7 @@ const EditMobileNumOtp = (props: any) => {
   const onPinCodeChangeForNew = (code: any) => {
     setNewCode(code);
   };
-
+  console.log("userDetails", userDetails);
   const verfified = () => {
     var postData = {
       oldEmailOTP: oldCode,
@@ -59,12 +65,12 @@ const EditMobileNumOtp = (props: any) => {
     var postData = {
       oldPhone: userDetails?.responseData?.phone,
       newPhone: newPhone,
-      newCountryCode: callingCode,
+      newCountryCode: "+" + callingCode,
       earthId: userDetails?.responseData?.earthId,
       publicKey: userDetails?.responseData?.publicKey,
       oldCountryCode: userDetails?.responseData?.countryCode,
     };
-    fetch(updatephoneOtp, postData, "POST");
+    reSendfetch(updatephoneOtp, postData, "POST");
   };
 
   return (
@@ -117,7 +123,9 @@ const EditMobileNumOtp = (props: any) => {
             },
           ]}
         >
-          {userDetails.responseData.phone}
+          {userDetails?.responseData?.countryCode +
+            " " +
+            userDetails.responseData.phone}
         </GenericText>
 
         <View style={{ alignSelf: "center", marginTop: 25 }}>
@@ -180,7 +188,7 @@ const EditMobileNumOtp = (props: any) => {
             },
           ]}
         >
-          {newPhone}
+          {"+" + callingCode + " " + newPhone}
         </GenericText>
 
         <View style={{ alignSelf: "center", marginTop: 25 }}>

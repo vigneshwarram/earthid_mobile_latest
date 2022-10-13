@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-
+import Share from "react-native-share";
 import Avatar from "../../../components/Avatar";
 import BottomSheet from "../../../components/Bottomsheet";
 import Card from "../../../components/Card";
@@ -18,7 +18,8 @@ import GenericText from "../../../components/Text";
 import TextInput from "../../../components/TextInput";
 import { LocalImages } from "../../../constants/imageUrlConstants";
 import { SCREENS } from "../../../constants/Labels";
-import { useAppSelector } from "../../../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
+import { saveDocuments } from "../../../redux/actions/authenticationAction";
 import { Screens } from "../../../themes";
 
 interface IDocumentScreenProps {
@@ -30,18 +31,23 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
     navigation.openDrawer();
   };
   let documentsDetailsList = useAppSelector((state) => state.Documents);
+  const dispatch = useAppDispatch();
+  const [selectedItem, setselectedItem] = useState();
   console.log("documentsDetailsList", documentsDetailsList);
   const [
     isBottomSheetForSideOptionVisible,
     setisBottomSheetForSideOptionVisible,
   ] = useState<boolean>(false);
 
+  const [searchedData, setSearchedData] = useState([]);
+
   const [searchText, setsearchText] = useState();
 
   const [isBottomSheetForFilterVisible, setisBottomSheetForFilterVisible] =
     useState<boolean>(false);
 
-  const _rightIconOnPress = () => {
+  const _rightIconOnPress = (selecteArrayItem: any) => {
+    setselectedItem(selecteArrayItem);
     setisBottomSheetForSideOptionVisible(true);
   };
 
@@ -57,7 +63,7 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
           leftAvatar={LocalImages.documentsImage}
           absoluteCircleInnerImage={LocalImages.upImage}
           rightIconSrc={LocalImages.menuImage}
-          rightIconOnPress={_rightIconOnPress}
+          rightIconOnPress={() => _rightIconOnPress(item)}
           title={item.name}
           subtitle={`       Uploaded  : ${item.date}`}
           style={{
@@ -79,36 +85,71 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
       </TouchableOpacity>
     );
   };
-  const RowOption = ({ icon, title }: any) => (
-    <View
-      style={{
-        flexDirection: "row",
-        alignItems: "center",
-      }}
-    >
-      {icon && (
-        <Image
-          resizeMode="contain"
-          style={styles.logoContainer}
-          source={icon}
-        ></Image>
-      )}
+  const RowOption = ({ icon, title, rowAction }: any) => (
+    <TouchableOpacity onPress={rowAction}>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+        }}
+      >
+        {icon && (
+          <Image
+            resizeMode="contain"
+            style={styles.logoContainer}
+            source={icon}
+          ></Image>
+        )}
 
-      <View style={{ justifyContent: "center", alignItems: "center" }}>
-        <Text
-          style={[
-            styles.categoryHeaderText,
-            { fontSize: 13, marginHorizontal: 10, marginVertical: 15 },
-          ]}
-        >
-          {title}
-        </Text>
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
+          <Text
+            style={[
+              styles.categoryHeaderText,
+              { fontSize: 13, marginHorizontal: 10, marginVertical: 15 },
+            ]}
+          >
+            {title}
+          </Text>
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 
-  const onChangeHandler = (text: React.SetStateAction<undefined>) => {
+  const onChangeHandler = (text: any) => {
+    const newData = documentsDetailsList?.responseData.filter(function (item: {
+      name: string;
+    }) {
+      const itemData = item.name ? item.name.toUpperCase() : "".toUpperCase();
+      const textData = text.toUpperCase();
+      return itemData.indexOf(textData) > -1;
+    });
     setsearchText(text);
+    setSearchedData(newData);
+  };
+
+  const shareItem = async () => {
+    console.log("selectedItem", selectedItem);
+    if (selectedItem?.base64) {
+      await Share.open({
+        url: `${selectedItem?.base64}`,
+      });
+    } else {
+      await Share.open({
+        title: selectedItem?.name,
+      });
+    }
+  };
+
+  const deleteItem = () => {
+    setisBottomSheetForSideOptionVisible(false);
+    console.log("selectedItem", selectedItem);
+    const newData = documentsDetailsList?.responseData.filter(function (item: {
+      name: any;
+    }) {
+      return item.name !== selectedItem?.name;
+    });
+
+    dispatch(saveDocuments(newData));
   };
   const onPressNavigateTo = () => {
     navigation.navigate("uploadDocumentsScreen");
@@ -172,20 +213,32 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
           </View>
 
           <FlatList<any>
-            data={documentsDetailsList?.responseData}
+            data={
+              searchedData.length > 0
+                ? searchedData
+                : documentsDetailsList?.responseData
+            }
             renderItem={_renderItem}
             keyExtractor={_keyExtractor}
           />
-          {/* <BottomSheet
-        onClose={() => setisBottomSheetForSideOptionVisible(false)}
-        height={150}
-        isVisible={isBottomSheetForSideOptionVisible}
-      >
-        <View style={{ height: 100, width: "100%", paddingHorizontal: 30 }}>
-          <RowOption title={"Share"} icon={LocalImages.shareImage} />
-          <RowOption title={"Delete"} icon={LocalImages.deleteImage} />
-        </View>
-      </BottomSheet> */}
+          <BottomSheet
+            onClose={() => setisBottomSheetForSideOptionVisible(false)}
+            height={150}
+            isVisible={isBottomSheetForSideOptionVisible}
+          >
+            <View style={{ height: 100, width: "100%", paddingHorizontal: 30 }}>
+              <RowOption
+                rowAction={() => shareItem()}
+                title={"Share"}
+                icon={LocalImages.shareImage}
+              />
+              <RowOption
+                rowAction={() => deleteItem()}
+                title={"Delete"}
+                icon={LocalImages.deleteImage}
+              />
+            </View>
+          </BottomSheet>
           <BottomSheet
             onClose={() => setisBottomSheetForFilterVisible(false)}
             height={150}

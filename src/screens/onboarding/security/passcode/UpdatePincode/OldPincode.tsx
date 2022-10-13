@@ -22,7 +22,7 @@ interface IHomeScreenProps {
   route?: any;
 }
 
-const Register = ({ navigation ,route}: IHomeScreenProps) => {
+const Register = ({ navigation, route }: IHomeScreenProps) => {
   const [code, setCode] = useState();
   const onPinCodeChange = (code: any) => {
     setCode(code);
@@ -31,29 +31,31 @@ const Register = ({ navigation ,route}: IHomeScreenProps) => {
     let oldPin = await AsyncStorage.getItem("passcode");
     if (oldPin) {
       if (oldPin === code) {
-        navigation.navigate("UpdateNewPin", { setCode: code ,type:"new"});
+        navigation.navigate("UpdateNewPin", { setCode: code, type: "new" });
       } else {
         Alert.alert("Invalid Pincode");
       }
     } else {
-      navigation.navigate("UpdateNewPin", { setCode: code,type:"new" });
+      navigation.navigate("UpdateNewPin", { setCode: code, type: "new" });
     }
   };
 
-  const navgoBack=()=>{
-    navigation.goBack()
-  }
+  const navgoBack = () => {
+    navigation.goBack();
+  };
 
-  useEffect(()=>{
-    console.log("route==>",route)
-  },[])
+  useEffect(() => {
+    console.log("route==>", route);
+  }, []);
 
   return (
     <View style={styles.sectionContainer}>
       <ScrollView contentContainerStyle={styles.sectionContainer}>
         <Header
           isLogoAlone={true}
-          headingText={route.name=="OldPincode"?"oldpasscode":"setpasscord"}
+          headingText={
+            route.name == "OldPincode" ? "oldpasscode" : "setpasscord"
+          }
           linearStyle={styles.linearStyle}
           containerStyle={{
             iconStyle: {
@@ -62,24 +64,21 @@ const Register = ({ navigation ,route}: IHomeScreenProps) => {
               marginTop: 30,
             },
             iconContainer: styles.alignCenter,
-            
           }}
         ></Header>
-          <TouchableOpacity
+        <TouchableOpacity
           onPress={navgoBack}
           style={{
-              position:"absolute",
-              marginTop:40,
-              marginLeft:20,
+            position: "absolute",
+            marginTop: 40,
+            marginLeft: 20,
           }}
-          >
+        >
           <Image
             source={LocalImages.backImage}
-            style={{height:20,
-              width:20,
-              resizeMode:"contain",}}
+            style={{ height: 20, width: 20, resizeMode: "contain" }}
           />
-           </TouchableOpacity>        
+        </TouchableOpacity>
         <View style={styles.category}>
           <View>
             <View
@@ -139,7 +138,7 @@ const Register = ({ navigation ,route}: IHomeScreenProps) => {
             value={code}
             onTextChange={onPinCodeChange}
           />
-        
+
           <Button
             onPress={_navigateAction}
             style={{
@@ -153,7 +152,7 @@ const Register = ({ navigation ,route}: IHomeScreenProps) => {
                 tintColor: Screens.pureWhite,
               },
             }}
-            title={"createpasscord"}
+            title={"Submit"}
           ></Button>
         </View>
       </ScrollView>

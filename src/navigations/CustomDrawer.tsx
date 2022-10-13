@@ -57,10 +57,12 @@ const CustomDrawer = (props: any) => {
       });
     } else if (item.route === "delete") {
       deleteUser();
-    } else if (item.route === "about" || item.route === "terms") {
-      Linking.openURL("https://www.myearth.id");
+    } else if (item.route === "about") {
+      Linking.openURL("https://globalidiq.com/about/");
+    } else if (item.route === "terms") {
+      Linking.openURL("https://globalidiq.com/terms-of-use-3/");
     } else {
-      props.navigation.navigate(item.route, { type:item.route});
+      props.navigation.navigate(item.route, { type: item.route });
     }
   };
 

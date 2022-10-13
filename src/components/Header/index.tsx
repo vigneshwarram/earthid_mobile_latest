@@ -33,7 +33,7 @@ const Header = ({
   actionIcon = LocalImages.humbergerImage,
   rewardPoints,
   profileName,
-  leftIconSource,
+  picUri,
   avatarClick,
   isLogoAlone,
   headingText,
@@ -102,7 +102,12 @@ const Header = ({
                     {isBack && (
                       <Image
                         resizeMode="contain"
-                        style={{ width: 20, height: 20, resizeMode: "contain",marginRight:10 }}
+                        style={{
+                          width: 20,
+                          height: 20,
+                          resizeMode: "contain",
+                          marginRight: 10,
+                        }}
                         source={LocalImages.backImage}
                       ></Image>
                     )}
@@ -179,7 +184,7 @@ const Header = ({
                 isProfileAvatar={isProfileAvatar}
                 isUploaded={isUploaded}
                 text={userDetails?.responseData?.username}
-                iconSource={LocalImages.avatarImage}
+                iconSource={picUri ? { uri: picUri } : LocalImages.avatarImage}
               ></Avatar>
             )}
           </View>

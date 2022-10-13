@@ -10,13 +10,20 @@ import {
   schemaReducer,
   getHistoryReducer,
 } from "./reducer/user.reducer";
-import { SavedQrData } from "./reducer/saveDataReducer";
+import { SavedProfilePictures, SavedQrData } from "./reducer/saveDataReducer";
 
 const persistConfig = {
   key: "root",
   keyPrefix: "",
   storage: AsyncStorage,
-  whitelist: ["contract", "user", "Documents", "saveData", "account"],
+  whitelist: [
+    "contract",
+    "user",
+    "Documents",
+    "saveData",
+    "account",
+    "savedPic",
+  ],
 };
 const rootReducer = combineReducers({
   user: userReducer,
@@ -27,6 +34,7 @@ const rootReducer = combineReducers({
   saveData: SavedQrData,
   schema: schemaReducer,
   getHistoryReducer: getHistoryReducer,
+  savedPic: SavedProfilePictures,
 });
 
 const appreducer = (state: any, action: any) => {

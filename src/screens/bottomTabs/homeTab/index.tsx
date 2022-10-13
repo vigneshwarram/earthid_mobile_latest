@@ -30,11 +30,12 @@ interface IHomeScreenProps {
 const HomeScreen = ({ navigation }: IHomeScreenProps) => {
   const userDetails = useAppSelector((state) => state.account);
   const getHistoryReducer = useAppSelector((state) => state.getHistoryReducer);
+  const profilePicture = useAppSelector((state) => state.savedPic);
   const dispatch = useAppDispatch();
   const _toggleDrawer = () => {
     navigation.openDrawer();
   };
-  console.log("getHistoryReduce====>r", getHistoryReducer);
+  console.log("savedPic====>r", profilePicture);
   const categoryList = values(SCREENS.HOMESCREEN.categoryList).map(
     ({ TITLE: title, URI: uri, COLOR: color }: any) => ({
       title,
@@ -108,7 +109,6 @@ const HomeScreen = ({ navigation }: IHomeScreenProps) => {
       <Card
         leftAvatar={LocalImages.documentsImage}
         absoluteCircleInnerImage={LocalImages.upImage}
-        rightIconSrc={LocalImages.menuImage}
         title={item?.eventValue}
         subtitle={`       Uploaded  : ${item.createdAt}`}
         style={{
@@ -142,10 +142,11 @@ const HomeScreen = ({ navigation }: IHomeScreenProps) => {
       >
         <View>
           <Header
-           subCatSideArrowVisible
+            picUri={profilePicture?.profileData}
+            subCatSideArrowVisible
             leftIconSource={LocalImages.logoImage}
-            rewardPoints={"50"}
-            rightIconSource={LocalImages.giftBoxImage}
+            // rewardPoints={"50"}
+            // rightIconSource={LocalImages.giftBoxImage}
             isAvatar
             avatarClick={_avatarClick}
             onpress={() => {
@@ -162,12 +163,12 @@ const HomeScreen = ({ navigation }: IHomeScreenProps) => {
                 {userDetails?.responseData?.earthId}
               </Text>
             </View>
-            <CircularProgress
+            {/* <CircularProgress
               value={60}
               radius={30}
               activeStrokeWidth={5}
               activeStrokeColor={Screens.colors.primary}
-            />
+            /> */}
           </View>
           <GenericText style={[styles.categoryHeaderText, { fontSize: 13 }]}>
             {SCREENS.HOMESCREENTITLES.CATEGORIES}
