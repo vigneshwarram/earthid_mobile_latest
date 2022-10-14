@@ -23,7 +23,6 @@ import BottomSheet from "../../../components/Bottomsheet";
 import { AppLanguage } from "../../../typings/enums/AppLanguage";
 import { useTranslation } from "react-i18next";
 
-
 interface IHomeScreenProps {
   navigation?: any;
 }
@@ -128,23 +127,22 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
               leftIcon={LocalImages.registerdocumentImage}
               title={"registerwithdoc"}
             ></Button>
-           <View style={{marginTop:-20}}>
-           <Button
-              onPress={navigateAction}
-              style={{
-                buttonContainer: {
-                  backgroundColor: Screens.pureWhite,
-                  elevation: 5,
-                  
-                },
-                iconStyle: {
-                  tintColor: Screens.colors.primary,
-                },
-              }}
-              leftIcon={LocalImages.manualIcon}
-              title={"registermanually"}
-            ></Button>
-           </View>
+            <View style={{ marginTop: -20 }}>
+              <Button
+                onPress={navigateAction}
+                style={{
+                  buttonContainer: {
+                    backgroundColor: Screens.pureWhite,
+                    elevation: 5,
+                  },
+                  iconStyle: {
+                    tintColor: Screens.colors.primary,
+                  },
+                }}
+                leftIcon={LocalImages.manualIcon}
+                title={"registermanually"}
+              ></Button>
+            </View>
           </View>
           <View>
             <GenericText
@@ -177,29 +175,31 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
               title={SCREENS.LANDINGSCREEN.BUTTON_LABEL}
             ></Button>
 
-
-            <View style={{paddingHorizontal:15}}>
-              
-            <Text
-               style={[
-                styles.categoryHeaderText,
-                {
-                  fontSize: 13,
-                  fontWeight: "500",
-                  textAlign: "center",
-                  color: Screens.black,
-                },
-              ]}
-              >{t("continuetoagrees")} 
-              
+            <View style={{ paddingHorizontal: 15 }}>
               <Text
-               style={{ color: Screens.colors.primary , fontSize: 13,}}
-               onPress={()=>Linking.openURL("https://www.myearth.id")}
-              > {t("termpolicy")}</Text>
+                style={[
+                  styles.categoryHeaderText,
+                  {
+                    fontSize: 13,
+                    fontWeight: "500",
+                    textAlign: "center",
+                    color: Screens.black,
+                  },
+                ]}
+              >
+                {t("continuetoagrees")}
+
+                <Text
+                  style={{ color: Screens.colors.primary, fontSize: 13 }}
+                  onPress={() =>
+                    Linking.openURL("https://globalidiq.com/terms-of-use-3/")
+                  }
+                >
+                  {" "}
+                  {t("termpolicy")}
+                </Text>
               </Text>
-              </View>  
-
-
+            </View>
           </View>
           <BottomSheet
             onClose={() => setLanguageVisible(false)}

@@ -123,38 +123,6 @@ const VerifiDocumentScreen = (props: any) => {
     }, 2000);
   }
 
-  useEffect(() => {
-    if (data) {
-      var date = dateTime();
-      const filePath = RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
-      var documentDetails: IDocumentProps = {
-        name: `ID Card_${Math.random()}`,
-        path: filePath,
-        date: date?.date,
-        time: date?.time,
-        txId: data?.result,
-        docType: "pdf",
-        docExt: ".jpg",
-        processedDoc: "",
-        base64: uploadedDocumentsBase64,
-      };
-
-      var DocumentList = documentsDetailsList?.responseData
-        ? documentsDetailsList?.responseData
-        : [];
-      DocumentList.push(documentDetails);
-      dispatch(saveDocuments(DocumentList));
-      setsuccessResponse(true);
-      const payLoad = {
-        eventValue: `ID Card_${Math.random()}`,
-        eventType: "VC_CREATED",
-        userId: userDetails?.responseData?.Id,
-        publicKey: userDetails?.responseData?.publicKey,
-      };
-      AddDocumehtfetch(CreateHistory, payLoad, "POST");
-    }
-  }, [data]);
-
   return (
     <View style={styles.sectionContainer}>
       <Header
@@ -180,11 +148,16 @@ const VerifiDocumentScreen = (props: any) => {
       </View> */}
 
       <GenericText
-              style={{color:"black",fontWeight:"bold",fontSize:20,alignSelf:"center",marginTop:15}}
-              >
-             {"livetest"}
-
-              </GenericText>
+        style={{
+          color: "black",
+          fontWeight: "bold",
+          fontSize: 20,
+          alignSelf: "center",
+          marginTop: 15,
+        }}
+      >
+        {"livetest"}
+      </GenericText>
 
       <View style={styles.dashedLine}>
         <Image

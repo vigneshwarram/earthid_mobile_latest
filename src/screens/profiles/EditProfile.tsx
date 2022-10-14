@@ -1,6 +1,16 @@
 import { values } from "lodash";
 import React, { useRef, useState } from "react";
-import { View, StyleSheet, Text, FlatList, ScrollView } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  FlatList,
+  ScrollView,
+  Platform,
+  PermissionsAndroid,
+  TouchableOpacity,
+  Image,
+} from "react-native";
 import PhoneInput from "react-native-phone-number-input";
 import Avatar from "../../components/Avatar";
 import BottomSheet from "../../components/Bottomsheet";
@@ -9,12 +19,17 @@ import Info from "../../components/Info";
 import { LocalImages } from "../../constants/imageUrlConstants";
 import { SCREENS } from "../../constants/Labels";
 import { Screens } from "../../themes";
+import DocumentPicker from "react-native-document-picker";
 import useFormInput from "../../hooks/use-text-input";
 import { nameValidator } from "../../utils/inputValidations";
 import TextInput from "../../components/TextInput";
 import Loader from "../../components/Loader";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { byPassUserDetailsRedux } from "../../redux/actions/authenticationAction";
+import { useTheme } from "@react-navigation/native";
+import { savingProfilePictures } from "../../redux/actions/LocalSavingActions";
+import { RNCamera } from "react-native-camera";
+import DocumentMask from "../uploadDocuments/DocumentMask";
 
 interface IHomeScreenProps {
   navigation?: any;
@@ -23,9 +38,15 @@ interface IHomeScreenProps {
 const EditProfile = ({ navigation }: IHomeScreenProps) => {
   const [isCameraOptionVisible, setisCameraOptionVisible] =
     useState<boolean>(false);
-  const dispatch = useAppDispatch();
+  const disPatch = useAppDispatch();
+  const profilePicture = useAppSelector((state) => state.savedPic);
+  const [isCamerVisible, setIsCameraVisible] = useState(false);
+  const camRef: any = useRef();
+  console.log("profilePicture", profilePicture);
+  const { colors } = useTheme();
   const [isLoading, setIsLoading] = useState(false);
   const phoneInput: any = useRef();
+  const [cameraDataUri, setcameraDataUri] = useState();
   const userDetails = useAppSelector((state) => state.account);
 
   const _letfIconPress = () => {
@@ -36,7 +57,7 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
       ...userDetails.responseData,
       ...{ username: fullName },
     };
-    dispatch(byPassUserDetailsRedux(overallResponseData)).then(() => {
+    disPatch(byPassUserDetailsRedux(overallResponseData)).then(() => {
       setIsLoading(true);
       setTimeout(() => {
         setIsLoading(false);
@@ -88,7 +109,50 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
     });
     setmedialList([...mediListLocal]);
   };
+  const openCamera = async () => {
+    const options = { quality: 0.1, base64: true };
+    const data = await camRef.current.takePictureAsync(options);
+    console.log("data", data);
+    if (data) {
+      disPatch(savingProfilePictures(data?.uri));
+      setIsCameraVisible(false);
+      setcameraDataUri(data?.uri);
+    }
+  };
+  const requestPermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+        {
+          title: "EarthId Storage Acess",
+          message: "EarthId needs access to your storage ",
+          buttonNeutral: "Ask Me Later",
+          buttonNegative: "Cancel",
+          buttonPositive: "OK",
+        }
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const openFilePicker = async () => {
+    if (Platform.OS == "android") {
+      await requestPermission();
+    }
+    try {
+      const resp: any = await DocumentPicker.pick({
+        type: [DocumentPicker.types.images, DocumentPicker.types.pdf],
+        readContent: true,
+      });
 
+      let fileUri = resp[0].uri;
+      disPatch(savingProfilePictures(fileUri));
+      setIsCameraVisible(false);
+      setcameraDataUri(fileUri);
+    } catch (err) {
+      console.log("data==>", err);
+    }
+  };
   const _renderItem = ({ item, index }: any) => {
     return (
       <View>
@@ -114,9 +178,10 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
     );
   };
 
-  const ColoumnOption = ({ icon, title }: any) => (
+  const ColoumnOption = ({ icon, title, avatarClick }: any) => (
     <View>
       <Avatar
+        avatarClick={avatarClick}
         isUploaded={false}
         iconSource={icon}
         style={{
@@ -138,87 +203,159 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
 
   return (
     <View style={styles.sectionContainer}>
-      <ScrollView contentContainerStyle={styles.sectionContainer}>
-        <Header
-          actionIcon={LocalImages.tikImage}
-          avatarClick={_avatarClick}
-          absoluteCircleInnerImage={LocalImages.cameraImage}
-          isProfileAvatar={true}
-          isUploaded={true}
-          letfIconPress={_letfIconPress}
-          leftIconSource={LocalImages.backImage}
-          isAvatar
-          onpress={_navigateAction}
-          linearStyle={styles.linearStyle}
-          containerStyle={{
-            iconStyle: {
-              width: 15,
-              height: 15,
-            },
-            iconContainer: styles.alignCenter,
-          }}
-        ></Header>
-        <View style={styles.category}>
-          <Info
-            title={"username"}
-            style={{
-              title: styles.title,
-              subtitle: styles.subtitle,
-              container: styles.textContainer,
-            }}
-          />
-
-          <TextInput
-            style={{
-              container: styles.textInputContainer,
-            }}
-            isError={isfullNameError}
-            errorText={isfullNameErrorMessage}
-            onFocus={fullNameFocusHandlur}
-            onBlur={fullNameBlurHandler}
-            maxLength={60}
-            isFocused={fullNameFocus}
-            value={fullName}
-            onChangeText={fullNameChangeHandler}
-          />
-        </View>
-
-        <BottomSheet
-          onClose={() => setisCameraOptionVisible(false)}
-          height={150}
-          isVisible={isCameraOptionVisible}
-        >
+      {isCamerVisible ? (
+        <View style={{ flex: 1 }}>
           <View
-            style={{
-              height: 100,
-              width: "100%",
-              paddingHorizontal: 50,
-              flexDirection: "row",
-              justifyContent: "space-around",
-            }}
+            style={{ position: "absolute", top: 20, right: 20, zIndex: 100 }}
           >
-            <ColoumnOption
-              title={"Remove phone"}
-              icon={LocalImages.deleteImage}
-            />
-            <ColoumnOption title={"Camera"} icon={LocalImages.cameraImage} />
-            <ColoumnOption title={"Gallery"} icon={LocalImages.galleryImage} />
+            <TouchableOpacity onPress={() => setIsCameraVisible(false)}>
+              <Image
+                resizeMode="contain"
+                style={[[styles.logoContainer, { tintColor: "#fff" }]]}
+                source={LocalImages.closeImage}
+              ></Image>
+            </TouchableOpacity>
           </View>
-        </BottomSheet>
-        <View style={styles.socialMediaContainer}>
-          <FlatList<any>
-            nestedScrollEnabled
-            data={medialList}
-            renderItem={_renderItem}
-            keyExtractor={_keyExtractor}
-          />
+          <RNCamera
+            ref={camRef}
+            style={styles.preview}
+            androidCameraPermissionOptions={null}
+            type={RNCamera.Constants.Type.back}
+            captureAudio={false}
+          >
+            <DocumentMask />
+          </RNCamera>
+          <View style={{ backgroundColor: "#000" }}>
+            <View
+              style={{
+                width: 60,
+                height: 60,
+                borderRadius: 30,
+                backgroundColor: colors.primary,
+                alignSelf: "center",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <TouchableOpacity onPress={() => openCamera()}>
+                <View
+                  style={{
+                    width: 50,
+                    height: 50,
+                    borderColor: "#fff",
+                    borderWidth: 1,
+                    borderRadius: 25,
+                    backgroundColor: "transparent",
+                  }}
+                ></View>
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
-        <Loader
-          loadingText="Your Profile Details Updated successfully."
-          Status="Success !"
-          isLoaderVisible={isLoading}
-        ></Loader>
-      </ScrollView>
+      ) : (
+        <ScrollView contentContainerStyle={styles.sectionContainer}>
+          <Header
+            picUri={profilePicture?.profileData}
+            actionIcon={LocalImages.tikImage}
+            avatarClick={_avatarClick}
+            absoluteCircleInnerImage={LocalImages.cameraImage}
+            isProfileAvatar={true}
+            isUploaded={true}
+            letfIconPress={_letfIconPress}
+            leftIconSource={LocalImages.backImage}
+            isAvatar
+            onpress={_navigateAction}
+            linearStyle={styles.linearStyle}
+            containerStyle={{
+              iconStyle: {
+                width: 15,
+                height: 15,
+              },
+              iconContainer: styles.alignCenter,
+            }}
+          ></Header>
+          <View style={styles.category}>
+            <Info
+              title={"username"}
+              style={{
+                title: styles.title,
+                subtitle: styles.subtitle,
+                container: styles.textContainer,
+              }}
+            />
+
+            <TextInput
+              style={{
+                container: styles.textInputContainer,
+              }}
+              isError={isfullNameError}
+              errorText={isfullNameErrorMessage}
+              onFocus={fullNameFocusHandlur}
+              onBlur={fullNameBlurHandler}
+              maxLength={60}
+              isFocused={fullNameFocus}
+              value={fullName}
+              onChangeText={fullNameChangeHandler}
+            />
+          </View>
+
+          <BottomSheet
+            onClose={() => setisCameraOptionVisible(false)}
+            height={150}
+            isVisible={isCameraOptionVisible}
+          >
+            <View
+              style={{
+                height: 100,
+                width: "100%",
+                paddingHorizontal: 50,
+                flexDirection: "row",
+                justifyContent: "space-around",
+              }}
+            >
+              <ColoumnOption
+                avatarClick={() => {
+                  setisCameraOptionVisible(false);
+                  disPatch(savingProfilePictures(undefined));
+                }}
+                title={"removephone"}
+                icon={LocalImages.deleteImage}
+              />
+
+              <ColoumnOption
+                avatarClick={() => {
+                  setisCameraOptionVisible(false);
+                  setIsCameraVisible(true);
+                }}
+                title={"camera"}
+                icon={LocalImages.cameraImage}
+              />
+
+              <ColoumnOption
+                avatarClick={() => {
+                  setisCameraOptionVisible(false);
+                  openFilePicker();
+                }}
+                title={"gallery"}
+                icon={LocalImages.galleryImage}
+              />
+            </View>
+          </BottomSheet>
+          <View style={styles.socialMediaContainer}>
+            <FlatList<any>
+              nestedScrollEnabled
+              data={medialList}
+              renderItem={_renderItem}
+              keyExtractor={_keyExtractor}
+            />
+          </View>
+          <Loader
+            loadingText="Your Profile Details Updated successfully."
+            Status="Success !"
+            isLoaderVisible={isLoading}
+          ></Loader>
+        </ScrollView>
+      )}
     </View>
   );
 };
@@ -317,6 +454,9 @@ const styles = StyleSheet.create({
     height: 30,
     tintColor: Screens.grayShadeColor,
   },
+  preview: {
+    flex: 1,
+  },
   alignCenter: { justifyContent: "center", alignItems: "center" },
   label: {
     fontWeight: "bold",
@@ -360,6 +500,11 @@ const styles = StyleSheet.create({
     title: {
       color: Screens.grayShadeColor,
     },
+  },
+  logoContainer: {
+    width: 30,
+    height: 30,
+    tintColor: Screens.colors.primary,
   },
   textInputContainer: {
     borderRadius: 10,

@@ -253,12 +253,12 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
                 {userDetails?.responseData?.earthId}
               </Text>
             </View>
-            <CircularProgress
+            {/* <CircularProgress
               value={60}
               radius={30}
               activeStrokeWidth={5}
               activeStrokeColor={Screens.colors.primary}
-            />
+            /> */}
           </View>
           <View style={styles.category}>
             <Info

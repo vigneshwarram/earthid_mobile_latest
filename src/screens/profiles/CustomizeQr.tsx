@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { View, StyleSheet, FlatList, TouchableOpacity, Image } from "react-native";
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  Image,
+} from "react-native";
 import ToggleSwitch from "toggle-switch-react-native";
 import Header from "../../components/Header";
 import GenericText from "../../components/Text";
@@ -10,14 +16,13 @@ import { savingCustomQrData } from "../../redux/actions/LocalSavingActions";
 import { Screens } from "../../themes";
 import { useDrawerStatus } from "@react-navigation/drawer";
 
-
 interface IDocumentScreenProps {
   navigation?: any;
 }
 
 const CustomizeQr = ({ navigation }: IDocumentScreenProps) => {
   const qrListData = useAppSelector((state) => state.saveData);
-  const userDetails =useAppSelector((state)=>state.account)
+  const userDetails = useAppSelector((state) => state.account);
   var ctList = SCREENS.HOMESCREEN.CategoryCustomiseList;
   console.log("documentsDetailsList", qrListData);
   if (qrListData && qrListData?.qrListData && qrListData?.qrListData) {
@@ -27,9 +32,9 @@ const CustomizeQr = ({ navigation }: IDocumentScreenProps) => {
   const dispatch = useAppDispatch();
 
   const _toggleDrawer = () => {
-    navigation.openDrawer()
-    console.log("drawer==>", "ooo")
-    };
+    navigation.openDrawer();
+    console.log("drawer==>", "ooo");
+  };
 
   let documentsDetailsList = useAppSelector((state) => state.Documents);
 
@@ -57,8 +62,6 @@ const CustomizeQr = ({ navigation }: IDocumentScreenProps) => {
     dispatch(savingCustomQrData([...categoriCustomize]));
   };
 
-
-
   const _renderItem = ({ item, index }: any) => {
     return (
       <View
@@ -75,8 +78,13 @@ const CustomizeQr = ({ navigation }: IDocumentScreenProps) => {
         <View>
           <GenericText style={[{ fontSize: 13 }]}>{item.TITLE}</GenericText>
           <GenericText style={[{ fontSize: 15, fontWeight: "900" }]}>
-            {item.DOMAIN=="mobile"? userDetails?.responseData?.phone:item.DOMAIN =="name" ? userDetails?.responseData?.username :
-            item.DOMAIN =="email" ? userDetails?.responseData?.email :item.DOMAIN }
+            {item.DOMAIN == "mobile"
+              ? userDetails?.responseData?.phone
+              : item.DOMAIN == "name"
+              ? userDetails?.responseData?.username
+              : item.DOMAIN == "email"
+              ? userDetails?.responseData?.email
+              : item.DOMAIN}
           </GenericText>
         </View>
         <View>
@@ -95,7 +103,6 @@ const CustomizeQr = ({ navigation }: IDocumentScreenProps) => {
   const onChangeHandler = () => {};
   const onPressNavigateTo = () => {
     navigation.navigate("uploadDocumentsScreen");
-
   };
 
   return (
@@ -103,29 +110,25 @@ const CustomizeQr = ({ navigation }: IDocumentScreenProps) => {
       <Header
         isBack
         headingText="customizeqrcode"
-        letfIconPress={()=>navigation.goBack()}
+        letfIconPress={() => navigation.goBack()}
         linearStyle={styles.linearStyle}
-        containerStyle={
-          {
-            iconContainer: styles.alignCenter,
-          }
-        }
+        containerStyle={{
+          iconContainer: styles.alignCenter,
+        }}
       ></Header>
-       <TouchableOpacity
-          onPress={()=>navigation.goBack()}
-          style={{
-              position:"absolute",
-              marginTop:40,
-              marginLeft:20,
-          }}
-          >
-          <Image
-            source={LocalImages.backImage}
-            style={{height:20,
-              width:20,
-              resizeMode:"contain",}}
-          />
-           </TouchableOpacity>   
+      <TouchableOpacity
+        onPress={() => navigation.goBack()}
+        style={{
+          position: "absolute",
+          marginTop: 40,
+          marginLeft: 20,
+        }}
+      >
+        <Image
+          source={LocalImages.backImage}
+          style={{ height: 20, width: 20, resizeMode: "contain" }}
+        />
+      </TouchableOpacity>
       <GenericText
         style={[styles.label, { fontSize: 14, textAlign: "center" }]}
       >
@@ -163,7 +166,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 20,
   },
-  alignCenter: { justifyContent: "center", alignItems: "center", },
+  alignCenter: { justifyContent: "center", alignItems: "center" },
   label: {
     padding: 10,
     color: Screens.black,

@@ -193,7 +193,7 @@ const CameraScreen = (props: any) => {
           >
             {"Share this code"}
           </Text>
-          <Text
+          {/* <Text
             style={[
               styles.categoryHeaderText,
               {
@@ -205,7 +205,7 @@ const CameraScreen = (props: any) => {
             ]}
           >
             {SCREENS.SHOWQRSCREEN.instruction}
-          </Text>
+          </Text> */}
         </View>
         <Button
           onPress={capturePicture}
