@@ -7,9 +7,12 @@ import {
   Text,
   Dimensions,
   Alert,
+  AsyncStorage,
 } from "react-native";
 import { RNCamera } from "react-native-camera";
 import Button from "../../components/Button";
+
+import axios from "axios";
 import SuccessPopUp from "../../components/Loader";
 import AnimatedLoader from "../../components/Loader/AnimatedLoader";
 import ModalView from "../../components/Modal";
@@ -24,12 +27,16 @@ import {
   serviceProviderApi,
   QrcodeApis,
   alertBox,
+  generateCredientials,
+  ssiApiKey,
+  CreateVarifiableCredientails,
 } from "../../utils/earthid_account";
 import QrScannerMaskedWidget from "../Camera/QrScannerMaskedWidget";
 import { saveDocuments } from "../../redux/actions/authenticationAction";
 import { IDocumentProps } from "../uploadDocuments/VerifiDocumentScreen";
 import GenericText from "../../components/Text";
 import Loader from "../../components/Loader";
+import { encode } from "punycode";
 const data = [
   { label: " 1", value: "1" },
   { label: " 2", value: "2" },
@@ -43,9 +50,9 @@ const data = [
 const deviceWidth = Dimensions.get("window").width;
 const CameraScreen = (props: any) => {
   const {
-    loading: issuerLoading,
-    data: issuerDataResponse,
-    fetch: issuerFetch,
+    loading: serviceProviderLoading,
+    data: serviceProviderResponse,
+    fetch: serviceProviderFetch,
   } = useFetch();
   const {
     loading: shareCredientialLoading,
@@ -60,16 +67,24 @@ const CameraScreen = (props: any) => {
   } = useFetch();
 
   const {
-    loading: sendDataLoading,
-    fetch: sendDataFetch,
-    data: sendData,
+    loading: sendDatatoServiceProviderLoading,
+    fetch: sendDatatoServiceProvider,
+    data: sendDatatoServiceProviderData,
   } = useFetch();
 
   const dispatch = useAppDispatch();
   const userDetails = useAppSelector((state) => state.account);
+  const keys = useAppSelector((state) => state.user);
+  console.log("keys", keys);
   const [successResponse, setsuccessResponse] = useState(false);
+  const [isCameraVisible, setIsCamerVisible] = useState(true);
   const [isDocumentModal, setisDocumentModal] = useState(false);
   const documentsDetailsList = useAppSelector((state) => state.Documents);
+  const [issuerSchemaJSON, setissuerSchemaJSON] = useState();
+  const [issuerSchemaName, setissuerSchemaName] = useState([{}]);
+  const [issuerSchemaDropDown, setissuerSchemaDropDown] = useState(false);
+  const [selectedSchema, setselectedSchema] = useState();
+  const [loadingforGentSchemaAPI, setloadingforGentSchemaAPI] = useState(false);
   const [value, setValue] = useState(null);
   const [isDocumentModalkyc, setisDocumentModalkyc] = useState(false);
   const [
@@ -85,31 +100,59 @@ const CameraScreen = (props: any) => {
   );
   const _handleBarCodeRead = (barCodeData: any) => {
     let serviceData = JSON.parse(barCodeData.data);
-    console.log("serviceData", serviceData);
-    const { apikey, reqNo, requestType } = serviceData;
-    setbarCodeData(serviceData);
+    console.log("barcodedata", serviceData);
+    if (!serviceProviderLoading) {
+      setbarCodeData(serviceData);
 
-    if (serviceData.requestType === "login") {
-      setissuerLogin(true);
-    }
-    if (serviceData.requestType === "document") {
-      setisDocumentModal(true);
-    }
-    if (serviceData.requestType === "shareCredentials") {
-      setisDocumentModalkyc(true);
-    }
-    if (serviceData.requestType === "generateCredentials") {
-      if (!isDocumentModalkyc) {
-        setisDocumentModalkyc(true);
+      if (serviceData.requestType === "login") {
+        serviceProviderApiCall(serviceData);
       }
-      // const { apikey, reqNo, requestType } = serviceData;
-      // issuerFetch(
-      //   `${serviceProviderApi}?apikey=${apikey}&reqNo=${reqNo}&requestType=${requestType}`,
-      //   {},
-      //   "GET"
-      // );
+      if (serviceData.requestType === "generateCredentials") {
+        serviceProviderApiCall(serviceData);
+      }
+      if (serviceData.requestType === "shareCredentials") {
+        serviceProviderApiCall(serviceData);
+      }
     }
+    setIsCamerVisible(false);
   };
+
+  //service provider API responses handled
+  useEffect(() => {
+    if (
+      serviceProviderResponse &&
+      serviceProviderResponse?.values &&
+      serviceProviderResponse?.values?.length > 0
+    ) {
+      if (barCodeDataDetails?.requestType === "login") {
+        setissuerLogin(true);
+      } else if (barCodeDataDetails?.requestType === "shareCredentials") {
+        getData();
+        setIsCamerVisible(true);
+      } else if (barCodeDataDetails?.requestType === "generateCredentials") {
+        getCredentialsSchema();
+      }
+    }
+  }, [serviceProviderResponse]);
+
+  useEffect(() => {
+    if (sendDatatoServiceProviderData) {
+      //passwordless login flow
+      if (barCodeDataDetails.requestType === "login") {
+        setIsCamerVisible(true);
+        Alert.alert("Login Successfully");
+      }
+      if (barCodeDataDetails.requestType === "generateCredentials") {
+        setIsCamerVisible(true);
+        createVerifiableCredentials();
+      }
+      if (barCodeDataDetails.requestType === "shareCredentials") {
+        setIsCamerVisible(true);
+        Alert.alert("Credientail has been shared successfully Successfully");
+      }
+    }
+  }, [sendDatatoServiceProviderData]);
+
   useEffect(() => {
     console.log("sharecredientials", shareCredientialData);
     if (shareCredientialData?.status === "success") {
@@ -158,59 +201,99 @@ const CameraScreen = (props: any) => {
       props.navigation.navigate("Document");
     }, 2000);
   };
+  const getCredentialsSchema = () => {
+    setloadingforGentSchemaAPI(true);
+    axios
+      .get(generateCredientials, {
+        headers: {
+          "X-API-KEY": ssiApiKey,
+        },
+      })
+      .then((response) => {
+        console.log("response", response);
+        if (response.status !== 200) {
+          setloadingforGentSchemaAPI(false);
+          Alert.alert("Please try again");
+        } else {
+          let schemaResponse = response.data.data;
+          if (schemaResponse.length < 1) {
+            console.log("schemaResponse", schemaResponse);
+            Alert.alert("No Schemas to Generate credentials");
+          } else {
+            console.log("schemaResponse", schemaResponse);
 
-  useEffect(() => {
-    console.log("issuerDataResponse", issuerDataResponse);
-    if (issuerDataResponse?.status === "success") {
-      console.log("issuerData", issuerDataResponse);
-      if (barCodeDataDetails?.requestType === "login") {
-        props.navigation.navigate.goBack(null);
-      } else if (barCodeDataDetails?.requestType === "generateCredentials") {
-        setsuccessResponse(true);
-        var documentDetails: IDocumentProps = {
-          name: "VC - KYC Token",
-          path: "filePath",
-          date: "1/08/2022",
-          time: "date?.time",
-          txId: "data?.result",
-          docType: "pdf",
-          docExt: ".jpg",
-          processedDoc: "",
-          isVc: true,
-          vc: JSON.stringify({
-            name: "VC - KYC Token",
-            path: "filePath",
-            date: "1/08/2022",
-            time: "date?.time",
-            txId: "data?.result",
-            docType: "pdf",
-            docExt: ".jpg",
-            processedDoc: "",
-            isVc: true,
-          }),
-        };
+            while (issuerSchemaName.length) {
+              issuerSchemaName.pop();
+            }
+            schemaResponse.map((item: { schemaName: any }) => {
+              issuerSchemaName.push({
+                value: item.schemaName,
+                label: item.schemaName,
+              });
+            });
+            setloadingforGentSchemaAPI(false);
+            setissuerSchemaJSON(schemaResponse);
+            setissuerSchemaDropDown(true);
+          }
+        }
+      })
+      .catch((error) => {
+        setloadingforGentSchemaAPI(false);
+        Alert.alert(error);
+        console.log("authorizeData Error:: ", error);
+      });
+  };
 
-        var DocumentList = documentsDetailsList?.responseData
-          ? documentsDetailsList?.responseData
-          : [];
+  const createVerifiableCredentials = async () => {
+    getData();
+    setloadingforGentSchemaAPI(true);
+    var documentDetails: IDocumentProps = {
+      name: "Membership Credientials",
+      path: "filePath",
+      date: "1/08/2022",
+      time: "date?.time",
+      txId: "data?.result",
+      docType: "pdf",
+      docExt: ".jpg",
+      processedDoc: "",
+      isVc: true,
+      vc: JSON.stringify({
+        name: "Membership Credientials",
+        path: "filePath",
+        date: "1/08/2022",
+        time: "date?.time",
+        txId: "data?.result",
+        docType: "pdf",
+        docExt: ".jpg",
+        processedDoc: "",
+        isVc: true,
+      }),
+    };
 
-        DocumentList.push(documentDetails);
-        console.log("documentsDetailsList", documentsDetailsList);
-        dispatch(saveDocuments(DocumentList));
-        setsuccessMessage("KYC Token received");
-        setTimeout(() => {
-          setsuccessResponse(false);
-          setisDocumentModal(false);
-          setisDocumentModalkyc(false);
-          props.navigation.navigate("Document");
-        }, 2000);
-      }
-    }
-  }, [issuerDataResponse]);
+    var DocumentList = documentsDetailsList?.responseData
+      ? documentsDetailsList?.responseData
+      : [];
 
-  const documentShare = () => {
-    const { apikey, reqNo, requestType } = barCodeDataDetails;
-    issuerFetch(
+    DocumentList.push(documentDetails);
+    console.log("documentsDetailsList", documentsDetailsList);
+    dispatch(saveDocuments(DocumentList));
+
+    setIsCamerVisible(true);
+    setTimeout(() => {
+      setloadingforGentSchemaAPI(false);
+      setissuerSchemaDropDown(false);
+      Alert.alert("Credential Saved successfully");
+      props.navigation.navigate("Documents");
+    }, 3000);
+  };
+
+  const serviceProviderApiCall = (serviceData: any) => {
+    const { apikey, reqNo, requestType } = serviceData;
+    console.log(
+      "getUrl===>>>::::",
+      `${serviceProviderApi}?apikey=${apikey}&reqNo=${reqNo}&requestType=${requestType}`
+    );
+    serviceProviderFetch(
       `${serviceProviderApi}?apikey=${apikey}&reqNo=${reqNo}&requestType=${requestType}`,
       {},
       "GET"
@@ -220,19 +303,29 @@ const CameraScreen = (props: any) => {
     getSchemeDetails();
   };
 
+  const checkforDependentSchemas = () => {};
+
   const getData = () => {
+    console.log("userDetails", userDetails);
     if (barCodeDataDetails) {
       let data = {
         sessionKey: barCodeDataDetails?.sessionKey,
         encrypted_object: {
           earthId: userDetails?.responseData?.earthId,
           pressed: false,
+          userName: userDetails?.responseData?.username,
+          userEmail: userDetails?.responseData?.email,
+          userMobileNo: userDetails?.responseData?.phone,
+          OrganizationID: userDetails?.responseData?.orgId,
+          countryCode: userDetails?.responseData?.countryCode,
+          emailVerified: userDetails?.responseData?.emailVerified,
+          mobileVerified: userDetails?.responseData?.mobileVerified,
+          documents: documentsDetailsList?.responseData,
+          requestType: barCodeDataDetails?.requestType,
+          reqNo: barCodeDataDetails?.reqNo,
         },
       };
-      console.log("data==>", data);
-      sendDataFetch(QrcodeApis, data, "POST").then(() => {
-        props.navigation.navigate("Home");
-      });
+      sendDatatoServiceProvider(QrcodeApis, data, "POST");
     }
   };
 
@@ -253,18 +346,20 @@ const CameraScreen = (props: any) => {
           ></Image>
         </TouchableOpacity>
       </View>
+      {isCameraVisible && (
+        <RNCamera
+          style={styles.preview}
+          androidCameraPermissionOptions={null}
+          type={RNCamera.Constants.Type.back}
+          captureAudio={false}
+          onBarCodeRead={(data) => _handleBarCodeRead(data)}
+        >
+          <QrScannerMaskedWidget />
+        </RNCamera>
+      )}
 
-      <RNCamera
-        style={styles.preview}
-        androidCameraPermissionOptions={null}
-        type={RNCamera.Constants.Type.back}
-        captureAudio={false}
-        onBarCodeRead={(data) => _handleBarCodeRead(data)}
-      >
-        <QrScannerMaskedWidget />
-      </RNCamera>
       <AnimatedLoader
-        isLoaderVisible={issuerLoading || sendDataLoading}
+        isLoaderVisible={serviceProviderLoading || loadingforGentSchemaAPI}
         loadingText="sendingdata"
       />
       <SuccessPopUp
@@ -320,7 +415,7 @@ const CameraScreen = (props: any) => {
         left={deviceWidth / 9}
         width={deviceWidth / 1.2}
         height={380}
-        isModalVisible={isDocumentModal}
+        isModalVisible={issuerSchemaDropDown}
       >
         <View style={{ flex: 1, paddingHorizontal: 5 }}>
           <GenericText
@@ -333,7 +428,7 @@ const CameraScreen = (props: any) => {
               marginTop: 20,
             }}
           >
-            {"earthidwanttoaccess"}
+            {" Select anyone type to Generate Credentials"}
           </GenericText>
           <View>
             <View style={{ flexDirection: "row", marginVertical: 10 }}>
@@ -398,7 +493,7 @@ const CameraScreen = (props: any) => {
             selectedTextStyle={styles.selectedTextStyle}
             inputSearchStyle={styles.inputSearchStyle}
             iconStyle={styles.iconStyle}
-            data={data}
+            data={issuerSchemaName}
             search
             maxHeight={300}
             labelField="label"
@@ -408,6 +503,7 @@ const CameraScreen = (props: any) => {
             value={"value"}
             onChange={(item) => {
               setValue(item.value);
+              setselectedSchema(item.value);
             }}
           />
           <View
@@ -418,14 +514,18 @@ const CameraScreen = (props: any) => {
               marginHorizontal: 20,
             }}
           >
-            <TouchableOpacity onPress={() => setisDocumentModal(false)}>
+            <TouchableOpacity
+              onPress={() => {
+                setissuerSchemaDropDown(false);
+              }}
+            >
               <GenericText
                 style={{ color: "red", fontSize: 16, fontWeight: "700" }}
               >
                 {"cancel"}
               </GenericText>
             </TouchableOpacity>
-            <TouchableOpacity onPress={documentShare}>
+            <TouchableOpacity onPress={() => createVerifiableCredentials()}>
               <GenericText
                 style={{ color: "green", fontSize: 16, fontWeight: "700" }}
               >
@@ -490,7 +590,7 @@ const CameraScreen = (props: any) => {
               fontWeight: "bold",
             }}
           >
-            {"duration"}
+            {"Select Credientials Type"}
           </GenericText>
           <Dropdown
             style={[styles.dropdown]}
@@ -518,7 +618,11 @@ const CameraScreen = (props: any) => {
               marginHorizontal: 20,
             }}
           >
-            <TouchableOpacity onPress={() => setisDocumentModalkyc(false)}>
+            <TouchableOpacity
+              onPress={() => {
+                setisDocumentModalkyc(false);
+              }}
+            >
               <Text style={{ color: "red", fontSize: 16, fontWeight: "700" }}>
                 Cancel
               </Text>
@@ -634,7 +738,7 @@ const CameraScreen = (props: any) => {
             : "Login successfully"
         }
         Status="Success !"
-        isLoaderVisible={sendDataLoading}
+        isLoaderVisible={false}
       ></Loader>
     </View>
   );

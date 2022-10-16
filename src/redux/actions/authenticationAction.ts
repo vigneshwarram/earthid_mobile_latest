@@ -2,6 +2,7 @@ import {
   getCall,
   getCallWithHeader,
   postCall,
+  ssiGetCall,
   ssiPostCall,
 } from "../../utils/service";
 import { ACTION_TYPES } from "./types";
@@ -16,6 +17,7 @@ const {
     APPROVE_EMAIL_OTP: approveOTPEmail,
     APPROVE_PHONE_OTP: approvePhoneOtp,
     GET_HISTORY: get_History,
+    GET_USERDID: getUser_did,
   },
 } = URI;
 
@@ -24,7 +26,7 @@ let createSchemaUrl = "https://ssi-gbg.myearth.id/api/issuer/createSchema";
 export const GeneratedKeysAction =
   () =>
   async (dispatch: any): Promise<any> => {
-    let responseData;
+    let responseData, responseDataSSI;
     try {
       dispatch({
         type: ACTION_TYPES.GENERATED_KEYS_LOADING,
@@ -34,10 +36,20 @@ export const GeneratedKeysAction =
       );
       responseData = await _responseHandler(response);
       console.log("responseData", responseData);
+      const responsedataSSI = await ssiGetCall(
+        getUser_did,
+        "GET",
+        responseData?.result?.publicKey
+      );
+      responseDataSSI = await _responseHandler(responsedataSSI);
+      console.log("responseDatassi==>", responseDataSSI);
+      const data = {
+        userDid: responseDataSSI.data,
+      };
       dispatch({
         type: ACTION_TYPES.GENERATED_KEYS_RESPONSE,
         payload: {
-          responseData,
+          responseData: { ...responseData, ...data },
         },
       });
     } catch (error) {

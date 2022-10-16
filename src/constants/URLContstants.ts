@@ -1,6 +1,7 @@
 // @ts-ignore
 //export const EARTHID_DEV_BASE = "https://apiv2.myearth.id";
 export const EARTHID_DEV_BASE = "https://stage-apiv2.myearth.id";
+export const SSI_BASE_URL = "https://ssi-gbg.myearth.id/api";
 
 export const URI = {
   ACCOUNT: {
@@ -10,6 +11,7 @@ export const URI = {
     APPROVE_PHONE_OTP: `${EARTHID_DEV_BASE}/verification/phoneVerify`,
     CONTRACT_CALL: `${EARTHID_DEV_BASE}/contract/functionCall`,
     GET_HISTORY: `${EARTHID_DEV_BASE}/history/getHistory`,
+    GET_USERDID: `${SSI_BASE_URL}/user/did`,
   },
 };
 

@@ -83,12 +83,17 @@ export const getCallWithHeader = (uri: string, method: string = "GET"): any => {
  * @param uri - string uri of the request
  * @param payload - body data to be posted as a json object key value pair,like {key1: value1, key2: value2}
  */
-export const ssiGetCall = (uri: string, method: string = "GET"): any => {
+export const ssiGetCall = (
+  uri: string,
+  method: string = "GET",
+  key: string
+): any => {
   return fetch(uri, {
     method,
     headers: {
       "Content-Type": "application/json",
       "X-API-KEY": ssiApiKey,
+      publicKey: key,
     },
   });
 };

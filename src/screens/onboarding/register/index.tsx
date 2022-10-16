@@ -152,6 +152,7 @@ const Register = ({ navigation }: IRegister) => {
   if (userDetails && userDetails?.isAccountCreatedSuccess) {
     setsuccessResponse(true);
     userDetails.isAccountCreatedSuccess = false;
+
     console.log("userDetails", userDetails);
     if (userDetails?.responseData) {
       setTimeout(() => {
@@ -271,7 +272,6 @@ const Register = ({ navigation }: IRegister) => {
               onChangeText={(text: any) => {
                 setmobileNumber(text);
               }}
-
               containerStyle={{
                 borderColor: Screens.darkGray,
                 borderWidth: 2.2,
@@ -279,7 +279,11 @@ const Register = ({ navigation }: IRegister) => {
                 height: 60,
                 marginHorizontal: 10,
               }}
-              flagButtonStyle={{ backgroundColor: Screens.thickGray,borderBottomLeftRadius:9,borderTopLeftRadius:9 }}
+              flagButtonStyle={{
+                backgroundColor: Screens.thickGray,
+                borderBottomLeftRadius: 9,
+                borderTopLeftRadius: 9,
+              }}
               textInputStyle={{ fontSize: 16, padding: 0, margin: 0 }}
               codeTextStyle={{ fontSize: 16, padding: 0, margin: 0 }}
               textContainerStyle={{
@@ -287,10 +291,9 @@ const Register = ({ navigation }: IRegister) => {
                 padding: 0,
                 margin: 0,
                 borderBottomEndRadius: 9,
-                borderTopRightRadius:9,
-                backgroundColor:"#fff"
+                borderTopRightRadius: 9,
+                backgroundColor: "#fff",
               }}
-                    
             />
             <Info
               title={"email"}
@@ -507,7 +510,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     marginLeft: 10,
     marginTop: -2,
-    height:60
+    height: 60,
   },
 });
 

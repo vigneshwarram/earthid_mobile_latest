@@ -15,7 +15,8 @@ export const facialDataLivenessAPI = BASE_URL + "/user/liveness";
 export const CreateHistory = BASE_URL + "/history/createHistory";
 export const updatePhone = BASE_URL + "/verification/verifiedPhoneVerify";
 export const QrcodeApis = BASE_URL + "/customer/shareDoc";
-export const generateCredientials = BASE_URL + "/api/issuer/schemas";
+export const generateCredientials = `https://ssi-gbg.myearth.id/api/issuer/schemas`;
+export const CreateVarifiableCredientails = `https://ssi-gbg.myearth.id/api/issuer/verifiableCredential`;
 
 export const createAccountApi = BASE_URL + "/authorize/createAccount";
 export const getRecordByTxApi = BASE_URL + "/authorize/getRecordByTx?txId";
@@ -35,7 +36,6 @@ export const apiAuthorization = "fae2622d-7b73-4fc6-a536-202cabe75187";
 export const deleteUserApi = BASE_URL + "/user/deleteUser";
 export const uploadDocument = BASE_URL + "/user/upload";
 
-
 // icca api to post specific data
 export const iccaPostApi = "https://icca.flexsin.org/api/user_key_data";
 // verifier website url for verifying the shared link
@@ -44,8 +44,7 @@ export const verifierWebsite = "https://verifier.icca.flexsin.org/";
 //firebaseAnalytics
 
 //Scan QR always on mainnet only
-export const serviceProviderApi =
-  "https://api-stage.myearth.id/authorize/serviceProvider/";
+export const serviceProviderApi = `${BASE_URL}/customer/serviceProvider`;
 export const userDataApi = "https://api-stage.myearth.id/authorize/userData/";
 
 // Last Mainnet - 0.0.43407
