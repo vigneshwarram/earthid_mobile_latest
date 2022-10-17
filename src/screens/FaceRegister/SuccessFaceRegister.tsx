@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   ActivityIndicator,
+  AsyncStorage
 } from "react-native";
 
 import Button from "../../components/Button";
@@ -17,11 +18,30 @@ import { useFetch } from "../../hooks/use-fetch";
 import { Screens } from "../../themes/index";
 import { validateDocsApi } from "../../utils/earthid_account";
 
-const facePlaceHolderWidget = (props: any) => {
+const facePlaceHolderWidget = ({navigation,route}:any) => {
+
+
+  useEffect(()=>{
+    console.log("routeface==>",route.params.type)
+    console.log("routeface==>",route)
+  },[])
+
+  // const storeData = async () => {
+  //   try {
+  //      await AsyncStorage.setItem(
+  //       "key",
+  //       route.name
+  //     );
+      
+  //   } catch (error) {
+  //    console.log(error)
+  //   }
+  // };
+
   return (
     <View style={styles.sectionContainer}>
       <View style={{ position: "absolute", top: 20, right: 20, zIndex: 100 }}>
-        <TouchableOpacity onPress={() => props.navigation.goBack()}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image
             resizeMode="contain"
             style={[styles.logoContainer]}
@@ -53,7 +73,7 @@ const facePlaceHolderWidget = (props: any) => {
 
       <Button
         onPress={() =>
-          props.navigation.dispatch(StackActions.replace("DrawerNavigator"))
+          navigation.dispatch(StackActions.replace("DrawerNavigator",{type:"Faceid"}))
         }
         style={{
           buttonContainer: {

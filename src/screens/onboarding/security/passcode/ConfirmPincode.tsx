@@ -54,7 +54,7 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
       <ScrollView contentContainerStyle={styles.sectionContainer}>
         <Header
           isLogoAlone={true}
-          headingText={"confirmpassword"}
+          headingText={"confirmpasscords"}
           linearStyle={styles.linearStyle}
           containerStyle={{
             iconStyle: {
@@ -97,7 +97,9 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
           </View>
 
           <View style={{alignSelf:"center"}}>
-            
+
+            <View style={{alignSelf:"center"}}>
+
           <SmoothPinCodeInput
             cellStyle={{
               borderWidth: isError ? 1.5 : 0.5,
@@ -114,6 +116,8 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
             value={code}
             onTextChange={onPinCodeChange}
           />
+            </View>
+            
             </View>    
 
           {isError && (

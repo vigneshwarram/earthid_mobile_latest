@@ -131,7 +131,10 @@
   "confirmnewpass":"Confirmar su nueva contraseña de 6 dígitos",
   "livetest":"Prueba de vida",
   "entermobotp":"Ingresar OTP móvil",
-  "enteremailotp":"Ingresar OTP Email"
+  "enteremailotp":"Ingresar OTP Email",
+  "confirmpasscords":"Confirmar Contraseña",
+  "entersixdigit":"Ingrese su antiguo código de acceso de 6 dígitos"
+
   
 
 }

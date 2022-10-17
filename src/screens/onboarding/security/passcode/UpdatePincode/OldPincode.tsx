@@ -119,7 +119,7 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
                 },
               ]}
             >
-              {"plsenteroldpincode"}
+              {"entersixdigit"}
             </GenericText>
           </View>
 

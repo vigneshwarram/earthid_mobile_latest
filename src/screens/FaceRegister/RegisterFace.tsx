@@ -1,5 +1,5 @@
 import { useTheme } from "@react-navigation/native";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -103,7 +103,7 @@ const LivenessCameraScreen = (props: any) => {
             };
             const data = await camRef.current.takePictureAsync(options);
 
-            props.navigation.navigate("SuccessFaceRegister");
+            props.navigation.navigate("SuccessFaceRegister", { type:"facedata"});
           } else {
             SnackBar({
               indicationMessage: "I can still see you moving",
@@ -132,16 +132,22 @@ const LivenessCameraScreen = (props: any) => {
     let facedata = res.data.result.faceId;
     console.log("facedata====>", facedata);
     AsyncStorage.setItem("facedata", facedata);
+    console.log("route==>",facedata)
     const test = "success";
     AsyncStorage.setItem("setFaceid", test);
 
     if (facedata) {
-      props.navigation.navigate("SuccessFaceRegister");
+      props.navigation.navigate("SuccessFaceRegister", { type:"facedata"});
     }
   };
 
   const { colors } = useTheme();
   const camRef: any = useRef();
+
+  useEffect(()=>{
+
+    console.log("route==>",props.route)
+  },[])
 
   return (
     <View style={styles.sectionContainer}>

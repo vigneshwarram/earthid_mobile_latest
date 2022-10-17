@@ -26,12 +26,14 @@ import { alertBox } from "../../../utils/earthid_account";
 
 interface IHomeScreenProps {
   navigation?: any;
+  route?:any
 }
 
-const HomeScreen = ({ navigation }: IHomeScreenProps) => {
+const HomeScreen = ({ navigation,route }: IHomeScreenProps) => {
   const userDetails = useAppSelector((state) => state.account);
   const getHistoryReducer = useAppSelector((state) => state.getHistoryReducer);
   const profilePicture = useAppSelector((state) => state.savedPic);
+ 
   const dispatch = useAppDispatch();
   const _toggleDrawer = () => {
     navigation.openDrawer();
@@ -63,6 +65,7 @@ const HomeScreen = ({ navigation }: IHomeScreenProps) => {
           container: [styles.avatarContainer, { backgroundColor: item.color }],
           imgContainer: styles.avatarImageContainer,
           text: styles.avatarTextContainer,
+          
         }}
       />
     );
@@ -87,6 +90,7 @@ const HomeScreen = ({ navigation }: IHomeScreenProps) => {
     getHistoryReducer.isSuccess = false;
   }
   useEffect(() => {
+
     const listener: any = EventRegister.addEventListener("OpenDrawer", () => {
       navigation.openDrawer();
       return;

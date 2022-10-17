@@ -40,7 +40,7 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
       <Card
         leftAvatar={LocalImages.documentsImage}
         absoluteCircleInnerImage={LocalImages.upImage}
-        rightIconSrc={LocalImages.menuImage}
+      //  rightIconSrc={LocalImages.menuImage}
         title={item?.eventValue}
         subtitle={`       Uploaded  : ${item.createdAt}`}
         style={{

@@ -115,6 +115,9 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
                 : SCREENS.SECURITYSCREEN.PasscodeInstructions}
             </GenericText>
           </View>
+
+          <View style={{alignSelf:"center"}}>
+
           <SmoothPinCodeInput
             cellStyle={{
               borderWidth: 0.5,
@@ -131,6 +134,7 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
             value={code}
             onTextChange={onPinCodeChange}
           />
+          </View>
           <Button
             onPress={_navigateAction}
             style={{
