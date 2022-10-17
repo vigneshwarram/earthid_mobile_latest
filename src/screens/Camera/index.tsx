@@ -412,6 +412,7 @@ const CameraScreen = (props: any) => {
           <View style={{ marginTop: -20 }}>
             <Button
               onPress={() => {
+                setIsCamerVisible(true);
                 setissuerLogin(false);
               }}
               style={{
