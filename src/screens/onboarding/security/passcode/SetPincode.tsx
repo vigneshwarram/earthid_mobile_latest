@@ -35,7 +35,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
       <ScrollView contentContainerStyle={styles.sectionContainer}>
         <Header
           isLogoAlone={true}
-          headingText={"setpasscord"}
+          headingText={"setpass"}
           linearStyle={styles.linearStyle}
           containerStyle={{
             iconStyle: {

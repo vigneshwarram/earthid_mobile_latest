@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
+  AsyncStorage
 } from "react-native";
 import { Screens } from "../../../themes/index";
 import { LocalImages } from "../../../constants/imageUrlConstants";
@@ -19,11 +20,32 @@ import { alertBox } from "../../../utils/earthid_account";
 const UpdateAuthentication = (props: any) => {
   const dispatch = useAppDispatch();
   const [languageVisible, setLanguageVisible] = useState(false);
+  
+
+  // const retrieveData = async (item: any) => {
+  //   try {
+  //     const value = await AsyncStorage.getItem("key");
+  //     if (value=="RegisterFace") {
+  //       props.navigation.navigate("UpdateNewPin")
+  //       console.log("value",value);
+  //     }else{
+  //       props.navigation.navigate("OldPincode",{type:"pass"});
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   const _navigateAction = (item: any) => {
     if (item.CARD === "language") {
       setLanguageVisible(true);
-    } else {
+    }
+    
+    // else if(item.card=="OldPincode"){
+    //      retrieveData(item)
+    // } 
+    
+    else {
       props.navigation.navigate(item.card,{type:"pass"});
     }
   };

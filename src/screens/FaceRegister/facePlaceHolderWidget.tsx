@@ -17,7 +17,7 @@ import { useFetch } from "../../hooks/use-fetch";
 import { Screens } from "../../themes/index";
 import { validateDocsApi } from "../../utils/earthid_account";
 
-const facePlaceHolderWidget = (props: any) => {
+const facePlaceHolderWidget = (props: any,route:any) => {
 
 
 const faceBiometricHandler = ()=>{

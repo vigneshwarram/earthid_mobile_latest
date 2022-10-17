@@ -131,6 +131,8 @@
   "confirmnewpass":"Confirm your new 6 - digit passcode",
   "livetest":"Liveness Test",
   "entermobotp":"Enter Mobile OTP",
-  "enteremailotp":"Enter Email OTP"
+  "enteremailotp":"Enter Email OTP",
+  "confirmpasscords":"Confirm Passcord",
+  "entersixdigit":"Enter Your old 6-digit passcode"
 
 }
