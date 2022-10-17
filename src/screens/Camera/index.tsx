@@ -136,6 +136,10 @@ const CameraScreen = (props: any) => {
   }, [serviceProviderResponse]);
 
   useEffect(() => {
+    console.log(
+      "sendDatatoServiceProviderData==>",
+      sendDatatoServiceProviderData
+    );
     if (sendDatatoServiceProviderData) {
       //passwordless login flow
       if (barCodeDataDetails.requestType === "login") {
@@ -163,43 +167,6 @@ const CameraScreen = (props: any) => {
   const getSchemeDetails = () => {
     setisDocumentModalkyc(false);
     getData();
-    var documentDetails: IDocumentProps = {
-      name: "Membership Credientials",
-      path: "filePath",
-      date: "1/08/2022",
-      time: "date?.time",
-      txId: "data?.result",
-      docType: "pdf",
-      docExt: ".jpg",
-      processedDoc: "",
-      isVc: true,
-      vc: JSON.stringify({
-        name: "Membership Credientials",
-        path: "filePath",
-        date: "1/08/2022",
-        time: "date?.time",
-        txId: "data?.result",
-        docType: "pdf",
-        docExt: ".jpg",
-        processedDoc: "",
-        isVc: true,
-      }),
-    };
-
-    var DocumentList = documentsDetailsList?.responseData
-      ? documentsDetailsList?.responseData
-      : [];
-
-    DocumentList.push(documentDetails);
-    console.log("documentsDetailsList", documentsDetailsList);
-    dispatch(saveDocuments(DocumentList));
-
-    setTimeout(() => {
-      setsuccessResponse(false);
-      setisDocumentModal(false);
-      setisDocumentModalkyc(false);
-      props.navigation.navigate("Document");
-    }, 2000);
   };
   const getCredentialsSchema = () => {
     setloadingforGentSchemaAPI(true);
@@ -308,23 +275,42 @@ const CameraScreen = (props: any) => {
   const getData = () => {
     console.log("userDetails", userDetails);
     if (barCodeDataDetails) {
-      let data = {
-        sessionKey: barCodeDataDetails?.sessionKey,
-        encrypted_object: {
-          earthId: userDetails?.responseData?.earthId,
-          pressed: false,
-          userName: userDetails?.responseData?.username,
-          userEmail: userDetails?.responseData?.email,
-          userMobileNo: userDetails?.responseData?.phone,
-          OrganizationID: userDetails?.responseData?.orgId,
-          countryCode: userDetails?.responseData?.countryCode,
-          emailVerified: userDetails?.responseData?.emailVerified,
-          mobileVerified: userDetails?.responseData?.mobileVerified,
-          documents: documentsDetailsList?.responseData,
-          requestType: barCodeDataDetails?.requestType,
-          reqNo: barCodeDataDetails?.reqNo,
-        },
-      };
+      let data;
+      if (barCodeDataDetails.requestType === "login") {
+        data = {
+          sessionKey: barCodeDataDetails?.sessionKey,
+          encrypted_object: {
+            earthId: userDetails?.responseData?.earthId,
+            pressed: false,
+          },
+        };
+      } else if (barCodeDataDetails.requestType === "generateCredentials") {
+        data = {
+          sessionKey: barCodeDataDetails?.sessionKey,
+          encrypted_object: {
+            earthId: userDetails?.responseData?.earthId,
+            pressed: false,
+          },
+        };
+      } else if (barCodeDataDetails.requestType === "shareCredentials") {
+        data = {
+          sessionKey: barCodeDataDetails?.sessionKey,
+          encrypted_object: {
+            earthId: userDetails?.responseData?.earthId,
+            pressed: false,
+            userName: userDetails?.responseData?.username,
+            userEmail: userDetails?.responseData?.email,
+            userMobileNo: userDetails?.responseData?.phone,
+            OrganizationID: userDetails?.responseData?.orgId,
+            countryCode: userDetails?.responseData?.countryCode,
+            emailVerified: userDetails?.responseData?.emailVerified,
+            mobileVerified: userDetails?.responseData?.mobileVerified,
+            documents: documentsDetailsList?.responseData,
+            requestType: barCodeDataDetails?.requestType,
+            reqNo: barCodeDataDetails?.reqNo,
+          },
+        };
+      }
       sendDatatoServiceProvider(QrcodeApis, data, "POST");
     }
   };
@@ -366,7 +352,11 @@ const CameraScreen = (props: any) => {
         isLoaderVisible={successResponse}
         loadingText={successMessage}
       />
-      <ModalView height={250} isModalVisible={issuerLogin}>
+      <ModalView
+        width={deviceWidth / 1.45}
+        height={350}
+        isModalVisible={issuerLogin}
+      >
         <View
           style={{
             flex: 1,
@@ -378,8 +368,7 @@ const CameraScreen = (props: any) => {
             style={{
               justifyContent: "center",
               alignItems: "center",
-              backgroundColor: "#8059D0",
-              width: deviceWidth / 1.5,
+              backgroundColor: "#fff",
             }}
           >
             <Image
@@ -388,7 +377,18 @@ const CameraScreen = (props: any) => {
               source={LocalImages.logoImage}
             ></Image>
           </View>
-
+          <GenericText
+            style={{
+              textAlign: "center",
+              padding: 5,
+              color: "#000",
+              fontSize: 14,
+              fontWeight: "900",
+              marginTop: 20,
+            }}
+          >
+            {"Please authorize it for the login "}
+          </GenericText>
           <Button
             onPress={() => {
               setissuerLogin(false);
@@ -409,6 +409,28 @@ const CameraScreen = (props: any) => {
             }}
             title={"authorize"}
           ></Button>
+          <View style={{ marginTop: -20 }}>
+            <Button
+              onPress={() => {
+                setissuerLogin(false);
+              }}
+              style={{
+                buttonContainer: {
+                  elevation: 5,
+                  marginHorizontal: 10,
+                  backgroundColor: "red",
+                },
+                text: {
+                  color: Screens.pureWhite,
+                  fontSize: 12,
+                },
+                iconStyle: {
+                  tintColor: Screens.pureWhite,
+                },
+              }}
+              title={"Cancel"}
+            ></Button>
+          </View>
         </View>
       </ModalView>
       <ModalView

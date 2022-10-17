@@ -27,7 +27,8 @@ const PasswordCheck = ({ navigation, route }: IHomeScreenProps) => {
   const savedCode = route.params?.setCode;
   const onPinCodeChange = (code: any) => {
     setisError(false);
-    setCode(code);
+    var format = code.replace(/[^0-9]/g, "");
+    setCode(format);
   };
 
   const _navigateAction = async () => {
@@ -88,26 +89,24 @@ const PasswordCheck = ({ navigation, route }: IHomeScreenProps) => {
             </GenericText>
           </View>
 
-           <View style={{alignSelf:"center"}}>
-            
-            
-          <SmoothPinCodeInput
-            cellStyle={{
-              borderWidth: isError ? 1.5 : 0.5,
-              borderColor: isError ? "red" : Screens.grayShadeColor,
-              borderRadius: 5,
-            }}
-            cellStyleFocused={{
-              borderWidth: 2,
-              borderColor: Screens.colors.primary,
-            }}
-            password
-            cellSize={50}
-            codeLength={6}
-            value={code}
-            onTextChange={onPinCodeChange}
-          />
-            </View>   
+          <View style={{ alignSelf: "center" }}>
+            <SmoothPinCodeInput
+              cellStyle={{
+                borderWidth: isError ? 1.5 : 0.5,
+                borderColor: isError ? "red" : Screens.grayShadeColor,
+                borderRadius: 5,
+              }}
+              cellStyleFocused={{
+                borderWidth: 2,
+                borderColor: Screens.colors.primary,
+              }}
+              password
+              cellSize={50}
+              codeLength={6}
+              value={code}
+              onTextChange={onPinCodeChange}
+            />
+          </View>
 
           {isError && (
             <GenericText

@@ -8,7 +8,7 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
-  AsyncStorage
+  AsyncStorage,
 } from "react-native";
 import Share from "react-native-share";
 import Avatar from "../../../components/Avatar";
@@ -34,7 +34,7 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
   let documentsDetailsList = useAppSelector((state) => state.Documents);
   const dispatch = useAppDispatch();
   const [selectedItem, setselectedItem] = useState();
-  console.log("documentsDetailsList", documentsDetailsList);
+
   const [
     isBottomSheetForSideOptionVisible,
     setisBottomSheetForSideOptionVisible,
@@ -42,7 +42,7 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
 
   const [searchedData, setSearchedData] = useState([]);
 
-  const [searchText, setsearchText] = useState();
+  const [searchText, setsearchText] = useState("");
 
   const [isBottomSheetForFilterVisible, setisBottomSheetForFilterVisible] =
     useState<boolean>(false);
@@ -53,10 +53,7 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
   };
 
   const _renderItem = ({ item }: any) => {
-
-    AsyncStorage.setItem("day",item.date)
-
-    console.log( "items==>",item);
+    AsyncStorage.setItem("day", item.date);
 
     return (
       <TouchableOpacity
@@ -81,25 +78,22 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
                 height: 62,
                 borderRadius: 20,
                 marginTop: 25,
-                marginLeft:10,
-                marginRight:5
+                marginLeft: 10,
+                marginRight: 5,
               },
               uploadImageStyle: {
                 backgroundColor: "rgba(245, 188, 232, 1)",
               },
-              
             },
-            title:{
+            title: {
               fontSize: 14,
-              marginTop:-10,
-              fontWeight:"bold"
-             
+              marginTop: -10,
+              fontWeight: "bold",
             },
-            subtitle:{
+            subtitle: {
               fontSize: 13,
-                marginTop:5
+              marginTop: 5,
             },
-
           }}
         />
       </TouchableOpacity>
@@ -140,15 +134,17 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
       name: string;
     }) {
       const itemData = item.name ? item.name.toUpperCase() : "".toUpperCase();
+
       const textData = text.toUpperCase();
+
       return itemData.indexOf(textData) > -1;
     });
     setsearchText(text);
+    console.log("newData===>", newData);
     setSearchedData(newData);
   };
 
   const shareItem = async () => {
-    console.log("selectedItem", selectedItem);
     if (selectedItem?.base64) {
       await Share.open({
         url: `${selectedItem?.base64}`,
@@ -162,7 +158,7 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
 
   const deleteItem = () => {
     setisBottomSheetForSideOptionVisible(false);
-    console.log("selectedItem", selectedItem);
+
     const newData = documentsDetailsList?.responseData.filter(function (item: {
       name: any;
     }) {
@@ -175,6 +171,21 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
     navigation.navigate("uploadDocumentsScreen");
   };
   const _keyExtractor = ({ path }: any) => path.toString();
+
+  const getFilteredData = () => {
+    let data = documentsDetailsList?.responseData;
+    console.log("searchedData====>", searchText);
+    if (searchedData.length > 0) {
+      data = searchedData;
+      return data;
+    }
+    if (searchedData.length === 0 && searchText != "") {
+      return [];
+    }
+
+    return data;
+  };
+
   return (
     <View style={styles.sectionContainer}>
       <ScrollView
@@ -233,11 +244,7 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
           </View>
 
           <FlatList<any>
-            data={
-              searchedData.length > 0
-                ? searchedData
-                : documentsDetailsList?.responseData
-            }
+            data={getFilteredData()}
             renderItem={_renderItem}
             keyExtractor={_keyExtractor}
           />

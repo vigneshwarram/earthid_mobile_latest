@@ -332,7 +332,7 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
               }}
             />
           </View>
-          <View style={styles.socialMediaContainer}>
+          {/* <View style={styles.socialMediaContainer}>
             <FlatList<any>
               horizontal
               scrollEnabled={false}
@@ -340,7 +340,7 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
               renderItem={_renderItem}
               keyExtractor={_keyExtractor}
             />
-          </View>
+          </View> */}
           <BottomSheet
             onClose={() => setisCameraOptionVisible(false)}
             height={150}

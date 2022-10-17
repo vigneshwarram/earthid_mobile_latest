@@ -120,7 +120,8 @@ const EditMobileNumber = (props: any) => {
         defaultCode="US"
         layout="first"
         onChangeText={(text: any) => {
-          setPhone(text);
+          var format = text.replace(/[^0-9]/g, "");
+          setPhone(format);
         }}
         containerStyle={{
           borderColor: Screens.darkGray,

@@ -40,7 +40,7 @@ export interface IDocumentProps {
 }
 const VerifiDocumentScreen = (props: any) => {
   const { uploadedDocuments } = props.route.params;
-  const { faceImageData } = props.route.params;
+  const { faceImageData, selectedDocument } = props.route.params;
   const { loading, data, error, fetch } = useFetch();
   const userDetails = useAppSelector((state) => state.account);
   const getHistoryReducer = useAppSelector((state) => state.getHistoryReducer);
@@ -70,7 +70,7 @@ const VerifiDocumentScreen = (props: any) => {
       var date = dateTime();
       const filePath = RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
       var documentDetails: IDocumentProps = {
-        name: `ID Card_${Math.random()}`,
+        name: selectedDocument,
         path: filePath,
         date: date?.date,
         time: date?.time,
@@ -87,7 +87,7 @@ const VerifiDocumentScreen = (props: any) => {
       DocumentList.push(documentDetails);
       dispatch(saveDocuments(DocumentList));
       const payLoad = {
-        eventValue: `ID Card_${Math.random()}`,
+        eventValue: selectedDocument,
         eventType: "VC_CREATED",
         userId: userDetails?.responseData?.Id,
         publicKey: userDetails?.responseData?.publicKey,

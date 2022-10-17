@@ -33,10 +33,13 @@ const EditEmailAddOtp = (props: any) => {
   const [oldCode, setOldCode] = useState();
   const [newCode, setNewCode] = useState();
   const onPinCodeChangeForOld = (code: any) => {
-    setOldCode(code);
+    var format = code.replace(/[^0-9]/g, "");
+
+    setOldCode(format);
   };
   const onPinCodeChangeForNew = (code: any) => {
-    setNewCode(code);
+    var format = code.replace(/[^0-9]/g, "");
+    setNewCode(format);
   };
 
   const verfified = () => {

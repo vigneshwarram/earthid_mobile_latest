@@ -1,5 +1,12 @@
 import React from "react";
-import { StyleSheet, View, Text, Image, Dimensions ,TouchableOpacity} from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  Dimensions,
+  TouchableOpacity,
+} from "react-native";
 import { DEVICE } from "../../constants";
 import { LocalImages } from "../../constants/imageUrlConstants";
 import { Screens } from "../../themes";
@@ -28,50 +35,58 @@ const Info = ({
         <View>
           <GenericText style={[styles.title, style.title]}>{title}</GenericText>
           {subtitle && (
-            <View style={{justifyContent:"space-between",flexDirection:"row"}}>
-            <View style={styles.titleTextContainer}>
-              <GenericText style={[styles.subtitle, style.subtitle]}>{subtitle}</GenericText>
-              {subtitleRowText && (
-                <TouchableOpacity onPress={subTitlePress}>
-                  <View style={styles.titleTextContainer}>
-                    <View
-                      style={{
-                        paddingHorizontal: 10,
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      {subtitleRowText === "verified" && (
-                        <Image
-                          resizeMode="contain"
-                          style={styles.sublogoContainers}
-                          source={LocalImages.successTikImage}
-                        ></Image>
-                      )}
+            <View
+              style={{ justifyContent: "space-between", flexDirection: "row" }}
+            >
+              <View style={styles.titleTextContainer}>
+                <GenericText style={[styles.subtitle, style.subtitle]}>
+                  {subtitle}
+                </GenericText>
+                {subtitleRowText && (
+                  <TouchableOpacity onPress={subTitlePress}>
+                    <View style={styles.titleTextContainer}>
+                      <View
+                        style={{
+                          paddingHorizontal: 10,
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        {subtitleRowText === "verified" && (
+                          <Image
+                            resizeMode="contain"
+                            style={styles.sublogoContainers}
+                            source={LocalImages.successTikImage}
+                          ></Image>
+                        )}
+                      </View>
+                      <GenericText
+                        style={[styles.subtitle, style.subtitleNearText]}
+                      >
+                        {subtitleRowText}
+                      </GenericText>
                     </View>
-                    <GenericText style={[styles.subtitle, style.subtitleNearText]}>
-                      {subtitleRowText}
-                    </GenericText>
-                  </View>
+                  </TouchableOpacity>
+                )}
+              </View>
+
+              {tailIcon && (
+                <TouchableOpacity
+                  onPress={tailIconPress}
+                  style={{ position: "absolute", right: 0 }}
+                >
+                  <Image
+                    style={{
+                      position: "absolute",
+                      right: 0,
+                      height: 20,
+                      width: 20,
+                    }}
+                    resizeMode="contain"
+                    source={tailIcon}
+                  ></Image>
                 </TouchableOpacity>
               )}
-            </View>
-
-            {tailIcon && (
-          
-              <TouchableOpacity
-              onPress={tailIconPress}
-              style={{position:"absolute",right:0}}
-              >
-              <Image
-              style={{position:"absolute",right:0,height:20,width:20}}
-                resizeMode="contain"
-                source={tailIcon}
-              ></Image>
-              </TouchableOpacity>
-            
-          )}
-
             </View>
           )}
           {titleIcon && (
@@ -103,15 +118,15 @@ const styles = StyleSheet.create({
   },
   titleTextContainer: {
     flexDirection: "row",
-    width:"100%",
+    width: "100%",
   },
   imageContainer: {
     position: "absolute",
     justifyContent: "center",
     alignItems: "center",
-    top: 0,
-    bottom: 25,
-    left: 150,
+    top: 10,
+    bottom: 0,
+    left: 40,
     right: 0,
   },
   container: {
@@ -133,7 +148,5 @@ const styles = StyleSheet.create({
     fontSize: 12,
     paddingVertical: 1.5,
     marginLeft: -20,
-    
-    
   },
 });

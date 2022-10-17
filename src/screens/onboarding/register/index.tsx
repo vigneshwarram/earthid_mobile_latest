@@ -270,7 +270,8 @@ const Register = ({ navigation }: IRegister) => {
               defaultCode="US"
               layout="first"
               onChangeText={(text: any) => {
-                setmobileNumber(text);
+                var format = text.replace(/[^0-9]/g, "");
+                setmobileNumber(format);
               }}
               containerStyle={{
                 borderColor: Screens.darkGray,

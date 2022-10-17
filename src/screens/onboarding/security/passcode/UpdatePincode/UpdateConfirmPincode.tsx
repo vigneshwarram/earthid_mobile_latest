@@ -28,11 +28,12 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
   const [code, setCode] = useState();
   const [isError, setisError] = useState(false);
   const savedCode = route.params?.setCode;
-  const {type} = route.params;
- 
+  const { type } = route.params;
+
   const onPinCodeChange = (code: any) => {
     setisError(false);
-    setCode(code);
+    var format = code.replace(/[^0-9]/g, "");
+    setCode(format);
   };
   const _navigateAction = async () => {
     console.log("savedCode", savedCode);
@@ -48,9 +49,9 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
     }
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log("savedtype==>", route);
-  },[])
+  }, []);
 
   return (
     <View style={styles.sectionContainer}>
@@ -69,20 +70,18 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
           }}
         ></Header>
         <TouchableOpacity
-          onPress={()=>navigation.goBack()}
+          onPress={() => navigation.goBack()}
           style={{
-              position:"absolute",
-              marginTop:40,
-              marginLeft:20,
+            position: "absolute",
+            marginTop: 40,
+            marginLeft: 20,
           }}
-          >
+        >
           <Image
             source={LocalImages.backImage}
-            style={{height:20,
-              width:20,
-              resizeMode:"contain",}}
+            style={{ height: 20, width: 20, resizeMode: "contain" }}
           />
-           </TouchableOpacity> 
+        </TouchableOpacity>
         <View style={styles.category}>
           <View>
             <View
@@ -110,7 +109,9 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
                 },
               ]}
             >
-              {route.name=="UpdateConfirmPincode"?"confirmnewpass":SCREENS.SECURITYSCREEN.confirmInstruction}
+              {route.name == "UpdateConfirmPincode"
+                ? "confirmnewpass"
+                : SCREENS.SECURITYSCREEN.confirmInstruction}
             </GenericText>
           </View>
           <SmoothPinCodeInput

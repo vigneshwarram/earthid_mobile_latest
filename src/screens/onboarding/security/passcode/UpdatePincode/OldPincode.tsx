@@ -25,7 +25,8 @@ interface IHomeScreenProps {
 const Register = ({ navigation, route }: IHomeScreenProps) => {
   const [code, setCode] = useState();
   const onPinCodeChange = (code: any) => {
-    setCode(code);
+    var format = code.replace(/[^0-9]/g, "");
+    setCode(format);
   };
   const _navigateAction = async () => {
     let oldPin = await AsyncStorage.getItem("passcode");
@@ -134,7 +135,6 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
                 borderColor: Screens.colors.primary,
                 borderWidth: 2,
               }}
-              password
               cellSize={50}
               codeLength={6}
               value={code}

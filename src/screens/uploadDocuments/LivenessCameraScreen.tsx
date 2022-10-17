@@ -19,7 +19,7 @@ import { Screens } from "../../themes/index";
 import DocumentMask from "../uploadDocuments/DocumentMask";
 
 const LivenessCameraScreen = (props: any) => {
-  const { fileUri } = props.route.params;
+  const { fileUri, selectedDocument } = props.route.params;
   const [maskedColor, setmaskedColor] = useState("#fff");
   const [data, setData] = useState();
   // Initial state of variables
@@ -114,6 +114,7 @@ const LivenessCameraScreen = (props: any) => {
       props.navigation.navigate("VerifiDocumentScreen", {
         uploadedDocuments: fileUri,
         faceImageData: data,
+        selectedDocument,
       });
     }
     if (Platform.OS === "ios") {
@@ -126,6 +127,7 @@ const LivenessCameraScreen = (props: any) => {
         props.navigation.navigate("VerifiDocumentScreen", {
           uploadedDocuments: fileUri,
           faceImageData: data,
+          selectedDocument,
         });
       }
     }
@@ -173,8 +175,10 @@ const LivenessCameraScreen = (props: any) => {
       >
         {"capture"}
       </GenericText>
-      <GenericText style={{ textAlign: "center", paddingVertical: 5, color: "#fff" }}>
-       {"placeurfacelivebox"}
+      <GenericText
+        style={{ textAlign: "center", paddingVertical: 5, color: "#fff" }}
+      >
+        {"placeurfacelivebox"}
       </GenericText>
       <TouchableOpacity onPress={data && handlingFacialData}>
         <View

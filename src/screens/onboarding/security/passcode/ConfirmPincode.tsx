@@ -26,10 +26,11 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
   const [code, setCode] = useState();
   const [isError, setisError] = useState(false);
   const savedCode = route.params?.setCode;
-  const {type} = route.params;
+  const { type } = route.params;
   const onPinCodeChange = (code: any) => {
     setisError(false);
-    setCode(code);
+    var format = code.replace(/[^0-9]/g, "");
+    setCode(format);
   };
   const _navigateAction = async () => {
     console.log("savedCode", savedCode);
@@ -45,10 +46,10 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
     }
   };
 
-  useEffect(()=>{
-    console.log("type==>",type)
-  },[])
-  
+  useEffect(() => {
+    console.log("type==>", type);
+  }, []);
+
   return (
     <View style={styles.sectionContainer}>
       <ScrollView contentContainerStyle={styles.sectionContainer}>
@@ -96,25 +97,24 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
             </GenericText>
           </View>
 
-          <View style={{alignSelf:"center"}}>
-            
-          <SmoothPinCodeInput
-            cellStyle={{
-              borderWidth: isError ? 1.5 : 0.5,
-              borderColor: isError ? "red" : Screens.grayShadeColor,
-              borderRadius: 5,
-            }}
-            cellStyleFocused={{
-              borderWidth: 2,
-              borderColor: Screens.colors.primary,
-            }}
-            password
-            cellSize={50}
-            codeLength={6}
-            value={code}
-            onTextChange={onPinCodeChange}
-          />
-            </View>    
+          <View style={{ alignSelf: "center" }}>
+            <SmoothPinCodeInput
+              cellStyle={{
+                borderWidth: isError ? 1.5 : 0.5,
+                borderColor: isError ? "red" : Screens.grayShadeColor,
+                borderRadius: 5,
+              }}
+              cellStyleFocused={{
+                borderWidth: 2,
+                borderColor: Screens.colors.primary,
+              }}
+              password
+              cellSize={50}
+              codeLength={6}
+              value={code}
+              onTextChange={onPinCodeChange}
+            />
+          </View>
 
           {isError && (
             <GenericText

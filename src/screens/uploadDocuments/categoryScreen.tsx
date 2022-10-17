@@ -32,6 +32,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const { fileUri } = route.params;
   const [isPrceedForLivenessTest, setIsPrceedForLivenessTest] = useState(false);
   const [categoryList, setCategoryList] = useState([]);
+  const [selectedDocument, setselectedDocument] = useState();
   const {
     loading: isCategoryLoading,
     data: getCategoryData,
@@ -89,6 +90,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
     localCategories = categoryList.map((item: any, index: number) => {
       item.value.map((itemChildren: any, childrenIndex: number) => {
         if (childrenIndex === selectedIndex) {
+          setselectedDocument(itemChildren.title);
           itemChildren.isSelected = true;
         } else {
           itemChildren.isSelected = false;
@@ -153,7 +155,6 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
           />
         </View>
       </TouchableOpacity>
-      
     );
   };
 
@@ -177,23 +178,19 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
               }}
             ></Header>
 
-
-            
-        <TouchableOpacity
-          onPress={()=>navigation.goBack()}
-          style={{
-              position:"absolute",
-              marginTop:40,
-              marginLeft:20,
-          }}
-          >
-          <Image
-            source={LocalImages.backImage}
-            style={{height:20,
-              width:20,
-              resizeMode:"contain",}}
-          />
-           </TouchableOpacity>  
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={{
+                position: "absolute",
+                marginTop: 40,
+                marginLeft: 20,
+              }}
+            >
+              <Image
+                source={LocalImages.backImage}
+                style={{ height: 20, width: 20, resizeMode: "contain" }}
+              />
+            </TouchableOpacity>
             <View>
               <FlatList<any>
                 numColumns={3}
@@ -205,7 +202,6 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
             </View>
           </View>
           <View style={{ flex: 0.75 }}>
-
             <GenericText
               style={[
                 styles.categoryHeaderText,
@@ -226,26 +222,31 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
                       renderItem={_renderItemDocuments}
                     />
 
-                <View style={{alignSelf:"center",marginBottom:10,width:"90%",marginLeft:20,zIndex:999}}> 
-                    <Button
+                    <View
                       style={{
-                        buttonContainer: {
-                          elevation: 5,
-                          
-                        },
-                        text: {
-                          color: Screens.pureWhite,
-                        },
-                        iconStyle: {
-                          tintColor: Screens.pureWhite,
-                        },
+                        alignSelf: "center",
+                        marginBottom: 10,
+                        width: "90%",
+                        marginLeft: 20,
+                        zIndex: 999,
                       }}
-                      title={"submt"}
-                    ></Button>
-          </View>
-
-
-                   </ScrollView> 
+                    >
+                      <Button
+                        style={{
+                          buttonContainer: {
+                            elevation: 5,
+                          },
+                          text: {
+                            color: Screens.pureWhite,
+                          },
+                          iconStyle: {
+                            tintColor: Screens.pureWhite,
+                          },
+                        }}
+                        title={"submt"}
+                      ></Button>
+                    </View>
+                  </ScrollView>
                 );
               }
             })}
@@ -267,13 +268,16 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
                 width: deviceWidth / 1.5,
               }}
             >
-
               <GenericText
-              style={{color:"black",fontWeight:"700",fontSize:15,alignSelf:"center",marginTop:15}}
+                style={{
+                  color: "black",
+                  fontWeight: "700",
+                  fontSize: 15,
+                  alignSelf: "center",
+                  marginTop: 15,
+                }}
               >
-
-             {"livetest"}
-
+                {"livetest"}
               </GenericText>
 
               <Image
@@ -287,7 +291,10 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
               onPress={() => {
                 setIsPrceedForLivenessTest(false);
                 setTimeout(() => {
-                  navigation.navigate("LivenessCameraScreen", { fileUri });
+                  navigation.navigate("LivenessCameraScreen", {
+                    fileUri,
+                    selectedDocument,
+                  });
                 }, 100);
               }}
               style={{
@@ -305,7 +312,6 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
               }}
               title={"submt"}
             ></Button>
-
           </View>
         </ModalView>
         <AnimatedLoader

@@ -48,7 +48,8 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
   } = useFetch();
   const [code, setCode] = useState();
   const onPinCodeChange = (code: any) => {
-    setCode(code);
+    var format = code.replace(/[^0-9]/g, "");
+    setCode(format);
   };
   const sendOtp = () => {
     var postData = {
@@ -124,7 +125,7 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
       <ScrollView contentContainerStyle={styles.sectionContainer}>
         <Header
           isLogoAlone={true}
-          headingText={type=="phone"?"entermobotp":"enteremailotp"}
+          headingText={type == "phone" ? "entermobotp" : "enteremailotp"}
           linearStyle={styles.linearStyle}
           containerStyle={{
             iconStyle: {

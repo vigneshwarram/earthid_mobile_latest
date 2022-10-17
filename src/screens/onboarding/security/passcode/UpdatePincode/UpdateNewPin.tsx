@@ -24,7 +24,8 @@ interface IHomeScreenProps {
 const Register = ({ navigation, route }: IHomeScreenProps) => {
   const [code, setCode] = useState();
   const onPinCodeChange = (code: any) => {
-    setCode(code);
+    var format = code.replace(/[^0-9]/g, "");
+    setCode(format);
   };
   const _navigateAction = async () => {
     if (code.length === 6) {
