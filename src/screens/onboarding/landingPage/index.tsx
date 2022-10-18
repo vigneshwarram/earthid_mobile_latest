@@ -36,6 +36,7 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
   const [langugeList, setLanguageList] = useState([
     { label: "English", value: AppLanguage.ENGLISH, selection: true },
     { label: "Spanish", value: AppLanguage.SPANISH, selection: false },
+    { label: "Portuguese",value: AppLanguage.PORTUGUESE, selection: false },
   ]);
   useEffect(() => {
     setTimeout(() => {
@@ -203,7 +204,7 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
           </View>
           <BottomSheet
             onClose={() => setLanguageVisible(false)}
-            height={200}
+            height={300}
             isVisible={languageVisible}
           >
             <View

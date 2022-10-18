@@ -36,6 +36,7 @@ const CustomDrawer = (props: any) => {
   const [langugeList, setLanguageList] = useState([
     { label: "English", value: AppLanguage.ENGLISH, selection: true },
     { label: "Spanish", value: AppLanguage.SPANISH, selection: false },
+    { label: "Portuguese",value: AppLanguage.PORTUGUESE, selection: false },
   ]);
 
   useEffect(() => {
@@ -58,7 +59,20 @@ const CustomDrawer = (props: any) => {
         }
         return item;
       });
-    } else {
+    } 
+    
+    else if(getUserLanguagePreferences === AppLanguage.PORTUGUESE){
+      langugeLists = langugeList.map((item, index) => {
+        if (index === 2) {
+          item.selection = true;
+        } else {
+          item.selection = false;
+        }
+        return item;
+      });
+    }
+    
+    else {
       langugeLists = langugeList.map((item, index) => {
         if (index === 1) {
           item.selection = true;
@@ -167,7 +181,7 @@ const CustomDrawer = (props: any) => {
       />
       <BottomSheet
         onClose={() => setLanguageVisible(false)}
-        height={200}
+        height={300}
         isVisible={languageVisible}
       >
         <View

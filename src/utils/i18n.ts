@@ -4,6 +4,7 @@ import { initReactI18next } from "react-i18next";
 import translationEN from "../../resources/locals/english/string.json";
 //@ts-ignore
 import translationHI from "../../resources/locals/spanish/string.json";
+import translationPT from "../../resources/locals/portuguese/string.json";
 import { LANGUAGE } from "../constants";
 import { AppLanguage } from "../typings/enums/AppLanguage";
 import { platformLanguage } from "../utils/PlatFormUtils";
@@ -39,6 +40,9 @@ i18n
       },
       [AppLanguage.SPANISH]: {
         translation: translationHI,
+      },
+      [AppLanguage.PORTUGUESE]: {
+        translation: translationPT,
       },
     },
     interpolation: {
