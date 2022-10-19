@@ -192,7 +192,10 @@ const LivenessCameraScreen = (props: any) => {
     AsyncStorage.setItem("setFaceid", test);
 
     if (facedata) {
-      props.navigation.navigate("SuccessFaceRegister", { type: "facedata" });
+      props.navigation.navigate("SuccessFaceRegister", {
+        type: "facedata",
+        value: facedata,
+      });
     }
   };
 

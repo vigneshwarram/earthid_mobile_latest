@@ -24,19 +24,22 @@ const facePlaceHolderWidget = ({navigation,route}:any) => {
   useEffect(()=>{
     console.log("routeface==>",route.params.type)
     console.log("routeface==>",route)
+    storeData()
   },[])
 
-  // const storeData = async () => {
-  //   try {
-  //      await AsyncStorage.setItem(
-  //       "key",
-  //       route.name
-  //     );
+
+  const storeData = () => {
+    try {
+      let name =route.params.type
+        AsyncStorage.setItem(
+        "key",
+        name
+      );
       
-  //   } catch (error) {
-  //    console.log(error)
-  //   }
-  // };
+    } catch (error) {
+     console.log(error)
+    }
+  };
 
   return (
     <View style={styles.sectionContainer}>
