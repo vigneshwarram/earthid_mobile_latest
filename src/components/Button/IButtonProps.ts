@@ -6,4 +6,6 @@ export interface IButtonProps {
   width?: string;
   style?: any; // Overriding options for styling.
   leftIcon?: any;
+  disabled?: boolean;
+  selected?: boolean;
 }

@@ -26,19 +26,20 @@ import { alertBox } from "../../../utils/earthid_account";
 
 interface IHomeScreenProps {
   navigation?: any;
-  route?:any
+  route?: any;
 }
 
-const HomeScreen = ({ navigation,route }: IHomeScreenProps) => {
+const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
   const userDetails = useAppSelector((state) => state.account);
   const getHistoryReducer = useAppSelector((state) => state.getHistoryReducer);
   const profilePicture = useAppSelector((state) => state.savedPic);
- 
+  const securityReducer: any = useAppSelector((state) => state.security);
+  console.log("securityReducer====>r", securityReducer?.securityData?.length);
   const dispatch = useAppDispatch();
   const _toggleDrawer = () => {
     navigation.openDrawer();
   };
-  console.log("savedPic====>r", profilePicture);
+
   const categoryList = values(SCREENS.HOMESCREEN.categoryList).map(
     ({ TITLE: title, URI: uri, COLOR: color }: any) => ({
       title,
@@ -65,7 +66,6 @@ const HomeScreen = ({ navigation,route }: IHomeScreenProps) => {
           container: [styles.avatarContainer, { backgroundColor: item.color }],
           imgContainer: styles.avatarImageContainer,
           text: styles.avatarTextContainer,
-          
         }}
       />
     );
@@ -90,7 +90,6 @@ const HomeScreen = ({ navigation,route }: IHomeScreenProps) => {
     getHistoryReducer.isSuccess = false;
   }
   useEffect(() => {
-
     const listener: any = EventRegister.addEventListener("OpenDrawer", () => {
       navigation.openDrawer();
       return;

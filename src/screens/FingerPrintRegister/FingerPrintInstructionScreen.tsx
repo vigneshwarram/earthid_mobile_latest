@@ -15,10 +15,14 @@ import { Screens } from "../../themes/index";
 import Loader from "../../components/Loader";
 import { StackActions } from "@react-navigation/native";
 import TouchID from "react-native-touch-id";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { SaveSecurityConfiguration } from "../../redux/actions/LocalSavingActions";
+import { ESecurityTypes } from "../../typings/enums/Security";
 
 const FingerPrintInstructionScreen = (props: any) => {
   const [isLoading, setIsLoading] = useState(false);
-
+  const dispatch = useAppDispatch();
+  const securityReducer: any = useAppSelector((state) => state.security);
   const optionalConfigObject = {
     title: "Authentication Required", // Android
     imageColor: "#2AA2DE", // Android
@@ -30,7 +34,32 @@ const FingerPrintInstructionScreen = (props: any) => {
     unifiedErrors: false, // use unified error messages (default false)
     passcodeFallback: false, // iOS - allows the device to fall back to using the passcode, if faceid/touch is not available. this does not mean that if touchid/faceid fails the first few times it will revert to passcode, rather that if the former are not enrolled, then it will use the passcode.
   };
+  const saveSelectionSecurities = () => {
+    let payLoad = [];
+    if (
+      securityReducer &&
+      securityReducer?.securityData &&
+      securityReducer?.securityData?.length > 0
+    )
+      payLoad = securityReducer?.securityData;
+    if (payLoad[0].types !== ESecurityTypes.FINGER) {
+      payLoad.push({
+        types: ESecurityTypes.FINGER,
+        enabled: true,
+      });
+    } else {
+      payLoad = payLoad.map(
+        (item: { types: ESecurityTypes; enabled: boolean }) => {
+          if (item.types === ESecurityTypes.FINGER) {
+            item.enabled = true;
+          }
+          return item;
+        }
+      );
+    }
 
+    dispatch(SaveSecurityConfiguration(payLoad));
+  };
   const aunthenticateBioMetricInfo = () => {
     TouchID.isSupported(optionalConfigObject)
       .then(async (biometryType) => {
@@ -40,12 +69,9 @@ const FingerPrintInstructionScreen = (props: any) => {
         } else {
           TouchID.authenticate("", optionalConfigObject)
             .then(async (success: any) => {
-              console.log("success", success);
+              saveSelectionSecurities();
               await AsyncStorage.setItem("fingerprint", "enabled");
-
-              props.navigation.dispatch(
-                StackActions.replace("DrawerNavigator")
-              );
+              actionToNavigate();
             })
             .catch((e: any) => console.log(e));
           console.log("TouchID is supported.");
@@ -55,6 +81,29 @@ const FingerPrintInstructionScreen = (props: any) => {
         // Failure code
         console.log(error);
       });
+  };
+  const actionToNavigate = () => {
+    if (securityReducer && securityReducer?.securityData) {
+      console.log(
+        "securityReducer?.securityData",
+        securityReducer?.securityData
+      );
+      if (
+        securityReducer?.securityData?.length === 2 &&
+        securityReducer?.securityData?.some(
+          (item: { types: any }) => item.types === ESecurityTypes.PASSCORD
+        ) &&
+        securityReducer?.securityData?.every(
+          (item: { enabled: boolean }) => item.enabled
+        )
+      ) {
+        props.navigation.dispatch(StackActions.replace("DrawerNavigator"));
+      } else {
+        props.navigation.goBack(null);
+      }
+    } else {
+      props.navigation.goBack(null);
+    }
   };
 
   return (

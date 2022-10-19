@@ -16,3 +16,12 @@ export const savingProfilePictures =
       profileData: profileData,
     });
   };
+
+export const SaveSecurityConfiguration =
+  (securityData: []) =>
+  async (dispatch: any): Promise<any> => {
+    dispatch({
+      type: ACTION_TYPES.SAVE_SECURITY,
+      securityData: securityData,
+    });
+  };

@@ -15,8 +15,10 @@ import { RNCamera } from "react-native-camera";
 import Button from "../../components/Button";
 import { SnackBar } from "../../components/SnackBar";
 import { LocalImages } from "../../constants/imageUrlConstants";
-import { useAppSelector } from "../../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { SaveSecurityConfiguration } from "../../redux/actions/LocalSavingActions";
 import { Screens } from "../../themes/index";
+import { ESecurityTypes } from "../../typings/enums/Security";
 import { getDeviceId } from "../../utils/encryption";
 import { SERVICE } from "../../utils/securityServices";
 import DocumentMask from "../uploadDocuments/DocumentMask";
@@ -25,6 +27,33 @@ const LivenessCameraScreen = (props: any) => {
   const [maskedColor, setmaskedColor] = useState("#fff");
   const [data, setData] = useState();
   const userDetails = useAppSelector((state) => state.contract);
+  const dispatch = useAppDispatch();
+  const securityReducer: any = useAppSelector((state) => state.security);
+
+  const saveSelectionSecurities = () => {
+    let payLoad = [];
+    if (
+      securityReducer &&
+      securityReducer?.securityData &&
+      securityReducer?.securityData?.length > 0
+    )
+      payLoad = securityReducer?.securityData;
+    if (payLoad[0].types !== ESecurityTypes.FACE) {
+      payLoad.push({
+        types: ESecurityTypes.FACE,
+        enabled: true,
+      });
+    } else {
+      payLoad = payLoad.map(
+        (item: { types: ESecurityTypes; enabled: boolean }) => {
+          if (item.types === ESecurityTypes.FACE) {
+            item.enabled = true;
+          }
+          return item;
+        }
+      );
+    }
+  };
   // Initial state of variables
   let rightEyeOpen: any[] = [];
   let camera: {
@@ -102,8 +131,8 @@ const LivenessCameraScreen = (props: any) => {
               base64: true,
             };
             const data = await camRef.current.takePictureAsync(options);
-
-            props.navigation.navigate("SuccessFaceRegister", { type:"facedata"});
+            saveSelectionSecurities();
+            actionToNavigate();
           } else {
             SnackBar({
               indicationMessage: "I can still see you moving",
@@ -115,6 +144,32 @@ const LivenessCameraScreen = (props: any) => {
         faceCount = 0;
         rightEyeOpen = [];
       }
+    }
+  };
+
+  const actionToNavigate = () => {
+    if (securityReducer && securityReducer?.securityData) {
+      console.log(
+        "securityReducer?.securityData",
+        securityReducer?.securityData
+      );
+      if (
+        securityReducer?.securityData?.length === 2 &&
+        securityReducer?.securityData?.some(
+          (item: { types: any }) => item.types === ESecurityTypes.PASSCORD
+        ) &&
+        securityReducer?.securityData?.every(
+          (item: { enabled: boolean }) => item.enabled
+        )
+      ) {
+        props.navigation.navigate("SuccessFaceRegister", {
+          type: "facedata",
+        });
+      } else {
+        props.navigation.navigate("Security");
+      }
+    } else {
+      props.navigation.navigate("Security");
     }
   };
 
@@ -132,22 +187,21 @@ const LivenessCameraScreen = (props: any) => {
     let facedata = res.data.result.faceId;
     console.log("facedata====>", facedata);
     AsyncStorage.setItem("facedata", facedata);
-    console.log("route==>",facedata)
+    console.log("route==>", facedata);
     const test = "success";
     AsyncStorage.setItem("setFaceid", test);
 
     if (facedata) {
-      props.navigation.navigate("SuccessFaceRegister", { type:"facedata"});
+      props.navigation.navigate("SuccessFaceRegister", { type: "facedata" });
     }
   };
 
   const { colors } = useTheme();
   const camRef: any = useRef();
 
-  useEffect(()=>{
-
-    console.log("route==>",props.route)
-  },[])
+  useEffect(() => {
+    console.log("route==>", props.route);
+  }, []);
 
   return (
     <View style={styles.sectionContainer}>

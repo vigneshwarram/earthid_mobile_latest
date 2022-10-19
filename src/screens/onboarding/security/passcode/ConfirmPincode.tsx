@@ -16,6 +16,9 @@ import { LocalImages } from "../../../../constants/imageUrlConstants";
 import Loader from "../../../../components/Loader";
 import { StackActions } from "@react-navigation/native";
 import GenericText from "../../../../components/Text";
+import { useAppDispatch, useAppSelector } from "../../../../hooks/hooks";
+import { ESecurityTypes } from "../../../../typings/enums/Security";
+import { SaveSecurityConfiguration } from "../../../../redux/actions/LocalSavingActions";
 
 interface IHomeScreenProps {
   navigation?: any;
@@ -25,6 +28,36 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [code, setCode] = useState();
   const [isError, setisError] = useState(false);
+  const dispatch = useAppDispatch();
+  const securityReducer: any = useAppSelector((state) => state.security);
+  console.log("savedCode", securityReducer);
+
+  const saveSelectionSecurities = () => {
+    let payLoad = [];
+    if (
+      securityReducer &&
+      securityReducer?.securityData &&
+      securityReducer?.securityData?.length > 0
+    )
+      payLoad = securityReducer?.securityData;
+    if (payLoad[0].types !== ESecurityTypes.PASSCORD) {
+      payLoad.push({
+        types: ESecurityTypes.PASSCORD,
+        enabled: true,
+      });
+    } else {
+      payLoad = payLoad.map(
+        (item: { types: ESecurityTypes; enabled: boolean }) => {
+          if (item.types === ESecurityTypes.PASSCORD) {
+            item.enabled = true;
+          }
+          return item;
+        }
+      );
+    }
+
+    dispatch(SaveSecurityConfiguration(payLoad));
+  };
   const savedCode = route.params?.setCode;
   const { type } = route.params;
   const onPinCodeChange = (code: any) => {
@@ -33,23 +66,42 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
     setCode(format);
   };
   const _navigateAction = async () => {
-    console.log("savedCode", savedCode);
     if (savedCode === code?.toString()) {
       await AsyncStorage.setItem("passcode", code?.toString());
       setIsLoading(true);
       setTimeout(() => {
         setIsLoading(false);
-        navigation.dispatch(StackActions.replace("DrawerNavigator"));
+        saveSelectionSecurities();
+        actionToNavigate();
       }, 3000);
     } else {
       setisError(true);
     }
   };
 
-  useEffect(() => {
-    console.log("type==>", type);
-  }, []);
-
+  const actionToNavigate = () => {
+    if (securityReducer && securityReducer?.securityData) {
+      console.log(
+        "securityReducer?.securityData",
+        securityReducer?.securityData
+      );
+      if (
+        securityReducer?.securityData?.length === 2 &&
+        securityReducer?.securityData?.some(
+          (item: { types: any }) => item.types === ESecurityTypes.PASSCORD
+        ) &&
+        securityReducer?.securityData?.every(
+          (item: { enabled: boolean }) => item.enabled
+        )
+      ) {
+        navigation.dispatch(StackActions.replace("DrawerNavigator"));
+      } else {
+        navigation.navigate("Security");
+      }
+    } else {
+      navigation.navigate("Security");
+    }
+  };
   return (
     <View style={styles.sectionContainer}>
       <ScrollView contentContainerStyle={styles.sectionContainer}>

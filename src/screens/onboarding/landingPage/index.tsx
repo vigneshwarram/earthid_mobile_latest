@@ -36,7 +36,7 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
   const [langugeList, setLanguageList] = useState([
     { label: "English", value: AppLanguage.ENGLISH, selection: true },
     { label: "Spanish", value: AppLanguage.SPANISH, selection: false },
-    { label: "Portuguese",value: AppLanguage.PORTUGUESE, selection: false },
+    { label: "Portuguese", value: AppLanguage.PORTUGUESE, selection: false },
   ]);
   useEffect(() => {
     setTimeout(() => {
@@ -209,7 +209,7 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
           >
             <View
               style={{
-                height: 220,
+                height: 280,
                 width: "100%",
                 paddingHorizontal: 10,
               }}

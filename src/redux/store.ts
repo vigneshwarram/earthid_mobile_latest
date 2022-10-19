@@ -10,7 +10,11 @@ import {
   schemaReducer,
   getHistoryReducer,
 } from "./reducer/user.reducer";
-import { SavedProfilePictures, SavedQrData } from "./reducer/saveDataReducer";
+import {
+  SavedProfilePictures,
+  SavedQrData,
+  SavedSecurityDatas,
+} from "./reducer/saveDataReducer";
 
 const persistConfig = {
   key: "root",
@@ -23,6 +27,7 @@ const persistConfig = {
     "saveData",
     "account",
     "savedPic",
+    "security",
   ],
 };
 const rootReducer = combineReducers({
@@ -35,6 +40,7 @@ const rootReducer = combineReducers({
   schema: schemaReducer,
   getHistoryReducer: getHistoryReducer,
   savedPic: SavedProfilePictures,
+  security: SavedSecurityDatas,
 });
 
 const appreducer = (state: any, action: any) => {

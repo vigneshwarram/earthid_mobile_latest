@@ -1,5 +1,6 @@
 import React from "react";
 import { Image, Pressable, StyleSheet, View } from "react-native";
+import { LocalImages } from "../../constants/imageUrlConstants";
 import { Screens } from "../../themes";
 import GenericText from "../Text";
 
@@ -14,10 +15,11 @@ const Button = ({
   title,
   onPress,
   leftIcon,
-  secondary,
+  selected = false,
   style = {},
+  disabled = false,
 }: IButtonProps) => (
-  <Pressable onPress={onPress}>
+  <Pressable disabled={disabled} onPress={onPress}>
     <View style={[styles.primary, style.buttonContainer]}>
       <View style={{ justifyContent: "center", alignItems: "center" }}>
         {leftIcon && (
@@ -31,6 +33,15 @@ const Button = ({
       <View style={{ justifyContent: "center", alignItems: "center" }}>
         <GenericText style={[styles.common, style.text]}>{title}</GenericText>
       </View>
+      {selected && (
+        <View style={{ marginLeft: 20 }}>
+          <Image
+            resizeMode="contain"
+            style={[styles.logoContainer, style.iconStyle]}
+            source={LocalImages.successTikImage}
+          ></Image>
+        </View>
+      )}
     </View>
   </Pressable>
 );

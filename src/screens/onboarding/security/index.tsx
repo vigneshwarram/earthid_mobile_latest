@@ -1,20 +1,77 @@
-import React, { useRef, useState } from "react";
-import { View, StyleSheet, Text, ScrollView, Image } from "react-native";
+import React from "react";
+import { View, StyleSheet, ScrollView, Image } from "react-native";
 import Header from "../../../components/Header";
 import { SCREENS } from "../../../constants/Labels";
 import { Screens } from "../../../themes";
-import Loader from "../../../components/Loader";
-import QRCode from "react-native-qrcode-svg";
 import Button from "../../../components/Button";
 import { LocalImages } from "../../../constants/imageUrlConstants";
-import { StackActions } from "@react-navigation/native";
 import GenericText from "../../../components/Text";
+import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
+import { ESecurityTypes } from "../../../typings/enums/Security";
+import { SaveSecurityConfiguration } from "../../../redux/actions/LocalSavingActions";
+import { SnackBar } from "../../../components/SnackBar";
 
 interface IHomeScreenProps {
   navigation?: any;
 }
 
 const Register = ({ navigation }: IHomeScreenProps) => {
+  const dispatch = useAppDispatch();
+  const securityReducer: any = useAppSelector((state) => state.security);
+  console.log("securityReducer", securityReducer);
+
+  const saveSelectionSecurities = (
+    securityMode: any,
+    enabled = false,
+    re_Direct: string
+  ) => {
+    let payLoad = [];
+
+    if (
+      securityReducer &&
+      securityReducer?.securityData &&
+      securityReducer?.securityData?.length > 0
+    ) {
+      payLoad = securityReducer?.securityData;
+      console.log("securityMode====>", payLoad);
+    }
+    if (
+      (payLoad[0]?.types === ESecurityTypes.FACE ||
+        payLoad[0]?.types === ESecurityTypes.FINGER) &&
+      securityMode !== ESecurityTypes.PASSCORD &&
+      payLoad[0]?.enabled
+    ) {
+      SnackBar({
+        indicationMessage: "Please choose password security as mandotory",
+      });
+    } else {
+      if (payLoad.length === 0) {
+        payLoad.push({
+          types: securityMode,
+          enabled,
+        });
+      }
+
+      dispatch(SaveSecurityConfiguration(payLoad));
+      navigation.navigate(re_Direct);
+    }
+  };
+  const getSelectedDState = (type: any) => {
+    let selected = false;
+    if (
+      securityReducer &&
+      securityReducer?.securityData &&
+      securityReducer?.securityData?.length > 0
+    ) {
+      securityReducer?.securityData?.map((item) => {
+        if (item.types === type && item.enabled === true) {
+          selected = true;
+          return;
+        }
+      });
+    }
+    return selected;
+  };
   return (
     <View style={styles.sectionContainer}>
       <ScrollView contentContainerStyle={styles.sectionContainer}>
@@ -74,13 +131,24 @@ const Register = ({ navigation }: IHomeScreenProps) => {
               {SCREENS.SECURITYSCREEN.instructions}
             </GenericText>
             <Button
-              onPress={() =>
-                navigation.navigate("FingerPrintInstructionScreen")
-              }
+              selected={getSelectedDState(ESecurityTypes.FINGER)}
+              disabled={getSelectedDState(ESecurityTypes.FINGER)}
+              onPress={() => {
+                saveSelectionSecurities(
+                  ESecurityTypes.FINGER,
+                  false,
+                  "FingerPrintInstructionScreen"
+                );
+              }}
               style={{
                 buttonContainer: {
-                  backgroundColor: Screens.pureWhite,
+                  backgroundColor: getSelectedDState(ESecurityTypes.FINGER)
+                    ? "#e6ffe6"
+                    : "#fff",
                   elevation: 2,
+                  borderColor: getSelectedDState(ESecurityTypes.FINGER)
+                    ? "green"
+                    : Screens.colors.primary,
                 },
                 iconStyle: {
                   tintColor: Screens.colors.primary,
@@ -90,40 +158,65 @@ const Register = ({ navigation }: IHomeScreenProps) => {
               title={"usetouchid"}
             ></Button>
 
-              <View style={{marginTop:-20}}>
-            <Button
-              onPress={() => navigation.navigate("facePlaceHolderWidget")}
-              style={{
-                buttonContainer: {
-                  backgroundColor: Screens.pureWhite,
-                  elevation: 2,
-                },
-                iconStyle: {
-                  tintColor: Screens.colors.primary,
-                },
-              }}
-              leftIcon={LocalImages.faceImage}
-              title={"usefaceid"}
-            ></Button>
-              </View>
+            <View style={{ marginTop: -20 }}>
+              <Button
+                selected={getSelectedDState(ESecurityTypes.FACE)}
+                disabled={getSelectedDState(ESecurityTypes.FACE)}
+                onPress={() => {
+                  saveSelectionSecurities(
+                    ESecurityTypes.FACE,
+                    false,
+                    "facePlaceHolderWidget"
+                  );
+                }}
+                style={{
+                  buttonContainer: {
+                    backgroundColor: getSelectedDState(ESecurityTypes.FACE)
+                      ? "#e6ffe6"
+                      : "#fff",
+                    elevation: 2,
+                    borderColor: getSelectedDState(ESecurityTypes.FACE)
+                      ? "green"
+                      : Screens.colors.primary,
+                  },
+                  iconStyle: {
+                    tintColor: Screens.colors.primary,
+                  },
+                }}
+                leftIcon={LocalImages.faceImage}
+                title={"usefaceid"}
+              ></Button>
+            </View>
 
-              <View style={{marginTop:-20}}>                  
-            <Button
-              onPress={() => navigation.navigate("SetPin")}
-              style={{
-                buttonContainer: {
-                  backgroundColor: Screens.pureWhite,
-                  elevation: 2,
-                },
-                iconStyle: {
-                  tintColor: Screens.colors.primary,
-                },
-              }}
-              leftIcon={LocalImages.passcordImage}
-              title={"usepasscode"}
-            ></Button>
-              </View>
-
+            <View style={{ marginTop: -20 }}>
+              <Button
+                selected={getSelectedDState(ESecurityTypes.PASSCORD)}
+                disabled={getSelectedDState(ESecurityTypes.PASSCORD)}
+                onPress={() => {
+                  saveSelectionSecurities(
+                    ESecurityTypes.PASSCORD,
+                    false,
+                    "SetPin"
+                  );
+                }}
+                style={{
+                  buttonContainer: {
+                    elevation: 2,
+                    borderColor: getSelectedDState(ESecurityTypes.PASSCORD)
+                      ? "green"
+                      : Screens.colors.primary,
+                    backgroundColor: getSelectedDState(ESecurityTypes.PASSCORD)
+                      ? "#e6ffe6"
+                      : "#fff",
+                  },
+                  iconStyle: {
+                    tintColor: Screens.colors.primary,
+                  },
+                }}
+                leftIcon={LocalImages.passcordImage}
+                title={"usepasscode"}
+              ></Button>
+            </View>
           </View>
         </View>
       </ScrollView>

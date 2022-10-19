@@ -36,7 +36,7 @@ const CustomDrawer = (props: any) => {
   const [langugeList, setLanguageList] = useState([
     { label: "English", value: AppLanguage.ENGLISH, selection: true },
     { label: "Spanish", value: AppLanguage.SPANISH, selection: false },
-    { label: "Portuguese",value: AppLanguage.PORTUGUESE, selection: false },
+    { label: "Portuguese", value: AppLanguage.PORTUGUESE, selection: false },
   ]);
 
   useEffect(() => {
@@ -59,9 +59,7 @@ const CustomDrawer = (props: any) => {
         }
         return item;
       });
-    } 
-    
-    else if(getUserLanguagePreferences === AppLanguage.PORTUGUESE){
+    } else if (getUserLanguagePreferences === AppLanguage.PORTUGUESE) {
       langugeLists = langugeList.map((item, index) => {
         if (index === 2) {
           item.selection = true;
@@ -70,9 +68,7 @@ const CustomDrawer = (props: any) => {
         }
         return item;
       });
-    }
-    
-    else {
+    } else {
       langugeLists = langugeList.map((item, index) => {
         if (index === 1) {
           item.selection = true;
@@ -165,8 +161,7 @@ const CustomDrawer = (props: any) => {
 
               color: Screens.pureWhite,
               fontWeight: "500",
-              marginRight:20
-              
+              marginRight: 20,
             },
           ]}
         >
@@ -186,7 +181,7 @@ const CustomDrawer = (props: any) => {
       >
         <View
           style={{
-            height: 220,
+            height: 280,
             width: "100%",
             paddingHorizontal: 10,
           }}
