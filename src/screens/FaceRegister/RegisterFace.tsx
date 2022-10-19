@@ -164,6 +164,7 @@ const LivenessCameraScreen = (props: any) => {
       ) {
         props.navigation.navigate("SuccessFaceRegister", {
           type: "facedata",
+          value: data,
         });
       } else {
         props.navigation.navigate("Security");
