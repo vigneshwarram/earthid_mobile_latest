@@ -25,7 +25,7 @@ const UpdateAuthentication = (props: any) => {
   // const retrieveData = async (item: any) => {
   //   try {
   //     const value = await AsyncStorage.getItem("key");
-  //     if (value=="RegisterFace") {
+  //     if (value!=="facedata") {
   //       props.navigation.navigate("UpdateNewPin")
   //       console.log("value",value);
   //     }else{

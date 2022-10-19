@@ -103,7 +103,7 @@ const LivenessCameraScreen = (props: any) => {
             };
             const data = await camRef.current.takePictureAsync(options);
 
-            props.navigation.navigate("SuccessFaceRegister", { type:"facedata"});
+            props.navigation.navigate("SuccessFaceRegister", { type:"facedata",value:data});
           } else {
             SnackBar({
               indicationMessage: "I can still see you moving",
@@ -137,7 +137,7 @@ const LivenessCameraScreen = (props: any) => {
     AsyncStorage.setItem("setFaceid", test);
 
     if (facedata) {
-      props.navigation.navigate("SuccessFaceRegister", { type:"facedata"});
+      props.navigation.navigate("SuccessFaceRegister", { type:"facedata",value:facedata});
     }
   };
 
