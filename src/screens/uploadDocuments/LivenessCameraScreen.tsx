@@ -69,11 +69,11 @@ const LivenessCameraScreen = (props: any) => {
             faceOrigin[index + 1].x,
             faceOrigin[index + 1].y
           );
-          if (displacement > 30) {
+
+          if (displacement < 0) {
+            console.log("displacement", displacement);
             hasMoved = true;
             if (stillToast) {
-              setmaskedColor("red");
-            } else {
               setmaskedColor("red");
             }
             break;

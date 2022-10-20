@@ -124,8 +124,11 @@ const CameraScreen = (props: any) => {
       serviceProviderResponse?.values &&
       serviceProviderResponse?.values?.length > 0
     ) {
+      console.log("ios coming insie", barCodeDataDetails);
       if (barCodeDataDetails?.requestType === "login") {
-        setissuerLogin(true);
+        setTimeout(() => {
+          setissuerLogin(true);
+        }, 100);
       } else if (barCodeDataDetails?.requestType === "shareCredentials") {
         getData();
         setIsCamerVisible(true);
@@ -344,10 +347,6 @@ const CameraScreen = (props: any) => {
         </RNCamera>
       )}
 
-      <AnimatedLoader
-        isLoaderVisible={serviceProviderLoading || loadingforGentSchemaAPI}
-        loadingText="sendingdata"
-      />
       <SuccessPopUp
         isLoaderVisible={successResponse}
         loadingText={successMessage}
