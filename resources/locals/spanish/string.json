@@ -133,7 +133,8 @@
   "entermobotp":"Ingresar OTP móvil",
   "enteremailotp":"Ingresar OTP Email",
   "confirmpasscords":"Confirmar Contraseña",
-  "entersixdigit":"Ingrese su antiguo código de acceso de 6 dígitos"
+  "entersixdigit":"Ingrese su antiguo código de acceso de 6 dígitos",
+  "conpasscode":"Confirmar Contraseña"
 
   
 
