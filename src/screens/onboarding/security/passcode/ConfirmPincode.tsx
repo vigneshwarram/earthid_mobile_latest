@@ -107,7 +107,7 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
       <ScrollView contentContainerStyle={styles.sectionContainer}>
         <Header
           isLogoAlone={true}
-          headingText={"confirmpassword"}
+          headingText={"conpasscode"}
           linearStyle={styles.linearStyle}
           containerStyle={{
             iconStyle: {

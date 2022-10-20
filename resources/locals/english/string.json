@@ -133,6 +133,7 @@
   "entermobotp":"Enter Mobile OTP",
   "enteremailotp":"Enter Email OTP",
   "confirmpasscords":"Confirm Passcord",
-  "entersixdigit":"Enter Your old 6-digit passcode"
+  "entersixdigit":"Enter Your old 6-digit passcode",
+  "conpasscode":"Confirm Passcode"
 
 }
