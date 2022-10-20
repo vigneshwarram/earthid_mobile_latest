@@ -53,6 +53,7 @@ const LivenessCameraScreen = (props: any) => {
         }
       );
     }
+    dispatch(SaveSecurityConfiguration(payLoad));
   };
   // Initial state of variables
   let rightEyeOpen: any[] = [];
