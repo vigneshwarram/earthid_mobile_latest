@@ -1,6 +1,13 @@
 import { values } from "lodash";
 import React, { useEffect } from "react";
-import { View, StyleSheet, Text, FlatList, Image } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  FlatList,
+  Image,
+  ScrollView,
+} from "react-native";
 
 import Card from "../../../components/Card";
 import Header from "../../../components/Header";
@@ -40,7 +47,7 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
       <Card
         leftAvatar={LocalImages.documentsImage}
         absoluteCircleInnerImage={LocalImages.upImage}
-      //  rightIconSrc={LocalImages.menuImage}
+        //  rightIconSrc={LocalImages.menuImage}
         title={item?.eventValue}
         subtitle={`       Uploaded  : ${item.createdAt}`}
         style={{
@@ -65,31 +72,40 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
   const _keyExtractor = ({ id }: any) => id.toString();
   return (
     <View style={styles.sectionContainer}>
-      <Header
-        leftIconSource={LocalImages.logoImage}
-        onpress={() => {
-          _toggleDrawer();
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{
+          flexGrow: 1,
+          paddingBottom: 200,
+          backgroundColor: "#fff",
         }}
-        linearStyle={styles.linearStyle}
-      ></Header>
-      <GenericText style={[styles.categoryHeaderText, { fontSize: 13 }]}>
-        {SCREENS.HOMESCREEN.History}
-      </GenericText>
+      >
+        <Header
+          leftIconSource={LocalImages.logoImage}
+          onpress={() => {
+            _toggleDrawer();
+          }}
+          linearStyle={styles.linearStyle}
+        ></Header>
+        <GenericText style={[styles.categoryHeaderText, { fontSize: 13 }]}>
+          {SCREENS.HOMESCREEN.History}
+        </GenericText>
 
-      <FlatList<any>
-        showsHorizontalScrollIndicator={false}
-        data={
-          getHistoryReducer && getHistoryReducer?.responseData
-            ? getHistoryReducer.responseData
-            : []
-        }
-        renderItem={_renderItem}
-        keyExtractor={_keyExtractor}
-      />
-      <AnimatedLoader
-        isLoaderVisible={getHistoryReducer?.isLoading}
-        loadingText="loading"
-      />
+        <FlatList<any>
+          showsHorizontalScrollIndicator={false}
+          data={
+            getHistoryReducer && getHistoryReducer?.responseData
+              ? getHistoryReducer.responseData
+              : []
+          }
+          renderItem={_renderItem}
+          keyExtractor={_keyExtractor}
+        />
+        <AnimatedLoader
+          isLoaderVisible={getHistoryReducer?.isLoading}
+          loadingText="loading"
+        />
+      </ScrollView>
     </View>
   );
 };
