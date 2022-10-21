@@ -160,7 +160,7 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
               {"alreadyhaveearthid"}
             </GenericText>
             <Button
-              onPress={() => navigation.navigate("uploadDocumentsScreen")}
+              onPress={() => navigation.navigate("UploadQr")}
               style={{
                 buttonContainer: {
                   elevation: 5,

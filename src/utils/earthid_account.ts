@@ -2,7 +2,7 @@ import { Platform, Alert } from "react-native";
 import CryptoJS from "react-native-crypto-js";
 import { EARTHID_DEV_BASE } from "../constants/URLContstants";
 export const isTestnet = true;
-const BASE_URL = EARTHID_DEV_BASE;
+export const BASE_URL = EARTHID_DEV_BASE;
 
 export const api = BASE_URL + "/verification/sendEmailOTP";
 export const superAdminApi = BASE_URL + "/admin/getSuperAdmin";

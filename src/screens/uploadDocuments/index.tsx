@@ -33,7 +33,7 @@ const UploadScreen = (props: any) => {
   const _takePicture = async () => {
     const options = { quality: 0.1, base64: true };
     const data = await camRef.current.takePictureAsync(options);
-    console.log("data", data);
+
     if (data) {
       props.navigation.navigate("DocumentPreviewScreen", { fileUri: data });
     }

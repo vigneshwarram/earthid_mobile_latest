@@ -151,7 +151,6 @@ const CameraScreen = (props: any) => {
       }
       if (barCodeDataDetails.requestType === "generateCredentials") {
         setIsCamerVisible(true);
-        createVerifiableCredentials();
       }
       if (barCodeDataDetails.requestType === "shareCredentials") {
         setIsCamerVisible(true);

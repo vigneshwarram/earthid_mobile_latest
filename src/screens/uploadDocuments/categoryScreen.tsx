@@ -33,6 +33,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const [isPrceedForLivenessTest, setIsPrceedForLivenessTest] = useState(false);
   const [categoryList, setCategoryList] = useState([]);
   const [selectedDocument, setselectedDocument] = useState();
+  const [selectedParentIndex, setSelectedParentIndex] = useState(0);
   const {
     loading: isCategoryLoading,
     data: getCategoryData,
@@ -69,6 +70,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
 
   const selectCategory = (selectedItem: string, selectedIndex: number) => {
     var localCategories = [];
+    setSelectedParentIndex(selectedIndex);
     localCategories = categoryList.map((item: any, index: number) => {
       if (index === selectedIndex) {
         item.isSelected = true;
@@ -89,7 +91,8 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
     var localCategories = [];
     localCategories = categoryList.map((item: any, index: number) => {
       item.value.map((itemChildren: any, childrenIndex: number) => {
-        if (childrenIndex === selectedIndex) {
+        if (childrenIndex === selectedIndex && index === selectedParentIndex) {
+          console.log("item selected children====>", itemChildren.title);
           setselectedDocument(itemChildren.title);
           itemChildren.isSelected = true;
         } else {
@@ -212,7 +215,6 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
             </GenericText>
             {categoryList.map((item: any, index: number) => {
               if (item.isSelected) {
-                console.log(`item===>index${index}`, item);
                 return (
                   <ScrollView>
                     <FlatList<any>

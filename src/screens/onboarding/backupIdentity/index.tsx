@@ -29,7 +29,7 @@ import { LocalImages } from "../../../constants/imageUrlConstants";
 
 interface IHomeScreenProps {
   navigation?: any;
-  route?:any
+  route?: any;
 }
 
 const Register = ({ navigation }: IHomeScreenProps) => {
@@ -153,9 +153,8 @@ const Register = ({ navigation }: IHomeScreenProps) => {
   };
 
   useEffect(() => {
-   
-      console.log("Qr==>", qrData.earthId);
-    
+    console.log("Qr==>", qrData.earthId);
+
     schemaAction();
   }, []);
 
@@ -175,7 +174,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
             iconContainer: styles.alignCenter,
           }}
         ></Header>
-         {/* <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={()=>navigation.goBack()}
           style={{
               position:"absolute",
@@ -215,14 +214,16 @@ const Register = ({ navigation }: IHomeScreenProps) => {
               }}
               options={{ format: "jpg", quality: 0.8 }}
             >
-              <QRCode
-                getBase64={(base64: string) => {
-                  qrBase64 = base64;
-                  setBase64(base64);
-                }}
-                value={qrData.earthId}
-                size={250}
-              />
+              <View style={{ padding: 40, backgroundColor: "#fff" }}>
+                <QRCode
+                  getBase64={(base64: string) => {
+                    qrBase64 = base64;
+                    setBase64(base64);
+                  }}
+                  value={qrData.earthId}
+                  size={250}
+                />
+              </View>
             </ViewShot>
           </View>
           <Button
