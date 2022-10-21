@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Image,
   AsyncStorage,
+  Platform,
 } from "react-native";
 import Header from "../../../components/Header";
 import { LocalImages } from "../../../constants/imageUrlConstants";
@@ -22,7 +23,8 @@ import GenericText from "../../../components/Text";
 import BottomSheet from "../../../components/Bottomsheet";
 import { AppLanguage } from "../../../typings/enums/AppLanguage";
 import { useTranslation } from "react-i18next";
-
+import DocumentPicker from "react-native-document-picker";
+import RNFS from "react-native-fs";
 interface IHomeScreenProps {
   navigation?: any;
 }
@@ -70,6 +72,33 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
   useEffect(() => {
     initializeUserPreferences();
   }, []);
+
+  const openFilePicker = async () => {
+    try {
+      const resp: any = await DocumentPicker.pick({
+        type: [DocumentPicker.types.images, DocumentPicker.types.pdf],
+        readContent: true,
+      });
+
+      let fileUri = resp[0].uri;
+      RNFS.readFile(fileUri, "base64").then((res) => {
+        console.log("res", resp);
+        navigation.navigate("UploadDocumentPreviewScreen", {
+          fileUri: {
+            uri: `data:image/png;base64,${res}`,
+            base64: res,
+            file: resp[0],
+            type: "qrRreader",
+          },
+        });
+      });
+    } catch (err) {
+      console.log("data==>", err);
+    }
+  };
+  const _handleBarCodeRead = (barCodeData: any) => {
+    console.log("barcodedata");
+  };
 
   return (
     <View style={styles.sectionContainer}>
@@ -160,7 +189,7 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
               {"alreadyhaveearthid"}
             </GenericText>
             <Button
-              onPress={() => navigation.navigate("UploadQr")}
+              onPress={() => openFilePicker()}
               style={{
                 buttonContainer: {
                   elevation: 5,
