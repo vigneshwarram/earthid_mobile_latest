@@ -123,7 +123,7 @@ const UploadDocumentPreviewScreen = (props: any) => {
               tintColor: Screens.pureWhite,
             },
           }}
-          title={"Upload"}
+          title={"upload"}
         ></Button>
       </View>
       <AnimatedLoader
@@ -132,7 +132,7 @@ const UploadDocumentPreviewScreen = (props: any) => {
       />
       <SuccessPopUp
         isLoaderVisible={successResponse}
-        loadingText={"QR Code Successfully Uploaded"}
+        loadingText={"qrupload"}
       />
     </View>
   );

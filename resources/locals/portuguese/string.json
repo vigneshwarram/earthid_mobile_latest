@@ -134,7 +134,9 @@
     "enteremailotp":"Digite o e-mail OTP",
     "confirmpasscords":"Confirmar senha",
     "entersixdigit":"Digite sua senha antiga de 6 dígitos",
-    "conpasscode":"Confirmar Senha"
+    "conpasscode":"Confirmar Senha",
+    "upload":"Envio",
+    "qrupload":"Código QR enviado com sucesso"
   
   }
   

@@ -134,7 +134,9 @@
   "enteremailotp":"Ingresar OTP Email",
   "confirmpasscords":"Confirmar Contraseña",
   "entersixdigit":"Ingrese su antiguo código de acceso de 6 dígitos",
-  "conpasscode":"Confirmar Contraseña"
+  "conpasscode":"Confirmar Contraseña",
+  "upload":"Subir",
+  "qrupload":"Código QR cargado con éxito"
 
   
 

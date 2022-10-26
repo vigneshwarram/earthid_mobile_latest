@@ -134,6 +134,8 @@
   "enteremailotp":"Enter Email OTP",
   "confirmpasscords":"Confirm Passcord",
   "entersixdigit":"Enter Your old 6-digit passcode",
-  "conpasscode":"Confirm Passcode"
+  "conpasscode":"Confirm Passcode",
+  "upload":"Upload",
+  "qrupload":"QR Code Successfully Uploaded"
 
 }
