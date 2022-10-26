@@ -5,13 +5,10 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
-  Text,
-  Alert,
   Platform,
 } from "react-native";
 import { RNCamera } from "react-native-camera";
 
-import Button from "../../components/Button";
 import { SnackBar } from "../../components/SnackBar";
 import GenericText from "../../components/Text";
 import { LocalImages } from "../../constants/imageUrlConstants";

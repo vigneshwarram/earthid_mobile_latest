@@ -116,14 +116,14 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
         )}
 
         <View style={{ justifyContent: "center", alignItems: "center" }}>
-          <Text
+          <GenericText
             style={[
               styles.categoryHeaderText,
               { fontSize: 13, marginHorizontal: 10, marginVertical: 15 },
             ]}
           >
             {title}
-          </Text>
+          </GenericText>
         </View>
       </View>
     </TouchableOpacity>

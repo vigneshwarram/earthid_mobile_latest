@@ -1,13 +1,5 @@
 import React from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  Image,
-  Dimensions,
-  TouchableOpacity,
-} from "react-native";
-import { DEVICE } from "../../constants";
+import { StyleSheet, View, Image, TouchableOpacity } from "react-native";
 import { LocalImages } from "../../constants/imageUrlConstants";
 import { Screens } from "../../themes";
 import GenericText from "../Text";

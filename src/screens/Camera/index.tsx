@@ -7,14 +7,12 @@ import {
   Text,
   Dimensions,
   Alert,
-  AsyncStorage,
 } from "react-native";
 import { RNCamera } from "react-native-camera";
 import Button from "../../components/Button";
 
 import axios from "axios";
 import SuccessPopUp from "../../components/Loader";
-import AnimatedLoader from "../../components/Loader/AnimatedLoader";
 import ModalView from "../../components/Modal";
 import { LocalImages } from "../../constants/imageUrlConstants";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
@@ -26,17 +24,14 @@ import { Screens } from "../../themes/index";
 import {
   serviceProviderApi,
   QrcodeApis,
-  alertBox,
   generateCredientials,
   ssiApiKey,
-  CreateVarifiableCredientails,
 } from "../../utils/earthid_account";
 import QrScannerMaskedWidget from "../Camera/QrScannerMaskedWidget";
 import { saveDocuments } from "../../redux/actions/authenticationAction";
 import { IDocumentProps } from "../uploadDocuments/VerifiDocumentScreen";
 import GenericText from "../../components/Text";
 import Loader from "../../components/Loader";
-import { encode } from "punycode";
 const data = [
   { label: " 1", value: "1" },
   { label: " 2", value: "2" },
@@ -644,14 +639,18 @@ const CameraScreen = (props: any) => {
                 setisDocumentModalkyc(false);
               }}
             >
-              <Text style={{ color: "red", fontSize: 16, fontWeight: "700" }}>
+              <GenericText
+                style={{ color: "red", fontSize: 16, fontWeight: "700" }}
+              >
                 Cancel
-              </Text>
+              </GenericText>
             </TouchableOpacity>
             <TouchableOpacity onPress={shareCredientials}>
-              <Text style={{ color: "green", fontSize: 16, fontWeight: "700" }}>
+              <GenericText
+                style={{ color: "green", fontSize: 16, fontWeight: "700" }}
+              >
                 Authorize
-              </Text>
+              </GenericText>
             </TouchableOpacity>
           </View>
         </View>
@@ -740,14 +739,18 @@ const CameraScreen = (props: any) => {
             <TouchableOpacity
               onPress={() => setisDocumentModalGenerateCredientials(false)}
             >
-              <Text style={{ color: "red", fontSize: 16, fontWeight: "700" }}>
+              <GenericText
+                style={{ color: "red", fontSize: 16, fontWeight: "700" }}
+              >
                 Cancel
-              </Text>
+              </GenericText>
             </TouchableOpacity>
             <TouchableOpacity onPress={shareCredientials}>
-              <Text style={{ color: "green", fontSize: 16, fontWeight: "700" }}>
+              <GenericText
+                style={{ color: "green", fontSize: 16, fontWeight: "700" }}
+              >
                 Authorize
-              </Text>
+              </GenericText>
             </TouchableOpacity>
           </View>
         </View>

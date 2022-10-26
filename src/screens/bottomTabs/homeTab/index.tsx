@@ -163,12 +163,12 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
           ></Header>
           <View style={styles.flatPanel}>
             <View style={styles.alignCenter}>
-              <Text style={[styles.label, { fontSize: 12 }]}>
+              <GenericText style={[styles.label, { fontSize: 12 }]}>
                 {SCREENS.HOMESCREEN.appName}
-              </Text>
-              <Text style={[styles.label, { fontSize: 16 }]}>
+              </GenericText>
+              <GenericText style={[styles.label, { fontSize: 16 }]}>
                 {userDetails?.responseData?.earthId}
-              </Text>
+              </GenericText>
             </View>
             {/* <CircularProgress
               value={60}

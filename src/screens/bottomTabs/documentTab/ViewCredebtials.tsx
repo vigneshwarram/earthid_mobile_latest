@@ -12,6 +12,7 @@ import {
   validateDocsApi,
 } from "../../../utils/earthid_account";
 import { QRreader } from "react-native-qr-decode-image-camera";
+import GenericText from "../../../components/Text";
 
 const DocumentPreviewScreen = (props: any) => {
   const { fileUri, type } = props.route.params;
@@ -47,9 +48,9 @@ const DocumentPreviewScreen = (props: any) => {
             source={{ uri: documentDetails.base64 }}
           ></Image>
         ) : (
-          <Text style={{ color: "#fff", marginVertical: 50 }}>
+          <GenericText style={{ color: "#fff", marginVertical: 50 }}>
             {JSON.stringify(documentDetails)}
-          </Text>
+          </GenericText>
         )}
       </View>
 

@@ -1,13 +1,5 @@
-import { values } from "lodash";
 import React, { useEffect } from "react";
-import {
-  View,
-  StyleSheet,
-  Text,
-  FlatList,
-  Image,
-  ScrollView,
-} from "react-native";
+import { View, StyleSheet, FlatList, ScrollView } from "react-native";
 
 import Card from "../../../components/Card";
 import Header from "../../../components/Header";

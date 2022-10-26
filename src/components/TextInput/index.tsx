@@ -53,6 +53,7 @@ const TextInputBox = ({
       </View>
     )}
     <TextInput
+      allowFontScaling={false}
       placeholder={placeholder}
       testID={testId}
       keyboardType={isNumeric ? "number-pad" : "default"}
@@ -69,7 +70,11 @@ const TextInputBox = ({
         isError ? styles.error : isFocused && styles.focus,
       ]}
     />
-    {isError && <Text style={styles.errorText}>{errorText}</Text>}
+    {isError && (
+      <Text allowFontScaling={false} style={styles.errorText}>
+        {errorText}
+      </Text>
+    )}
   </View>
 );
 

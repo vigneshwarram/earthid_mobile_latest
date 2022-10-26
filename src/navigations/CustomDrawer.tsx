@@ -5,21 +5,18 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
-  Text,
   Alert,
   Linking,
 } from "react-native";
 import { Screens } from "../themes/index";
 import { values } from "lodash";
 import { LocalImages } from "../constants/imageUrlConstants";
-import Card from "../components/Card";
 import { ABOUT_ROUTES } from "../constants/Routes";
 import { StackActions } from "@react-navigation/native";
 import GenericText from "../components/Text";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { FlushData } from "../redux/actions/authenticationAction";
 import { useFetch } from "../hooks/use-fetch";
-import { deleteUserApi } from "../utils/earthid_account";
 import { EARTHID_DEV_BASE } from "../constants/URLContstants";
 
 const CustomDrawer = (props: any) => {

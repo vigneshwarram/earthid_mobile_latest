@@ -8,14 +8,12 @@ import {
   TouchableOpacity,
   Image,
   AsyncStorage,
-  Platform,
 } from "react-native";
 import Header from "../../../components/Header";
 import { LocalImages } from "../../../constants/imageUrlConstants";
 import { SCREENS } from "../../../constants/Labels";
 import { Screens } from "../../../themes";
 import Button from "../../../components/Button";
-import Snackbar from "react-native-snackbar";
 
 import { LanguageContext } from "../../../components/LanguageContext/LanguageContextProvider";
 import il8n, { getUserLanguagePreference } from "../.././../utils/i18n";
@@ -207,6 +205,7 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
 
             <View style={{ paddingHorizontal: 15 }}>
               <Text
+                allowFontScaling={false}
                 style={[
                   styles.categoryHeaderText,
                   {
@@ -220,6 +219,7 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
                 {t("continuetoagrees")}
 
                 <Text
+                  allowFontScaling={false}
                   style={{ color: Screens.colors.primary, fontSize: 13 }}
                   onPress={() =>
                     Linking.openURL("https://globalidiq.com/terms-of-use-3/")

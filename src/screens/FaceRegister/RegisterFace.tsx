@@ -14,6 +14,7 @@ import { RNCamera } from "react-native-camera";
 
 import Button from "../../components/Button";
 import { SnackBar } from "../../components/SnackBar";
+import GenericText from "../../components/Text";
 import { LocalImages } from "../../constants/imageUrlConstants";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { SaveSecurityConfiguration } from "../../redux/actions/LocalSavingActions";
@@ -27,34 +28,7 @@ const LivenessCameraScreen = (props: any) => {
   const [maskedColor, setmaskedColor] = useState("#fff");
   const [data, setData] = useState();
   const userDetails = useAppSelector((state) => state.contract);
-  const dispatch = useAppDispatch();
-  const securityReducer: any = useAppSelector((state) => state.security);
 
-  const saveSelectionSecurities = () => {
-    let payLoad = [];
-    if (
-      securityReducer &&
-      securityReducer?.securityData &&
-      securityReducer?.securityData?.length > 0
-    )
-      payLoad = securityReducer?.securityData;
-    if (payLoad[0].types !== ESecurityTypes.FACE) {
-      payLoad.push({
-        types: ESecurityTypes.FACE,
-        enabled: true,
-      });
-    } else {
-      payLoad = payLoad.map(
-        (item: { types: ESecurityTypes; enabled: boolean }) => {
-          if (item.types === ESecurityTypes.FACE) {
-            item.enabled = true;
-          }
-          return item;
-        }
-      );
-    }
-    dispatch(SaveSecurityConfiguration(payLoad));
-  };
   // Initial state of variables
   let rightEyeOpen: any[] = [];
   let camera: {
@@ -132,8 +106,10 @@ const LivenessCameraScreen = (props: any) => {
               base64: true,
             };
             const data = await camRef.current.takePictureAsync(options);
-            saveSelectionSecurities();
-            actionToNavigate();
+            props.navigation.navigate("SuccessFaceRegister", {
+              type: "facedata",
+              value: data,
+            });
           } else {
             SnackBar({
               indicationMessage: "I can still see you moving",
@@ -145,33 +121,6 @@ const LivenessCameraScreen = (props: any) => {
         faceCount = 0;
         rightEyeOpen = [];
       }
-    }
-  };
-
-  const actionToNavigate = () => {
-    if (securityReducer && securityReducer?.securityData) {
-      console.log(
-        "securityReducer?.securityData",
-        securityReducer?.securityData
-      );
-      if (
-        securityReducer?.securityData?.length === 2 &&
-        securityReducer?.securityData?.some(
-          (item: { types: any }) => item.types === ESecurityTypes.PASSCORD
-        ) &&
-        securityReducer?.securityData?.every(
-          (item: { enabled: boolean }) => item.enabled
-        )
-      ) {
-        props.navigation.navigate("SuccessFaceRegister", {
-          type: "facedata",
-          value: data,
-        });
-      } else {
-        props.navigation.navigate("Security");
-      }
-    } else {
-      props.navigation.navigate("Security");
     }
   };
 
@@ -240,7 +189,7 @@ const LivenessCameraScreen = (props: any) => {
       >
         <DocumentMask color={maskedColor} />
       </RNCamera>
-      <Text
+      <GenericText
         style={{
           textAlign: "center",
           paddingVertical: 5,
@@ -250,10 +199,12 @@ const LivenessCameraScreen = (props: any) => {
         }}
       >
         Capture
-      </Text>
-      <Text style={{ textAlign: "center", paddingVertical: 5, color: "#fff" }}>
+      </GenericText>
+      <GenericText
+        style={{ textAlign: "center", paddingVertical: 5, color: "#fff" }}
+      >
         Place your face inside the live box!
-      </Text>
+      </GenericText>
       {/* <Button
         onPress={() => {
           setData(undefined);

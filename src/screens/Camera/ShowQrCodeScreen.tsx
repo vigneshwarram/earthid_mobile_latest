@@ -21,6 +21,7 @@ import CameraRoll from "@react-native-community/cameraroll";
 import CryptoJS from "react-native-crypto-js";
 import { useAppSelector } from "../../hooks/hooks";
 import { AES_ENCRYPTION_SALT } from "../../utils/earthid_account";
+import GenericText from "../../components/Text";
 
 const CameraScreen = (props: any) => {
   const _handleBarCodeRead = (barCodeData: any) => {};
@@ -134,7 +135,7 @@ const CameraScreen = (props: any) => {
       </View>
       <View style={styles.category}>
         <View style={{ flex: 0.8, justifyContent: "space-between" }}>
-          <Text
+          <GenericText
             style={[
               styles.categoryHeaderText,
               {
@@ -146,8 +147,8 @@ const CameraScreen = (props: any) => {
             ]}
           >
             {"Robert Downey"}
-          </Text>
-          <Text
+          </GenericText>
+          <GenericText
             style={[
               styles.categoryHeaderText,
               {
@@ -159,7 +160,7 @@ const CameraScreen = (props: any) => {
             ]}
           >
             {"ID: 37578810"}
-          </Text>
+          </GenericText>
 
           <View style={{ justifyContent: "center", alignItems: "center" }}>
             <ViewShot
@@ -180,7 +181,7 @@ const CameraScreen = (props: any) => {
               />
             </ViewShot>
           </View>
-          <Text
+          <GenericText
             style={[
               styles.categoryHeaderText,
               {
@@ -192,7 +193,7 @@ const CameraScreen = (props: any) => {
             ]}
           >
             {"Share this code"}
-          </Text>
+          </GenericText>
           {/* <Text
             style={[
               styles.categoryHeaderText,

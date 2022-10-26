@@ -7,7 +7,6 @@ import {
   ActivityIndicator,
 } from "react-native";
 import Header from "../../../components/Header";
-import { LocalImages } from "../../../constants/imageUrlConstants";
 import { SCREENS } from "../../../constants/Labels";
 import { Screens } from "../../../themes";
 import Button from "../../../components/Button";
@@ -26,7 +25,6 @@ import {
 import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
 import { IUserAccountRequest } from "../../../typings/AccountCreation/IUserAccount";
 import { getDeviceId, getDeviceName } from "../../../utils/encryption";
-import AnimatedLoader from "../../../components/Loader/AnimatedLoader";
 import GenericText from "../../../components/Text";
 import { SnackBar } from "../../../components/SnackBar";
 import { TouchableOpacity } from "react-native-gesture-handler";
