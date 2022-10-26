@@ -1,43 +1,90 @@
 import { StackActions } from "@react-navigation/native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   View,
   StyleSheet,
   Image,
   TouchableOpacity,
-  ActivityIndicator,
-  AsyncStorage
+  AsyncStorage,
 } from "react-native";
 
 import Button from "../../components/Button";
-import SuccessPopUp from "../../components/Loader";
-import AnimatedLoader from "../../components/Loader/AnimatedLoader";
 import GenericText from "../../components/Text";
 import { LocalImages } from "../../constants/imageUrlConstants";
-import { useFetch } from "../../hooks/use-fetch";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { SaveSecurityConfiguration } from "../../redux/actions/LocalSavingActions";
 import { Screens } from "../../themes/index";
-import { validateDocsApi } from "../../utils/earthid_account";
+import { ESecurityTypes } from "../../typings/enums/Security";
 
-const facePlaceHolderWidget = ({navigation,route}:any) => {
+const facePlaceHolderWidget = ({ navigation, route }: any) => {
+  const dispatch = useAppDispatch();
 
+  useEffect(() => {
+    console.log("routeface==>", route.params.type);
+    console.log("routeface==>", route);
+    storeData();
+  }, []);
+  const securityReducer: any = useAppSelector((state) => state.security);
+  const saveSelectionSecurities = () => {
+    let payLoad = [];
+    if (
+      securityReducer &&
+      securityReducer?.securityData &&
+      securityReducer?.securityData?.length > 0
+    )
+      payLoad = securityReducer?.securityData;
+    if (payLoad[0].types !== ESecurityTypes.FACE) {
+      payLoad.push({
+        types: ESecurityTypes.FACE,
+        enabled: true,
+      });
+    } else {
+      payLoad = payLoad.map(
+        (item: { types: ESecurityTypes; enabled: boolean }) => {
+          if (item.types === ESecurityTypes.FACE) {
+            item.enabled = true;
+          }
+          return item;
+        }
+      );
+    }
+    dispatch(SaveSecurityConfiguration(payLoad)).then(() => {
+      actionToNavigate();
+    });
+  };
 
-  useEffect(()=>{
-    console.log("routeface==>",route.params.type)
-    console.log("routeface==>",route)
-    storeData()
-  },[])
-
+  const actionToNavigate = () => {
+    if (securityReducer && securityReducer?.securityData) {
+      console.log(
+        "securityReducer?.securityData",
+        securityReducer?.securityData
+      );
+      if (
+        securityReducer?.securityData?.length === 2 &&
+        securityReducer?.securityData?.some(
+          (item: { types: any }) => item.types === ESecurityTypes.PASSCORD
+        ) &&
+        securityReducer?.securityData?.every(
+          (item: { enabled: boolean }) => item.enabled
+        )
+      ) {
+        navigation.dispatch(
+          StackActions.replace("DrawerNavigator", { type: "Faceid" })
+        );
+      } else {
+        navigation.navigate("Security");
+      }
+    } else {
+      navigation.navigate("Security");
+    }
+  };
 
   const storeData = () => {
     try {
-      let name =route.params.type
-        AsyncStorage.setItem(
-        "key",
-        name
-      );
-      
+      let name = route.params.type;
+      AsyncStorage.setItem("faceid", name);
     } catch (error) {
-     console.log(error)
+      console.log(error);
     }
   };
 
@@ -75,9 +122,7 @@ const facePlaceHolderWidget = ({navigation,route}:any) => {
       </View>
 
       <Button
-        onPress={() =>
-          navigation.dispatch(StackActions.replace("DrawerNavigator",{type:"Faceid"}))
-        }
+        onPress={() => saveSelectionSecurities()}
         style={{
           buttonContainer: {
             elevation: 5,

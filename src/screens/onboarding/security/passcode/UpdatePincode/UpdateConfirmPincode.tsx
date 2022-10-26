@@ -1,8 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
-  Text,
   ScrollView,
   Image,
   AsyncStorage,
@@ -15,7 +14,6 @@ import Button from "../../../../../components/Button";
 import SmoothPinCodeInput from "react-native-smooth-pincode-input";
 import { LocalImages } from "../../../../../constants/imageUrlConstants";
 import Loader from "../../../../../components/Loader";
-import { StackActions } from "@react-navigation/native";
 import GenericText from "../../../../../components/Text";
 
 interface IHomeScreenProps {
@@ -115,24 +113,23 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
             </GenericText>
           </View>
 
-          <View style={{alignSelf:"center"}}>
-
-          <SmoothPinCodeInput
-            cellStyle={{
-              borderWidth: isError ? 1.5 : 0.5,
-              borderColor: isError ? "red" : Screens.grayShadeColor,
-              borderRadius: 5,
-            }}
-            cellStyleFocused={{
-              borderWidth: 2,
-              borderColor: Screens.colors.primary,
-            }}
-            password
-            cellSize={50}
-            codeLength={6}
-            value={code}
-            onTextChange={onPinCodeChange}
-          />
+          <View style={{ alignSelf: "center" }}>
+            <SmoothPinCodeInput
+              cellStyle={{
+                borderWidth: isError ? 1.5 : 0.5,
+                borderColor: isError ? "red" : Screens.grayShadeColor,
+                borderRadius: 5,
+              }}
+              cellStyleFocused={{
+                borderWidth: 2,
+                borderColor: Screens.colors.primary,
+              }}
+              password
+              cellSize={50}
+              codeLength={6}
+              value={code}
+              onTextChange={onPinCodeChange}
+            />
           </View>
           {isError && (
             <GenericText

@@ -3,7 +3,6 @@ import React, { useRef, useState } from "react";
 import {
   View,
   StyleSheet,
-  Text,
   FlatList,
   ScrollView,
   Platform,
@@ -11,7 +10,6 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import PhoneInput from "react-native-phone-number-input";
 import Avatar from "../../components/Avatar";
 import BottomSheet from "../../components/Bottomsheet";
 import Header from "../../components/Header";
@@ -29,7 +27,7 @@ import { byPassUserDetailsRedux } from "../../redux/actions/authenticationAction
 import { useTheme } from "@react-navigation/native";
 import { savingProfilePictures } from "../../redux/actions/LocalSavingActions";
 import { RNCamera } from "react-native-camera";
-import DocumentMask from "../uploadDocuments/DocumentMask";
+import GenericText from "../../components/Text";
 
 interface IHomeScreenProps {
   navigation?: any;
@@ -156,9 +154,9 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
   const _renderItem = ({ item, index }: any) => {
     return (
       <View>
-        <Text style={[styles.categoryHeaderText, { fontSize: 13 }]}>
+        <GenericText style={[styles.categoryHeaderText, { fontSize: 13 }]}>
           {item.title}
-        </Text>
+        </GenericText>
 
         <TextInput
           style={{
@@ -189,9 +187,11 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
           imgContainer: styles.avatarImageContainer,
         }}
       />
-      <Text style={[styles.label, { fontSize: 12, textAlign: "center" }]}>
+      <GenericText
+        style={[styles.label, { fontSize: 12, textAlign: "center" }]}
+      >
         {title}
-      </Text>
+      </GenericText>
     </View>
   );
 
@@ -220,11 +220,9 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
             ref={camRef}
             style={styles.preview}
             androidCameraPermissionOptions={null}
-            type={RNCamera.Constants.Type.back}
+            type={RNCamera.Constants.Type.front}
             captureAudio={false}
-          >
-            <DocumentMask />
-          </RNCamera>
+          ></RNCamera>
           <View style={{ backgroundColor: "#000" }}>
             <View
               style={{

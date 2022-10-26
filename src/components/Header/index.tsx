@@ -149,7 +149,7 @@ const Header = ({
                         marginLeft: 10,
                       }}
                     >
-                      <Text
+                      <GenericText
                         style={{
                           fontWeight: "bold",
                           marginLeft: -5,
@@ -157,7 +157,7 @@ const Header = ({
                         }}
                       >
                         {rewardPoints}
-                      </Text>
+                      </GenericText>
                     </View>
                   )}
                 </View>

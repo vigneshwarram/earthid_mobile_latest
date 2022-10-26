@@ -6,14 +6,12 @@ import {
   Image,
   TouchableOpacity,
   Text,
-  Alert,
-  Platform,
   AsyncStorage,
 } from "react-native";
 import { RNCamera } from "react-native-camera";
 
-import Button from "../../components/Button";
 import { SnackBar } from "../../components/SnackBar";
+import GenericText from "../../components/Text";
 import { LocalImages } from "../../constants/imageUrlConstants";
 import { useAppSelector } from "../../hooks/hooks";
 import { Screens } from "../../themes/index";
@@ -175,7 +173,7 @@ const LivenessCameraScreen = (props: any) => {
       >
         <DocumentMask color={maskedColor} />
       </RNCamera>
-      <Text
+      <GenericText
         style={{
           textAlign: "center",
           paddingVertical: 5,
@@ -185,10 +183,12 @@ const LivenessCameraScreen = (props: any) => {
         }}
       >
         Capture
-      </Text>
-      <Text style={{ textAlign: "center", paddingVertical: 5, color: "#fff" }}>
+      </GenericText>
+      <GenericText
+        style={{ textAlign: "center", paddingVertical: 5, color: "#fff" }}
+      >
         Place your face inside the live box!
-      </Text>
+      </GenericText>
       {/* <Button
         onPress={() => {
           setData(undefined);

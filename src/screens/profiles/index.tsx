@@ -3,19 +3,15 @@ import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   StyleSheet,
-  Text,
-  FlatList,
   Image,
   TouchableOpacity,
   Platform,
   PermissionsAndroid,
 } from "react-native";
 import DocumentPicker from "react-native-document-picker";
-import CircularProgress from "react-native-circular-progress-indicator";
 import { ScrollView } from "react-native-gesture-handler";
 import Avatar from "../../components/Avatar";
 import BottomSheet from "../../components/Bottomsheet";
-import RNFS from "react-native-fs";
 import Header from "../../components/Header";
 import Info from "../../components/Info";
 import GenericText from "../../components/Text";
@@ -26,7 +22,6 @@ import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { useDrawerStatus } from "@react-navigation/drawer";
 import { Screens } from "../../themes";
 import { RNCamera } from "react-native-camera";
-import { alertBox } from "../../utils/earthid_account";
 import DocumentMask from "../uploadDocuments/DocumentMask";
 import { useTheme } from "@react-navigation/native";
 import { savingProfilePictures } from "../../redux/actions/LocalSavingActions";
@@ -187,7 +182,7 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
             ref={camRef}
             style={styles.preview}
             androidCameraPermissionOptions={null}
-            type={RNCamera.Constants.Type.back}
+            type={RNCamera.Constants.Type.front}
             captureAudio={false}
           >
             <DocumentMask />
@@ -246,12 +241,12 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
           ></Header>
           <View style={styles.flatPanel}>
             <View style={styles.alignCenter}>
-              <Text style={[styles.label, { fontSize: 12 }]}>
+              <GenericText style={[styles.label, { fontSize: 12 }]}>
                 {SCREENS.HOMESCREEN.appName}
-              </Text>
-              <Text style={[styles.label, { fontSize: 16 }]}>
+              </GenericText>
+              <GenericText style={[styles.label, { fontSize: 16 }]}>
                 {userDetails?.responseData?.earthId}
-              </Text>
+              </GenericText>
             </View>
             {/* <CircularProgress
               value={60}

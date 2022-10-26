@@ -26,7 +26,11 @@ const GenericText: React.SFC<ITextProps> = ({
   const Text_ = animated ? Animated.Text : Text; //Support for animated text
   const { t } = useTranslation(); // Support for localization
   const textInput = children! as string; // typescript
-  return <Text_ {...props}>{t(textInput)}</Text_>;
+  return (
+    <Text_ allowFontScaling={false} {...props}>
+      {t(textInput)}
+    </Text_>
+  );
 };
 
 export default GenericText;
