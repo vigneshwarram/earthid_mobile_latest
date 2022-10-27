@@ -177,6 +177,7 @@ const Register = ({ navigation }: IRegister) => {
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "padding"}
       style={{ flex: 1 }}
+      enabled
     >
       <View style={styles.sectionContainer}>
         <ScrollView contentContainerStyle={styles.sectionContainer}>
