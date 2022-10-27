@@ -12,7 +12,7 @@ import { SCREENS } from "../../../constants/Labels";
 import { Screens } from "../../../themes";
 import Button from "../../../components/Button";
 import DatePicker from "react-native-date-picker";
-
+import { KeyboardAvoidingScrollView } from "react-native-keyboard-avoiding-scroll-view";
 import Info from "../../../components/Info";
 import TextInput from "../../../components/TextInput";
 import PhoneInput from "react-native-phone-number-input";
@@ -174,64 +174,65 @@ const Register = ({ navigation }: IRegister) => {
   }
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "padding"}
-      style={{ flex: 1 }}
-      enabled
-    >
-      <View style={styles.sectionContainer}>
-        <ScrollView contentContainerStyle={styles.sectionContainer}>
-          <Header
-            isLogoAlone={true}
-            linearStyle={styles.linearStyle}
-            containerStyle={{
-              iconStyle: {
-                width: 205,
-                height: 72,
-                marginTop: 30,
-              },
-              iconContainer: styles.alignCenter,
-            }}
-          ></Header>
-          <View style={styles.category}>
-            <View>
-              <GenericText
-                style={[
-                  styles.categoryHeaderText,
-                  {
-                    fontSize: 18,
-                    fontWeight: "bold",
-                    textAlign: "center",
-                    color: Screens.black,
-                  },
-                ]}
-              >
-                {SCREENS.LANDINGSCREEN.setUpId}
-              </GenericText>
-              <Info
-                title={"username"}
-                style={{
-                  title: styles.title,
-                  subtitle: styles.subtitle,
-                  container: styles.textContainer,
-                }}
-              />
-              <TextInput
-                style={{
-                  container: styles.textInputContainer,
-                }}
-                placeholder={"Enter Username"}
-                isError={isfirstNameError}
-                errorText={isfirstNameErrorMessage}
-                onFocus={firstNameFocusHandlur}
-                onBlur={firstNameBlurHandler}
-                maxLength={60}
-                isFocused={firstNameFocus}
-                value={firstName}
-                onChangeText={firstNameChangeHandler}
-              />
+    <KeyboardAvoidingScrollView>
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: Screens.colors.background,
+          paddingBottom: 100,
+        }}
+      >
+        <Header
+          isLogoAlone={true}
+          linearStyle={styles.linearStyle}
+          containerStyle={{
+            iconStyle: {
+              width: 205,
+              height: 72,
+              marginTop: 30,
+            },
+            iconContainer: styles.alignCenter,
+          }}
+        ></Header>
+        <View style={styles.category}>
+          <View>
+            <GenericText
+              style={[
+                styles.categoryHeaderText,
+                {
+                  fontSize: 18,
+                  fontWeight: "bold",
+                  textAlign: "center",
+                  color: Screens.black,
+                },
+              ]}
+            >
+              {SCREENS.LANDINGSCREEN.setUpId}
+            </GenericText>
+            <Info
+              title={"username"}
+              style={{
+                title: styles.title,
+                subtitle: styles.subtitle,
+                container: styles.textContainer,
+              }}
+            />
+            <TextInput
+              style={{
+                container: styles.textInputContainer,
+              }}
+              placeholder={"Enter Username"}
+              isError={isfirstNameError}
+              errorText={isfirstNameErrorMessage}
+              onFocus={firstNameFocusHandlur}
+              onBlur={firstNameBlurHandler}
+              maxLength={60}
+              isFocused={firstNameFocus}
+              value={firstName}
+              onChangeText={firstNameChangeHandler}
+            />
 
-              {/* <Info
+            {/* <Info
               title={"dob"}
               style={{
                 title: styles.title,
@@ -254,155 +255,151 @@ const Register = ({ navigation }: IRegister) => {
               value={dateOfBirth}
               onChangeText={dateOfBirthChangeHandler}
             /> */}
-              <Info
-                title={"mobileno"}
-                style={{
-                  title: styles.title,
-                  subtitle: styles.subtitle,
-                  container: styles.textContainer,
-                }}
-              />
-              <PhoneInput
-                onChangeCountry={(code) => {
-                  const { callingCode } = code;
-                  setcallingCode(callingCode[0]);
-                  console.log("code==>", callingCode[0]);
-                }}
-                autoFocus={false}
-                placeholder="Mobile number"
-                ref={phoneInput}
-                defaultCode="US"
-                layout="first"
-                onChangeText={(text: any) => {
-                  var format = text.replace(/[^0-9]/g, "");
-                  setmobileNumber(format);
-                }}
-                containerStyle={{
-                  borderColor: Screens.darkGray,
-                  borderWidth: 2.2,
-                  borderRadius: 10,
-                  height: 60,
-                  marginHorizontal: 10,
-                }}
-                flagButtonStyle={{
-                  backgroundColor: Screens.thickGray,
-                  borderBottomLeftRadius: 9,
-                  borderTopLeftRadius: 9,
-                }}
-                textInputStyle={{ fontSize: 16, padding: 0, margin: 0 }}
-                codeTextStyle={{ fontSize: 16, padding: 0, margin: 0 }}
-                textContainerStyle={{
-                  height: 55,
-                  padding: 0,
-                  margin: 0,
-                  borderBottomEndRadius: 9,
-                  borderTopRightRadius: 9,
-                  backgroundColor: "#fff",
-                }}
-              />
-              <Info
-                title={"email"}
-                style={{
-                  title: styles.title,
-                  subtitle: styles.subtitle,
-                  container: styles.textContainer,
-                }}
-              />
-              <TextInput
-                style={{
-                  container: styles.textInputContainer,
-                }}
-                placeholder={"Enter your Email"}
-                isError={isemailError}
-                errorText={isemailErrorMessage}
-                onFocus={emailFocusHandlur}
-                onBlur={emailBlurHandler}
-                maxLength={60}
-                isFocused={emailFocus}
-                value={email}
-                onChangeText={emailChangeHandler}
-              />
-            </View>
+            <Info
+              title={"mobileno"}
+              style={{
+                title: styles.title,
+                subtitle: styles.subtitle,
+                container: styles.textContainer,
+              }}
+            />
+            <PhoneInput
+              onChangeCountry={(code) => {
+                const { callingCode } = code;
+                setcallingCode(callingCode[0]);
+                console.log("code==>", callingCode[0]);
+              }}
+              autoFocus={false}
+              placeholder="Mobile number"
+              ref={phoneInput}
+              defaultCode="US"
+              layout="first"
+              onChangeText={(text: any) => {
+                var format = text.replace(/[^0-9]/g, "");
+                setmobileNumber(format);
+              }}
+              containerStyle={{
+                borderColor: Screens.darkGray,
+                borderWidth: 2.2,
+                borderRadius: 10,
+                height: 60,
+                marginHorizontal: 10,
+              }}
+              flagButtonStyle={{
+                backgroundColor: Screens.thickGray,
+                borderBottomLeftRadius: 9,
+                borderTopLeftRadius: 9,
+              }}
+              textInputStyle={{ fontSize: 16, padding: 0, margin: 0 }}
+              codeTextStyle={{ fontSize: 16, padding: 0, margin: 0 }}
+              textContainerStyle={{
+                height: 55,
+                padding: 0,
+                margin: 0,
+                borderBottomEndRadius: 9,
+                borderTopRightRadius: 9,
+                backgroundColor: "#fff",
+              }}
+            />
+            <Info
+              title={"email"}
+              style={{
+                title: styles.title,
+                subtitle: styles.subtitle,
+                container: styles.textContainer,
+              }}
+            />
+            <TextInput
+              style={{
+                container: styles.textInputContainer,
+              }}
+              placeholder={"Enter your Email"}
+              isError={isemailError}
+              errorText={isemailErrorMessage}
+              onFocus={emailFocusHandlur}
+              onBlur={emailBlurHandler}
+              maxLength={60}
+              isFocused={emailFocus}
+              value={email}
+              onChangeText={emailChangeHandler}
+            />
+          </View>
 
-            <View style={{ marginHorizontal: 20 }}>
-              <Button
-                onPress={_navigateAction}
-                style={{
-                  buttonContainer: {
-                    elevation: 5,
-                  },
-                  text: {
-                    color: Screens.pureWhite,
-                  },
-                  iconStyle: {
-                    tintColor: Screens.pureWhite,
-                  },
-                }}
-                title={"generateeathid"}
-              ></Button>
-              <TouchableOpacity onPress={() => navigation.goBack(null)}>
-                <View style={{ flexDirection: "row", alignSelf: "center" }}>
-                  <GenericText
-                    style={[
-                      styles.categoryHeaderText,
-                      {
-                        fontSize: 13,
-                        fontWeight: "500",
-                        textAlign: "center",
-                        color: Screens.black,
-                      },
-                    ]}
-                  >
-                    {"alreadyhavemy"}
-                  </GenericText>
-                  <GenericText
-                    style={{
-                      color: Screens.colors.primary,
-                      alignSelf: "center",
-                      textDecorationLine: "underline",
-                    }}
-                  >
-                    {"GlobaliD"}
-                  </GenericText>
-                </View>
-              </TouchableOpacity>
-            </View>
-
-            <Loader
-              loadingText="earthidgeneratesuccess"
-              Status="status"
-              isLoaderVisible={successResponse}
-            ></Loader>
-            {userDetails?.isLoading && (
-              <View style={styles.loading}>
-                <ActivityIndicator
-                  color={Screens.colors.primary}
-                  size="large"
-                />
+          <View style={{ marginHorizontal: 20 }}>
+            <Button
+              onPress={_navigateAction}
+              style={{
+                buttonContainer: {
+                  elevation: 5,
+                },
+                text: {
+                  color: Screens.pureWhite,
+                },
+                iconStyle: {
+                  tintColor: Screens.pureWhite,
+                },
+              }}
+              title={"generateeathid"}
+            ></Button>
+            <TouchableOpacity onPress={() => navigation.goBack(null)}>
+              <View style={{ flexDirection: "row", alignSelf: "center" }}>
+                <GenericText
+                  style={[
+                    styles.categoryHeaderText,
+                    {
+                      fontSize: 13,
+                      fontWeight: "500",
+                      textAlign: "center",
+                      color: Screens.black,
+                    },
+                  ]}
+                >
+                  {"alreadyhavemy"}
+                </GenericText>
+                <GenericText
+                  style={{
+                    color: Screens.colors.primary,
+                    alignSelf: "center",
+                    textDecorationLine: "underline",
+                  }}
+                >
+                  {"GlobaliD"}
+                </GenericText>
               </View>
-            )}
+            </TouchableOpacity>
+          </View>
 
-            {/* <AnimatedLoader
+          <Loader
+            loadingText="earthidgeneratesuccess"
+            Status="status"
+            isLoaderVisible={successResponse}
+          ></Loader>
+          {userDetails?.isLoading && (
+            <View style={styles.loading}>
+              <ActivityIndicator color={Screens.colors.primary} size="large" />
+            </View>
+          )}
+
+          {/* <AnimatedLoader
             isLoaderVisible={userDetails?.isLoading}
             loadingText="loading"
           /> */}
-          </View>
-          <DatePicker
-            modal
-            open={openDatePicker}
-            date={new Date()}
-            onConfirm={(date) => {
-              console.log("date");
-              setopenDatePicker(false);
-              dateOfBirthChangeHandler(date.toDateString());
-            }}
-            onCancel={() => {
-              setopenDatePicker(false);
-            }}
-          />
-        </ScrollView>
+        </View>
+        <DatePicker
+          modal
+          open={openDatePicker}
+          date={new Date()}
+          onConfirm={(date) => {
+            console.log("date");
+            setopenDatePicker(false);
+            dateOfBirthChangeHandler(date.toDateString());
+          }}
+          onCancel={() => {
+            setopenDatePicker(false);
+          }}
+        />
       </View>
-    </KeyboardAvoidingView>
+    </KeyboardAvoidingScrollView>
   );
 };
 
@@ -477,7 +474,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     elevation: 5,
     borderRadius: 30,
-    flex: 0.3,
+
     justifyContent: "space-between",
   },
   loading: {

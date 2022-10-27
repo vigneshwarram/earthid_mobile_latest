@@ -404,18 +404,6 @@ const styles = StyleSheet.create({
     color: Screens.headingtextColor,
   },
 
-  flatPanel: {
-    marginHorizontal: 25,
-    height: 80,
-    borderRadius: 15,
-    backgroundColor: Screens.colors.background,
-    elevation: 15,
-    marginTop: -40,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 20,
-  },
   logoContainers: {
     width: 30,
     height: 30,
@@ -434,7 +422,6 @@ const styles = StyleSheet.create({
     paddingVertical: 30,
     elevation: 5,
     borderRadius: 30,
-    flex: 0.7,
 
     justifyContent: "space-between",
     shadowColor: "#000",

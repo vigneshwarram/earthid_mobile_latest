@@ -80,27 +80,7 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
   };
 
   const actionToNavigate = () => {
-    if (securityReducer && securityReducer?.securityData) {
-      console.log(
-        "securityReducer?.securityData",
-        securityReducer?.securityData
-      );
-      if (
-        securityReducer?.securityData?.length === 2 &&
-        securityReducer?.securityData?.some(
-          (item: { types: any }) => item.types === ESecurityTypes.PASSCORD
-        ) &&
-        securityReducer?.securityData?.every(
-          (item: { enabled: boolean }) => item.enabled
-        )
-      ) {
-        navigation.dispatch(StackActions.replace("DrawerNavigator"));
-      } else {
-        navigation.navigate("Security");
-      }
-    } else {
-      navigation.navigate("Security");
-    }
+    navigation.dispatch(StackActions.replace("DrawerNavigator"));
   };
   return (
     <View style={styles.sectionContainer}>
