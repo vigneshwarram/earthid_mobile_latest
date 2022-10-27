@@ -174,12 +174,12 @@ const Register = ({ navigation }: IRegister) => {
   }
 
   return (
-    <View style={styles.sectionContainer}>
-      <ScrollView contentContainerStyle={styles.sectionContainer}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "padding"}
-          style={styles.sectionContainer}
-        >
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "padding"}
+      style={{ flex: 1 }}
+    >
+      <View style={styles.sectionContainer}>
+        <ScrollView contentContainerStyle={styles.sectionContainer}>
           <Header
             isLogoAlone={true}
             linearStyle={styles.linearStyle}
@@ -399,9 +399,9 @@ const Register = ({ navigation }: IRegister) => {
               setopenDatePicker(false);
             }}
           />
-        </KeyboardAvoidingView>
-      </ScrollView>
-    </View>
+        </ScrollView>
+      </View>
+    </KeyboardAvoidingView>
   );
 };
 

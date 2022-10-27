@@ -116,7 +116,191 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
               iconContainer: styles.alignCenter,
             }}
           ></Header>
-          <TouchableOpacity onPress={() => setLanguageVisible(true)}>
+          <View style={styles.category}>
+            <View>
+              <GenericText
+                style={[
+                  styles.categoryHeaderText,
+                  {
+                    fontSize: 18,
+                    fontWeight: "bold",
+                    textAlign: "center",
+                    color: Screens.black,
+                  },
+                ]}
+              >
+                {SCREENS.LANDINGSCREEN.setUpId}
+              </GenericText>
+              <GenericText
+                style={[
+                  styles.categoryHeaderText,
+                  {
+                    fontSize: 15,
+                    fontWeight: "500",
+                    textAlign: "center",
+                    color: Screens.grayShadeColor,
+                  },
+                ]}
+              >
+                {SCREENS.LANDINGSCREEN.instruction}
+              </GenericText>
+              <Button
+                onPress={() => navigation.navigate("UploadDocument")}
+                style={{
+                  buttonContainer: {
+                    backgroundColor: Screens.pureWhite,
+                    elevation: 5,
+                  },
+                  iconStyle: {
+                    tintColor: Screens.colors.primary,
+                  },
+                }}
+                leftIcon={LocalImages.registerdocumentImage}
+                title={"registerwithdoc"}
+              ></Button>
+              <View style={{ marginTop: -20 }}>
+                <Button
+                  onPress={navigateAction}
+                  style={{
+                    buttonContainer: {
+                      backgroundColor: Screens.pureWhite,
+                      elevation: 5,
+                    },
+                    iconStyle: {
+                      tintColor: Screens.colors.primary,
+                    },
+                  }}
+                  leftIcon={LocalImages.manualIcon}
+                  title={"registermanually"}
+                ></Button>
+              </View>
+            </View>
+            <View style={{ marginTop: 30 }}>
+              <GenericText
+                style={[
+                  styles.categoryHeaderText,
+                  {
+                    fontSize: 16,
+                    fontWeight: "500",
+                    textAlign: "center",
+                    color: Screens.black,
+                  },
+                ]}
+              >
+                {"alreadyhaveearthid"}
+              </GenericText>
+              <Button
+                onPress={() => openFilePicker()}
+                style={{
+                  buttonContainer: {
+                    elevation: 5,
+                  },
+                  text: {
+                    color: Screens.pureWhite,
+                  },
+                  iconStyle: {
+                    tintColor: Screens.pureWhite,
+                  },
+                }}
+                leftIcon={LocalImages.uploadqrimage}
+                title={SCREENS.LANDINGSCREEN.BUTTON_LABEL}
+              ></Button>
+
+              <View style={{ paddingHorizontal: 15 }}>
+                <Text
+                  allowFontScaling={false}
+                  style={[
+                    styles.categoryHeaderText,
+                    {
+                      fontSize: 13,
+                      fontWeight: "500",
+                      textAlign: "center",
+                      color: Screens.black,
+                    },
+                  ]}
+                >
+                  {t("continuetoagrees")}
+
+                  <Text
+                    allowFontScaling={false}
+                    style={{ color: Screens.colors.primary, fontSize: 13 }}
+                    onPress={() =>
+                      Linking.openURL("https://globalidiq.com/terms-of-use-3/")
+                    }
+                  >
+                    {" "}
+                    {t("termpolicy")}
+                  </Text>
+                </Text>
+              </View>
+            </View>
+            <BottomSheet
+              onClose={() => setLanguageVisible(false)}
+              height={300}
+              isVisible={languageVisible}
+            >
+              <View
+                style={{
+                  height: 280,
+                  width: "100%",
+                  paddingHorizontal: 10,
+                }}
+              >
+                <GenericText
+                  style={[
+                    {
+                      fontSize: 18,
+                      marginHorizontal: 20,
+                      marginVertical: 25,
+                      color: Screens.black,
+                      fontWeight: "500",
+                    },
+                  ]}
+                >
+                  {"selectLanguages"}
+                </GenericText>
+                {langugeList.map((item, index) => (
+                  <TouchableOpacity onPress={() => selectLanguage(item)}>
+                    <View
+                      style={{
+                        marginVertical: 7,
+                        backgroundColor: item.selection ? "#e6ffe6" : "#fff",
+                        padding: 10,
+                        borderRadius: 8,
+                        justifyContent: "space-between",
+                        flexDirection: "row",
+                      }}
+                    >
+                      <GenericText
+                        style={[
+                          {
+                            fontSize: 18,
+                            marginHorizontal: 20,
+                            color: Screens.black,
+                            fontWeight: "500",
+                          },
+                        ]}
+                      >
+                        {item?.label}
+                      </GenericText>
+                      <Image
+                        resizeMode="contain"
+                        style={[
+                          styles.avatarImageContainer,
+                          { tintColor: item.selection ? "green" : "#fff" },
+                        ]}
+                        source={LocalImages.successTikImage}
+                      ></Image>
+                    </View>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </BottomSheet>
+          </View>
+          <TouchableOpacity
+            style={{ marginTop: 20 }}
+            onPress={() => setLanguageVisible(true)}
+          >
             <View
               style={{
                 width: 120,
@@ -173,188 +357,6 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
               ></Image>
             </View>
           </TouchableOpacity>
-        </View>
-
-        <View style={styles.category}>
-          <View>
-            <GenericText
-              style={[
-                styles.categoryHeaderText,
-                {
-                  fontSize: 18,
-                  fontWeight: "bold",
-                  textAlign: "center",
-                  color: Screens.black,
-                },
-              ]}
-            >
-              {SCREENS.LANDINGSCREEN.setUpId}
-            </GenericText>
-            <GenericText
-              style={[
-                styles.categoryHeaderText,
-                {
-                  fontSize: 15,
-                  fontWeight: "500",
-                  textAlign: "center",
-                  color: Screens.grayShadeColor,
-                },
-              ]}
-            >
-              {SCREENS.LANDINGSCREEN.instruction}
-            </GenericText>
-            <Button
-              onPress={() => navigation.navigate("UploadDocument")}
-              style={{
-                buttonContainer: {
-                  backgroundColor: Screens.pureWhite,
-                  elevation: 5,
-                },
-                iconStyle: {
-                  tintColor: Screens.colors.primary,
-                },
-              }}
-              leftIcon={LocalImages.registerdocumentImage}
-              title={"registerwithdoc"}
-            ></Button>
-            <View style={{ marginTop: -20 }}>
-              <Button
-                onPress={navigateAction}
-                style={{
-                  buttonContainer: {
-                    backgroundColor: Screens.pureWhite,
-                    elevation: 5,
-                  },
-                  iconStyle: {
-                    tintColor: Screens.colors.primary,
-                  },
-                }}
-                leftIcon={LocalImages.manualIcon}
-                title={"registermanually"}
-              ></Button>
-            </View>
-          </View>
-          <View style={{ marginTop: 30 }}>
-            <GenericText
-              style={[
-                styles.categoryHeaderText,
-                {
-                  fontSize: 16,
-                  fontWeight: "500",
-                  textAlign: "center",
-                  color: Screens.black,
-                },
-              ]}
-            >
-              {"alreadyhaveearthid"}
-            </GenericText>
-            <Button
-              onPress={() => openFilePicker()}
-              style={{
-                buttonContainer: {
-                  elevation: 5,
-                },
-                text: {
-                  color: Screens.pureWhite,
-                },
-                iconStyle: {
-                  tintColor: Screens.pureWhite,
-                },
-              }}
-              leftIcon={LocalImages.uploadqrimage}
-              title={SCREENS.LANDINGSCREEN.BUTTON_LABEL}
-            ></Button>
-
-            <View style={{ paddingHorizontal: 15 }}>
-              <Text
-                allowFontScaling={false}
-                style={[
-                  styles.categoryHeaderText,
-                  {
-                    fontSize: 13,
-                    fontWeight: "500",
-                    textAlign: "center",
-                    color: Screens.black,
-                  },
-                ]}
-              >
-                {t("continuetoagrees")}
-
-                <Text
-                  allowFontScaling={false}
-                  style={{ color: Screens.colors.primary, fontSize: 13 }}
-                  onPress={() =>
-                    Linking.openURL("https://globalidiq.com/terms-of-use-3/")
-                  }
-                >
-                  {" "}
-                  {t("termpolicy")}
-                </Text>
-              </Text>
-            </View>
-          </View>
-          <BottomSheet
-            onClose={() => setLanguageVisible(false)}
-            height={300}
-            isVisible={languageVisible}
-          >
-            <View
-              style={{
-                height: 280,
-                width: "100%",
-                paddingHorizontal: 10,
-              }}
-            >
-              <GenericText
-                style={[
-                  {
-                    fontSize: 18,
-                    marginHorizontal: 20,
-                    marginVertical: 25,
-                    color: Screens.black,
-                    fontWeight: "500",
-                  },
-                ]}
-              >
-                {"selectLanguages"}
-              </GenericText>
-              {langugeList.map((item, index) => (
-                <TouchableOpacity onPress={() => selectLanguage(item)}>
-                  <View
-                    style={{
-                      marginVertical: 7,
-                      backgroundColor: item.selection ? "#e6ffe6" : "#fff",
-                      padding: 10,
-                      borderRadius: 8,
-                      justifyContent: "space-between",
-                      flexDirection: "row",
-                    }}
-                  >
-                    <GenericText
-                      style={[
-                        {
-                          fontSize: 18,
-                          marginHorizontal: 20,
-                          color: Screens.black,
-                          fontWeight: "500",
-                        },
-                      ]}
-                    >
-                      {item?.label}
-                    </GenericText>
-                    <Image
-                      resizeMode="contain"
-                      style={[
-                        styles.avatarImageContainer,
-                        { tintColor: item.selection ? "green" : "#fff" },
-                      ]}
-                      source={LocalImages.successTikImage}
-                    ></Image>
-                  </View>
-                </TouchableOpacity>
-              ))}
-            </View>
-          </BottomSheet>
         </View>
       </ScrollView>
     </View>
@@ -425,14 +427,14 @@ const styles = StyleSheet.create({
     color: Screens.black,
   },
   category: {
-    position: "absolute",
-    top: 150,
+    marginTop: -120,
     backgroundColor: Screens.pureWhite,
     padding: 10,
     marginHorizontal: 15,
     paddingVertical: 30,
     elevation: 5,
     borderRadius: 30,
+    flex: 0.7,
 
     justifyContent: "space-between",
     shadowColor: "#000",
