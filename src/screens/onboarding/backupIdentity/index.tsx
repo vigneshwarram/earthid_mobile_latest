@@ -63,8 +63,8 @@ const Register = ({ navigation }: IHomeScreenProps) => {
     viewShot.current.capture().then(async (imageData: any) => {
       console.log("imageData", imageData);
       try {
-        await requestExternalStoragePermission();
-        await CameraRoll.save(imageData);
+        // await requestExternalStoragePermission();
+        // await CameraRoll.save(imageData);
         dwFile(imageData);
         ImgToBase64.getBase64String(imageData)
           .then((base64String: any) => dwFile(base64String))

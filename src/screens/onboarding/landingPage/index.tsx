@@ -33,6 +33,7 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
     navigation.navigate("RegisterScreen");
   };
   const [languageVisible, setLanguageVisible] = useState(false);
+  const [selectedLanguage, setselectedLanguage] = useState(AppLanguage.ENGLISH);
   const [langugeList, setLanguageList] = useState([
     { label: "English", value: AppLanguage.ENGLISH, selection: true },
     { label: "Spanish", value: AppLanguage.SPANISH, selection: false },
@@ -59,6 +60,7 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
     const languageList = langugeList.map((itemData, inde) => {
       if (itemData.label === item.label) {
         itemData.selection = !itemData.selection;
+        setselectedLanguage(item.value);
       } else {
         itemData.selection = false;
       }
@@ -101,18 +103,78 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
   return (
     <View style={styles.sectionContainer}>
       <ScrollView contentContainerStyle={styles.sectionContainer}>
-        <Header
-          isLogoAlone={true}
-          linearStyle={styles.linearStyle}
-          containerStyle={{
-            iconStyle: {
-              width: 205,
-              height: 72,
-              marginTop: 30,
-            },
-            iconContainer: styles.alignCenter,
-          }}
-        ></Header>
+        <View style={{ flex: 1, justifyContent: "space-between" }}>
+          <Header
+            isLogoAlone={true}
+            linearStyle={styles.linearStyle}
+            containerStyle={{
+              iconStyle: {
+                width: 205,
+                height: 72,
+                marginTop: 30,
+              },
+              iconContainer: styles.alignCenter,
+            }}
+          ></Header>
+          <TouchableOpacity onPress={() => setLanguageVisible(true)}>
+            <View
+              style={{
+                width: 120,
+                height: 40,
+                alignSelf: "center",
+                justifyContent: "center",
+                alignItems: "center",
+                marginBottom: 15,
+                borderRadius: 20,
+                backgroundColor: Screens.colors.primary,
+                flexDirection: "row",
+                elevation: 5,
+                shadowColor: "#000",
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.5,
+                shadowRadius: 2,
+              }}
+            >
+              <Image
+                resizeMode="contain"
+                style={{
+                  width: 25,
+                  height: 25,
+                  resizeMode: "contain",
+                  tintColor: "#fff",
+                }}
+                source={LocalImages.translateImage}
+              ></Image>
+              <View style={{ justifyContent: "center", alignItems: "center" }}>
+                <GenericText
+                  style={[
+                    styles.categoryHeaderText,
+                    {
+                      fontSize: 12,
+                      fontWeight: "bold",
+                      textAlign: "center",
+                      color: Screens.pureWhite,
+                      marginHorizontal: 5,
+                    },
+                  ]}
+                >
+                  {selectedLanguage}
+                </GenericText>
+              </View>
+              <Image
+                resizeMode="contain"
+                style={{
+                  width: 25,
+                  height: 25,
+                  resizeMode: "contain",
+                  tintColor: "#fff",
+                }}
+                source={LocalImages.down}
+              ></Image>
+            </View>
+          </TouchableOpacity>
+        </View>
+
         <View style={styles.category}>
           <View>
             <GenericText
@@ -172,7 +234,7 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
               ></Button>
             </View>
           </View>
-          <View>
+          <View style={{ marginTop: 30 }}>
             <GenericText
               style={[
                 styles.categoryHeaderText,
@@ -363,13 +425,15 @@ const styles = StyleSheet.create({
     color: Screens.black,
   },
   category: {
+    position: "absolute",
+    top: 150,
     backgroundColor: Screens.pureWhite,
     padding: 10,
-    marginTop: -100,
     marginHorizontal: 15,
+    paddingVertical: 30,
     elevation: 5,
     borderRadius: 30,
-    flex: 0.95,
+
     justifyContent: "space-between",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },

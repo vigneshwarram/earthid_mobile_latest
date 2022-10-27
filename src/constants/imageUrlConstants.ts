@@ -10,6 +10,7 @@ export const LocalImages = {
   closeImage: require("../../resources/images/close.png"),
   logoutImage: require("../../resources/images/logout.png"),
   sideArrowImage: require("../../resources/images/sidearrow.png"),
+  down: require("../../resources/images/down.png"),
   giftBoxImage: require("../../resources/images/gift-box.png"),
   humbergerImage: require("../../resources/images/humburger.png"),
   avatarImage: require("../../resources/images/avatar.png"),
