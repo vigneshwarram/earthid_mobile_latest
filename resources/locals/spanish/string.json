@@ -136,7 +136,11 @@
   "entersixdigit":"Ingrese su antiguo código de acceso de 6 dígitos",
   "conpasscode":"Confirmar Contraseña",
   "upload":"Subir",
-  "qrupload":"Código QR cargado con éxito"
+  "qrupload":"Código QR cargado con éxito",
+  "plsauthorizeit":"Por favor autorícelo para el inicio de sesión",
+  "selectanyonetype":"Seleccione cualquier tipo para generar credenciales",
+  "selectcredentialtype":"Seleccionar tipo de credenciales",
+  "encryptcredential":"Cifrar credenciales"
 
   
 

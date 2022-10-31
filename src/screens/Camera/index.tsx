@@ -380,7 +380,7 @@ const CameraScreen = (props: any) => {
               marginTop: 20,
             }}
           >
-            {"Please authorize it for the login "}
+            {"plsauthorizeit"}
           </GenericText>
           <Button
             onPress={() => {
@@ -422,7 +422,7 @@ const CameraScreen = (props: any) => {
                   tintColor: Screens.pureWhite,
                 },
               }}
-              title={"Cancel"}
+              title={"cancel"}
             ></Button>
           </View>
         </View>
@@ -444,7 +444,7 @@ const CameraScreen = (props: any) => {
               marginTop: 20,
             }}
           >
-            {" Select anyone type to Generate Credentials"}
+            {"selectanyonetype"}
           </GenericText>
           <View>
             <View style={{ flexDirection: "row", marginVertical: 10 }}>
@@ -606,7 +606,7 @@ const CameraScreen = (props: any) => {
               fontWeight: "bold",
             }}
           >
-            {"Select Credientials Type"}
+            {"selectcredentialtype"}
           </GenericText>
           <Dropdown
             style={[styles.dropdown]}
@@ -649,7 +649,7 @@ const CameraScreen = (props: any) => {
               <GenericText
                 style={{ color: "green", fontSize: 16, fontWeight: "700" }}
               >
-                Authorize
+                {"authorize"}
               </GenericText>
             </TouchableOpacity>
           </View>
@@ -673,7 +673,7 @@ const CameraScreen = (props: any) => {
               marginTop: 20,
             }}
           >
-            {"Select anyone type to Generate Credentials"}
+            {"selectanyonetype"}
           </GenericText>
           <View>
             <View style={{ flexDirection: "row", marginVertical: 10 }}>
@@ -694,7 +694,7 @@ const CameraScreen = (props: any) => {
                     fontWeight: "300",
                   }}
                 >
-                  {"Encrypt Credentials  "}
+                  {"encryptcredential"}
                 </GenericText>
               </View>
             </View>
@@ -742,14 +742,14 @@ const CameraScreen = (props: any) => {
               <GenericText
                 style={{ color: "red", fontSize: 16, fontWeight: "700" }}
               >
-                Cancel
+                {"cancel"}
               </GenericText>
             </TouchableOpacity>
             <TouchableOpacity onPress={shareCredientials}>
               <GenericText
                 style={{ color: "green", fontSize: 16, fontWeight: "700" }}
               >
-                Authorize
+                {"authorize"}
               </GenericText>
             </TouchableOpacity>
           </View>

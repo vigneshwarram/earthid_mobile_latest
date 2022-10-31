@@ -136,7 +136,11 @@
     "entersixdigit":"Digite sua senha antiga de 6 dígitos",
     "conpasscode":"Confirmar Senha",
     "upload":"Envio",
-    "qrupload":"Código QR enviado com sucesso"
+    "qrupload":"Código QR enviado com sucesso",
+    "plsauthorizeit":"Por favor, autorize-o para o login",
+    "selectanyonetype":"Selecione qualquer tipo para gerar credenciais",
+    "selectcredentialtype":"Selecione o tipo de credenciais",
+    "encryptcredential":"Criptografar credenciais"
   
   }
   

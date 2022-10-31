@@ -136,6 +136,11 @@
   "entersixdigit":"Enter Your old 6-digit passcode",
   "conpasscode":"Confirm Passcode",
   "upload":"Upload",
-  "qrupload":"QR Code Successfully Uploaded"
+  "qrupload":"QR Code Successfully Uploaded",
+  "plsauthorizeit":"Please authorize it for the login",
+  "selectanyonetype":"Select anyone type to Generate Credentials",
+  "selectcredentialtype":"Select Credientials Type",
+  "encryptcredential":"Encrypt Credentials"
+  
 
 }
