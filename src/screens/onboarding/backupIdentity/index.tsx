@@ -57,14 +57,18 @@ const Register = ({ navigation }: IHomeScreenProps) => {
     username: accountDetails?.responseData.username,
   };
 
+  const dwFile = async (file_url: any) => {
+    await Share.open({ url: `data:image/png;base64,${file_url}` });
+  };
+
   const capturePicture = () => {
     console.log("Capturing picture..");
 
     viewShot.current.capture().then(async (imageData: any) => {
       console.log("imageData", imageData);
       try {
-        // await requestExternalStoragePermission();
-        // await CameraRoll.save(imageData);
+         await requestExternalStoragePermission();
+         await CameraRoll.save(imageData);
         dwFile(imageData);
         ImgToBase64.getBase64String(imageData)
           .then((base64String: any) => dwFile(base64String))
@@ -77,9 +81,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
     });
   };
 
-  const dwFile = async (file_url: any) => {
-    await Share.open({ url: `data:image/png;base64,${file_url}` });
-  };
+
 
   const requestExternalStoragePermission = async () => {
     try {

@@ -9,6 +9,7 @@ import {
 import TouchID from "react-native-touch-id";
 import { useAppSelector } from "../../hooks/hooks";
 import SplashScreen from "react-native-splash-screen";
+import { isEmpty } from "lodash";
 
 interface ILoadingScreen {
   navigation: any;
@@ -26,6 +27,9 @@ const optionalConfigObject = {
 };
 const LoadingScreen = ({ navigation }: ILoadingScreen) => {
   const userDetails = useAppSelector((state) => state.account);
+  const securityReducer: any = useAppSelector((state) => state.security);
+  console.log("securityReducer", securityReducer.securityData);
+
   const aunthenticateBioMetricInfo = () => {
     TouchID.isSupported(optionalConfigObject)
       .then(async (biometryType) => {
@@ -58,21 +62,55 @@ const LoadingScreen = ({ navigation }: ILoadingScreen) => {
     const fingerPrint = await AsyncStorage.getItem("fingerprint");
     console.log("fingerPrint", fingerPrint);
     const getItem = await AsyncStorage.getItem("passcode");
-
+    const seurityData:any = await AsyncStorage.getItem("securityLength");
+    var a:any =1
+    console.log("securityLength", seurityData);
     console.log("getItem", getItem);
+
     if (fingerPrint) {
       aunthenticateBioMetricInfo();
-    } else if (getItem) {
+      console.log("finger","FingerPrint");
+    }
+  //   else if(seurityData !== a ){
+  //     console.log("security==>","Security");
+  //     navigation.dispatch(StackActions.replace("Security"));
+  //  }    
+    else if (getItem) {
+      console.log("PasswordCheck==>","PasswordCheck");
       navigation.dispatch(StackActions.replace("PasswordCheck"));
-    } else {
+    }
+    else {
+      console.log("AuthStack==>","AuthStack");
       navigation.dispatch(StackActions.replace("AuthStack"));
     }
+
+//    if(seurityData!=a ){
+//     console.log("security==>","Security");
+//     navigation.dispatch(StackActions.replace("Security"));
+//  }    
+//   else if (fingerPrint) {
+//     aunthenticateBioMetricInfo();
+//     console.log("finger","FingerPrint");
+//   }
+ 
+//   else if (getItem) {
+//     console.log("PasswordCheck==>","PasswordCheck");
+//     navigation.dispatch(StackActions.replace("PasswordCheck"));
+//   }
+//   else {
+//     console.log("AuthStack==>","AuthStack");
+//     navigation.dispatch(StackActions.replace("AuthStack"));
+//   }
+
+
+
   };
   console.log("userDetails", userDetails);
   useEffect(() => {
     if (userDetails?.responseData) {
       checkAuth();
-    } else {
+    } 
+    else {
       navigation.dispatch(StackActions.replace("AuthStack"));
     }
   }, [userDetails]);

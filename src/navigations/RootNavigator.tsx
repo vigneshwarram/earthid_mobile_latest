@@ -28,6 +28,7 @@ import UploadDocumentPreviewScreen from "../screens/UploadQr/UploadDocumentPrevi
 // Before rendering any navigation stack
 const animations: any = SlidAnimation;
 export default function RootNavigator() {
+ 
   enableScreens();
   const Stack = createStackNavigator();
 
@@ -102,6 +103,45 @@ export default function RootNavigator() {
           name={"DrawerNavigator"}
           component={DrawerNavigator}
         />
+         <Stack.Screen
+          options={{
+            ...animations,
+          }}
+          name={"Security"}
+          component={Security}
+        />
+
+<Stack.Screen
+          options={{
+            ...animations,
+          }}
+          name={"RegisterFace"}
+          component={RegisterFace}
+        />
+
+<Stack.Screen
+          options={{
+            ...animations,
+          }}
+          name={"SetPin"}
+          component={SetPin}
+        />
+
+<Stack.Screen
+          options={{
+            ...animations,
+          }}
+          name={"FingerPrintInstructionScreen"}
+          component={FingerPrintInstructionScreen}
+        />
+        <Stack.Screen
+          options={{
+            ...animations,
+          }}
+          name={"ConfirmPincode"}
+          component={ConfirmPincode}
+        />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

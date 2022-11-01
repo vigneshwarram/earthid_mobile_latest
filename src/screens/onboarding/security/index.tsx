@@ -166,7 +166,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
                   saveSelectionSecurities(
                     ESecurityTypes.FACE,
                     false,
-                    "facePlaceHolderWidget"
+                    "RegisterFace"
                   );
                 }}
                 style={{

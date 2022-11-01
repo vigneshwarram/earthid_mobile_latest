@@ -46,6 +46,10 @@ const AuthBackupIdentity = ({ navigation,route }: IHomeScreenProps) => {
   // );
   // encryptedString = encryptedString.toString();
 
+  const dwFile = async (file_url: any) => {
+    await Share.open({ url: `data:image/png;base64,${file_url}` });
+  };
+
   const capturePicture = () => {
     console.log("Capturing picture..");
 
@@ -66,9 +70,6 @@ const AuthBackupIdentity = ({ navigation,route }: IHomeScreenProps) => {
     });
   };
 
-  const dwFile = async (file_url: any) => {
-    await Share.open({ url: `data:image/png;base64,${file_url}` });
-  };
 
   const requestExternalStoragePermission = async () => {
     try {

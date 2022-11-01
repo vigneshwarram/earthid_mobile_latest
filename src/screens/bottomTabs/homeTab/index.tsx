@@ -34,11 +34,23 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
   const getHistoryReducer = useAppSelector((state) => state.getHistoryReducer);
   const profilePicture = useAppSelector((state) => state.savedPic);
   const securityReducer: any = useAppSelector((state) => state.security);
-  console.log("securityReducer====>r", securityReducer?.securityData?.length);
+  console.log("securityReducer====>rrr", securityReducer?.securityData?.length);
   const dispatch = useAppDispatch();
   const _toggleDrawer = () => {
     navigation.openDrawer();
   };
+
+
+const setValueSecurity=async()=>{
+  let newsec :String =securityReducer?.securityData?.length
+  if(newsec=="1" || newsec !=="1"){
+    console.log("security===>", newsec);
+    await AsyncStorage.setItem("securityLength",newsec.toString())
+  }
+  const seurityData = await AsyncStorage.getItem("securityLength");
+  console.log("securityLengthss===>", seurityData);
+
+} 
 
   const categoryList = values(SCREENS.HOMESCREEN.categoryList).map(
     ({ TITLE: title, URI: uri, COLOR: color }: any) => ({
@@ -106,6 +118,9 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
       publicKey: userDetails?.responseData?.publicKey,
     };
     dispatch(getHistory(PayLoad));
+    setValueSecurity()
+    console.log("items==>", userDetails);
+
   }, []);
 
   const _renderItemHistory = ({ item }: any) => {
