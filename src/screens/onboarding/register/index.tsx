@@ -179,7 +179,7 @@ const Register = ({ navigation }: IRegister) => {
         style={{
           flex: 1,
           backgroundColor: Screens.colors.background,
-          paddingBottom: 100,
+          paddingBottom: 300,
         }}
       >
         <Header
