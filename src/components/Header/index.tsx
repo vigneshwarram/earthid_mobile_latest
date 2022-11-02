@@ -10,6 +10,7 @@ import {
 import { LocalImages } from "../../constants/imageUrlConstants";
 import { useAppSelector } from "../../hooks/hooks";
 import { Screens } from "../../themes";
+import { isEarthId } from "../../utils/PlatFormUtils";
 import Avatar from "../Avatar";
 import LinearGradients from "../GradientsPanel/LinearGradient";
 import GenericText from "../Text";
@@ -32,7 +33,7 @@ const Header = ({
   rightIconSource,
   actionIcon = LocalImages.humbergerImage,
   rewardPoints,
-  profileName,
+
   picUri,
   avatarClick,
   isLogoAlone,
@@ -45,11 +46,11 @@ const Header = ({
   return (
     <View style={containerStyle}>
       <LinearGradients
-        horizontalGradient={false}
         endColor={Screens.colors.header.endColor}
         middleColor={Screens.colors.header.middleColor}
         startColor={Screens.colors.header.startColor}
         style={linearStyle}
+        horizontalGradient={false}
       >
         {headingText ? (
           <GenericText
@@ -57,7 +58,7 @@ const Header = ({
               fontWeight: "bold",
               textAlign: "center",
               fontSize: 20,
-              color: Screens.black,
+              color: isEarthId() ? Screens.pureWhite : Screens.black,
               marginTop: 35,
             }}
           >
@@ -153,7 +154,9 @@ const Header = ({
                         style={{
                           fontWeight: "bold",
                           marginLeft: -5,
-                          color: Screens.black,
+                          color: isEarthId()
+                            ? Screens.pureWhite
+                            : Screens.black,
                         }}
                       >
                         {rewardPoints}
@@ -179,7 +182,11 @@ const Header = ({
                 subCatSideArrowVisible={subCatSideArrowVisible}
                 isCategory={false}
                 avatarClick={avatarClick}
-                style={{ text: { color: Screens.black } }}
+                style={{
+                  text: {
+                    color: isEarthId() ? Screens.pureWhite : Screens.black,
+                  },
+                }}
                 absoluteCircleInnerImage={absoluteCircleInnerImage}
                 isProfileAvatar={isProfileAvatar}
                 isUploaded={isUploaded}
@@ -224,6 +231,6 @@ const styles = StyleSheet.create({
   close: {
     width: 25,
     height: 25,
-    tintColor: Screens.black,
+    tintColor: isEarthId() ? Screens.pureWhite : Screens.black,
   },
 });

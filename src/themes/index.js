@@ -1,9 +1,10 @@
 import { DefaultTheme } from "@react-navigation/native";
+import { isEarthId } from "../utils/PlatFormUtils";
 export const Apptheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    primary: "#2AA2DE",
+    primary: isEarthId() ? "#293fee" : "#2AA2DE",
     background: "#000",
   },
 };
@@ -19,16 +20,16 @@ export const Screens = {
   thickGray: "#EDF1F4",
   colors: {
     background: "#F5F5F5",
-    primary: "#50A0D9",
+    primary: isEarthId() ? "#293fee" : "#50A0D9",
     ScanButton: {
-      startColor: "#8319FF",
-      middleColor: "#8319FF",
-      endColor: "#2AA2DE",
+      startColor: isEarthId() ? "#8059D0" : "#f0f4f7",
+      middleColor: isEarthId() ? "#8059D0" : "#dbe4ee",
+      endColor: isEarthId() ? "#9EDCF0" : "#c0cfdd",
     },
     header: {
-      startColor: "#f0f4f7",
-      middleColor: "#dbe4ee",
-      endColor: "#c0cfdd",
+      startColor: isEarthId() ? "#8059D0" : "#f0f4f7",
+      middleColor: isEarthId() ? "#8059D0" : "#dbe4ee",
+      endColor: isEarthId() ? "#9EDCF0" : "#c0cfdd",
     },
     bottomFocusedBackground: {
       color: "#EDF1F4",

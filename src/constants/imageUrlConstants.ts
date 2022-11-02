@@ -1,3 +1,4 @@
+import { isEarthId } from "../utils/PlatFormUtils";
 export const LocalImages = {
   homeImage: require("../../resources/images/user.png"),
   moreImage: require("../../resources/images/more.png"),
@@ -5,7 +6,9 @@ export const LocalImages = {
   phone: require("../../resources/images/phone.png"),
   historyImage: require("../../resources/images/history.png"),
   scanImage: require("../../resources/images/scan.png"),
-  logoImage: require("../../resources/images/logo.png"),
+  logoImage: isEarthId()
+    ? require("../../resources/images/earthIdLogo.png")
+    : require("../../resources/images/logo.png"),
   recent: require("../../resources/images/norecentactivity.png"),
   closeImage: require("../../resources/images/close.png"),
   logoutImage: require("../../resources/images/logout.png"),

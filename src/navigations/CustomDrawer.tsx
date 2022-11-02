@@ -18,6 +18,8 @@ import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { FlushData } from "../redux/actions/authenticationAction";
 import { useFetch } from "../hooks/use-fetch";
 import { EARTHID_DEV_BASE } from "../constants/URLContstants";
+import { isEarthId } from "../utils/PlatFormUtils";
+import Header from "../components/Header";
 
 const CustomDrawer = (props: any) => {
   const dispatch = useAppDispatch();
@@ -55,9 +57,17 @@ const CustomDrawer = (props: any) => {
     } else if (item.route === "delete") {
       deleteUser();
     } else if (item.route === "about") {
-      Linking.openURL("https://globalidiq.com/about/");
+      Linking.openURL(
+        isEarthId()
+          ? "https://www.myearth.id/"
+          : "https://globalidiq.com/about/"
+      );
     } else if (item.route === "terms") {
-      Linking.openURL("https://globalidiq.com/terms-of-use-3/");
+      Linking.openURL(
+        isEarthId()
+          ? "https://www.myearth.id/privacy"
+          : "https://globalidiq.com/terms-of-use-3/"
+      );
     } else {
       props.navigation.navigate(item.route, { type: item.route });
     }
@@ -80,10 +90,16 @@ const CustomDrawer = (props: any) => {
     }
   }, [deletedRespopnse]);
 
+  const _toggleDrawer = () => {
+    props.navigation.closeDrawer();
+  };
   const deleteUser = () => {
+    const deletId = isEarthId()
+      ? "Are you sure you want to delete your EarthId? Once deleted you won't be able to recover it later."
+      : "Are you sure you want to delete your GlobalId? Once deleted you won't be able to recover it later.";
     Alert.alert(
       "Delete Identity?",
-      "Are you sure you want to delete your GlobalId? Once deleted you won't be able to recover it later.",
+      deletId,
       [
         {
           text: "Yes",
@@ -173,23 +189,14 @@ const CustomDrawer = (props: any) => {
   const _keyExtractor = ({ title }: any) => title.toString();
   return (
     <View style={styles.sectionContainer}>
-      <View style={styles.sectionHeaderContainer}>
-        <Image
-          resizeMode="contain"
-          style={styles.logoContainer}
-          source={LocalImages.logoImage}
-        ></Image>
-        <TouchableOpacity
-          style={styles.closeContainer}
-          onPress={() => props.navigation.closeDrawer()}
-        >
-          <Image
-            resizeMode="contain"
-            style={styles.close}
-            source={LocalImages.closeImage}
-          ></Image>
-        </TouchableOpacity>
-      </View>
+      <Header
+        leftIconSource={LocalImages.logoImage}
+        actionIcon={LocalImages.closeImage}
+        onpress={() => {
+          _toggleDrawer();
+        }}
+        linearStyle={styles.linearStyle}
+      ></Header>
       <FlatList<any>
         data={aboutList}
         renderItem={_renderItem}
@@ -219,6 +226,12 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
+  },
+  linearStyle: {
+    height: 120,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
+    elevation: 4,
   },
   sectionHeaderContainer: {
     flexDirection: "row",

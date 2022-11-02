@@ -32,6 +32,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { isArray } from "lodash";
 import { useFetch } from "../../../hooks/use-fetch";
 import { superAdminApi } from "../../../utils/earthid_account";
+import { isEarthId } from "../../../utils/PlatFormUtils";
 interface IRegister {
   navigation: any;
 }
@@ -339,7 +340,7 @@ const Register = ({ navigation }: IRegister) => {
                   tintColor: Screens.pureWhite,
                 },
               }}
-              title={"generateeathid"}
+              title={isEarthId() ? "generateeathid" : "generateglobalid"}
             ></Button>
             <TouchableOpacity onPress={() => navigation.goBack(null)}>
               <View style={{ flexDirection: "row", alignSelf: "center" }}>
@@ -363,14 +364,16 @@ const Register = ({ navigation }: IRegister) => {
                     textDecorationLine: "underline",
                   }}
                 >
-                  {"GlobaliD"}
+                  {isEarthId() ? "EarthId" : "GlobaliD"}
                 </GenericText>
               </View>
             </TouchableOpacity>
           </View>
 
           <Loader
-            loadingText="earthidgeneratesuccess"
+            loadingText={
+              isEarthId() ? "earthidgeneratesuccess" : "globalgeneratesuccess"
+            }
             Status="status"
             isLoaderVisible={successResponse}
           ></Loader>

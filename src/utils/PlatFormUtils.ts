@@ -1,9 +1,21 @@
 import { NativeModules, Platform } from "react-native";
-
+import GetAppName from "react-native-get-app-name";
 /**
  * @description Checks if the os is andriod or not.
  */
 export const isAndroid = Platform.OS === "android";
+
+export const isEarthId = () => {
+  let app = "EarthId";
+  let appConfig = true;
+  GetAppName.getAppName((appName: string) => {
+    console.log("appName===>", appName);
+    if (appName !== app) {
+      appConfig = false;
+    }
+  });
+  return appConfig;
+};
 
 /**
  * @description Provides the the OS platform level language on the user's device. The logic supports

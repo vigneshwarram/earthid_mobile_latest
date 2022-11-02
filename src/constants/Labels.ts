@@ -1,12 +1,10 @@
+import { isEarthId } from "../utils/PlatFormUtils";
 import { LocalImages } from "./imageUrlConstants";
 
-
 export const SCREENS = {
-
- 
   HOMESCREEN: {
     avatarName: "Robert Downey",
-    appName: "GlobaliD",
+    appName: isEarthId() ? "EarthId" : "GlobaliD",
     category: "CATEGORIES",
     documentLabel: "useddocument",
     upload: "uploaddoc",
@@ -203,7 +201,7 @@ export const SCREENS = {
     ],
   },
   LANDINGSCREEN: {
-    setUpId: "landscreensetupid",
+    setUpId: isEarthId() ? "landscreensetupearthId" : "landscreensetupid",
     instruction: "landscreeninstruction",
     BUTTON_LABEL: "buttonLabel",
   },
@@ -220,7 +218,9 @@ export const SCREENS = {
     instruction: "securityscreeninstruction",
     instructions: "securityscreeninstructions",
     PasscodeInstruction: "securityscreeninstructions",
-    PasscodeInstructions: "passcodeinstruction",
+    PasscodeInstructions: isEarthId()
+      ? "passcodeinstructionEarthid"
+      : "passcodeinstruction",
     confirmInstruction: "confirminstruction",
   },
   SHOWQRSCREEN: {

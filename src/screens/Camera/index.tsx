@@ -32,6 +32,7 @@ import { saveDocuments } from "../../redux/actions/authenticationAction";
 import { IDocumentProps } from "../uploadDocuments/VerifiDocumentScreen";
 import GenericText from "../../components/Text";
 import Loader from "../../components/Loader";
+import { isEarthId } from "../../utils/PlatFormUtils";
 const data = [
   { label: " 1", value: "1" },
   { label: " 2", value: "2" },
@@ -569,7 +570,7 @@ const CameraScreen = (props: any) => {
               marginTop: 20,
             }}
           >
-            {"globalidwanttoaccess"}
+            {isEarthId() ? "earthidwanttoaccess" : "globalidwanttoaccess"}
           </GenericText>
           <View>
             <View style={{ flexDirection: "row", marginVertical: 10 }}>

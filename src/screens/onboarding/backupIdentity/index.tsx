@@ -67,8 +67,8 @@ const Register = ({ navigation }: IHomeScreenProps) => {
     viewShot.current.capture().then(async (imageData: any) => {
       console.log("imageData", imageData);
       try {
-         await requestExternalStoragePermission();
-         await CameraRoll.save(imageData);
+        await requestExternalStoragePermission();
+        await CameraRoll.save(imageData);
         dwFile(imageData);
         ImgToBase64.getBase64String(imageData)
           .then((base64String: any) => dwFile(base64String))
@@ -80,8 +80,6 @@ const Register = ({ navigation }: IHomeScreenProps) => {
       }
     });
   };
-
-
 
   const requestExternalStoragePermission = async () => {
     try {
@@ -176,21 +174,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
             iconContainer: styles.alignCenter,
           }}
         ></Header>
-        {/* <TouchableOpacity
-          onPress={()=>navigation.goBack()}
-          style={{
-              position:"absolute",
-              marginTop:35,
-              marginLeft:20,
-          }}
-          >
-          <Image
-            source={LocalImages.backImage}
-            style={{height:20,
-              width:20,
-              resizeMode:"contain",}}
-          />
-           </TouchableOpacity>    */}
+
         <View style={styles.category}>
           <View>
             <GenericText

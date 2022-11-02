@@ -23,6 +23,7 @@ import { AppLanguage } from "../../../typings/enums/AppLanguage";
 import { useTranslation } from "react-i18next";
 import DocumentPicker from "react-native-document-picker";
 import RNFS from "react-native-fs";
+import { isEarthId } from "../../../utils/PlatFormUtils";
 interface IHomeScreenProps {
   navigation?: any;
 }
@@ -187,7 +188,7 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
                   },
                 ]}
               >
-                {"alreadyhaveearthid"}
+                {isEarthId() ? "alreadyhaveearthid" : "alreadyhaveglobalid"}
               </GenericText>
               <Button
                 onPress={() => openFilePicker()}

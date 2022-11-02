@@ -3,6 +3,8 @@ import { Pressable, StyleSheet, Image, View } from "react-native";
 import { LocalImages } from "../../constants/imageUrlConstants";
 
 import { useAppSelector } from "../../hooks/hooks";
+import { Screens } from "../../themes";
+import { isEarthId } from "../../utils/PlatFormUtils";
 import Icon from "../Icon";
 import GenericText from "../Text";
 import { IAvatarProps } from "./IAvatarProps";
@@ -59,7 +61,9 @@ const Avatar = ({
                       width: 15,
                       height: 15,
                       marginTop: 10,
-                      tintColor: "#000",
+                      tintColor: isEarthId()
+                        ? Screens.pureWhite
+                        : Screens.black,
                     }}
                   ></Image>
                 </View>
@@ -105,7 +109,9 @@ const Avatar = ({
                       width: 15,
                       height: 15,
                       marginTop: 10,
-                      tintColor: "#000",
+                      tintColor: isEarthId()
+                        ? Screens.pureWhite
+                        : Screens.black,
                     }}
                   ></Image>
                 </View>
@@ -149,7 +155,7 @@ const Avatar = ({
                   width: 15,
                   height: 15,
                   marginTop: 40,
-                  tintColor: "#000",
+                  tintColor: isEarthId() ? Screens.pureWhite : Screens.black,
                   resizeMode: "contain",
                 }}
               ></Image>
