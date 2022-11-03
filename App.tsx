@@ -17,6 +17,9 @@ import LanguageContextProvider from "./src/components/LanguageContext/LanguageCo
 import RootNavigator from "./src/navigations/RootNavigator";
 import { persistor, store } from "./src/redux/store";
 import { Buffer } from "buffer";
+import { isEarthId } from "./src/utils/PlatFormUtils";
+import { Screen } from "react-native-screens";
+import { Screens } from "./src/themes";
 global.Buffer = Buffer;
 
 const App = () => {
@@ -35,7 +38,9 @@ const App = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "rgba(191, 208, 224, 0.3)",
+    backgroundColor: isEarthId()
+      ? Screens.colors.ScanButton.startColor
+      : "rgba(191, 208, 224, 0.3)",
   },
 });
 
