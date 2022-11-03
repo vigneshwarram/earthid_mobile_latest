@@ -1,9 +1,11 @@
-package com.globalidiqtechandroid;
+package com.myearthid;
 
 import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import com.microsoft.codepush.react.CodePush;
+import com.microsoft.codepush.react.CodePush;
 import com.febaisi.reactnative.getappname.GetAppNamePackage;
 import com.febaisi.reactnative.getappname.GetAppNamePackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
@@ -25,9 +27,10 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.config.ReactFeatureFlags;
 import com.facebook.soloader.SoLoader;
-import com.globalidiqtechandroid.newarchitecture.MainApplicationReactNativeHost;
+import com.myearthid.newarchitecture.MainApplicationReactNativeHost;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import com.microsoft.codepush.react.CodePush;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -45,12 +48,18 @@ public class MainApplication extends Application implements ReactApplication {
             new SplashScreenReactPackage();
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
+           new CodePush("00844653-ea43-466d-adc9-5ac0a4eabbeb", MainApplication.this, BuildConfig.DEBUG);
           return packages;
         }
 
         @Override
         protected String getJSMainModuleName() {
           return "index";
+        }
+
+         @Override
+        protected String getJSBundleFile() {
+            return CodePush.getJSBundleFile();
         }
       };
 
