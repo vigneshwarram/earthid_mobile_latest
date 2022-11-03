@@ -150,7 +150,7 @@ const CameraScreen = (props: any) => {
       }
       if (barCodeDataDetails.requestType === "shareCredentials") {
         setIsCamerVisible(true);
-        Alert.alert("Credientail has been shared successfully");
+        Alert.alert("credential has been shared successfully");
       }
     }
   }, [sendDatatoServiceProviderData]);
@@ -763,7 +763,7 @@ const CameraScreen = (props: any) => {
       <Loader
         loadingText={
           barCodeDataDetails?.requestType === "generateCredentials"
-            ? "Credientials generated successfully"
+            ? "credential generated successfully"
             : "Login successfully"
         }
         Status="Success !"

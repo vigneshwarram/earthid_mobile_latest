@@ -7,11 +7,11 @@
 #define TIMEOUT_SECONDS 600
 #define TEXT_TO_LOOK_FOR @"Welcome to React"
 
-@interface earthidnewTests : XCTestCase
+@interface EarthIdTests : XCTestCase
 
 @end
 
-@implementation earthidnewTests
+@implementation EarthIdTests
 
 - (BOOL)findSubviewInView:(UIView *)view matching:(BOOL (^)(UIView *view))test
 {

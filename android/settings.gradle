@@ -1,4 +1,4 @@
-rootProject.name = 'earthidnew'
+rootProject.name = 'EarthId'
 include ':react-native-get-app-name'
 project(':react-native-get-app-name').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-get-app-name/android')
 include ':react-native-get-app-name'
