@@ -24,6 +24,7 @@ import { AES_ENCRYPTION_SALT } from "../../../utils/earthid_account";
 import GenericText from "../../../components/Text";
 import { useAppSelector } from "../../../hooks/hooks";
 import { LocalImages } from "../../../constants/imageUrlConstants";
+import { isEarthId } from "../../../utils/PlatFormUtils";
 
 interface IHomeScreenProps {
   navigation?: any;
@@ -140,7 +141,9 @@ const AuthBackupIdentity = ({ navigation,route }: IHomeScreenProps) => {
             source={LocalImages.backImage}
             style={{height:20,
               width:20,
-              resizeMode:"contain",}}
+              resizeMode:"contain",
+              tintColor: isEarthId() ? Screens.pureWhite : Screens.black,            
+            }}
           />
            </TouchableOpacity> 
         <View style={styles.category}>
@@ -156,7 +159,7 @@ const AuthBackupIdentity = ({ navigation,route }: IHomeScreenProps) => {
                 },
               ]}
             >
-              {SCREENS.BACKUPIDENTYSCREEN.instruction}
+              {isEarthId() ? "backupscreeninstruction" : SCREENS.BACKUPIDENTYSCREEN.instruction}
             </GenericText>
           </View>
           <View style={{ justifyContent: "center", alignItems: "center" }}>

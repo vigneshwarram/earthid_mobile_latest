@@ -86,12 +86,12 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
               },
             },
             title: {
-              fontSize: 14,
+              fontSize: 18,
               marginTop: -10,
               fontWeight: "bold",
             },
             subtitle: {
-              fontSize: 13,
+              fontSize: 14,
               marginTop: 5,
             },
           }}

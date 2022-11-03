@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import {
   View,
   StyleSheet,
@@ -55,6 +55,10 @@ const FingerPrintInstructionScreen = (props: any) => {
       });
   };
 
+  useEffect(()=>{
+    aunthenticateBioMetricInfo()
+  },[])
+
   return (
     <View style={styles.sectionContainer}>
       <View style={{ position: "absolute", top: 20, right: 20, zIndex: 100 }}>
@@ -102,7 +106,7 @@ const FingerPrintInstructionScreen = (props: any) => {
         </GenericText>
       </View>
 
-      <Button
+      {/* <Button
         onPress={() => aunthenticateBioMetricInfo()}
         style={{
           buttonContainer: {
@@ -117,7 +121,7 @@ const FingerPrintInstructionScreen = (props: any) => {
           },
         }}
         title={"continue"}
-      ></Button>
+      ></Button> */}
       <Loader
         loadingText="Finger Print authenticated successfully !"
         Status="Success !"

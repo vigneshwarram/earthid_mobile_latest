@@ -10,7 +10,11 @@ import { Screens } from "../../themes/index";
 import { BASE_URL, uploadDocument } from "../../utils/earthid_account";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import RNQRGenerator from "rn-qr-generator";
+import RNFS from "react-native-fs";
 import { byPassUserDetailsRedux } from "../../redux/actions/authenticationAction";
+import DocumentPicker from "react-native-document-picker";
+
+
 
 const UploadDocumentPreviewScreen = (props: any) => {
   const { fileUri, type } = props.route.params;
@@ -50,6 +54,29 @@ const UploadDocumentPreviewScreen = (props: any) => {
 
   const goBack = () => {
     props.navigation.goBack();
+  };
+  const openFilePicker = async () => {
+    try {
+      const resp: any = await DocumentPicker.pick({
+        type: [DocumentPicker.types.images, DocumentPicker.types.pdf],
+        readContent: true,
+      });
+
+      let fileUri = resp[0].uri;
+      RNFS.readFile(fileUri, "base64").then((res) => {
+        console.log("res", resp);
+        props.navigation.navigate("UploadDocumentPreviewScreen", {
+          fileUri: {
+            uri: `data:image/png;base64,${res}`,
+            base64: res,
+            file: resp[0],
+            type: "qrRreader",
+          },
+        });
+      });
+    } catch (err) {
+      console.log("data==>", err);
+    }
   };
 
   //Qr Code Reader From the image
@@ -93,7 +120,7 @@ const UploadDocumentPreviewScreen = (props: any) => {
         }}
       >
         <Button
-          onPress={goBack}
+          onPress={openFilePicker}
           style={{
             buttonContainer: {
               elevation: 5,

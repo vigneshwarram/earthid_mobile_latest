@@ -59,7 +59,7 @@ const CustomDrawer = (props: any) => {
     } else if (item.route === "about") {
       Linking.openURL(
         isEarthId()
-          ? "https://www.myearth.id/"
+          ? "https://www.myearth.id/about/company"
           : "https://globalidiq.com/about/"
       );
     } else if (item.route === "terms") {
@@ -187,16 +187,30 @@ const CustomDrawer = (props: any) => {
     </TouchableOpacity>
   );
   const _keyExtractor = ({ title }: any) => title.toString();
+
+  useEffect(()=>{
+    console.log('routes==>',props.route)
+  })
+
   return (
     <View style={styles.sectionContainer}>
       <Header
         leftIconSource={LocalImages.logoImage}
-        actionIcon={LocalImages.closeImage}
+        actionIcon={props.route=="undefined"?LocalImages.closeImage :""}
         onpress={() => {
           _toggleDrawer();
         }}
         linearStyle={styles.linearStyle}
       ></Header>
+    <TouchableOpacity
+    onPress={()=>_toggleDrawer()}  
+    style={{position:'absolute',right:0,top:50,marginRight:20}}>
+       <Image
+       source={LocalImages.closeImage}
+       style={{width:15,height:15,tintColor:Screens.pureWhite}}
+       />
+
+      </TouchableOpacity>
       <FlatList<any>
         data={aboutList}
         renderItem={_renderItem}

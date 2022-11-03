@@ -262,6 +262,7 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
             letfIconPress={_letfIconPress}
             leftIconSource={LocalImages.backImage}
             isAvatar
+            isBack
             onpress={_navigateAction}
             linearStyle={styles.linearStyle}
             containerStyle={{

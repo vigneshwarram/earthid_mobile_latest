@@ -16,6 +16,7 @@ import Button from "../../../../../components/Button";
 import SmoothPinCodeInput from "react-native-smooth-pincode-input";
 import { LocalImages } from "../../../../../constants/imageUrlConstants";
 import GenericText from "../../../../../components/Text";
+import { isEarthId } from "../../../../../utils/PlatFormUtils";
 
 interface IHomeScreenProps {
   navigation?: any;
@@ -77,7 +78,10 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
         >
           <Image
             source={LocalImages.backImage}
-            style={{ height: 20, width: 20, resizeMode: "contain" }}
+            style={{ height: 20, width: 20, resizeMode: "contain" ,
+            tintColor: isEarthId() ? Screens.pureWhite : Screens.black,
+
+          }}
           />
         </TouchableOpacity>
         <View style={styles.category}>

@@ -55,7 +55,6 @@ const dashBoardStack = {
   ViewCredential: ViewCredential,
   CustomizeQr: CustomizeQr,
   backupIdentity: backupIdentity,
-
   UpdateAuthentication: UpdateAuthentication,
   EditMobileNumber: EditMobileNumber,
   EditEmailAddress: EditEmailAddress,

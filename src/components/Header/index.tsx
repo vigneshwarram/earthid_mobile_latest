@@ -108,6 +108,7 @@ const Header = ({
                           height: 20,
                           resizeMode: "contain",
                           marginRight: 10,
+                          tintColor: isEarthId() ? Screens.pureWhite : Screens.black,
                         }}
                         source={LocalImages.backImage}
                       ></Image>

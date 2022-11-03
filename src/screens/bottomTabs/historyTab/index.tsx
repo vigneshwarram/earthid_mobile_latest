@@ -41,20 +41,31 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
         absoluteCircleInnerImage={LocalImages.upImage}
         //  rightIconSrc={LocalImages.menuImage}
         title={item?.eventValue}
-        subtitle={`       Uploaded  : ${item.createdAt}`}
+        subtitle={`      Uploaded  : ${item.createdAt}`}
         style={{
           ...styles.cardContainer,
           ...{
             avatarContainer: {
               backgroundColor: "rgba(245, 188, 232, 1)",
-              width: 50,
-              height: 50,
-              borderRadius: 25,
+              width: 62,
+              height: 62,
+              borderRadius: 20,
               marginTop: 25,
+              marginLeft: 10,
+              marginRight: 5,
             },
             uploadImageStyle: {
               backgroundColor: "rgba(245, 188, 232, 1)",
             },
+          },
+          title: {
+            fontSize: 18,
+            marginTop: -10,
+            fontWeight: "bold",
+          },
+          subtitle: {
+            fontSize: 14,
+            marginTop: 5,
           },
         }}
       />
@@ -79,7 +90,7 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
           }}
           linearStyle={styles.linearStyle}
         ></Header>
-        <GenericText style={[styles.categoryHeaderText, { fontSize: 13 }]}>
+        <GenericText style={[styles.categoryHeaderText, { fontSize: 14,marginTop:10 }]}>
           {SCREENS.HOMESCREEN.History}
         </GenericText>
 
@@ -139,6 +150,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 30,
     marginVertical: 10,
     color: Screens.headingtextColor,
+    
   },
 
   cardContainer: {
