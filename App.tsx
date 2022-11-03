@@ -20,6 +20,7 @@ import { Buffer } from "buffer";
 import { isEarthId } from "./src/utils/PlatFormUtils";
 import { Screen } from "react-native-screens";
 import { Screens } from "./src/themes";
+import codePush from "react-native-code-push";
 global.Buffer = Buffer;
 
 const App = () => {
@@ -44,4 +45,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default codePush(App);

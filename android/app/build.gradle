@@ -239,6 +239,7 @@ android {
             storePassword "Rejolut@123"
             keyAlias "myearthid"
             keyPassword "Rejolut@123"
+          
         }
     }
     buildTypes {
@@ -278,6 +279,7 @@ dependencies {
     implementation "com.facebook.react:react-native:+"  // From node_modules
  implementation project(':react-native-splash-screen')
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
         exclude group:'com.facebook.fbjni'
@@ -322,6 +324,7 @@ task copyDownloadableDepsToLibs(type: Copy) {
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
 
+apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
 def isNewArchitectureEnabled() {
     // To opt-in for the New Architecture, you can either:
     // - Set `newArchEnabled` to true inside the `gradle.properties` file
