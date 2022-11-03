@@ -22,6 +22,7 @@ import { SCREENS } from "../../constants/Labels";
 import { useFetch } from "../../hooks/use-fetch";
 import { Screens } from "../../themes";
 import { getCategoriesApi } from "../../utils/earthid_account";
+import { isEarthId } from "../../utils/PlatFormUtils";
 const deviceWidth = Dimensions.get("window").width;
 interface IDocumentScreenProps {
   navigation?: any;
@@ -266,22 +267,12 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
               style={{
                 justifyContent: "center",
                 alignItems: "center",
-
+                backgroundColor: isEarthId()
+                  ? Screens.colors.ScanButton.startColor
+                  : "#fff",
                 width: deviceWidth / 1.5,
               }}
             >
-              <GenericText
-                style={{
-                  color: "black",
-                  fontWeight: "700",
-                  fontSize: 15,
-                  alignSelf: "center",
-                  marginTop: 15,
-                }}
-              >
-                {"livetest"}
-              </GenericText>
-
               <Image
                 resizeMode="contain"
                 style={[styles.logoContainer]}
@@ -312,7 +303,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
                   tintColor: Screens.pureWhite,
                 },
               }}
-              title={"submt"}
+              title={"PROCEED FOR LIVENESS TEST"}
             ></Button>
           </View>
         </ModalView>

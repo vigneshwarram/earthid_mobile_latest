@@ -61,39 +61,14 @@ const VerifiDocumentScreen = (props: any) => {
 
   const validateImages = () => {
     setLoad(true);
-    //  const dataHashed = MD5(uploadedDocuments?.base64);
-    const request = {
-      selfieBase64: faceImageData?.base64,
-      docPhotoUrl: uploadedDocuments,
-    };
-    fetch(facialDataLivenessAPI, request, "POST").then(() => {
-      var date = dateTime();
-      const filePath = RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
-      var documentDetails: IDocumentProps = {
-        name: selectedDocument,
-        path: filePath,
-        date: date?.date,
-        time: date?.time,
-        txId: data?.result,
-        docType: "pdf",
-        docExt: ".jpg",
-        processedDoc: "",
-        base64: uploadedDocumentsBase64,
-      };
 
-      var DocumentList = documentsDetailsList?.responseData
-        ? documentsDetailsList?.responseData
-        : [];
-      DocumentList.push(documentDetails);
-      dispatch(saveDocuments(DocumentList));
-      const payLoad = {
-        eventValue: selectedDocument,
-        eventType: "VC_CREATED",
-        userId: userDetails?.responseData?.Id,
-        publicKey: userDetails?.responseData?.publicKey,
-      };
-      AddDocumehtfetch(CreateHistory, payLoad, "POST");
-    });
+    const payLoad = {
+      eventValue: selectedDocument,
+      eventType: "ID_VERIFICATION",
+      userId: userDetails?.responseData?.Id,
+      publicKey: userDetails?.responseData?.publicKey,
+    };
+    AddDocumehtfetch(CreateHistory, payLoad, "POST");
   };
 
   useEffect(() => {
@@ -104,6 +79,25 @@ const VerifiDocumentScreen = (props: any) => {
         publicKey: userDetails?.responseData?.publicKey,
       };
       dispatch(getHistory(PayLoad)).then(() => {
+        var date = dateTime();
+        const filePath = RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
+        var documentDetails: IDocumentProps = {
+          name: selectedDocument,
+          path: filePath,
+          date: date?.date,
+          time: date?.time,
+          txId: data?.result,
+          docType: "pdf",
+          docExt: ".jpg",
+          processedDoc: "",
+          base64: uploadedDocumentsBase64,
+        };
+
+        var DocumentList = documentsDetailsList?.responseData
+          ? documentsDetailsList?.responseData
+          : [];
+        DocumentList.push(documentDetails);
+        dispatch(saveDocuments(DocumentList));
         setsuccessResponse(true);
         getHistoryReducer.isSuccess = false;
         setTimeout(() => {

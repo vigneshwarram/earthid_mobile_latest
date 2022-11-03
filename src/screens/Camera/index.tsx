@@ -150,7 +150,7 @@ const CameraScreen = (props: any) => {
       }
       if (barCodeDataDetails.requestType === "shareCredentials") {
         setIsCamerVisible(true);
-        Alert.alert("Credientail has been shared successfully Successfully");
+        Alert.alert("Credientail has been shared successfully");
       }
     }
   }, [sendDatatoServiceProviderData]);
@@ -354,7 +354,8 @@ const CameraScreen = (props: any) => {
         <View
           style={{
             flex: 1,
-            paddingHorizontal: 5,
+
+            width: "100%",
             justifyContent: "space-between",
           }}
         >
@@ -362,7 +363,9 @@ const CameraScreen = (props: any) => {
             style={{
               justifyContent: "center",
               alignItems: "center",
-              backgroundColor: "#fff",
+              backgroundColor: isEarthId()
+                ? Screens.colors.ScanButton.startColor
+                : "#fff",
             }}
           >
             <Image
@@ -533,6 +536,7 @@ const CameraScreen = (props: any) => {
           >
             <TouchableOpacity
               onPress={() => {
+                setIsCamerVisible(true);
                 setissuerSchemaDropDown(false);
               }}
             >

@@ -1,5 +1,5 @@
 import { useTheme } from "@react-navigation/native";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -19,6 +19,12 @@ const LivenessCameraScreen = (props: any) => {
   const { fileUri, selectedDocument } = props.route.params;
   const [maskedColor, setmaskedColor] = useState("#fff");
   const [data, setData] = useState();
+
+  useEffect(() => {
+    if (data) {
+      handlingFacialData();
+    }
+  }, [data]);
   // Initial state of variables
   let rightEyeOpen: any[] = [];
   let camera: {
@@ -161,46 +167,12 @@ const LivenessCameraScreen = (props: any) => {
       >
         <DocumentMask color={maskedColor} />
       </RNCamera>
-      <GenericText
-        style={{
-          textAlign: "center",
-          paddingVertical: 5,
-          fontWeight: "bold",
-          fontSize: 16,
-          color: "#fff",
-        }}
-      >
-        {"capture"}
-      </GenericText>
+
       <GenericText
         style={{ textAlign: "center", paddingVertical: 5, color: "#fff" }}
       >
         {"placeurfacelivebox"}
       </GenericText>
-      <TouchableOpacity onPress={data && handlingFacialData}>
-        <View
-          style={{
-            width: 60,
-            height: 60,
-            borderRadius: 30,
-            backgroundColor: colors.primary,
-            alignSelf: "center",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <View
-            style={{
-              width: 50,
-              height: 50,
-              borderColor: "#fff",
-              borderWidth: 1,
-              borderRadius: 25,
-              backgroundColor: "transparent",
-            }}
-          ></View>
-        </View>
-      </TouchableOpacity>
     </View>
   );
 };
