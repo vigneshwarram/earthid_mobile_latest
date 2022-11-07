@@ -31,7 +31,7 @@ interface IHomeScreenProps {
   route?: any;
 }
 
-const AuthBackupIdentity = ({ navigation,route }: IHomeScreenProps) => {
+const AuthBackupIdentity = ({ navigation, route }: IHomeScreenProps) => {
   const [mobileNumber, setmobileNumber] = useState();
   const [isLoading, setIsLoading] = useState(false);
   let [qrBase64, setBase64] = useState("");
@@ -57,8 +57,8 @@ const AuthBackupIdentity = ({ navigation,route }: IHomeScreenProps) => {
     viewShot.current.capture().then(async (imageData: any) => {
       console.log("imageData", imageData);
       try {
-        await requestExternalStoragePermission();
-        await CameraRoll.save(imageData);
+        // await requestExternalStoragePermission();
+        // await CameraRoll.save(imageData);
         dwFile(imageData);
         ImgToBase64.getBase64String(imageData)
           .then((base64String: any) => dwFile(base64String))
@@ -70,7 +70,6 @@ const AuthBackupIdentity = ({ navigation,route }: IHomeScreenProps) => {
       }
     });
   };
-
 
   const requestExternalStoragePermission = async () => {
     try {
@@ -109,16 +108,18 @@ const AuthBackupIdentity = ({ navigation,route }: IHomeScreenProps) => {
     );
   };
 
-  useEffect(()=>{
-    console.log("route==>",route)
-  },[])
+  useEffect(() => {
+    console.log("route==>", route);
+  }, []);
 
   return (
     <View style={styles.sectionContainer}>
       <ScrollView contentContainerStyle={styles.sectionContainer}>
         <Header
           isLogoAlone={true}
-          headingText={route.name=="AuthBackupIdentity"?"backupidentity":"important"}
+          headingText={
+            route.name == "AuthBackupIdentity" ? "backupidentity" : "important"
+          }
           linearStyle={styles.linearStyle}
           containerStyle={{
             iconStyle: {
@@ -129,23 +130,24 @@ const AuthBackupIdentity = ({ navigation,route }: IHomeScreenProps) => {
             iconContainer: styles.alignCenter,
           }}
         ></Header>
-         <TouchableOpacity
-          onPress={()=>navigation.goBack()}
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
           style={{
-              position:"absolute",
-              marginTop:38,
-              marginLeft:20,
+            position: "absolute",
+            marginTop: 38,
+            marginLeft: 20,
           }}
-          >
+        >
           <Image
             source={LocalImages.backImage}
-            style={{height:20,
-              width:20,
-              resizeMode:"contain",
-              tintColor: isEarthId() ? Screens.pureWhite : Screens.black,            
+            style={{
+              height: 20,
+              width: 20,
+              resizeMode: "contain",
+              tintColor: isEarthId() ? Screens.pureWhite : Screens.black,
             }}
           />
-           </TouchableOpacity> 
+        </TouchableOpacity>
         <View style={styles.category}>
           <View>
             <GenericText
@@ -159,7 +161,9 @@ const AuthBackupIdentity = ({ navigation,route }: IHomeScreenProps) => {
                 },
               ]}
             >
-              {isEarthId() ? "backupscreeninstruction" : SCREENS.BACKUPIDENTYSCREEN.instruction}
+              {isEarthId()
+                ? "backupscreeninstruction"
+                : SCREENS.BACKUPIDENTYSCREEN.instruction}
             </GenericText>
           </View>
           <View style={{ justifyContent: "center", alignItems: "center" }}>

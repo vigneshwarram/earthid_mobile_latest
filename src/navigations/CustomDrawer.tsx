@@ -188,28 +188,28 @@ const CustomDrawer = (props: any) => {
   );
   const _keyExtractor = ({ title }: any) => title.toString();
 
-  useEffect(()=>{
-    console.log('routes==>',props.route)
-  })
+  useEffect(() => {
+    console.log("routes==>", props.route);
+  });
 
   return (
     <View style={styles.sectionContainer}>
       <Header
         leftIconSource={LocalImages.logoImage}
-        actionIcon={props.route=="undefined"?LocalImages.closeImage :""}
+        actionIcon={props.route == "undefined" ? LocalImages.closeImage : ""}
         onpress={() => {
           _toggleDrawer();
         }}
         linearStyle={styles.linearStyle}
       ></Header>
-    <TouchableOpacity
-    onPress={()=>_toggleDrawer()}  
-    style={{position:'absolute',right:0,top:50,marginRight:20}}>
-       <Image
-       source={LocalImages.closeImage}
-       style={{width:15,height:15,tintColor:Screens.pureWhite}}
-       />
-
+      <TouchableOpacity
+        onPress={() => _toggleDrawer()}
+        style={{ position: "absolute", right: 0, top: 50, marginRight: 20 }}
+      >
+        <Image
+          source={LocalImages.closeImage}
+          style={{ width: 15, height: 15, tintColor: Screens.pureWhite }}
+        />
       </TouchableOpacity>
       <FlatList<any>
         data={aboutList}
