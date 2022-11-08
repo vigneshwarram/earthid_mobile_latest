@@ -24,11 +24,11 @@ import DocumentPreviewScreen from "../screens/uploadDocuments/DocumentPreviewScr
 import categoryScreen from "../screens/uploadDocuments/categoryScreen";
 import UploadQr from "../screens/UploadQr";
 import UploadDocumentPreviewScreen from "../screens/UploadQr/UploadDocumentPreviewScreen";
+import FaceCheck from "../screens/FaceRegister/FaceCheck";
 
 // Before rendering any navigation stack
 const animations: any = SlidAnimation;
 export default function RootNavigator() {
- 
   enableScreens();
   const Stack = createStackNavigator();
 
@@ -40,6 +40,7 @@ export default function RootNavigator() {
     FingerPrintInstructionScreen: FingerPrintInstructionScreen,
     RegisterScreen: RegisterScreen,
     BackupIdentity: BackupIdentity,
+    FaceCheck: FaceCheck,
     SetPin: SetPin,
     ConfirmPincode: ConfirmPincode,
     uploadDocumentsScreen: uploadDocumentsScreen,
@@ -95,7 +96,13 @@ export default function RootNavigator() {
           name={"PasswordCheck"}
           component={PasswordCheck}
         />
-
+        <Stack.Screen
+          options={{
+            ...animations,
+          }}
+          name={"FaceCheck"}
+          component={FaceCheck}
+        />
         <Stack.Screen
           options={{
             ...animations,
@@ -103,7 +110,7 @@ export default function RootNavigator() {
           name={"DrawerNavigator"}
           component={DrawerNavigator}
         />
-         <Stack.Screen
+        <Stack.Screen
           options={{
             ...animations,
           }}
@@ -111,7 +118,7 @@ export default function RootNavigator() {
           component={Security}
         />
 
-<Stack.Screen
+        <Stack.Screen
           options={{
             ...animations,
           }}
@@ -119,7 +126,7 @@ export default function RootNavigator() {
           component={RegisterFace}
         />
 
-<Stack.Screen
+        <Stack.Screen
           options={{
             ...animations,
           }}
@@ -127,7 +134,7 @@ export default function RootNavigator() {
           component={SetPin}
         />
 
-<Stack.Screen
+        <Stack.Screen
           options={{
             ...animations,
           }}
@@ -141,7 +148,6 @@ export default function RootNavigator() {
           name={"ConfirmPincode"}
           component={ConfirmPincode}
         />
-
       </Stack.Navigator>
     </NavigationContainer>
   );

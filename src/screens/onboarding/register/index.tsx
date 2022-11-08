@@ -153,7 +153,6 @@ const Register = ({ navigation }: IRegister) => {
     setsuccessResponse(true);
     userDetails.isAccountCreatedSuccess = false;
 
-    console.log("userDetails", userDetails);
     if (userDetails?.responseData) {
       setTimeout(() => {
         setsuccessResponse(false);

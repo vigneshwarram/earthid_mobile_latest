@@ -7,6 +7,7 @@ import {
   FlatList,
   Alert,
   Linking,
+  AsyncStorage,
 } from "react-native";
 import { Screens } from "../themes/index";
 import { values } from "lodash";
@@ -49,9 +50,13 @@ const CustomDrawer = (props: any) => {
     })
   );
 
-  const _navigateAction = (item: any) => {
+  const _navigateAction = async (item: any) => {
     if (item.route === "Logout") {
-      dispatch(FlushData()).then(() => {
+      dispatch(FlushData()).then(async () => {
+        await AsyncStorage.removeItem("passcode");
+        await AsyncStorage.removeItem("fingerprint");
+        await AsyncStorage.removeItem("FaceId");
+        await AsyncStorage.removeItem("pageName");
         props.navigation.dispatch(StackActions.replace("AuthStack"));
       });
     } else if (item.route === "delete") {
@@ -84,7 +89,11 @@ const CustomDrawer = (props: any) => {
 
   useEffect(() => {
     if (deletedRespopnse) {
-      dispatch(FlushData()).then(() => {
+      dispatch(FlushData()).then(async () => {
+        await AsyncStorage.removeItem("passcode");
+        await AsyncStorage.removeItem("fingerprint");
+        await AsyncStorage.removeItem("faceID");
+        await AsyncStorage.removeItem("pageName");
         props.navigation.dispatch(StackActions.replace("AuthStack"));
       });
     }

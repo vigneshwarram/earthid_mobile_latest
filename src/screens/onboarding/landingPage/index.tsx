@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Image,
   AsyncStorage,
+  ActivityIndicator,
 } from "react-native";
 import Header from "../../../components/Header";
 import { LocalImages } from "../../../constants/imageUrlConstants";
@@ -35,6 +36,7 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
   };
   const [languageVisible, setLanguageVisible] = useState(false);
   const [selectedLanguage, setselectedLanguage] = useState(AppLanguage.ENGLISH);
+  const [loading, setLoading] = useState(true);
   const [langugeList, setLanguageList] = useState([
     { label: "English", value: AppLanguage.ENGLISH, selection: true },
     { label: "Spanish", value: AppLanguage.SPANISH, selection: false },
@@ -45,6 +47,23 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
       setLanguageVisible(true);
     }, 500);
   }, []);
+
+  useEffect(() => {
+    navigationCheck();
+  }, []);
+
+  const navigationCheck = async () => {
+    const pageName = await AsyncStorage.getItem("pageName");
+    if (pageName) {
+      if (pageName === "Security") {
+        navigation.navigate("Security");
+      } else if (pageName === "BackupIdentity") {
+        navigation.navigate("BackupIdentity");
+      }
+    }
+    setLoading(false);
+  };
+
   const initializeUserPreferences = async () => {
     const { languageCode, changeLanguagePreference } =
       useContext(LanguageContext);
@@ -360,6 +379,11 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
           </TouchableOpacity>
         </View>
       </ScrollView>
+      {loading && (
+        <View style={styles.loading}>
+          <ActivityIndicator color={Screens.colors.primary} size="large" />
+        </View>
+      )}
     </View>
   );
 };
@@ -368,6 +392,15 @@ const styles = StyleSheet.create({
   sectionContainer: {
     flexGrow: 1,
     backgroundColor: Screens.colors.background,
+  },
+  loading: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    alignItems: "center",
+    justifyContent: "center",
   },
   title: {
     color: Screens.grayShadeColor,

@@ -20,7 +20,10 @@ import GenericText from "../../../components/Text";
 import { LocalImages } from "../../../constants/imageUrlConstants";
 import { SCREENS } from "../../../constants/Labels";
 import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
-import { getHistory } from "../../../redux/actions/authenticationAction";
+import {
+  byPassUserDetailsRedux,
+  getHistory,
+} from "../../../redux/actions/authenticationAction";
 import { Screens } from "../../../themes";
 import { alertBox } from "../../../utils/earthid_account";
 
@@ -40,17 +43,15 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
     navigation.openDrawer();
   };
 
-
-const setValueSecurity=async()=>{
-  let newsec :String =securityReducer?.securityData?.length
-  if(newsec=="1" || newsec !=="1"){
-    console.log("security===>", newsec);
-    await AsyncStorage.setItem("securityLength",newsec.toString())
-  }
-  const seurityData = await AsyncStorage.getItem("securityLength");
-  console.log("securityLengthss===>", seurityData);
-
-} 
+  const setValueSecurity = async () => {
+    let newsec: String = securityReducer?.securityData?.length;
+    if (newsec == "1" || newsec !== "1") {
+      console.log("security===>", newsec);
+      await AsyncStorage.setItem("securityLength", newsec.toString());
+    }
+    const seurityData = await AsyncStorage.getItem("securityLength");
+    console.log("securityLengthss===>", seurityData);
+  };
 
   const categoryList = values(SCREENS.HOMESCREEN.categoryList).map(
     ({ TITLE: title, URI: uri, COLOR: color }: any) => ({
@@ -111,16 +112,21 @@ const setValueSecurity=async()=>{
       listener;
     };
   });
+  useEffect(() => {
+    setMetrics();
+  }, []);
 
+  const setMetrics = async () => {
+    await AsyncStorage.setItem("pageName", "Home");
+  };
   useEffect(() => {
     const PayLoad = {
       userId: userDetails?.responseData?.Id,
       publicKey: userDetails?.responseData?.publicKey,
     };
     dispatch(getHistory(PayLoad));
-    setValueSecurity()
+    setValueSecurity();
     console.log("items==>", userDetails);
-
   }, []);
 
   const _renderItemHistory = ({ item }: any) => {

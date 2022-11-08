@@ -15,10 +15,5 @@ export const SnackBar = ({
   Snackbar.show({
     text: indicationMessage,
     duration: duration,
-    action: {
-      text: actionMessage,
-      textColor: Screens.pureWhite,
-      onPress: () => doRetry,
-    },
   });
 };

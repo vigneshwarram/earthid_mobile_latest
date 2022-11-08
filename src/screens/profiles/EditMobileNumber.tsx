@@ -16,6 +16,7 @@ import GenericText from "../../components/Text";
 import { useAppSelector } from "../../hooks/hooks";
 import { useFetch } from "../../hooks/use-fetch";
 import { updatephoneOtp } from "../../utils/earthid_account";
+import { KeyboardAvoidingScrollView } from "react-native-keyboard-avoiding-scroll-view";
 
 const EditMobileNumber = (props: any) => {
   const [callingCode, setcallingCode] = useState<string>("1");
@@ -56,113 +57,115 @@ const EditMobileNumber = (props: any) => {
   }, [data]);
 
   return (
-    <View style={styles.sectionContainer}>
-      <View style={styles.sectionHeaderContainer}>
-        <TouchableOpacity onPress={() => props.navigation.goBack()}>
-          <Image
-            resizeMode="contain"
-            style={styles.logoContainer}
-            source={LocalImages.backImage}
-          ></Image>
-        </TouchableOpacity>
+    <KeyboardAvoidingScrollView style={styles.sectionContainer}>
+      <View style={styles.sectionContainer}>
+        <View style={styles.sectionHeaderContainer}>
+          <TouchableOpacity onPress={() => props.navigation.goBack()}>
+            <Image
+              resizeMode="contain"
+              style={styles.logoContainer}
+              source={LocalImages.backImage}
+            ></Image>
+          </TouchableOpacity>
+          <GenericText
+            style={[
+              {
+                fontSize: 20,
+                color: Screens.pureWhite,
+                fontWeight: "500",
+                marginLeft: -10,
+              },
+            ]}
+          >
+            {"updatemobileno"}
+          </GenericText>
+
+          <View />
+        </View>
+
         <GenericText
           style={[
             {
-              fontSize: 20,
-              color: Screens.pureWhite,
+              fontSize: 16,
+              color: Screens.black,
               fontWeight: "500",
-              marginLeft: -10,
+              alignSelf: "center",
+              marginTop: 15,
             },
           ]}
         >
-          {"updatemobileno"}
+          {"plsenternewmobile"}
         </GenericText>
 
-        <View />
-      </View>
-
-      <GenericText
-        style={[
-          {
-            fontSize: 16,
-            color: Screens.black,
-            fontWeight: "500",
-            alignSelf: "center",
-            marginTop: 15,
-          },
-        ]}
-      >
-        {"plsenternewmobile"}
-      </GenericText>
-
-      <GenericText
-        style={[
-          {
-            fontSize: 13,
-            marginTop: 20,
-            paddingHorizontal: 15,
-          },
-        ]}
-      >
-        {"mobileno"}
-      </GenericText>
-
-      <PhoneInput
-        onChangeCountry={(code) => {
-          const { callingCode } = code;
-          setcallingCode(callingCode[0]);
-          console.log("code==>", callingCode[0]);
-        }}
-        autoFocus={false}
-        ref={phoneInput}
-        defaultValue={""}
-        placeholder="Mobile Number"
-        defaultCode="US"
-        layout="first"
-        onChangeText={(text: any) => {
-          var format = text.replace(/[^0-9]/g, "");
-          setPhone(format);
-        }}
-        containerStyle={{
-          borderColor: Screens.darkGray,
-          width: "90%",
-          borderWidth: 2,
-          borderRadius: 5,
-          height: 55,
-          marginLeft: 15,
-          marginEnd: 15,
-          marginTop: 12,
-        }}
-        flagButtonStyle={{ backgroundColor: Screens.thickGray }}
-        textInputStyle={{ fontSize: 16, padding: 0, margin: 0 }}
-        codeTextStyle={{ fontSize: 16, padding: 0, margin: 0 }}
-        textContainerStyle={{
-          height: 55,
-          padding: 0,
-          margin: 0,
-        }}
-        withShadow
-      />
-      <View style={{ paddingHorizontal: 15, marginTop: 100 }}>
-        <Button
-          onPress={navigateAction}
-          style={{
-            buttonContainer: {
-              elevation: 5,
+        <GenericText
+          style={[
+            {
+              fontSize: 13,
+              marginTop: 20,
+              paddingHorizontal: 15,
             },
-            text: {
-              color: Screens.pureWhite,
-            },
-            iconStyle: {
-              tintColor: Screens.pureWhite,
-            },
+          ]}
+        >
+          {"mobileno"}
+        </GenericText>
+
+        <PhoneInput
+          onChangeCountry={(code) => {
+            const { callingCode } = code;
+            setcallingCode(callingCode[0]);
+            console.log("code==>", callingCode[0]);
           }}
-          title={"submt"}
-        ></Button>
-      </View>
+          autoFocus={false}
+          ref={phoneInput}
+          defaultValue={""}
+          placeholder="Mobile Number"
+          defaultCode="US"
+          layout="first"
+          onChangeText={(text: any) => {
+            var format = text.replace(/[^0-9]/g, "");
+            setPhone(format);
+          }}
+          containerStyle={{
+            borderColor: Screens.darkGray,
+            width: "90%",
+            borderWidth: 2,
+            borderRadius: 5,
+            height: 55,
+            marginLeft: 15,
+            marginEnd: 15,
+            marginTop: 12,
+          }}
+          flagButtonStyle={{ backgroundColor: Screens.thickGray }}
+          textInputStyle={{ fontSize: 16, padding: 0, margin: 0 }}
+          codeTextStyle={{ fontSize: 16, padding: 0, margin: 0 }}
+          textContainerStyle={{
+            height: 55,
+            padding: 0,
+            margin: 0,
+          }}
+          withShadow
+        />
+        <View style={{ paddingHorizontal: 15, marginTop: 100 }}>
+          <Button
+            onPress={navigateAction}
+            style={{
+              buttonContainer: {
+                elevation: 5,
+              },
+              text: {
+                color: Screens.pureWhite,
+              },
+              iconStyle: {
+                tintColor: Screens.pureWhite,
+              },
+            }}
+            title={"submt"}
+          ></Button>
+        </View>
 
-      <AnimatedLoader isLoaderVisible={loading} loadingText="Loading..." />
-    </View>
+        <AnimatedLoader isLoaderVisible={loading} loadingText="Loading..." />
+      </View>
+    </KeyboardAvoidingScrollView>
   );
 };
 

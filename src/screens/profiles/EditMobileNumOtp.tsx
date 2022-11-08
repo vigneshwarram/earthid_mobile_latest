@@ -18,6 +18,7 @@ import AnimatedLoader from "../../components/Loader/AnimatedLoader";
 import { useFetch } from "../../hooks/use-fetch";
 import { updatePhone, updatephoneOtp } from "../../utils/earthid_account";
 import { byPassUserDetailsRedux } from "../../redux/actions/authenticationAction";
+import { KeyboardAvoidingScrollView } from "react-native-keyboard-avoiding-scroll-view";
 
 const EditMobileNumOtp = (props: any) => {
   const userDetails = useAppSelector((state) => state.account);
@@ -76,180 +77,182 @@ const EditMobileNumOtp = (props: any) => {
   };
 
   return (
-    <View style={styles.sectionContainer}>
-      <ScrollView contentContainerStyle={styles.sectionContainer}>
-        <View style={styles.sectionHeaderContainer}>
-          <TouchableOpacity onPress={() => props.navigation.goBack()}>
-            <Image
-              resizeMode="contain"
-              style={styles.logoContainer}
-              source={LocalImages.backImage}
-            ></Image>
+    <KeyboardAvoidingScrollView style={styles.sectionContainer}>
+      <View style={styles.sectionContainer}>
+        <ScrollView contentContainerStyle={styles.sectionContainer}>
+          <View style={styles.sectionHeaderContainer}>
+            <TouchableOpacity onPress={() => props.navigation.goBack()}>
+              <Image
+                resizeMode="contain"
+                style={styles.logoContainer}
+                source={LocalImages.backImage}
+              ></Image>
+            </TouchableOpacity>
+            <GenericText
+              style={[
+                {
+                  fontSize: 20,
+                  color: Screens.pureWhite,
+                  fontWeight: "500",
+                  marginLeft: -10,
+                },
+              ]}
+            >
+              {"updatemobileno"}
+            </GenericText>
+
+            <View />
+          </View>
+
+          <GenericText
+            style={[
+              {
+                fontSize: 16,
+                color: Screens.grayShadeColor,
+                fontWeight: "500",
+                alignSelf: "center",
+                marginTop: 15,
+              },
+            ]}
+          >
+            {"enterotprevoldmobile"}
+          </GenericText>
+          <GenericText
+            style={[
+              {
+                fontSize: 16,
+                color: Screens.grayShadeColor,
+                fontWeight: "500",
+                alignSelf: "center",
+              },
+            ]}
+          >
+            {userDetails?.responseData?.countryCode +
+              " " +
+              userDetails.responseData.phone}
+          </GenericText>
+
+          <View style={{ alignSelf: "center", marginTop: 25 }}>
+            <SmoothPinCodeInput
+              cellStyle={{
+                borderWidth: 0.5,
+                borderColor: Screens.grayShadeColor,
+                borderRadius: 5,
+              }}
+              cellStyleFocused={{
+                borderColor: Screens.colors.primary,
+                borderWidth: 2,
+              }}
+              password
+              cellSize={50}
+              codeLength={6}
+              value={oldCode}
+              onTextChange={onPinCodeChangeForOld}
+            />
+          </View>
+
+          <TouchableOpacity onPress={() => _reSend()}>
+            <GenericText
+              style={[
+                {
+                  fontSize: 13,
+                  color: "#293FEE",
+                  fontWeight: "500",
+                  alignSelf: "flex-end",
+                  marginRight: 35,
+                  marginTop: 8,
+                  textDecorationLine: "underline",
+                },
+              ]}
+            >
+              {"resendcode"}
+            </GenericText>
           </TouchableOpacity>
+
           <GenericText
             style={[
               {
-                fontSize: 20,
-                color: Screens.pureWhite,
+                fontSize: 16,
+                color: Screens.grayShadeColor,
                 fontWeight: "500",
-                marginLeft: -10,
+                alignSelf: "center",
+                marginTop: 40,
               },
             ]}
           >
-            {"updatemobileno"}
+            {"enterotprevnewmobile"}
           </GenericText>
-
-          <View />
-        </View>
-
-        <GenericText
-          style={[
-            {
-              fontSize: 16,
-              color: Screens.grayShadeColor,
-              fontWeight: "500",
-              alignSelf: "center",
-              marginTop: 15,
-            },
-          ]}
-        >
-          {"enterotprevoldmobile"}
-        </GenericText>
-        <GenericText
-          style={[
-            {
-              fontSize: 16,
-              color: Screens.grayShadeColor,
-              fontWeight: "500",
-              alignSelf: "center",
-            },
-          ]}
-        >
-          {userDetails?.responseData?.countryCode +
-            " " +
-            userDetails.responseData.phone}
-        </GenericText>
-
-        <View style={{ alignSelf: "center", marginTop: 25 }}>
-          <SmoothPinCodeInput
-            cellStyle={{
-              borderWidth: 0.5,
-              borderColor: Screens.grayShadeColor,
-              borderRadius: 5,
-            }}
-            cellStyleFocused={{
-              borderColor: Screens.colors.primary,
-              borderWidth: 2,
-            }}
-            password
-            cellSize={50}
-            codeLength={6}
-            value={oldCode}
-            onTextChange={onPinCodeChangeForOld}
-          />
-        </View>
-
-        <TouchableOpacity onPress={() => _reSend()}>
           <GenericText
             style={[
               {
-                fontSize: 13,
-                color: "#293FEE",
+                fontSize: 16,
+                color: Screens.grayShadeColor,
                 fontWeight: "500",
-                alignSelf: "flex-end",
-                marginRight: 35,
-                marginTop: 8,
-                textDecorationLine: "underline",
+                alignSelf: "center",
               },
             ]}
           >
-            {"resendcode"}
+            {"+" + callingCode + " " + newPhone}
           </GenericText>
-        </TouchableOpacity>
 
-        <GenericText
-          style={[
-            {
-              fontSize: 16,
-              color: Screens.grayShadeColor,
-              fontWeight: "500",
-              alignSelf: "center",
-              marginTop: 40,
-            },
-          ]}
-        >
-          {"enterotprevnewmobile"}
-        </GenericText>
-        <GenericText
-          style={[
-            {
-              fontSize: 16,
-              color: Screens.grayShadeColor,
-              fontWeight: "500",
-              alignSelf: "center",
-            },
-          ]}
-        >
-          {"+" + callingCode + " " + newPhone}
-        </GenericText>
+          <View style={{ alignSelf: "center", marginTop: 25 }}>
+            <SmoothPinCodeInput
+              cellStyle={{
+                borderWidth: 0.5,
+                borderColor: Screens.grayShadeColor,
+                borderRadius: 5,
+              }}
+              cellStyleFocused={{
+                borderColor: Screens.colors.primary,
+                borderWidth: 2,
+              }}
+              password
+              cellSize={50}
+              codeLength={6}
+              value={newCode}
+              onTextChange={onPinCodeChangeForNew}
+            />
+          </View>
 
-        <View style={{ alignSelf: "center", marginTop: 25 }}>
-          <SmoothPinCodeInput
-            cellStyle={{
-              borderWidth: 0.5,
-              borderColor: Screens.grayShadeColor,
-              borderRadius: 5,
-            }}
-            cellStyleFocused={{
-              borderColor: Screens.colors.primary,
-              borderWidth: 2,
-            }}
-            password
-            cellSize={50}
-            codeLength={6}
-            value={newCode}
-            onTextChange={onPinCodeChangeForNew}
-          />
-        </View>
+          <TouchableOpacity onPress={() => _reSend()}>
+            <GenericText
+              style={[
+                {
+                  fontSize: 13,
+                  color: "#293FEE",
+                  fontWeight: "500",
+                  alignSelf: "flex-end",
+                  marginRight: 35,
+                  marginTop: 8,
+                  textDecorationLine: "underline",
+                },
+              ]}
+            >
+              {"resendcode"}
+            </GenericText>
+          </TouchableOpacity>
+          <View style={{ paddingHorizontal: 15, marginTop: 10 }}>
+            <Button
+              onPress={verfified}
+              style={{
+                buttonContainer: {
+                  elevation: 5,
+                },
+                text: {
+                  color: Screens.pureWhite,
+                },
+                iconStyle: {
+                  tintColor: Screens.pureWhite,
+                },
+              }}
+              title={"submt"}
+            ></Button>
+          </View>
 
-        <TouchableOpacity onPress={() => _reSend()}>
-          <GenericText
-            style={[
-              {
-                fontSize: 13,
-                color: "#293FEE",
-                fontWeight: "500",
-                alignSelf: "flex-end",
-                marginRight: 35,
-                marginTop: 8,
-                textDecorationLine: "underline",
-              },
-            ]}
-          >
-            {"resendcode"}
-          </GenericText>
-        </TouchableOpacity>
-        <View style={{ paddingHorizontal: 15, marginTop: 10 }}>
-          <Button
-            onPress={verfified}
-            style={{
-              buttonContainer: {
-                elevation: 5,
-              },
-              text: {
-                color: Screens.pureWhite,
-              },
-              iconStyle: {
-                tintColor: Screens.pureWhite,
-              },
-            }}
-            title={"submt"}
-          ></Button>
-        </View>
-
-        <AnimatedLoader loadingText={"loading"} />
-      </ScrollView>
-    </View>
+          <AnimatedLoader loadingText={"loading"} />
+        </ScrollView>
+      </View>
+    </KeyboardAvoidingScrollView>
   );
 };
 

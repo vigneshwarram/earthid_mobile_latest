@@ -1,5 +1,11 @@
-import React from "react";
-import { View, StyleSheet, ScrollView, Image } from "react-native";
+import React, { useEffect } from "react";
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  Image,
+  AsyncStorage,
+} from "react-native";
 import Header from "../../../components/Header";
 import { SCREENS } from "../../../constants/Labels";
 import { Screens } from "../../../themes";
@@ -10,6 +16,7 @@ import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
 import { ESecurityTypes } from "../../../typings/enums/Security";
 import { SaveSecurityConfiguration } from "../../../redux/actions/LocalSavingActions";
 import { SnackBar } from "../../../components/SnackBar";
+import { byPassUserDetailsRedux } from "../../../redux/actions/authenticationAction";
 
 interface IHomeScreenProps {
   navigation?: any;
@@ -18,8 +25,15 @@ interface IHomeScreenProps {
 const Register = ({ navigation }: IHomeScreenProps) => {
   const dispatch = useAppDispatch();
   const securityReducer: any = useAppSelector((state) => state.security);
-  console.log("securityReducer", securityReducer);
+  const userDetails = useAppSelector((state) => state.account);
 
+  useEffect(() => {
+    setMetrics();
+  }, []);
+
+  const setMetrics = async () => {
+    await AsyncStorage.setItem("pageName", "Security");
+  };
   const saveSelectionSecurities = (
     securityMode: any,
     enabled = false,
@@ -33,7 +47,6 @@ const Register = ({ navigation }: IHomeScreenProps) => {
       securityReducer?.securityData?.length > 0
     ) {
       payLoad = securityReducer?.securityData;
-      console.log("securityMode====>", payLoad);
     }
     if (
       (payLoad[0]?.types === ESecurityTypes.FACE ||

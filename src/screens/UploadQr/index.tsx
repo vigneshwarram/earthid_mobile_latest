@@ -47,16 +47,7 @@ const UploadQr = (props: any) => {
       });
     }
   }, [getUserResponse]);
-  const _takePictureAsync = async () => {
-    const options = { quality: 1, base64: true };
-    const data = await camRef.current.takePictureAsync(options);
 
-    if (data) {
-      props.navigation.navigate("UploadDocumentPreviewScreen", {
-        fileUri: data,
-      });
-    }
-  };
   const requestPermission = async () => {
     try {
     } catch (err) {

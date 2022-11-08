@@ -35,7 +35,6 @@ const LoadingScreen = ({ navigation }: ILoadingScreen) => {
       .then(async (biometryType) => {
         // Success code
         if (biometryType === "FaceID") {
-          console.log("FaceID is supported.");
         } else {
           TouchID.authenticate("", optionalConfigObject)
             .then(async (success: any) => {
@@ -60,57 +59,24 @@ const LoadingScreen = ({ navigation }: ILoadingScreen) => {
   };
   const checkAuth = async () => {
     const fingerPrint = await AsyncStorage.getItem("fingerprint");
-    console.log("fingerPrint", fingerPrint);
-    const getItem = await AsyncStorage.getItem("passcode");
-    const seurityData:any = await AsyncStorage.getItem("securityLength");
-    var a:any =1
-    console.log("securityLength", seurityData);
-    console.log("getItem", getItem);
-
-    if (fingerPrint) {
+    const passcode = await AsyncStorage.getItem("passcode");
+    const FaceID = await AsyncStorage.getItem("FaceID");
+    console.log("FaceID===>", FaceID);
+    if (fingerPrint && passcode) {
       aunthenticateBioMetricInfo();
-      console.log("finger","FingerPrint");
-    }
-  //   else if(seurityData !== a ){
-  //     console.log("security==>","Security");
-  //     navigation.dispatch(StackActions.replace("Security"));
-  //  }    
-    else if (getItem) {
-      console.log("PasswordCheck==>","PasswordCheck");
+    } else if (FaceID && passcode) {
+      navigation.dispatch(StackActions.replace("FaceCheck"));
+    } else if (passcode) {
       navigation.dispatch(StackActions.replace("PasswordCheck"));
-    }
-    else {
-      console.log("AuthStack==>","AuthStack");
+    } else {
       navigation.dispatch(StackActions.replace("AuthStack"));
     }
-
-//    if(seurityData!=a ){
-//     console.log("security==>","Security");
-//     navigation.dispatch(StackActions.replace("Security"));
-//  }    
-//   else if (fingerPrint) {
-//     aunthenticateBioMetricInfo();
-//     console.log("finger","FingerPrint");
-//   }
- 
-//   else if (getItem) {
-//     console.log("PasswordCheck==>","PasswordCheck");
-//     navigation.dispatch(StackActions.replace("PasswordCheck"));
-//   }
-//   else {
-//     console.log("AuthStack==>","AuthStack");
-//     navigation.dispatch(StackActions.replace("AuthStack"));
-//   }
-
-
-
   };
-  console.log("userDetails", userDetails);
+
   useEffect(() => {
     if (userDetails?.responseData) {
       checkAuth();
-    } 
-    else {
+    } else {
       navigation.dispatch(StackActions.replace("AuthStack"));
     }
   }, [userDetails]);

@@ -12,6 +12,7 @@ import { useAppSelector } from "../../hooks/hooks";
 import { updateEmailOtp } from "../../utils/earthid_account";
 import useFormInput from "../../hooks/use-text-input";
 import { emailValidator } from "../../utils/inputValidations";
+import { KeyboardAvoidingScrollView } from "react-native-keyboard-avoiding-scroll-view";
 
 const EditEmailAddress = (props: any) => {
   const { loading, data, error, fetch } = useFetch();
@@ -60,91 +61,93 @@ const EditEmailAddress = (props: any) => {
   } = useFormInput("", true, emailValidator);
 
   return (
-    <View style={styles.sectionContainer}>
-      <View style={styles.sectionHeaderContainer}>
-        <TouchableOpacity onPress={() => props.navigation.goBack()}>
-          <Image
-            resizeMode="contain"
-            style={styles.logoContainer}
-            source={LocalImages.backImage}
-          ></Image>
-        </TouchableOpacity>
+    <KeyboardAvoidingScrollView style={styles.sectionContainer}>
+      <View style={styles.sectionContainer}>
+        <View style={styles.sectionHeaderContainer}>
+          <TouchableOpacity onPress={() => props.navigation.goBack()}>
+            <Image
+              resizeMode="contain"
+              style={styles.logoContainer}
+              source={LocalImages.backImage}
+            ></Image>
+          </TouchableOpacity>
+          <GenericText
+            style={[
+              {
+                fontSize: 20,
+                color: Screens.pureWhite,
+                fontWeight: "500",
+                marginLeft: -10,
+              },
+            ]}
+          >
+            {"updateemailadd"}
+          </GenericText>
+
+          <View />
+        </View>
+
         <GenericText
           style={[
             {
-              fontSize: 20,
-              color: Screens.pureWhite,
+              fontSize: 16,
+              color: Screens.black,
               fontWeight: "500",
-              marginLeft: -10,
+              alignSelf: "center",
+              marginTop: 15,
             },
           ]}
         >
-          {"updateemailadd"}
+          {"plsenternewemailadd"}
         </GenericText>
 
-        <View />
-      </View>
+        <GenericText
+          style={[
+            {
+              fontSize: 13,
+              marginTop: 20,
+              paddingHorizontal: 15,
+            },
+          ]}
+        >
+          {"email"}
+        </GenericText>
 
-      <GenericText
-        style={[
-          {
-            fontSize: 16,
-            color: Screens.black,
-            fontWeight: "500",
-            alignSelf: "center",
-            marginTop: 15,
-          },
-        ]}
-      >
-        {"plsenternewemailadd"}
-      </GenericText>
-
-      <GenericText
-        style={[
-          {
-            fontSize: 13,
-            marginTop: 20,
-            paddingHorizontal: 15,
-          },
-        ]}
-      >
-        {"email"}
-      </GenericText>
-
-      <TextInput
-        style={{
-          container: styles.textInputContainer,
-        }}
-        isError={isemailError}
-        errorText={isemailErrorMessage}
-        onFocus={emailFocusHandlur}
-        onBlur={emailBlurHandler}
-        maxLength={60}
-        isFocused={emailFocus}
-        value={email}
-        onChangeText={emailChangeHandler}
-      />
-
-      <View style={{ paddingHorizontal: 15, marginTop: 100 }}>
-        <Button
-          onPress={_navigateAction}
+        <TextInput
           style={{
-            buttonContainer: {
-              elevation: 5,
-            },
-            text: {
-              color: Screens.pureWhite,
-            },
-            iconStyle: {
-              tintColor: Screens.pureWhite,
-            },
+            container: styles.textInputContainer,
           }}
-          title={"submt"}
-        ></Button>
-      </View>
+          isError={isemailError}
+          errorText={isemailErrorMessage}
+          onFocus={emailFocusHandlur}
+          onBlur={emailBlurHandler}
+          maxLength={60}
+          isFocused={emailFocus}
+          value={email}
+          onChangeText={emailChangeHandler}
+        />
 
-      <AnimatedLoader isLoaderVisible={loading} loadingText="Loading..." />
-    </View>
+        <View style={{ paddingHorizontal: 15, marginTop: 100 }}>
+          <Button
+            onPress={_navigateAction}
+            style={{
+              buttonContainer: {
+                elevation: 5,
+              },
+              text: {
+                color: Screens.pureWhite,
+              },
+              iconStyle: {
+                tintColor: Screens.pureWhite,
+              },
+            }}
+            title={"submt"}
+          ></Button>
+        </View>
+
+        <AnimatedLoader isLoaderVisible={loading} loadingText="Loading..." />
+      </View>
+    </KeyboardAvoidingScrollView>
   );
 };
 

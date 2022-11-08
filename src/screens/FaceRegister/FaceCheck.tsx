@@ -107,8 +107,9 @@ const LivenessCameraScreen = (props: any) => {
               base64: true,
             };
             const data = await camRef.current.takePictureAsync(options);
-            await AsyncStorage.setItem("FaceID", "facedata");
-            saveSelectionSecurities();
+            if (data) {
+              saveSelectionSecurities();
+            }
           } else {
             SnackBar({
               indicationMessage: "I can still see you moving",
@@ -124,57 +125,9 @@ const LivenessCameraScreen = (props: any) => {
   };
 
   const saveSelectionSecurities = () => {
-    let payLoad = [];
-    if (
-      securityReducer &&
-      securityReducer?.securityData &&
-      securityReducer?.securityData?.length > 0
-    )
-      payLoad = securityReducer?.securityData;
-    if (payLoad[0].types !== ESecurityTypes.FACE) {
-      payLoad.push({
-        types: ESecurityTypes.FACE,
-        enabled: true,
-      });
-    } else {
-      payLoad = payLoad.map(
-        (item: { types: ESecurityTypes; enabled: boolean }) => {
-          if (item.types === ESecurityTypes.FACE) {
-            item.enabled = true;
-          }
-          return item;
-        }
-      );
-    }
-    dispatch(SaveSecurityConfiguration(payLoad)).then(() => {
-      actionToNavigate();
-    });
-  };
-
-  const actionToNavigate = () => {
-    if (securityReducer && securityReducer?.securityData) {
-      console.log(
-        "securityReducer?.securityData",
-        securityReducer?.securityData
-      );
-      if (
-        securityReducer?.securityData?.length === 2 &&
-        securityReducer?.securityData?.some(
-          (item: { types: any }) => item.types === ESecurityTypes.PASSCORD
-        ) &&
-        securityReducer?.securityData?.every(
-          (item: { enabled: boolean }) => item.enabled
-        )
-      ) {
-        props.navigation.dispatch(
-          StackActions.replace("DrawerNavigator", { type: "Faceid" })
-        );
-      } else {
-        props.navigation.navigate("Security");
-      }
-    } else {
-      props.navigation.navigate("Security");
-    }
+    props.navigation.dispatch(
+      StackActions.replace("DrawerNavigator", { type: "Faceid" })
+    );
   };
 
   const { colors } = useTheme();

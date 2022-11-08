@@ -8,6 +8,8 @@ import {
   BackHandler,
   TouchableOpacity,
   Image,
+  ActivityIndicator,
+  AsyncStorage,
 } from "react-native";
 import Header from "../../../components/Header";
 import { SCREENS } from "../../../constants/Labels";
@@ -24,8 +26,12 @@ import { AES_ENCRYPTION_SALT } from "../../../utils/earthid_account";
 import GenericText from "../../../components/Text";
 import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
 import { IUserSchemaRequest } from "../../../typings/AccountCreation/IUserSchema";
-import { createSchema } from "../../../redux/actions/authenticationAction";
+import {
+  byPassUserDetailsRedux,
+  createSchema,
+} from "../../../redux/actions/authenticationAction";
 import { LocalImages } from "../../../constants/imageUrlConstants";
+import { useFetch } from "../../../hooks/use-fetch";
 
 interface IHomeScreenProps {
   navigation?: any;
@@ -36,29 +42,30 @@ const Register = ({ navigation }: IHomeScreenProps) => {
   const [mobileNumber, setmobileNumber] = useState();
   const [isLoading, setIsLoading] = useState(false);
   let [qrBase64, setBase64] = useState("");
-  const getGeneratedKeys = useAppSelector((state) => state.user);
-  const accountDetails = useAppSelector((state) => state.account);
-  const schemaDetails = useAppSelector((state) => state.schema);
+  const userDetails = useAppSelector((state) => state.account);
   const viewShot: any = useRef();
+  const { loading: getUserLoading } = useFetch();
   const dispatch = useAppDispatch();
 
   let qrData = {
-    earthId: accountDetails?.responseData.earthId,
+    earthId: userDetails?.responseData.earthId,
   };
-  // var encryptedString: any = CryptoJS.AES.encrypt(
-  //   JSON.stringify(qrData),
-  //   AES_ENCRYPTION_SALT
-  // );
-  // encryptedString = encryptedString.toString();
 
   let data = {
-    email: accountDetails?.responseData.email,
-    mobile: accountDetails?.responseData.phone,
-    username: accountDetails?.responseData.username,
+    email: userDetails?.responseData.email,
+    mobile: userDetails?.responseData.phone,
+    username: userDetails?.responseData.username,
   };
 
   const dwFile = async (file_url: any) => {
     await Share.open({ url: `data:image/png;base64,${file_url}` });
+  };
+
+  useEffect(() => {
+    setMetrics();
+  }, []);
+  const setMetrics = async () => {
+    await AsyncStorage.setItem("pageName", "BackupIdentity");
   };
 
   const capturePicture = () => {
@@ -73,33 +80,13 @@ const Register = ({ navigation }: IHomeScreenProps) => {
         ImgToBase64.getBase64String(imageData)
           .then((base64String: any) => dwFile(base64String))
           .catch(() => console.log("error"));
+
         navigation.navigate("Security");
       } catch (error) {
         console.log("error", error);
         navigation.navigate("Security");
       }
     });
-  };
-
-  const requestExternalStoragePermission = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
-        // {
-        //     title: 'Earth Id Storage Permission',
-        //     message: 'Earth Id needs access to your storage ' +
-        //         'so you can save your photos',
-        // },
-      );
-      return granted == "granted"
-        ? true
-        : granted == "never_ask_again"
-        ? securityModalPopup()
-        : securityModalPopup();
-    } catch (err) {
-      console.error("Failed to request permission ", err);
-      return false;
-    }
   };
 
   const securityModalPopup = () => {
@@ -233,6 +220,11 @@ const Register = ({ navigation }: IHomeScreenProps) => {
             isLoaderVisible={isLoading}
           ></Loader>
         </View>
+        {getUserLoading && (
+          <View style={styles.loading}>
+            <ActivityIndicator color={Screens.colors.primary} size="large" />
+          </View>
+        )}
       </ScrollView>
     </View>
   );
@@ -242,6 +234,15 @@ const styles = StyleSheet.create({
   sectionContainer: {
     flexGrow: 1,
     backgroundColor: Screens.colors.background,
+  },
+  loading: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    alignItems: "center",
+    justifyContent: "center",
   },
   title: {
     color: Screens.grayShadeColor,

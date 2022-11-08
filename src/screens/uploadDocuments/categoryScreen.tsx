@@ -224,31 +224,6 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
                       data={item?.value}
                       renderItem={_renderItemDocuments}
                     />
-
-                    <View
-                      style={{
-                        alignSelf: "center",
-                        marginBottom: 10,
-                        width: "90%",
-                        marginLeft: 20,
-                        zIndex: 999,
-                      }}
-                    >
-                      <Button
-                        style={{
-                          buttonContainer: {
-                            elevation: 5,
-                          },
-                          text: {
-                            color: Screens.pureWhite,
-                          },
-                          iconStyle: {
-                            tintColor: Screens.pureWhite,
-                          },
-                        }}
-                        title={"submt"}
-                      ></Button>
-                    </View>
                   </ScrollView>
                 );
               }

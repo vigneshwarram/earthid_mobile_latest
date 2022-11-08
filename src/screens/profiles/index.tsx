@@ -137,7 +137,7 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
     }
     try {
       const resp: any = await DocumentPicker.pick({
-        type: [DocumentPicker.types.images, DocumentPicker.types.pdf],
+        type: [DocumentPicker.types.images, DocumentPicker.types.images],
         readContent: true,
       });
 

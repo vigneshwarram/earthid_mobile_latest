@@ -1,5 +1,6 @@
 import {
   Image,
+  KeyboardAvoidingView,
   ScrollView,
   StyleSheet,
   Text,
@@ -74,178 +75,180 @@ const EditEmailAddOtp = (props: any) => {
   };
 
   return (
-    <View style={styles.sectionContainer}>
-      <ScrollView contentContainerStyle={styles.sectionContainer}>
-        <View style={styles.sectionHeaderContainer}>
-          <TouchableOpacity onPress={() => props.navigation.goBack()}>
-            <Image
-              resizeMode="contain"
-              style={styles.logoContainer}
-              source={LocalImages.backImage}
-            ></Image>
+    <KeyboardAvoidingView style={styles.sectionContainer}>
+      <View style={styles.sectionContainer}>
+        <ScrollView contentContainerStyle={styles.sectionContainer}>
+          <View style={styles.sectionHeaderContainer}>
+            <TouchableOpacity onPress={() => props.navigation.goBack()}>
+              <Image
+                resizeMode="contain"
+                style={styles.logoContainer}
+                source={LocalImages.backImage}
+              ></Image>
+            </TouchableOpacity>
+            <GenericText
+              style={[
+                {
+                  fontSize: 20,
+                  color: Screens.pureWhite,
+                  fontWeight: "500",
+                  marginLeft: -10,
+                },
+              ]}
+            >
+              {"updateemailadd"}
+            </GenericText>
+
+            <View />
+          </View>
+
+          <GenericText
+            style={[
+              {
+                fontSize: 16,
+                color: Screens.grayShadeColor,
+                fontWeight: "500",
+                alignSelf: "center",
+                marginTop: 15,
+              },
+            ]}
+          >
+            {"enterotprevoldemail"}
+          </GenericText>
+          <GenericText
+            style={[
+              {
+                fontSize: 16,
+                color: Screens.grayShadeColor,
+                fontWeight: "500",
+                alignSelf: "center",
+              },
+            ]}
+          >
+            {userDetails.responseData.email}
+          </GenericText>
+
+          <View style={{ alignSelf: "center", marginTop: 25 }}>
+            <SmoothPinCodeInput
+              cellStyle={{
+                borderWidth: 0.5,
+                borderColor: Screens.grayShadeColor,
+                borderRadius: 5,
+              }}
+              cellStyleFocused={{
+                borderColor: Screens.colors.primary,
+                borderWidth: 2,
+              }}
+              password
+              cellSize={50}
+              codeLength={6}
+              value={oldCode}
+              onTextChange={onPinCodeChangeForOld}
+            />
+          </View>
+
+          <TouchableOpacity onPress={() => _reSend()}>
+            <GenericText
+              style={[
+                {
+                  fontSize: 13,
+                  color: "#293FEE",
+                  fontWeight: "500",
+                  alignSelf: "flex-end",
+                  marginRight: 35,
+                  marginTop: 8,
+                  textDecorationLine: "underline",
+                },
+              ]}
+            >
+              {"resendcode"}
+            </GenericText>
           </TouchableOpacity>
+
           <GenericText
             style={[
               {
-                fontSize: 20,
-                color: Screens.pureWhite,
+                fontSize: 16,
+                color: Screens.grayShadeColor,
                 fontWeight: "500",
-                marginLeft: -10,
+                alignSelf: "center",
+                marginTop: 40,
               },
             ]}
           >
-            {"updateemailadd"}
+            {"enterotprevnewemail"}
           </GenericText>
-
-          <View />
-        </View>
-
-        <GenericText
-          style={[
-            {
-              fontSize: 16,
-              color: Screens.grayShadeColor,
-              fontWeight: "500",
-              alignSelf: "center",
-              marginTop: 15,
-            },
-          ]}
-        >
-          {"enterotprevoldemail"}
-        </GenericText>
-        <GenericText
-          style={[
-            {
-              fontSize: 16,
-              color: Screens.grayShadeColor,
-              fontWeight: "500",
-              alignSelf: "center",
-            },
-          ]}
-        >
-          {userDetails.responseData.email}
-        </GenericText>
-
-        <View style={{ alignSelf: "center", marginTop: 25 }}>
-          <SmoothPinCodeInput
-            cellStyle={{
-              borderWidth: 0.5,
-              borderColor: Screens.grayShadeColor,
-              borderRadius: 5,
-            }}
-            cellStyleFocused={{
-              borderColor: Screens.colors.primary,
-              borderWidth: 2,
-            }}
-            password
-            cellSize={50}
-            codeLength={6}
-            value={oldCode}
-            onTextChange={onPinCodeChangeForOld}
-          />
-        </View>
-
-        <TouchableOpacity onPress={() => _reSend()}>
           <GenericText
             style={[
               {
-                fontSize: 13,
-                color: "#293FEE",
+                fontSize: 16,
+                color: Screens.grayShadeColor,
                 fontWeight: "500",
-                alignSelf: "flex-end",
-                marginRight: 35,
-                marginTop: 8,
-                textDecorationLine: "underline",
+                alignSelf: "center",
               },
             ]}
           >
-            {"resendcode"}
+            {newEmail}
           </GenericText>
-        </TouchableOpacity>
 
-        <GenericText
-          style={[
-            {
-              fontSize: 16,
-              color: Screens.grayShadeColor,
-              fontWeight: "500",
-              alignSelf: "center",
-              marginTop: 40,
-            },
-          ]}
-        >
-          {"enterotprevnewemail"}
-        </GenericText>
-        <GenericText
-          style={[
-            {
-              fontSize: 16,
-              color: Screens.grayShadeColor,
-              fontWeight: "500",
-              alignSelf: "center",
-            },
-          ]}
-        >
-          {newEmail}
-        </GenericText>
+          <View style={{ alignSelf: "center", marginTop: 25 }}>
+            <SmoothPinCodeInput
+              cellStyle={{
+                borderWidth: 0.5,
+                borderColor: Screens.grayShadeColor,
+                borderRadius: 5,
+              }}
+              cellStyleFocused={{
+                borderColor: Screens.colors.primary,
+                borderWidth: 2,
+              }}
+              password
+              cellSize={50}
+              codeLength={6}
+              value={newCode}
+              onTextChange={onPinCodeChangeForNew}
+            />
+          </View>
 
-        <View style={{ alignSelf: "center", marginTop: 25 }}>
-          <SmoothPinCodeInput
-            cellStyle={{
-              borderWidth: 0.5,
-              borderColor: Screens.grayShadeColor,
-              borderRadius: 5,
-            }}
-            cellStyleFocused={{
-              borderColor: Screens.colors.primary,
-              borderWidth: 2,
-            }}
-            password
-            cellSize={50}
-            codeLength={6}
-            value={newCode}
-            onTextChange={onPinCodeChangeForNew}
-          />
-        </View>
+          <TouchableOpacity onPress={() => _reSend()}>
+            <GenericText
+              style={[
+                {
+                  fontSize: 13,
+                  color: "#293FEE",
+                  fontWeight: "500",
+                  alignSelf: "flex-end",
+                  marginRight: 35,
+                  marginTop: 8,
+                  textDecorationLine: "underline",
+                },
+              ]}
+            >
+              {"resendcode"}
+            </GenericText>
+          </TouchableOpacity>
+          <View style={{ paddingHorizontal: 15, marginTop: 10 }}>
+            <Button
+              onPress={verfified}
+              style={{
+                buttonContainer: {
+                  elevation: 5,
+                },
+                text: {
+                  color: Screens.pureWhite,
+                },
+                iconStyle: {
+                  tintColor: Screens.pureWhite,
+                },
+              }}
+              title={"submt"}
+            ></Button>
+          </View>
 
-        <TouchableOpacity onPress={() => _reSend()}>
-          <GenericText
-            style={[
-              {
-                fontSize: 13,
-                color: "#293FEE",
-                fontWeight: "500",
-                alignSelf: "flex-end",
-                marginRight: 35,
-                marginTop: 8,
-                textDecorationLine: "underline",
-              },
-            ]}
-          >
-            {"resendcode"}
-          </GenericText>
-        </TouchableOpacity>
-        <View style={{ paddingHorizontal: 15, marginTop: 10 }}>
-          <Button
-            onPress={verfified}
-            style={{
-              buttonContainer: {
-                elevation: 5,
-              },
-              text: {
-                color: Screens.pureWhite,
-              },
-              iconStyle: {
-                tintColor: Screens.pureWhite,
-              },
-            }}
-            title={"submt"}
-          ></Button>
-        </View>
-
-        <AnimatedLoader isLoaderVisible={loading} loadingText="Loading..." />
-      </ScrollView>
-    </View>
+          <AnimatedLoader isLoaderVisible={loading} loadingText="Loading..." />
+        </ScrollView>
+      </View>
+    </KeyboardAvoidingView>
   );
 };
 
