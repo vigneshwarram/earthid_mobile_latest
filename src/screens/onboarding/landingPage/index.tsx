@@ -98,7 +98,7 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
     }
   };
   const _handleBarCodeRead = (barCodeData: any) => {
-    console.log("barcodedata");
+    console.log("barcodedata", barCodeData);
   };
 
   return (
@@ -191,7 +191,7 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
                 {isEarthId() ? "alreadyhaveearthid" : "alreadyhaveglobalid"}
               </GenericText>
               <Button
-                onPress={() => openFilePicker()}
+                onPress={() => navigation.navigate("UploadQr")}
                 style={{
                   buttonContainer: {
                     elevation: 5,

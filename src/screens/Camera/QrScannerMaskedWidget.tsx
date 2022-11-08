@@ -5,14 +5,11 @@ import QrCodeMask from "react-native-qrcode-mask";
 import GenericText from "../../components/Text";
 const { height, width } = Dimensions.get("window");
 export const QrScannerMaskedWidget = () => {
-
-
-
   return (
     <View style={styles.maskOutter}>
       <QrCodeMask
         width={width / 1.2}
-        // lineColor='green'
+        lineColor="green"
         lineDirection="vertical"
         height={350}
         lineThick={5}

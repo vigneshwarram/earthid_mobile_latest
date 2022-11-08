@@ -392,8 +392,6 @@ PODS:
     - React-Core
   - react-native-document-picker (8.1.1):
     - React-Core
-  - react-native-get-app-name (1.5.0):
-    - React
   - react-native-html-to-pdf (0.12.0):
     - React-Core
   - react-native-image-base64 (0.1.4):
@@ -594,7 +592,7 @@ DEPENDENCIES:
   - "react-native-cameraroll (from `../node_modules/@react-native-community/cameraroll`)"
   - react-native-date-picker (from `../node_modules/react-native-date-picker`)
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
-  - react-native-get-app-name (from `../node_modules/react-native-get-app-name`)
+
   - react-native-html-to-pdf (from `../node_modules/react-native-html-to-pdf`)
   - react-native-image-base64 (from `../node_modules/react-native-image-base64`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
@@ -726,8 +724,7 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-date-picker"
   react-native-document-picker:
     :path: "../node_modules/react-native-document-picker"
-  react-native-get-app-name:
-    :path: "../node_modules/react-native-get-app-name"
+
   react-native-html-to-pdf:
     :path: "../node_modules/react-native-html-to-pdf"
   react-native-image-base64:
@@ -856,7 +853,7 @@ SPEC CHECKSUMS:
   react-native-cameraroll: 2957f2bce63ae896a848fbe0d5352c1bd4d20866
   react-native-date-picker: 55193347d8d0f40948f441ffd4e5db6f0a8fbe13
   react-native-document-picker: f68191637788994baed5f57d12994aa32cf8bf88
-  react-native-get-app-name: 966c3074a2e6a157ce932e5d8538388904a0a209
+
   react-native-html-to-pdf: 4c5c6e26819fe202971061594058877aa9b25265
   react-native-image-base64: 2ff9ac788639c87a91361ab6652cc95e871b1e54
   react-native-image-picker: 4bc9ed38c8be255b515d8c88babbaf74973f91a8

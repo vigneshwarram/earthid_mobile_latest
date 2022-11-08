@@ -48,7 +48,6 @@
     "react-native-event-listeners": "^1.0.7",
     "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "^2.4.2",
-    "react-native-get-app-name": "^1.5.0",
     "react-native-html-to-pdf": "^0.12.0",
     "react-native-http": "github:tradle/react-native-http#834492d",
     "react-native-image-base64": "^0.1.4",

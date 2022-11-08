@@ -51,7 +51,6 @@ pod 'react-native-camera', path: '../node_modules/react-native-camera', subspecs
 
   pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
 
-  pod 'react-native-get-app-name', :path => '../node_modules/react-native-get-app-name'
 
   pod 'CodePush', :path => '../node_modules/react-native-code-push'
 

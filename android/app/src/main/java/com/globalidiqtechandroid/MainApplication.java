@@ -6,8 +6,7 @@ import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.microsoft.codepush.react.CodePush;
 import com.microsoft.codepush.react.CodePush;
-import com.febaisi.reactnative.getappname.GetAppNamePackage;
-import com.febaisi.reactnative.getappname.GetAppNamePackage;
+
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import fr.snapp.imagebase64.RNImgToBase64Package;
 import com.reactnativecommunity.cameraroll.CameraRollPackage;

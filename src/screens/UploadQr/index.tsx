@@ -1,5 +1,5 @@
 import { useTheme } from "@react-navigation/native";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   PermissionsAndroid,
   Platform,
+  ActivityIndicator,
 } from "react-native";
 import { RNCamera } from "react-native-camera";
 import DocumentPicker from "react-native-document-picker";
@@ -19,6 +20,10 @@ import DocumentMask, {
 import RNFS from "react-native-fs";
 import GenericText from "../../components/Text";
 import { launchImageLibrary } from "react-native-image-picker";
+import { BASE_URL } from "../../utils/earthid_account";
+import { useFetch } from "../../hooks/use-fetch";
+import { useAppDispatch } from "../../hooks/hooks";
+import { byPassUserDetailsRedux } from "../../redux/actions/authenticationAction";
 
 const UploadQr = (props: any) => {
   const { colors } = useTheme();
@@ -28,7 +33,20 @@ const UploadQr = (props: any) => {
   const [data, SetData] = useState(null);
   const [source, setSource] = useState({});
   const [filePath, setFilePath] = useState();
-
+  const {
+    loading: getUserLoading,
+    data: getUserResponse,
+    error: getUserError,
+    fetch: getUser,
+  } = useFetch();
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    if (getUserResponse) {
+      dispatch(byPassUserDetailsRedux(getUserResponse)).then(() => {
+        props.navigation.navigate("Security");
+      });
+    }
+  }, [getUserResponse]);
   const _takePictureAsync = async () => {
     const options = { quality: 1, base64: true };
     const data = await camRef.current.takePictureAsync(options);
@@ -73,7 +91,15 @@ const UploadQr = (props: any) => {
     }
   };
   const _handleBarCodeRead = (barCodeData: any) => {
-    console.log("barcodedata");
+    console.log("barcodedata", barCodeData?.data);
+    detectedBarCodes(barCodeData?.data);
+  };
+  const detectedBarCodes = (barcode: string) => {
+    if (getUserResponse === undefined) {
+      let url = `${BASE_URL}/user/getUser?earthId=${barcode}`;
+
+      getUser(url, {}, "GET");
+    }
   };
 
   return (
@@ -89,7 +115,7 @@ const UploadQr = (props: any) => {
       </View>
       <View
         style={{
-          flex: 0.7,
+          flex: 0.8,
         }}
       >
         <RNCamera
@@ -98,7 +124,7 @@ const UploadQr = (props: any) => {
           androidCameraPermissionOptions={null}
           type={RNCamera.Constants.Type.back}
           captureAudio={false}
-          onBarCodeRead={(data) => _handleBarCodeRead(data)}
+          onBarCodeRead={(data) => !getUserLoading && _handleBarCodeRead(data)}
         ></RNCamera>
       </View>
       <View>
@@ -107,52 +133,18 @@ const UploadQr = (props: any) => {
             textAlign: "center",
             paddingVertical: 5,
             fontWeight: "bold",
-            fontSize: 16,
+            fontSize: 13,
             color: "#fff",
           }}
         >
-          {"capture"}
+          {"Please scan the QR code for login the application"}
         </GenericText>
         <GenericText
           style={{ textAlign: "center", paddingVertical: 5, color: "#fff" }}
         >
-          {"placethedoc"}
+          {"OR"}
         </GenericText>
-        <TouchableOpacity onPress={_takePictureAsync}>
-          <View
-            style={{
-              width: 60,
-              height: 60,
-              borderRadius: 30,
-              backgroundColor: colors.primary,
-              alignSelf: "center",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <View
-              style={{
-                width: 50,
-                height: 50,
-                borderColor: "#fff",
-                borderWidth: 1,
-                borderRadius: 25,
-                backgroundColor: "transparent",
-              }}
-            ></View>
-          </View>
-        </TouchableOpacity>
-        <GenericText
-          style={{
-            textAlign: "center",
-            paddingVertical: 5,
-            fontWeight: "bold",
-            fontSize: 18,
-            color: "#fff",
-          }}
-        >
-          {"or"}
-        </GenericText>
+
         <Button
           onPress={openFilePicker}
           leftIcon={LocalImages.upload}
@@ -170,6 +162,11 @@ const UploadQr = (props: any) => {
           title={"uploadgallery"}
         ></Button>
       </View>
+      {getUserLoading && (
+        <View style={styles.loading}>
+          <ActivityIndicator color={Screens.colors.primary} size="large" />
+        </View>
+      )}
     </View>
   );
 };
@@ -177,11 +174,20 @@ const UploadQr = (props: any) => {
 const styles = StyleSheet.create({
   sectionContainer: {
     flex: 1,
-    backgroundColor: Screens.black,
+
     justifyContent: "space-between",
   },
+  loading: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   preview: {
-    flex: 0.7,
+    flex: 1,
     marginTop: 100,
   },
   logoContainer: {
