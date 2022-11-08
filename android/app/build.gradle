@@ -141,8 +141,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         missingDimensionStrategy 'react-native-camera', 'mlkit'
-        versionCode 19
-        versionName "5.3"
+        versionCode 6
+        versionName "0.5"
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
 
         if (isNewArchitectureEnabled()) {
@@ -228,19 +228,19 @@ android {
         }
     }
     signingConfigs {
-        // release {
-        //    storeFile file("my-globalid-key.keystore")
-        //     storePassword "globalid"
-        //     keyAlias "globalid"
-        //     keyPassword "globalid"
-        // }
-         release {
-            storeFile file("myearthid.keystore")
-            storePassword "Rejolut@123"
-            keyAlias "myearthid"
-            keyPassword "Rejolut@123"
-          
+        release {
+           storeFile file("my-globalid-key.keystore")
+            storePassword "globalid"
+            keyAlias "globalid"
+            keyPassword "globalid"
         }
+        //  release {
+        //     storeFile file("myearthid.keystore")
+        //     storePassword "Rejolut@123"
+        //     keyAlias "myearthid"
+        //     keyPassword "Rejolut@123"
+          
+        // }
     }
     buildTypes {
         debug {

@@ -16,7 +16,6 @@ import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
 import { ESecurityTypes } from "../../../typings/enums/Security";
 import { SaveSecurityConfiguration } from "../../../redux/actions/LocalSavingActions";
 import { SnackBar } from "../../../components/SnackBar";
-import { byPassUserDetailsRedux } from "../../../redux/actions/authenticationAction";
 
 interface IHomeScreenProps {
   navigation?: any;
@@ -25,7 +24,6 @@ interface IHomeScreenProps {
 const Register = ({ navigation }: IHomeScreenProps) => {
   const dispatch = useAppDispatch();
   const securityReducer: any = useAppSelector((state) => state.security);
-  const userDetails = useAppSelector((state) => state.account);
 
   useEffect(() => {
     setMetrics();

@@ -10,7 +10,7 @@ import com.microsoft.codepush.react.CodePush;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import fr.snapp.imagebase64.RNImgToBase64Package;
 import com.reactnativecommunity.cameraroll.CameraRollPackage;
-import com.RNPdfToImageConverter.RNPdfToImagePackage;
+
 import com.christopherdro.htmltopdf.RNHTMLtoPDFPackage;
 import fr.greweb.reactnativeviewshot.RNViewShotPackage;
 import com.reactnativecommunity.checkbox.ReactCheckBoxPackage;
