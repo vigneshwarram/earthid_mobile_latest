@@ -225,12 +225,12 @@ const LivenessCameraScreen = (props: any) => {
           color: "#fff",
         }}
       >
-        Capture
+        {"capture"}
       </GenericText>
       <GenericText
         style={{ textAlign: "center", paddingVertical: 5, color: "#fff" }}
       >
-        Place your face inside the live box!
+       {"placeurfacelivebox"}
       </GenericText>
       {/* <Button
         onPress={() => {

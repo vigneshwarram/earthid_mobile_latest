@@ -141,6 +141,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
   };
 
   const _renderItemDocuments = ({ item, index }: any) => {
+    console.log("values",item)
     return (
       <TouchableOpacity onPress={() => selectCategoryChildren(item, index)}>
         <View style={styles.documentContainer}>
@@ -158,6 +159,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
             ]}
           />
         </View>
+            
       </TouchableOpacity>
     );
   };

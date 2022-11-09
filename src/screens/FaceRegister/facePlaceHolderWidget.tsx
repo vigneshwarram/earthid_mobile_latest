@@ -68,7 +68,7 @@ const facePlaceHolderWidget = (props: any, route: any) => {
             tintColor: Screens.pureWhite,
           },
         }}
-        title={"Continue"}
+        title={"continue"}
       ></Button>
     </View>
   );

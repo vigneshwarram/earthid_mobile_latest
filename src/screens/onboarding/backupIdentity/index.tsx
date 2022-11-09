@@ -140,10 +140,26 @@ const Register = ({ navigation }: IHomeScreenProps) => {
   };
 
   useEffect(() => {
-    console.log("Qr==>", qrData.earthId);
-
+    console.log("Qr==>", qrData.earthId);    
     schemaAction();
   }, []);
+
+
+  useEffect(()=>{
+    const onBackPress = () => {
+      BackHandler.exitApp()
+      return true;
+    };
+ 
+    BackHandler.addEventListener(
+      'hardwareBackPress', onBackPress
+    );
+ 
+    return () =>
+      BackHandler.removeEventListener(
+        'hardwareBackPress', onBackPress
+      );
+  },[])
 
   return (
     <View style={styles.sectionContainer}>

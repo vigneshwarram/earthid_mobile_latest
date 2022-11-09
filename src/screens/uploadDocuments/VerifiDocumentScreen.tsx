@@ -117,6 +117,11 @@ const VerifiDocumentScreen = (props: any) => {
     }, 2000);
   }
 
+  const navBack=()=>{
+    props.navigation.goBack()
+    setLoad(false)
+  }
+
   return (
     <View style={styles.sectionContainer}>
       <Header
@@ -175,7 +180,7 @@ const VerifiDocumentScreen = (props: any) => {
         ></Image>
       </View>
 
-      <TouchableOpacity onPress={() => props.navigation.goBack()}>
+      <TouchableOpacity onPress={() =>navBack()}>
         <View style={{ flexDirection: "row", alignSelf: "center" }}>
           <Image
             source={LocalImages.cam}

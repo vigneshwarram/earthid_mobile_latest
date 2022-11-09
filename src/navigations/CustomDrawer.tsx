@@ -68,10 +68,13 @@ const CustomDrawer = (props: any) => {
           : "https://globalidiq.com/about/"
       );
     } else if (item.route === "terms") {
+      // Linking.openURL(
+      //   isEarthId() ?
+      //    "https://www.myearth.id/privacy":"https://globalidiq.com/terms-of-use-3/"
+      // );
       Linking.openURL(
-        isEarthId()
-          ? "https://www.myearth.id/privacy"
-          : "https://globalidiq.com/terms-of-use-3/"
+      
+         "https://www.myearth.id/privacy"
       );
     } else {
       props.navigation.navigate(item.route, { type: item.route });
