@@ -105,7 +105,7 @@
   "selectDoc": "SELECT DOCUMENT",
   "proceedforliveness": "PROCEED FOR LIVENESS TEST",
   "retake": "ReTake",
-  "retakes": "ReTake",
+  "retakes": "RE-TAKE",
   "placeurfacelivebox": "Place your face inside the live box!",
   "verifying": "verifying...",
   "verificationsuccess": "Verification successful",
@@ -152,7 +152,7 @@
   "landscreensetupearthId": "Set Up Your EarthiD",
   "earthidgeneratesuccess": "Your EarthId is generated successfully.",
   "generateeathid": "GENERATE EARTH ID",
-  "passcodeinstructionEarthid": "Secure your EarthId with a memorable 6-digit code",
+  "passcodeinstructionEarthid": "Secure your EarthiD with a memorable 6-digit code",
   "earthidwanttoaccess": "EarthId wants to access your following information",
   "earthidwanttoaccessKyc": "EarthId wants to access your KYC token"
 }

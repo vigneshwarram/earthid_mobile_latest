@@ -131,7 +131,7 @@ const DocumentPreviewScreen = (props: any) => {
               tintColor: Screens.pureWhite,
             },
           }}
-          title={"retake"}
+          title={"retakes"}
         ></Button>
         <Button
           onPress={uploadDoc}
@@ -147,7 +147,7 @@ const DocumentPreviewScreen = (props: any) => {
               tintColor: Screens.pureWhite,
             },
           }}
-          title={"Upload"}
+          title={"uploads"}
         ></Button>
       </View>
       <AnimatedLoader isLoaderVisible={loading} loadingText={"uploaddocs"} />

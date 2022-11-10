@@ -165,7 +165,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
                   tintColor: Screens.colors.primary,
                 },
               }}
-              leftIcon={LocalImages.touchImage}
+              leftIcon={LocalImages.touchidpic}
               title={"usetouchid"}
             ></Button>
 
@@ -194,7 +194,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
                     tintColor: Screens.colors.primary,
                   },
                 }}
-                leftIcon={LocalImages.faceImage}
+                leftIcon={LocalImages.faceidpic}
                 title={"usefaceid"}
               ></Button>
             </View>

@@ -61,7 +61,6 @@ const VerifiDocumentScreen = (props: any) => {
 
   const validateImages = () => {
     setLoad(true);
-
     const payLoad = {
       eventValue: selectedDocument,
       eventType: "ID_VERIFICATION",
