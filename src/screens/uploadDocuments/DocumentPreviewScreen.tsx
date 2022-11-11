@@ -84,6 +84,7 @@ const DocumentPreviewScreen = (props: any) => {
         props.navigation.navigate("categoryScreen", { fileUri });
       }, 3000);
     }
+    console.log("filename==>",fileUri?.file?.type)
   }, [data]);
 
   return (

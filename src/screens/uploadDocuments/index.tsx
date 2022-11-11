@@ -1,5 +1,5 @@
 import { useTheme } from "@react-navigation/native";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState ,useEffect} from "react";
 import {
   View,
   StyleSheet,
@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   PermissionsAndroid,
   Platform,
+  Alert
 } from "react-native";
 import { RNCamera } from "react-native-camera";
 import DocumentPicker from "react-native-document-picker";
@@ -17,6 +18,8 @@ import DocumentMask from "../uploadDocuments/DocumentMask";
 import RNFS from "react-native-fs";
 import GenericText from "../../components/Text";
 import { launchImageLibrary } from "react-native-image-picker";
+import { useFetch } from "../../hooks/use-fetch";
+import { uploadDocument } from "../../utils/earthid_account";
 
 const ImagePicker = require("react-native-image-picker");
 
@@ -24,9 +27,8 @@ const UploadScreen = (props: any) => {
   const _handleBarCodeRead = (barCodeData: any) => {};
   const { colors } = useTheme();
   const camRef: any = useRef();
-
+  const { loading, data, error, fetch: postFormfetch } = useFetch();
   const [message, Setmessage] = useState<string>("ooo");
-  const [data, SetData] = useState(null);
   const [source, setSource] = useState({});
   const [filePath, setFilePath] = useState();
 
@@ -63,18 +65,39 @@ const UploadScreen = (props: any) => {
         type: [DocumentPicker.types.images, DocumentPicker.types.pdf],
         readContent: true,
       });
-
+      
       let fileUri = resp[0].uri;
+      console.log("check==>",resp[0].type)
       RNFS.readFile(fileUri, "base64").then((res) => {
         console.log("res", resp);
-        props.navigation.navigate("DocumentPreviewScreen", {
-          fileUri: {
-            uri: `data:image/png;base64,${res}`,
-            base64: res,
-            file: resp[0],
-            type: "qrRreader",
-          },
-        });
+        console.log("typePDF", resp[0].uri);
+
+        if (resp[0].type=="application/pdf") {
+
+          const requestedData = {
+            type: resp[0].type,
+            name: resp[0].name,
+            image:resp[0].uri,
+          };
+
+          postFormfetch(uploadDocument, requestedData, "FORM-DATA")
+          .then(() => {
+            props.navigation.navigate("categoryScreen", { fileUri });
+            console.log("success==>", "Success");
+          })
+          .catch((error:any)=>console.log(error))
+
+        }else{
+          props.navigation.navigate("DocumentPreviewScreen", {
+            fileUri: {
+              uri: `data:image/png;base64,${res}`,
+              base64: res,
+              file: resp[0],
+              type: "qrRreader",
+            },
+          });
+        }
+
       });
     } catch (err) {
       console.log("data==>", err);
@@ -123,6 +146,10 @@ const UploadScreen = (props: any) => {
   //     }
   //   });
   // };
+
+  useEffect(()=>{
+
+  },[])
 
   return (
     <View style={styles.sectionContainer}>

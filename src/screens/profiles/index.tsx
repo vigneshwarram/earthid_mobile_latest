@@ -220,7 +220,7 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
             picUri={profilePicture?.profileData}
             actionIcon={LocalImages.editImage}
             avatarClick={_avatarClick}
-            absoluteCircleInnerImage={LocalImages.cameraImage}
+            absoluteCircleInnerImage={LocalImages.cam}
             isProfileAvatar={true}
             isUploaded={true}
             isBack

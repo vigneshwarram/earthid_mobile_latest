@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import {
   View,
   StyleSheet,
   ScrollView,
   Image,
   AsyncStorage,
+  Alert
 } from "react-native";
 import Header from "../../../components/Header";
 import { SCREENS } from "../../../constants/Labels";
@@ -16,6 +17,8 @@ import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
 import { ESecurityTypes } from "../../../typings/enums/Security";
 import { SaveSecurityConfiguration } from "../../../redux/actions/LocalSavingActions";
 import { SnackBar } from "../../../components/SnackBar";
+import TouchID from "react-native-touch-id";
+
 
 interface IHomeScreenProps {
   navigation?: any;
@@ -24,6 +27,7 @@ interface IHomeScreenProps {
 const Register = ({ navigation }: IHomeScreenProps) => {
   const dispatch = useAppDispatch();
   const securityReducer: any = useAppSelector((state) => state.security);
+  const[data,setData] =useState()
 
   useEffect(() => {
     setMetrics();
@@ -83,6 +87,24 @@ const Register = ({ navigation }: IHomeScreenProps) => {
     }
     return selected;
   };
+
+  const  _isSupported = async () => {
+    try {
+      await TouchID.isSupported()
+      Alert.alert('TouchId is supported!')
+      
+  } catch(e) {
+      Alert.alert('TouchId is not supported!')
+  }
+}
+
+
+  useEffect(()=>{
+    _isSupported()
+    console.log("Praveenpaa",data);
+  },[])
+
+
   return (
     <View style={styles.sectionContainer}>
       <ScrollView contentContainerStyle={styles.sectionContainer}>
@@ -141,7 +163,11 @@ const Register = ({ navigation }: IHomeScreenProps) => {
             >
               {SCREENS.SECURITYSCREEN.instructions}
             </GenericText>
-            <Button
+
+            {
+              TouchID.isSupported()
+              ?
+              <Button
               selected={getSelectedDState(ESecurityTypes.FINGER)}
               disabled={getSelectedDState(ESecurityTypes.FINGER)}
               onPress={() => {
@@ -168,6 +194,9 @@ const Register = ({ navigation }: IHomeScreenProps) => {
               leftIcon={LocalImages.touchidpic}
               title={"usetouchid"}
             ></Button>
+              : <View></View>
+            }    
+
 
             <View style={{ marginTop: -20 }}>
               <Button

@@ -66,7 +66,8 @@ const FingerPrintInstructionScreen = (props: any) => {
         // Success code
         if (biometryType === "FaceID") {
           console.log("FaceID is supported.");
-        } else {
+        } 
+        else {
           TouchID.authenticate("", optionalConfigObject)
             .then(async (success: any) => {
               saveSelectionSecurities();
@@ -76,9 +77,11 @@ const FingerPrintInstructionScreen = (props: any) => {
             .catch((e: any) => console.log(e));
           console.log("TouchID is supported.");
         }
+        
       })
       .catch((error) => {
         // Failure code
+        console.log(error,"Not Support");
         console.log(error);
       });
   };
