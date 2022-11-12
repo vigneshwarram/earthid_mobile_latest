@@ -18,6 +18,7 @@ PODS:
   - AppCenterReactNativeShared (4.4.5):
     - AppCenter/Core (= 4.4.3)
   - Base64 (1.1.2)
+  - BEMCheckBox (1.4.1)
   - boost (1.76.0)
   - BVLinearGradient (2.6.2):
     - React-Core
@@ -40,7 +41,7 @@ PODS:
     - Flipper-Folly (~> 2.6)
     - Flipper-RSocket (~> 1.4)
   - Flipper-Boost-iOSX (1.76.0.1.11)
-  - Flipper-DoubleConversion (3.2.0)
+  - Flipper-DoubleConversion (1.1.7)
   - Flipper-Fmt (7.1.7)
   - Flipper-Folly (2.6.10):
     - Flipper-Boost-iOSX
@@ -164,8 +165,6 @@ PODS:
   - OpenSSL-Universal (1.1.1100)
   - PromisesObjC (2.1.1)
   - Protobuf (3.21.8)
-  - QrCode (1.0.0):
-    - React
   - RCT-Folly (2021.06.28.00-v2):
     - boost
     - DoubleConversion
@@ -373,6 +372,8 @@ PODS:
   - React-jsinspector (0.68.2)
   - React-logger (0.68.2):
     - glog
+  - react-native-blob-util (0.17.0):
+    - React-Core
   - react-native-camera (4.2.1):
     - React-Core
     - react-native-camera/RCT (= 4.2.1)
@@ -388,9 +389,9 @@ PODS:
     - React-Core
   - react-native-cameraroll (4.1.2):
     - React-Core
-  - react-native-date-picker (4.2.5):
+  - react-native-date-picker (4.2.6):
     - React-Core
-  - react-native-document-picker (8.1.1):
+  - react-native-document-picker (8.1.2):
     - React-Core
   - react-native-html-to-pdf (0.12.0):
     - React-Core
@@ -398,9 +399,11 @@ PODS:
     - React
   - react-native-image-picker (4.10.0):
     - React-Core
+  - react-native-pdf (6.6.2):
+    - React-Core
   - react-native-randombytes (3.6.1):
     - React-Core
-  - react-native-safe-area-context (4.3.3):
+  - react-native-safe-area-context (4.4.1):
     - RCT-Folly
     - RCTRequired
     - RCTTypeSafety
@@ -408,7 +411,7 @@ PODS:
     - ReactCommon/turbomodule/core
   - react-native-splash-screen (3.3.0):
     - React-Core
-  - react-native-view-shot (3.4.0):
+  - react-native-view-shot (3.5.0):
     - React-Core
   - React-perflogger (0.68.2)
   - React-RCTActionSheet (0.68.2):
@@ -477,20 +480,21 @@ PODS:
     - React-perflogger (= 0.68.2)
   - rn-fetch-blob (0.12.0):
     - React-Core
-  - RNCCheckbox (0.5.12):
+  - RNCCheckbox (0.5.14):
+    - BEMCheckBox (~> 1.4)
     - React-Core
-  - RNDeviceInfo (10.2.0):
+  - RNDeviceInfo (10.3.0):
     - React-Core
   - RNFS (2.20.0):
     - React-Core
-  - RNGestureHandler (2.6.1):
+  - RNGestureHandler (2.8.0):
     - React-Core
-  - RNLocalize (2.2.3):
+  - RNLocalize (2.2.4):
     - React-Core
   - RNQrGenerator (1.2.1):
     - React
     - ZXingObjC
-  - RNReanimated (2.10.0):
+  - RNReanimated (2.12.0):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
@@ -517,10 +521,10 @@ PODS:
     - React-RCTText
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNScreens (3.17.0):
+  - RNScreens (3.18.2):
     - React-Core
     - React-RCTImage
-  - RNShare (7.9.0):
+  - RNShare (7.9.1):
     - React-Core
   - RNSnackbar (2.4.0):
     - React-Core
@@ -549,7 +553,7 @@ DEPENDENCIES:
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
   - Flipper (= 0.125.0)
   - Flipper-Boost-iOSX (= 1.76.0.1.11)
-  - Flipper-DoubleConversion (= 3.2.0)
+  - Flipper-DoubleConversion (= 1.1.7)
   - Flipper-Fmt (= 7.1.7)
   - Flipper-Folly (= 2.6.10)
   - Flipper-Glog (= 0.5.0.4)
@@ -571,7 +575,6 @@ DEPENDENCIES:
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - lottie-react-native (from `../node_modules/lottie-react-native`)
   - OpenSSL-Universal (= 1.1.1100)
-
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
@@ -587,15 +590,16 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
+  - react-native-blob-util (from `../node_modules/react-native-blob-util`)
   - react-native-camera (from `../node_modules/react-native-camera`)
   - react-native-camera/FaceDetectorMLKit (from `../node_modules/react-native-camera`)
   - "react-native-cameraroll (from `../node_modules/@react-native-community/cameraroll`)"
   - react-native-date-picker (from `../node_modules/react-native-date-picker`)
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
-
   - react-native-html-to-pdf (from `../node_modules/react-native-html-to-pdf`)
   - react-native-image-base64 (from `../node_modules/react-native-image-base64`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
+  - react-native-pdf (from `../node_modules/react-native-pdf`)
   - react-native-randombytes (from `../node_modules/react-native-randombytes`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
@@ -632,6 +636,7 @@ SPEC REPOS:
     - AppCenter
     - AppCenterReactNativeShared
     - Base64
+    - BEMCheckBox
     - CocoaAsyncSocket
     - Flipper
     - Flipper-Boost-iOSX
@@ -688,7 +693,6 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
   lottie-react-native:
     :path: "../node_modules/lottie-react-native"
- 
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTRequired:
@@ -715,6 +719,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   React-logger:
     :path: "../node_modules/react-native/ReactCommon/logger"
+  react-native-blob-util:
+    :path: "../node_modules/react-native-blob-util"
   react-native-camera:
     :path: "../node_modules/react-native-camera"
   react-native-cameraroll:
@@ -723,13 +729,14 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-date-picker"
   react-native-document-picker:
     :path: "../node_modules/react-native-document-picker"
-
   react-native-html-to-pdf:
     :path: "../node_modules/react-native-html-to-pdf"
   react-native-image-base64:
     :path: "../node_modules/react-native-image-base64"
   react-native-image-picker:
     :path: "../node_modules/react-native-image-picker"
+  react-native-pdf:
+    :path: "../node_modules/react-native-pdf"
   react-native-randombytes:
     :path: "../node_modules/react-native-randombytes"
   react-native-safe-area-context:
@@ -798,6 +805,7 @@ SPEC CHECKSUMS:
   appcenter-crashes: d9ae1c9296974c1c433600fa2f320e0ba1f12bdf
   AppCenterReactNativeShared: f395caeabde0dc3a11609dbcb737d0f14cd40e79
   Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
+  BEMCheckBox: 5ba6e37ade3d3657b36caecc35c8b75c6c2b1a4e
   boost: a7c83b31436843459a1961bfd74b96033dc77234
   BVLinearGradient: 34a999fda29036898a09c6a6b728b0b4189e1a44
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
@@ -807,7 +815,7 @@ SPEC CHECKSUMS:
   FBReactNativeSpec: 81ce99032d5b586fddd6a38d450f8595f7e04be4
   Flipper: 26fc4b7382499f1281eb8cb921e5c3ad6de91fe0
   Flipper-Boost-iOSX: fd1e2b8cbef7e662a122412d7ac5f5bea715403c
-  Flipper-DoubleConversion: 3d3d04a078d4f3a1b6c6916587f159dc11f232c4
+  Flipper-DoubleConversion: 38631e41ef4f9b12861c67d17cb5518d06badc41
   Flipper-Fmt: 60cbdd92fc254826e61d669a5d87ef7015396a9b
   Flipper-Folly: 584845625005ff068a6ebf41f857f468decd26b3
   Flipper-Glog: 87bc98ff48de90cb5b0b5114ed3da79d85ee2dd4
@@ -834,7 +842,6 @@ SPEC CHECKSUMS:
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
   Protobuf: 0a11f3000cd10ffa17611bf96e66a66b25c956e4
-  QrCode: 703276888a8e1e5a77606392f82ce758d895a450
   RCT-Folly: 4d8508a426467c48885f1151029bc15fa5d7b3b8
   RCTRequired: 3e917ea5377751094f38145fdece525aa90545a0
   RCTTypeSafety: c43c072a4bd60feb49a9570b0517892b4305c45e
@@ -848,18 +855,19 @@ SPEC CHECKSUMS:
   React-jsiexecutor: b7b553412f2ec768fe6c8f27cd6bafdb9d8719e6
   React-jsinspector: c5989c77cb89ae6a69561095a61cce56a44ae8e8
   React-logger: a0833912d93b36b791b7a521672d8ee89107aff1
+  react-native-blob-util: f9dfda9077e57129b444a33e3c51f7785b2a075f
   react-native-camera: 3eae183c1d111103963f3dd913b65d01aef8110f
   react-native-cameraroll: 2957f2bce63ae896a848fbe0d5352c1bd4d20866
-  react-native-date-picker: 55193347d8d0f40948f441ffd4e5db6f0a8fbe13
-  react-native-document-picker: f68191637788994baed5f57d12994aa32cf8bf88
-
+  react-native-date-picker: 93e43b3084cea595b4d68b1405d6d99849663bd6
+  react-native-document-picker: f5ec1a712ca2a975c233117f044817bb8393cad4
   react-native-html-to-pdf: 4c5c6e26819fe202971061594058877aa9b25265
   react-native-image-base64: 2ff9ac788639c87a91361ab6652cc95e871b1e54
   react-native-image-picker: 4bc9ed38c8be255b515d8c88babbaf74973f91a8
+  react-native-pdf: 33c622cbdf776a649929e8b9d1ce2d313347c4fa
   react-native-randombytes: 421f1c7d48c0af8dbcd471b0324393ebf8fe7846
-  react-native-safe-area-context: b456e1c40ec86f5593d58b275bd0e9603169daca
+  react-native-safe-area-context: 99b24a0c5acd0d5dcac2b1a7f18c49ea317be99a
   react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
-  react-native-view-shot: a60a98a18c72bcaaaf2138f9aab960ae9b0d96c7
+  react-native-view-shot: 792829857bbb23a9c8acdad9a640554bdee397a3
   React-perflogger: a18b4f0bd933b8b24ecf9f3c54f9bf65180f3fe6
   React-RCTActionSheet: 547fe42fdb4b6089598d79f8e1d855d7c23e2162
   React-RCTAnimation: bc9440a1c37b06ae9ebbb532d244f607805c6034
@@ -873,15 +881,15 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: b960b687d2dfef0d3761fbb187e01812ebab8b23
   ReactCommon: 095366164a276d91ea704ce53cb03825c487a3f2
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
-  RNCCheckbox: ed1b4ca295475b41e7251ebae046360a703b6eb5
-  RNDeviceInfo: 8b83e99e290deaf1bab71673cc636776ef647b6f
+  RNCCheckbox: 38989bbd3d7d536adf24ba26c6b3e6cefe0bea6f
+  RNDeviceInfo: 4701f0bf2a06b34654745053db0ce4cb0c53ada7
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
-  RNGestureHandler: 28ad20bf02257791f7f137b31beef34b9549f54b
-  RNLocalize: a64514b46a01375fdfae9349036b4dc7130333b5
+  RNGestureHandler: 62232ba8f562f7dea5ba1b3383494eb5bf97a4d3
+  RNLocalize: 0df7970cfc60389f00eb62fd7c097dc75af3fb4f
   RNQrGenerator: 0aa6c40e3f2e15a9cbaec9480b7028c339f89b66
-  RNReanimated: 5bdcbcc3a72aedeee7bb099604262403aa75a1e5
-  RNScreens: 0df01424e9e0ed7827200d6ed1087ddd06c493f9
-  RNShare: be91a5c149585affb02c25b351bd07ba927c7006
+  RNReanimated: 0ff5e7f619a7524d237848ecb4c47650c4946f71
+  RNScreens: 34cc502acf1b916c582c60003dc3089fa01dc66d
+  RNShare: a5dc3b9c53ddc73e155b8cd9a94c70c91913c43c
   RNSnackbar: be3333a21a453ccc272f41a8add5a71f7d44dfcd
   RNSVG: ecd661f380a07ba690c9c5929c475a44f432d674
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
@@ -891,6 +899,6 @@ SPEC CHECKSUMS:
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: b992c982522a0af88a8a940ed5f204b9977be9a7
+PODFILE CHECKSUM: 519792f5705cd78942fee23b427dcb666fb27b0f
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.10.1
