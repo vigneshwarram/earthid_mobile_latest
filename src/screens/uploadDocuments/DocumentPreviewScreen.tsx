@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  ActivityIndicator,
-} from "react-native";
+import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
 
 import Button from "../../components/Button";
 import SuccessPopUp from "../../components/Loader";
@@ -13,13 +7,7 @@ import AnimatedLoader from "../../components/Loader/AnimatedLoader";
 import { LocalImages } from "../../constants/imageUrlConstants";
 import { useFetch } from "../../hooks/use-fetch";
 import { Screens } from "../../themes/index";
-import {
-  BASE_URL,
-  uploadDocument,
-  validateDocsApi,
-} from "../../utils/earthid_account";
-import { QRreader } from "react-native-qr-decode-image-camera";
-import RNQRGenerator from "rn-qr-generator";
+import { BASE_URL, uploadDocument } from "../../utils/earthid_account";
 import { useAppSelector } from "../../hooks/hooks";
 
 const DocumentPreviewScreen = (props: any) => {
@@ -84,7 +72,7 @@ const DocumentPreviewScreen = (props: any) => {
         props.navigation.navigate("categoryScreen", { fileUri });
       }, 3000);
     }
-    console.log("filename==>",fileUri?.file?.type)
+    console.log("filename==>", fileUri?.file?.type);
   }, [data]);
 
   return (

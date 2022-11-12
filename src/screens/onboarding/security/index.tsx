@@ -1,11 +1,11 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
   ScrollView,
   Image,
   AsyncStorage,
-  Alert
+  Alert,
 } from "react-native";
 import Header from "../../../components/Header";
 import { SCREENS } from "../../../constants/Labels";
@@ -19,7 +19,6 @@ import { SaveSecurityConfiguration } from "../../../redux/actions/LocalSavingAct
 import { SnackBar } from "../../../components/SnackBar";
 import TouchID from "react-native-touch-id";
 
-
 interface IHomeScreenProps {
   navigation?: any;
 }
@@ -27,7 +26,8 @@ interface IHomeScreenProps {
 const Register = ({ navigation }: IHomeScreenProps) => {
   const dispatch = useAppDispatch();
   const securityReducer: any = useAppSelector((state) => state.security);
-  const[data,setData] =useState()
+  const [data, setData] = useState();
+  const [disableTouchId, setDisableTouchId] = useState(true);
 
   useEffect(() => {
     setMetrics();
@@ -88,22 +88,29 @@ const Register = ({ navigation }: IHomeScreenProps) => {
     return selected;
   };
 
-  const  _isSupported = async () => {
+  useEffect(() => {
+    _isSupported();
+  }, []);
+
+  const showAlert = () => {
+    SnackBar({
+      indicationMessage: "FingerPrint not supported on this device !",
+    });
+  };
+
+  const _isSupported = async () => {
     try {
-      await TouchID.isSupported()
-      Alert.alert('TouchId is supported!')
-      
-  } catch(e) {
-      Alert.alert('TouchId is not supported!')
-  }
-}
-
-
-  useEffect(()=>{
-    _isSupported()
-    console.log("Praveenpaa",data);
-  },[])
-
+      const data = await TouchID.isSupported();
+      console.log("data", data);
+      if (data === "FaceID") {
+        setDisableTouchId(true);
+      } else {
+        setDisableTouchId(false);
+      }
+    } catch (e) {
+      Alert.alert("TouchId is not supported!");
+    }
+  };
 
   return (
     <View style={styles.sectionContainer}>
@@ -136,7 +143,6 @@ const Register = ({ navigation }: IHomeScreenProps) => {
                 source={LocalImages.securityImage}
               ></Image>
             </View>
-
             <GenericText
               style={[
                 styles.categoryHeaderText,
@@ -163,22 +169,21 @@ const Register = ({ navigation }: IHomeScreenProps) => {
             >
               {SCREENS.SECURITYSCREEN.instructions}
             </GenericText>
-
-            {
-              TouchID.isSupported()
-              ?
-              <Button
+            <Button
               selected={getSelectedDState(ESecurityTypes.FINGER)}
               disabled={getSelectedDState(ESecurityTypes.FINGER)}
               onPress={() => {
-                saveSelectionSecurities(
-                  ESecurityTypes.FINGER,
-                  false,
-                  "FingerPrintInstructionScreen"
-                );
+                disableTouchId
+                  ? showAlert()
+                  : saveSelectionSecurities(
+                      ESecurityTypes.FINGER,
+                      false,
+                      "FingerPrintInstructionScreen"
+                    );
               }}
               style={{
                 buttonContainer: {
+                  opacity: disableTouchId ? 0.5 : 1,
                   backgroundColor: getSelectedDState(ESecurityTypes.FINGER)
                     ? "#e6ffe6"
                     : "#fff",
@@ -194,9 +199,6 @@ const Register = ({ navigation }: IHomeScreenProps) => {
               leftIcon={LocalImages.touchidpic}
               title={"usetouchid"}
             ></Button>
-              : <View></View>
-            }    
-
 
             <View style={{ marginTop: -20 }}>
               <Button
@@ -227,7 +229,6 @@ const Register = ({ navigation }: IHomeScreenProps) => {
                 title={"usefaceid"}
               ></Button>
             </View>
-
             <View style={{ marginTop: -20 }}>
               <Button
                 selected={getSelectedDState(ESecurityTypes.PASSCORD)}
@@ -242,6 +243,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
                 style={{
                   buttonContainer: {
                     elevation: 2,
+
                     borderColor: getSelectedDState(ESecurityTypes.PASSCORD)
                       ? "green"
                       : Screens.colors.primary,

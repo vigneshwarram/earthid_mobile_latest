@@ -1,5 +1,5 @@
 import { useTheme } from "@react-navigation/native";
-import React, { useRef, useState ,useEffect} from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
   PermissionsAndroid,
   Platform,
-  Alert
+  Alert,
+  ActivityIndicator,
 } from "react-native";
 import { RNCamera } from "react-native-camera";
 import DocumentPicker from "react-native-document-picker";
@@ -20,6 +21,16 @@ import GenericText from "../../components/Text";
 import { launchImageLibrary } from "react-native-image-picker";
 import { useFetch } from "../../hooks/use-fetch";
 import { uploadDocument } from "../../utils/earthid_account";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import {
+  getHistory,
+  saveDocuments,
+} from "../../redux/actions/authenticationAction";
+import { dateTime } from "../../utils/encryption";
+import RNFetchBlob from "rn-fetch-blob";
+import { IDocumentProps } from "./VerifiDocumentScreen";
+import AnimatedLoader from "../../components/Loader/AnimatedLoader";
+import SuccessPopUp from "../../components/Loader";
 
 const ImagePicker = require("react-native-image-picker");
 
@@ -28,10 +39,14 @@ const UploadScreen = (props: any) => {
   const { colors } = useTheme();
   const camRef: any = useRef();
   const { loading, data, error, fetch: postFormfetch } = useFetch();
+  const userDetails = useAppSelector((state) => state.account);
+  const [successResponse, setsuccessResponse] = useState(false);
+  const getHistoryReducer = useAppSelector((state) => state.getHistoryReducer);
   const [message, Setmessage] = useState<string>("ooo");
   const [source, setSource] = useState({});
+  let documentsDetailsList = useAppSelector((state) => state.Documents);
   const [filePath, setFilePath] = useState();
-
+  const dispatch = useAppDispatch();
   const _takePicture = async () => {
     const options = { quality: 0.1, base64: true };
     const data = await camRef.current.takePictureAsync(options);
@@ -65,29 +80,58 @@ const UploadScreen = (props: any) => {
         type: [DocumentPicker.types.images, DocumentPicker.types.pdf],
         readContent: true,
       });
-      
+
       let fileUri = resp[0].uri;
-      console.log("check==>",resp[0].type)
+      console.log("check==>", resp[0].type);
       RNFS.readFile(fileUri, "base64").then((res) => {
         console.log("res", resp);
         console.log("typePDF", resp[0].uri);
 
-        if (resp[0].type=="application/pdf") {
-
+        if (resp[0].type == "application/pdf") {
           const requestedData = {
             type: resp[0].type,
             name: resp[0].name,
-            image:resp[0].uri,
+            image: resp[0].uri,
           };
 
           postFormfetch(uploadDocument, requestedData, "FORM-DATA")
-          .then(() => {
-            props.navigation.navigate("categoryScreen", { fileUri });
-            console.log("success==>", "Success");
-          })
-          .catch((error:any)=>console.log(error))
+            .then(() => {
+              const PayLoad = {
+                userId: userDetails?.responseData?.Id,
+                publicKey: userDetails?.responseData?.publicKey,
+              };
+              dispatch(getHistory(PayLoad)).then(() => {
+                var date = dateTime();
+                const filePath =
+                  RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
+                var documentDetails: IDocumentProps = {
+                  name: resp[0].name,
+                  path: filePath,
+                  date: date?.date,
+                  time: date?.time,
+                  txId: data?.result,
+                  docType: "pdf",
+                  docExt: ".jpg",
+                  processedDoc: "",
+                  base64: resp[0].uri,
+                  pdf: true,
+                };
 
-        }else{
+                var DocumentList = documentsDetailsList?.responseData
+                  ? documentsDetailsList?.responseData
+                  : [];
+                DocumentList.push(documentDetails);
+                dispatch(saveDocuments(DocumentList));
+                setsuccessResponse(true);
+                getHistoryReducer.isSuccess = false;
+                setTimeout(() => {
+                  setsuccessResponse(false);
+                  props.navigation.navigate("Documents");
+                }, 2000);
+              });
+            })
+            .catch((error: any) => console.log(error));
+        } else {
           props.navigation.navigate("DocumentPreviewScreen", {
             fileUri: {
               uri: `data:image/png;base64,${res}`,
@@ -97,7 +141,6 @@ const UploadScreen = (props: any) => {
             },
           });
         }
-
       });
     } catch (err) {
       console.log("data==>", err);
@@ -147,9 +190,7 @@ const UploadScreen = (props: any) => {
   //   });
   // };
 
-  useEffect(()=>{
-
-  },[])
+  useEffect(() => {}, []);
 
   return (
     <View style={styles.sectionContainer}>
@@ -240,6 +281,17 @@ const UploadScreen = (props: any) => {
         }}
         title={"uploadgallery"}
       ></Button>
+      {loading ||
+        (getHistoryReducer?.isLoading && (
+          <View style={styles.loading}>
+            <ActivityIndicator color={Screens.colors.primary} size="large" />
+          </View>
+        ))}
+
+      <SuccessPopUp
+        isLoaderVisible={successResponse}
+        loadingText={"Pdf uploaded successfully"}
+      />
     </View>
   );
 };
@@ -248,6 +300,15 @@ const styles = StyleSheet.create({
   sectionContainer: {
     flex: 1,
     backgroundColor: Screens.black,
+  },
+  loading: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    alignItems: "center",
+    justifyContent: "center",
   },
   preview: {
     flex: 1,

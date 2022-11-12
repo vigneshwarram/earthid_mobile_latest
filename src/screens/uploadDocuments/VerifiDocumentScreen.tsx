@@ -37,6 +37,7 @@ export interface IDocumentProps {
   vc: any;
   isVc: boolean;
   base64: any;
+  pdf?: boolean;
 }
 const VerifiDocumentScreen = (props: any) => {
   const { uploadedDocuments } = props.route.params;
@@ -116,10 +117,10 @@ const VerifiDocumentScreen = (props: any) => {
     }, 2000);
   }
 
-  const navBack=()=>{
-    props.navigation.goBack()
-    setLoad(false)
-  }
+  const navBack = () => {
+    props.navigation.goBack();
+    setLoad(false);
+  };
 
   return (
     <View style={styles.sectionContainer}>
@@ -179,7 +180,7 @@ const VerifiDocumentScreen = (props: any) => {
         ></Image>
       </View>
 
-      <TouchableOpacity onPress={() =>navBack()}>
+      <TouchableOpacity onPress={() => navBack()}>
         <View style={{ flexDirection: "row", alignSelf: "center" }}>
           <Image
             source={LocalImages.cam}
