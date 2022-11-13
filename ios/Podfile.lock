@@ -487,6 +487,8 @@ PODS:
     - React-Core
   - RNLocalize (2.2.4):
     - React-Core
+  - RNPDF (0.14.0):
+    - React
   - RNQrGenerator (1.2.1):
     - React
     - ZXingObjC
@@ -616,6 +618,7 @@ DEPENDENCIES:
   - RNFS (from `../node_modules/react-native-fs`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNLocalize (from `../node_modules/react-native-localize`)
+  - RNPDF (from `../node_modules/react-native-view-pdf`)
   - RNQrGenerator (from `../node_modules/rn-qr-generator`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
@@ -771,6 +774,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-gesture-handler"
   RNLocalize:
     :path: "../node_modules/react-native-localize"
+  RNPDF:
+    :path: "../node_modules/react-native-view-pdf"
   RNQrGenerator:
     :path: "../node_modules/rn-qr-generator"
   RNReanimated:
@@ -874,6 +879,7 @@ SPEC CHECKSUMS:
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
   RNGestureHandler: 62232ba8f562f7dea5ba1b3383494eb5bf97a4d3
   RNLocalize: 0df7970cfc60389f00eb62fd7c097dc75af3fb4f
+  RNPDF: 8526c7210ff375c29d2461c51945e2f5480f7b60
   RNQrGenerator: 0aa6c40e3f2e15a9cbaec9480b7028c339f89b66
   RNReanimated: 0ff5e7f619a7524d237848ecb4c47650c4946f71
   RNScreens: 34cc502acf1b916c582c60003dc3089fa01dc66d
@@ -887,6 +893,6 @@ SPEC CHECKSUMS:
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: b4f3430f026cda3cdce96b7511d72361b509c798
+PODFILE CHECKSUM: 740954d451f37d2ab37218d13dc1596276e19e7f
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.10.1

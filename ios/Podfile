@@ -51,6 +51,8 @@ pod 'react-native-camera', path: '../node_modules/react-native-camera', subspecs
 
 
 
+  pod 'RNPDF', :path => '../node_modules/react-native-view-pdf'
+
   target 'EarthIdTests' do
     inherit! :complete
     # Pods for testing
