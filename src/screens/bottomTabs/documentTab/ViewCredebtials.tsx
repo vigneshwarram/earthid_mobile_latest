@@ -9,10 +9,10 @@ import {
 
 import SuccessPopUp from "../../../components/Loader";
 import AnimatedLoader from "../../../components/Loader/AnimatedLoader";
+import GenericText from "../../../components/Text";
 import { LocalImages } from "../../../constants/imageUrlConstants";
 import { useFetch } from "../../../hooks/use-fetch";
 import { Screens } from "../../../themes/index";
-import Pdf from "react-native-pdf";
 
 const DocumentPreviewScreen = (props: any) => {
   const { fileUri, type } = props.route.params;
@@ -38,23 +38,7 @@ const DocumentPreviewScreen = (props: any) => {
         </TouchableOpacity>
       </View>
       <View style={{ flex: 0.8, paddingHorizontal: 10, marginLeft: 20 }}>
-        <Pdf
-          source={{ uri: documentDetails.base64 }}
-          onLoadComplete={(numberOfPages, filePath) => {
-            console.log(`Number of pages: ${numberOfPages}`);
-          }}
-          onPageChanged={(page, numberOfPages) => {
-            console.log(`Current page: ${page}`);
-          }}
-          onError={(error) => {
-            console.log(error);
-          }}
-          onPressLink={(uri) => {
-            console.log(`Link pressed: ${uri}`);
-          }}
-          style={styles.pdf}
-        />
-        {/* {documentDetails.base64 ? (
+        {documentDetails.base64 ? (
           <Image
             resizeMode={"contain"}
             style={{
@@ -67,7 +51,7 @@ const DocumentPreviewScreen = (props: any) => {
           <GenericText style={{ color: "#fff", marginVertical: 50 }}>
             {JSON.stringify(documentDetails)}
           </GenericText>
-        )} */}
+        )}
       </View>
 
       <View

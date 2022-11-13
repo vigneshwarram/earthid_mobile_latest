@@ -38,23 +38,18 @@ pod 'react-native-camera', path: '../node_modules/react-native-camera', subspecs
   pod 'RNFS', :path => '../node_modules/react-native-fs'
 
   pod 'RNCCheckbox', :path => '../node_modules/@react-native-community/checkbox'
-
   pod 'react-native-view-shot', :path => '../node_modules/react-native-view-shot'
-
   pod 'react-native-html-to-pdf', :path => '../node_modules/react-native-html-to-pdf'
-
   pod 'react-native-cameraroll', :path => '../node_modules/@react-native-community/cameraroll'
-
   pod 'react-native-image-base64', :path => '../node_modules/react-native-image-base64'
 
 
 
   pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
-
-
   pod 'CodePush', :path => '../node_modules/react-native-code-push'
 
-  pod 'react-native-pdf', :path => '../node_modules/react-native-pdf'
+
+
 
   target 'EarthIdTests' do
     inherit! :complete
@@ -65,7 +60,7 @@ pod 'react-native-camera', path: '../node_modules/react-native-camera', subspecs
   #
   # Note that if you have use_frameworks! enabled, Flipper will not work and
   # you should disable the next line.
-  use_flipper!({ "Flipper-DoubleConversion" => "1.1.7" })
+  use_flipper!()
 
   post_install do |installer|
     react_native_post_install(installer)
