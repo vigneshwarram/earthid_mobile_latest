@@ -105,6 +105,11 @@ const Register = ({ navigation }: IHomeScreenProps) => {
     );
   };
 
+  const getBack = async () => {
+    await AsyncStorage.setItem("pageName", "");
+    navigation.goBack();
+  };
+
   const schemaAction = async () => {
     try {
       const payLoad: IUserSchemaRequest = {
@@ -140,31 +145,28 @@ const Register = ({ navigation }: IHomeScreenProps) => {
   };
 
   useEffect(() => {
-    console.log("Qr==>", qrData.earthId);    
+    console.log("Qr==>", qrData.earthId);
     schemaAction();
   }, []);
 
-
-  useEffect(()=>{
+  useEffect(() => {
     const onBackPress = () => {
-      BackHandler.exitApp()
+      BackHandler.exitApp();
       return true;
     };
- 
-    BackHandler.addEventListener(
-      'hardwareBackPress', onBackPress
-    );
- 
+
+    BackHandler.addEventListener("hardwareBackPress", onBackPress);
+
     return () =>
-      BackHandler.removeEventListener(
-        'hardwareBackPress', onBackPress
-      );
-  },[])
+      BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+  }, []);
 
   return (
     <View style={styles.sectionContainer}>
       <ScrollView contentContainerStyle={styles.sectionContainer}>
         <Header
+          isBack
+          letfIconPress={() => getBack()}
           isLogoAlone={true}
           headingText={"important"}
           linearStyle={styles.linearStyle}

@@ -124,7 +124,8 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
     <View style={styles.sectionContainer}>
       <ScrollView contentContainerStyle={styles.sectionContainer}>
         <Header
-          isLogoAlone={true}
+          letfIconPress={() => navigation.goBack()}
+          isBack={true}
           headingText={type == "phone" ? "entermobotp" : "enteremailotp"}
           linearStyle={styles.linearStyle}
           containerStyle={{

@@ -61,7 +61,33 @@ const EditEmailAddress = (props: any) => {
   } = useFormInput("", true, emailValidator);
 
   return (
-    <KeyboardAvoidingScrollView style={styles.sectionContainer}>
+    <KeyboardAvoidingScrollView
+      stickyFooter={
+        <View
+          style={{
+            paddingHorizontal: 15,
+            backgroundColor: Screens.colors.background,
+          }}
+        >
+          <Button
+            onPress={_navigateAction}
+            style={{
+              buttonContainer: {
+                elevation: 5,
+              },
+              text: {
+                color: Screens.pureWhite,
+              },
+              iconStyle: {
+                tintColor: Screens.pureWhite,
+              },
+            }}
+            title={"submt"}
+          ></Button>
+        </View>
+      }
+      style={styles.sectionContainer}
+    >
       <View style={styles.sectionContainer}>
         <View style={styles.sectionHeaderContainer}>
           <TouchableOpacity onPress={() => props.navigation.goBack()}>
@@ -126,24 +152,6 @@ const EditEmailAddress = (props: any) => {
           value={email}
           onChangeText={emailChangeHandler}
         />
-
-        <View style={{ paddingHorizontal: 15, marginTop: 100 }}>
-          <Button
-            onPress={_navigateAction}
-            style={{
-              buttonContainer: {
-                elevation: 5,
-              },
-              text: {
-                color: Screens.pureWhite,
-              },
-              iconStyle: {
-                tintColor: Screens.pureWhite,
-              },
-            }}
-            title={"submt"}
-          ></Button>
-        </View>
 
         <AnimatedLoader isLoaderVisible={loading} loadingText="Loading..." />
       </View>

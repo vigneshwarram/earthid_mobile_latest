@@ -77,7 +77,33 @@ const EditMobileNumOtp = (props: any) => {
   };
 
   return (
-    <KeyboardAvoidingScrollView style={styles.sectionContainer}>
+    <KeyboardAvoidingScrollView
+      stickyFooter={
+        <View
+          style={{
+            paddingHorizontal: 15,
+            backgroundColor: Screens.colors.background,
+          }}
+        >
+          <Button
+            onPress={verfified}
+            style={{
+              buttonContainer: {
+                elevation: 5,
+              },
+              text: {
+                color: Screens.pureWhite,
+              },
+              iconStyle: {
+                tintColor: Screens.pureWhite,
+              },
+            }}
+            title={"submt"}
+          ></Button>
+        </View>
+      }
+      style={styles.sectionContainer}
+    >
       <View style={styles.sectionContainer}>
         <ScrollView contentContainerStyle={styles.sectionContainer}>
           <View style={styles.sectionHeaderContainer}>
@@ -231,23 +257,6 @@ const EditMobileNumOtp = (props: any) => {
               {"resendcode"}
             </GenericText>
           </TouchableOpacity>
-          <View style={{ paddingHorizontal: 15, marginTop: 10 }}>
-            <Button
-              onPress={verfified}
-              style={{
-                buttonContainer: {
-                  elevation: 5,
-                },
-                text: {
-                  color: Screens.pureWhite,
-                },
-                iconStyle: {
-                  tintColor: Screens.pureWhite,
-                },
-              }}
-              title={"submt"}
-            ></Button>
-          </View>
 
           <AnimatedLoader loadingText={"loading"} />
         </ScrollView>

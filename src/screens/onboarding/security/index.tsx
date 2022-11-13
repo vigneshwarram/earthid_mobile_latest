@@ -116,6 +116,8 @@ const Register = ({ navigation }: IHomeScreenProps) => {
     <View style={styles.sectionContainer}>
       <ScrollView contentContainerStyle={styles.sectionContainer}>
         <Header
+          isBack
+          letfIconPress={() => navigation.goBack()}
           isLogoAlone={true}
           headingText={"addsecurity"}
           linearStyle={styles.linearStyle}

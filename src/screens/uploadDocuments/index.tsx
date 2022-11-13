@@ -102,6 +102,7 @@ const UploadScreen = (props: any) => {
               };
               dispatch(getHistory(PayLoad)).then(() => {
                 var date = dateTime();
+                console.log("res==>base64", res);
                 const filePath =
                   RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
                 var documentDetails: IDocumentProps = {
@@ -113,7 +114,7 @@ const UploadScreen = (props: any) => {
                   docType: "pdf",
                   docExt: ".jpg",
                   processedDoc: "",
-                  base64: resp[0].uri,
+                  base64: res,
                   pdf: true,
                 };
 

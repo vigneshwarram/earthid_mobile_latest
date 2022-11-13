@@ -2,6 +2,7 @@ import React from "react";
 import {
   Alert,
   Image,
+  Pressable,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -39,6 +40,7 @@ const Header = ({
   isLogoAlone,
   headingText,
   isBack = false,
+  navigation,
   rightIconPress,
   subCatSideArrowVisible = false,
 }: IHeaderProps) => {
@@ -53,26 +55,62 @@ const Header = ({
         horizontalGradient={false}
       >
         {headingText ? (
-          <GenericText
-            style={{
-              fontWeight: "bold",
-              textAlign: "center",
-              fontSize: 20,
-              color: isEarthId() ? Screens.pureWhite : Screens.black,
-              marginTop: 35,
-            }}
-          >
-            {headingText}
-          </GenericText>
+          <View>
+            {isBack && (
+              <View
+                style={{ position: "absolute", top: 40, left: 30, zIndex: 100 }}
+              >
+                <Pressable onPress={letfIconPress}>
+                  <Image
+                    resizeMode="contain"
+                    style={{
+                      width: 25,
+                      height: 25,
+                      resizeMode: "contain",
+                      tintColor: isEarthId()
+                        ? Screens.pureWhite
+                        : Screens.black,
+                    }}
+                    source={LocalImages.backImage}
+                  ></Image>
+                </Pressable>
+              </View>
+            )}
+            <GenericText
+              style={{
+                fontWeight: "bold",
+                textAlign: "center",
+                fontSize: 20,
+                color: isEarthId() ? Screens.pureWhite : Screens.black,
+                marginTop: 35,
+              }}
+            >
+              {headingText}
+            </GenericText>
+          </View>
         ) : isLogoAlone ? (
           <View>
             {isBack && (
-              <View style={{ position: "absolute", top: 50, left: 10 }}>
-                <Image
-                  resizeMode="contain"
-                  style={{ width: 20, height: 20, resizeMode: "contain" }}
-                  source={LocalImages.backImage}
-                ></Image>
+              <View
+                style={{ position: "absolute", top: 40, left: 30, zIndex: 100 }}
+              >
+                <Pressable
+                  style={{ width: 50, height: 50 }}
+                  onPress={letfIconPress}
+                >
+                  <Image
+                    resizeMode="contain"
+                    style={{
+                      width: 25,
+                      height: 25,
+                      resizeMode: "contain",
+                      tintColor: isEarthId()
+                        ? Screens.pureWhite
+                        : Screens.black,
+                    }}
+                    source={LocalImages.backImage}
+                  ></Image>
+                </Pressable>
               </View>
             )}
             <View style={{ justifyContent: "center", alignItems: "center" }}>
@@ -108,7 +146,9 @@ const Header = ({
                           height: 20,
                           resizeMode: "contain",
                           marginRight: 10,
-                          tintColor: isEarthId() ? Screens.pureWhite : Screens.black,
+                          tintColor: isEarthId()
+                            ? Screens.pureWhite
+                            : Screens.black,
                         }}
                         source={LocalImages.backImage}
                       ></Image>

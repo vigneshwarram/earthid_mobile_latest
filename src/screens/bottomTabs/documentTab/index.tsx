@@ -316,6 +316,10 @@ const styles = StyleSheet.create({
     elevation: 1,
     borderColor: "transparent",
     borderRadius: 13,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
   },
   categoryHeaderText: {
     marginHorizontal: 30,

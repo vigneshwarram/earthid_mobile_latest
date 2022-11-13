@@ -5,8 +5,9 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
+  Platform,
 } from "react-native";
-
+import PDFView from "react-native-view-pdf";
 import SuccessPopUp from "../../../components/Loader";
 import AnimatedLoader from "../../../components/Loader/AnimatedLoader";
 import GenericText from "../../../components/Text";
@@ -25,7 +26,16 @@ const DocumentPreviewScreen = (props: any) => {
   const [datas, SetData] = useState(null);
   const [source, setSource] = useState({});
   const [filePath, setFilePath] = useState();
-
+  console.log("documentDetails?.base64", documentDetails?.base64);
+  const resources = {
+    file:
+      Platform.OS === "ios"
+        ? " documentDetails?.base64"
+        : "/sdcard/Download/test-pdf.pdf",
+    url: documentDetails?.base64,
+    base64: documentDetails?.base64,
+  };
+  const resourceType = "base64";
   return (
     <View style={styles.sectionContainer}>
       <View style={{ position: "absolute", top: 20, right: 20, zIndex: 100 }}>
@@ -37,13 +47,21 @@ const DocumentPreviewScreen = (props: any) => {
           ></Image>
         </TouchableOpacity>
       </View>
-      <View style={{ flex: 0.8, paddingHorizontal: 10, marginLeft: 20 }}>
-        {documentDetails.base64 ? (
+      <View style={{ flex: 1, marginTop: 70 }}>
+        {documentDetails.pdf ? (
+          <PDFView
+            fadeInDuration={100.0}
+            style={{ flex: 1 }}
+            resource={resources[resourceType]}
+            resourceType={resourceType}
+            onLoad={() => console.log(`PDF rendered from ${resourceType}`)}
+            onError={() => console.log("Cannot render PDF", error)}
+          />
+        ) : documentDetails.base64 ? (
           <Image
             resizeMode={"contain"}
             style={{
-              width: 330,
-              height: "100%",
+              flex: 1,
             }}
             source={{ uri: documentDetails.base64 }}
           ></Image>

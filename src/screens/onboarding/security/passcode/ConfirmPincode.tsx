@@ -86,6 +86,8 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
     <View style={styles.sectionContainer}>
       <ScrollView contentContainerStyle={styles.sectionContainer}>
         <Header
+          isBack
+          letfIconPress={() => navigation.goBack()}
           isLogoAlone={true}
           headingText={"conpasscode"}
           linearStyle={styles.linearStyle}

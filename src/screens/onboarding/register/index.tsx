@@ -1,12 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import {
-  View,
-  StyleSheet,
-  ScrollView,
-  Platform,
-  ActivityIndicator,
-  KeyboardAvoidingView,
-} from "react-native";
+import { View, StyleSheet, Platform, ActivityIndicator } from "react-native";
 import Header from "../../../components/Header";
 import { SCREENS } from "../../../constants/Labels";
 import { Screens } from "../../../themes";
@@ -47,6 +40,7 @@ const Register = ({ navigation }: IRegister) => {
   } = useFetch();
   const [mobileNumber, setmobileNumber] = useState<string>("");
   const userDetails = useAppSelector((state) => state.account);
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const keys = useAppSelector((state) => state.user);
   const [successResponse, setsuccessResponse] = useState(false);
   const [openDatePicker, setopenDatePicker] = useState<boolean>();
@@ -62,17 +56,6 @@ const Register = ({ navigation }: IRegister) => {
     valueChangeHandler: firstNameChangeHandler,
     inputFocusHandler: firstNameFocusHandlur,
     inputBlurHandler: firstNameBlurHandler,
-  } = useFormInput("", true, nameValidator);
-  const {
-    value: lastName,
-    isFocused: lastNameFocus,
-    validationResult: {
-      hasError: isLastNameError,
-      errorMessage: isLastNameErrorMessahe,
-    },
-    valueChangeHandler: lastNameChangeHandler,
-    inputFocusHandler: lastNameFocusHandlur,
-    inputBlurHandler: lastNameBlurHandler,
   } = useFormInput("", true, nameValidator);
 
   const {
@@ -96,12 +79,13 @@ const Register = ({ navigation }: IRegister) => {
   }, []);
 
   const _navigateAction = () => {
+    setKeyboardVisible(false);
     if (isValid()) {
       dispatch(GeneratedKeysAction());
     } else {
       console.log("its coming");
       firstNameBlurHandler();
-      lastNameBlurHandler();
+
       emailBlurHandler();
       dateOfBirthlurHandler();
     }
@@ -172,14 +156,85 @@ const Register = ({ navigation }: IRegister) => {
       });
     }
   }
+  const Footer = () => (
+    <View style={{ marginHorizontal: 20, backgroundColor: "#fff" }}>
+      <Button
+        onPress={_navigateAction}
+        style={{
+          buttonContainer: {
+            elevation: 5,
+          },
+          text: {
+            color: Screens.pureWhite,
+          },
+          iconStyle: {
+            tintColor: Screens.pureWhite,
+          },
+        }}
+        title={isEarthId() ? "generateeathid" : "generateglobalid"}
+      ></Button>
+      <TouchableOpacity onPress={() => navigation.goBack(null)}>
+        <View style={{ flexDirection: "row", alignSelf: "center" }}>
+          <GenericText
+            style={[
+              styles.categoryHeaderText,
+              {
+                fontSize: 13,
+                fontWeight: "500",
+                textAlign: "center",
+                color: Screens.black,
+              },
+            ]}
+          >
+            {"alreadyhavemy"}
+          </GenericText>
+          <GenericText
+            style={{
+              color: Screens.colors.primary,
+              alignSelf: "center",
+              textDecorationLine: "underline",
+            }}
+          >
+            {isEarthId() ? "EarthId" : "GlobaliD"}
+          </GenericText>
+        </View>
+      </TouchableOpacity>
+    </View>
+  );
+
+  const onchangeFirstNameHandler = () => {
+    setKeyboardVisible(true);
+    firstNameFocusHandlur();
+  };
+  const onBlurFirstName = () => {
+    setKeyboardVisible(false);
+    firstNameBlurHandler();
+  };
+  const onchangeEmailHandler = () => {
+    setKeyboardVisible(true);
+    emailFocusHandlur();
+  };
+  const onBlurEmailName = () => {
+    setKeyboardVisible(false);
+    emailBlurHandler();
+  };
+  const onMobileNumberFocus = () => {
+    setKeyboardVisible(true);
+  };
+  const onMobileNumberBlur = () => {
+    setKeyboardVisible(false);
+  };
 
   return (
-    <KeyboardAvoidingScrollView>
+    <KeyboardAvoidingScrollView
+      style={{ paddingBottom: 1000 }}
+      stickyFooter={isKeyboardVisible && <Footer />}
+    >
       <View
         style={{
           flex: 1,
           backgroundColor: Screens.colors.background,
-          paddingBottom: 300,
+          paddingBottom: 1000,
         }}
       >
         <Header
@@ -224,37 +279,13 @@ const Register = ({ navigation }: IRegister) => {
               placeholder={"Enter Username"}
               isError={isfirstNameError}
               errorText={isfirstNameErrorMessage}
-              onFocus={firstNameFocusHandlur}
-              onBlur={firstNameBlurHandler}
+              onFocus={onchangeFirstNameHandler}
+              onBlur={onBlurFirstName}
               maxLength={60}
               isFocused={firstNameFocus}
               value={firstName}
               onChangeText={firstNameChangeHandler}
             />
-
-            {/* <Info
-              title={"dob"}
-              style={{
-                title: styles.title,
-                subtitle: styles.subtitle,
-                container: styles.textContainer,
-              }}
-            />
-            <TextInput
-              style={{
-                container: styles.textInputContainer,
-              }}
-              onPressRightIcon={() => onDatePickerOpen()}
-              rightIcon={LocalImages.calendarImage}
-              isError={dateOfBirthError}
-              errorText={dateOfBirthErrorMessage}
-              onFocus={dateOfBirthocusHandlur}
-              onBlur={dateOfBirthlurHandler}
-              maxLength={60}
-              isFocused={dateOfBirthFocus}
-              value={dateOfBirth}
-              onChangeText={dateOfBirthChangeHandler}
-            /> */}
             <Info
               title={"mobileno"}
               style={{
@@ -264,6 +295,11 @@ const Register = ({ navigation }: IRegister) => {
               }}
             />
             <PhoneInput
+              textInputProps={{
+                onFocus: onMobileNumberFocus,
+                onBlur: onMobileNumberBlur,
+                allowFontScaling: false,
+              }}
               onChangeCountry={(code) => {
                 const { callingCode } = code;
                 setcallingCode(callingCode[0]);
@@ -316,58 +352,15 @@ const Register = ({ navigation }: IRegister) => {
               placeholder={"Enter your Email"}
               isError={isemailError}
               errorText={isemailErrorMessage}
-              onFocus={emailFocusHandlur}
-              onBlur={emailBlurHandler}
+              onFocus={onchangeEmailHandler}
+              onBlur={onBlurEmailName}
               maxLength={60}
               isFocused={emailFocus}
               value={email}
               onChangeText={emailChangeHandler}
             />
           </View>
-
-          <View style={{ marginHorizontal: 20 }}>
-            <Button
-              onPress={_navigateAction}
-              style={{
-                buttonContainer: {
-                  elevation: 5,
-                },
-                text: {
-                  color: Screens.pureWhite,
-                },
-                iconStyle: {
-                  tintColor: Screens.pureWhite,
-                },
-              }}
-              title={isEarthId() ? "generateeathid" : "generateglobalid"}
-            ></Button>
-            <TouchableOpacity onPress={() => navigation.goBack(null)}>
-              <View style={{ flexDirection: "row", alignSelf: "center" }}>
-                <GenericText
-                  style={[
-                    styles.categoryHeaderText,
-                    {
-                      fontSize: 13,
-                      fontWeight: "500",
-                      textAlign: "center",
-                      color: Screens.black,
-                    },
-                  ]}
-                >
-                  {"alreadyhavemy"}
-                </GenericText>
-                <GenericText
-                  style={{
-                    color: Screens.colors.primary,
-                    alignSelf: "center",
-                    textDecorationLine: "underline",
-                  }}
-                >
-                  {isEarthId() ? "EarthId" : "GlobaliD"}
-                </GenericText>
-              </View>
-            </TouchableOpacity>
-          </View>
+          {!isKeyboardVisible && <Footer />}
 
           <Loader
             loadingText={
@@ -381,11 +374,6 @@ const Register = ({ navigation }: IRegister) => {
               <ActivityIndicator color={Screens.colors.primary} size="large" />
             </View>
           )}
-
-          {/* <AnimatedLoader
-            isLoaderVisible={userDetails?.isLoading}
-            loadingText="loading"
-          /> */}
         </View>
         <DatePicker
           modal

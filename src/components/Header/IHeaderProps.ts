@@ -18,5 +18,6 @@ export interface IHeaderProps {
   rightIconPress?: any;
   isBack?: boolean;
   picUri?: string;
+  navigation?: any;
   subCatSideArrowVisible?: boolean;
 }
