@@ -1,3 +1,4 @@
+import { isEmpty } from "lodash";
 import React, { useEffect, useState } from "react";
 import {
   View,
@@ -164,6 +165,11 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
     );
   };
 
+  useEffect(()=>{
+console.log("selctCategorys==>",categoryList)
+
+  },[])
+
   return (
     <View style={styles.sectionContainer}>
       <ScrollView contentContainerStyle={{ flex: 1 }}>
@@ -208,14 +214,21 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
             </View>
           </View>
           <View style={{ flex: 0.75 }}>
-            <GenericText
-              style={[
-                styles.categoryHeaderText,
-                { fontSize: 14, fontWeight: "700" },
-              ]}
-            >
-              {"selectDoc"}
-            </GenericText>
+
+            {
+              selectedParentIndex !== 0 ?
+              (<GenericText
+                style={[
+                  styles.categoryHeaderText,
+                  { fontSize: 14, fontWeight: "700" },
+                ]}
+              >
+                {"selectDoc"}
+              </GenericText>) 
+         :
+         <Text></Text>
+     
+            }
             {categoryList.map((item: any, index: number) => {
               if (item.isSelected) {
                 return (

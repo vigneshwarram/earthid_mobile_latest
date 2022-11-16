@@ -108,7 +108,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
         setDisableTouchId(false);
       }
     } catch (e) {
-      Alert.alert("TouchId is not supported!");
+      Alert.alert("TouchID is not supported!");
     }
   };
 
@@ -130,6 +130,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
             iconContainer: styles.alignCenter,
           }}
         ></Header>
+        
         <View style={styles.category}>
           <View>
             <View
@@ -341,7 +342,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     elevation: 5,
     borderRadius: 10,
-    flex: 0.5,
+    flex: 0.1,
     justifyContent: "space-between",
   },
   avatarContainer: {

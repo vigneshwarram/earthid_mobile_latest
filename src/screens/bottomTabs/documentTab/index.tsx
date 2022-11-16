@@ -74,8 +74,8 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
             ...{
               avatarContainer: {
                 backgroundColor: "rgba(245, 188, 232, 1)",
-                width: 62,
-                height: 62,
+                width: 60,
+                height: 60,
                 borderRadius: 20,
                 marginTop: 25,
                 marginLeft: 10,

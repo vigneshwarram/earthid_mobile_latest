@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Dimensions,
   Platform,
+  Text,
 } from "react-native";
 import SuccessPopUp from "../../../components/Loader";
 import AnimatedLoader from "../../../components/Loader/AnimatedLoader";
@@ -35,6 +36,12 @@ const DocumentPreviewScreen = (props: any) => {
     base64: documentDetails?.base64,
   };
   const resourceType = "base64";
+
+useEffect(()=>{
+  
+  console.log("userDetails==>",documentDetails)
+},[])
+
   return (
     <View style={styles.sectionContainer}>
       <View style={{ position: "absolute", top: 20, right: 20, zIndex: 100 }}>
@@ -70,6 +77,25 @@ const DocumentPreviewScreen = (props: any) => {
           </GenericText>
         )}
       </View> */}
+
+     
+
+          <Image
+            resizeMode={"contain"}
+            style={{
+              flex: 1,
+            }}
+            source={{ uri: documentDetails.base64 }}
+          ></Image>
+
+          <GenericText style={{ color: "#fff",fontSize:18,alignSelf:"center" }}>
+           {documentDetails.name}
+          </GenericText>
+          <GenericText style={{ color: "#fff",fontSize:18,alignSelf:"center",marginTop:5 }}>
+           {`Uploaded on ${documentDetails.date} at ${documentDetails.time}`}
+          </GenericText>
+  
+
 
       <View
         style={{

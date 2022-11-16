@@ -36,7 +36,7 @@
   "dob": "Date of Birth",
   "mobileno": "Mobile Number",
   "email": "Email",
-  "alreadyhavemy": "I Already have my ",
+  "alreadyhavemy": "I already have my ",
   "status": "Success !",
   "loading": "Loading...",
   "important": "Important",
@@ -133,7 +133,7 @@
   "entersixdigit": "Enter Your old 6-digit passcode",
   "conpasscode": "Confirm Passcode",
   "upload": "Upload",
-  "uploads": "UPLOADS",
+  "uploads": "UPLOAD",
   "qrupload": "QR Code Successfully Uploaded",
   "plsauthorizeit": "Please authorize it for the login",
   "selectanyonetype": "Select anyone type to Generate Credentials",
@@ -153,6 +153,6 @@
   "earthidgeneratesuccess": "Your EarthId is generated successfully.",
   "generateeathid": "GENERATE EARTH ID",
   "passcodeinstructionEarthid": "Secure your EarthiD with a memorable 6-digit code",
-  "earthidwanttoaccess": "EarthId wants to access your following information",
-  "earthidwanttoaccessKyc": "EarthId wants to access your KYC token"
+  "earthidwanttoaccess": "EarthiD wants to access your following information",
+  "earthidwanttoaccessKyc": "EarthiD wants to access your KYC token"
 }

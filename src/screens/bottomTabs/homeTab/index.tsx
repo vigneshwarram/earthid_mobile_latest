@@ -130,7 +130,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
   }, []);
 
   const _renderItemHistory = ({ item }: any) => {
-    console.log("items==>", item);
+    console.log("itemsnews==>", item);
 
     return (
       <Card
@@ -144,14 +144,27 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
           ...{
             avatarContainer: {
               backgroundColor: "rgba(245, 188, 232, 1)",
-              width: 50,
-              height: 50,
-              borderRadius: 15,
+              width: 60,
+              height: 60,
+              borderRadius: 20,
               marginTop: 25,
+              marginLeft: 10,
+              marginRight: 5,
             },
             uploadImageStyle: {
               backgroundColor: "rgba(245, 188, 232, 1)",
             },
+          },
+          title: {
+            fontSize: 18,
+            marginTop: -10,
+            fontWeight: "bold",
+          },
+          subtitle: {
+            fontSize: 14,
+            marginTop: 5,
+            
+
           },
         }}
       />
