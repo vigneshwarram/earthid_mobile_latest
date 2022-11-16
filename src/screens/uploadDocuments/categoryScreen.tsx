@@ -216,7 +216,7 @@ console.log("selctCategorys==>",categoryList)
           <View style={{ flex: 0.75 }}>
 
             {
-              selectedParentIndex !== 0 ?
+              categoryList.length !== 0 ?
               (<GenericText
                 style={[
                   styles.categoryHeaderText,
