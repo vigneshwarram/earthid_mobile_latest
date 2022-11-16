@@ -4,9 +4,6 @@ import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
-import com.rumax.reactnative.pdfviewer.PDFViewPackage;
-import com.ReactNativeBlobUtil.ReactNativeBlobUtilPackage;
-import org.wonday.pdf.RCTPdfView;
 import com.microsoft.codepush.react.CodePush;
 import com.microsoft.codepush.react.CodePush;
 

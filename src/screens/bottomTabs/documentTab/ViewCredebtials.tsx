@@ -7,7 +7,6 @@ import {
   Dimensions,
   Platform,
 } from "react-native";
-import PDFView from "react-native-view-pdf";
 import SuccessPopUp from "../../../components/Loader";
 import AnimatedLoader from "../../../components/Loader/AnimatedLoader";
 import GenericText from "../../../components/Text";
@@ -47,16 +46,16 @@ const DocumentPreviewScreen = (props: any) => {
           ></Image>
         </TouchableOpacity>
       </View>
-      <View style={{ flex: 1, marginTop: 70 }}>
+      {/* <View style={{ flex: 1, marginTop: 70 }}>
         {documentDetails.pdf ? (
-          <PDFView
-            fadeInDuration={100.0}
-            style={{ flex: 1 }}
-            resource={resources[resourceType]}
-            resourceType={resourceType}
-            onLoad={() => console.log(`PDF rendered from ${resourceType}`)}
-            onError={() => console.log("Cannot render PDF", error)}
-          />
+          // <PDFView
+          //   fadeInDuration={100.0}
+          //   style={{ flex: 1 }}
+          //   resource={resources[resourceType]}
+          //   resourceType={resourceType}
+          //   onLoad={() => console.log(`PDF rendered from ${resourceType}`)}
+          //   onError={() => console.log("Cannot render PDF", error)}
+          // />
         ) : documentDetails.base64 ? (
           <Image
             resizeMode={"contain"}
@@ -70,7 +69,7 @@ const DocumentPreviewScreen = (props: any) => {
             {JSON.stringify(documentDetails)}
           </GenericText>
         )}
-      </View>
+      </View> */}
 
       <View
         style={{
