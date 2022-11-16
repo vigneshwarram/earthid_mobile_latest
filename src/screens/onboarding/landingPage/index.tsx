@@ -151,8 +151,6 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
               >
                 {SCREENS.LANDINGSCREEN.setUpId}
               </GenericText>
-              <View>
-
               <GenericText
                 style={[
                   styles.categoryHeaderText,
@@ -161,14 +159,11 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
                     fontWeight: "500",
                     textAlign: "center",
                     color: Screens.grayShadeColor,
-                    top:8,
-                    bottom:8
                   },
                 ]}
               >
                 {SCREENS.LANDINGSCREEN.instruction}
               </GenericText>
-              </View>
               <Button
                 onPress={() => navigation.navigate("UploadDocument")}
                 style={{
