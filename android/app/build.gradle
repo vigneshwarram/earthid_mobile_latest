@@ -151,7 +151,7 @@ android {
         versionCode 6
         versionName "0.5"
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
-
+          multiDexEnabled true //added
         if (isNewArchitectureEnabled()) {
             // We configure the NDK build only if you decide to opt-in for the New Architecture.
             externalNativeBuild {
@@ -283,7 +283,7 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
      implementation project(':react-native-linear-gradient')
     //noinspection GradleDynamicVersion
-    implementation "com.facebook.react:react-native:+"  // From node_modules
+    implementation "com.facebook.react:react-native:0.68.2!!"  // From node_modules changed
  implementation project(':react-native-splash-screen')
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 
