@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, ScrollView, Image } from "react-native";
+import { View, StyleSheet, ScrollView, Image,TouchableOpacity,Alert } from "react-native";
 import Header from "../../../../components/Header";
 import { SCREENS } from "../../../../constants/Labels";
 import { Screens } from "../../../../themes";
@@ -8,7 +8,7 @@ import SmoothPinCodeInput from "react-native-smooth-pincode-input";
 import { LocalImages } from "../../../../constants/imageUrlConstants";
 import { useFetch } from "../../../../hooks/use-fetch";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/hooks";
-import { api, phoneOtp } from "../../../../utils/earthid_account";
+import { alertBox, api, phoneOtp } from "../../../../utils/earthid_account";
 import AnimatedLoader from "../../../../components/Loader/AnimatedLoader";
 import SuccessPopUp from "../../../../components/Loader";
 import {
@@ -184,6 +184,22 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
               value={code}
               onTextChange={onPinCodeChange}
             />
+              <TouchableOpacity onPress={() => sendPhoneOtp()}>
+          <GenericText
+            style={[
+              {
+                fontSize: 13,
+                color: "#293FEE",
+                fontWeight: "500",
+                alignSelf: "flex-end",
+                marginTop: 8,
+                textDecorationLine: "underline",
+              },
+            ]}
+          >
+            {"resendcode"}
+          </GenericText>
+        </TouchableOpacity>
           </View>
           <Button
             onPress={approveOtp}
