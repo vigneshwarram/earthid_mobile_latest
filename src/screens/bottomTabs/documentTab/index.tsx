@@ -132,7 +132,7 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
   const onChangeHandler = (text: any) => {
     const newData = documentsDetailsList?.responseData.filter(function (item: {
       name: string;
-    }) {
+     }) {
       const itemData = item.name ? item.name.toUpperCase() : "".toUpperCase();
 
       const textData = text.toUpperCase();

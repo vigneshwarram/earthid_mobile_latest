@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   Dimensions,
   Platform,
-  Text,
 } from "react-native";
 import PDFView from "react-native-view-pdf";
 import SuccessPopUp from "../../../components/Loader";
@@ -15,18 +14,30 @@ import GenericText from "../../../components/Text";
 import { LocalImages } from "../../../constants/imageUrlConstants";
 import { useFetch } from "../../../hooks/use-fetch";
 import { Screens } from "../../../themes/index";
+import ModalView from "../../../components/Modal";
+import { isEarthId } from "../../../utils/PlatFormUtils";
+import Share from "react-native-share";
+import BottomSheet from "../../../components/Bottomsheet";
+import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
+import { saveDocuments } from "../../../redux/actions/authenticationAction";
 
 const DocumentPreviewScreen = (props: any) => {
+  const dispatch = useAppDispatch();
   const { fileUri, type } = props.route.params;
   const { documentDetails } = props.route.params;
   console.log("documentDetails", documentDetails);
-
+  let documentsDetailsList = useAppSelector((state) => state.Documents);
   const { loading, data, error, fetch: postFormfetch } = useFetch();
   const [successResponse, setsuccessResponse] = useState(false);
   const [message, Setmessage] = useState("ooo");
   const [datas, SetData] = useState(null);
   const [source, setSource] = useState({});
   const [filePath, setFilePath] = useState();
+  const [
+    isBottomSheetForSideOptionVisible,
+    setisBottomSheetForSideOptionVisible,
+  ] = useState<boolean>(false);
+  const [selectedItem, setselectedItem] = useState();
   console.log("documentDetails?.base64", documentDetails?.base64);
   const resources = {
     file:
@@ -37,6 +48,57 @@ const DocumentPreviewScreen = (props: any) => {
     base64: documentDetails?.base64,
   };
   const resourceType = "base64";
+  const shareItem = async () => {
+    if (selectedItem?.base64) {
+      await Share.open({
+        url: `${selectedItem?.base64}`,
+      });
+    } else {
+      await Share.open({
+        title: selectedItem?.name,
+      });
+    }
+  };
+
+  const deleteItem = () => {
+    setisBottomSheetForSideOptionVisible(false);
+    const newData = documentsDetailsList?.responseData.filter(function (item: {
+      name: any;
+    }) {
+      return item.name !== selectedItem?.name;
+    });
+
+    dispatch(saveDocuments(newData));
+  };
+  const RowOption = ({ icon, title, rowAction }: any) => (
+    <TouchableOpacity onPress={rowAction}>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+        }}
+      >
+        {icon && (
+          <Image
+            resizeMode="contain"
+            style={styles.bottomLogo}
+            source={icon}
+          ></Image>
+        )}
+
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
+          <GenericText
+            style={[
+              styles.categoryHeaderText,
+              { fontSize: 13, marginHorizontal: 10, marginVertical: 15 },
+            ]}
+          >
+            {title}
+          </GenericText>
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
 
 useEffect(()=>{
   
@@ -45,15 +107,51 @@ useEffect(()=>{
 
   return (
     <View style={styles.sectionContainer}>
-      <View style={{ position: "absolute", top: 20, right: 20, zIndex: 100 }}>
-        <TouchableOpacity onPress={() => props.navigation.goBack()}>
+      <View style={{flex:1,position: "absolute",top: 20,zIndex: 100,flexDirection:'row',alignItems:'center'}}>
+        <TouchableOpacity style={{flex:0.1,left:20}} onPress={() => props.navigation.goBack()}>   
+          <Image
+            resizeMode="contain"
+            style={[styles.logoContainer]}
+            source={LocalImages.backImage}
+          ></Image>
+        </TouchableOpacity>
+        <GenericText style={styles.text}>Details</GenericText>
+        <TouchableOpacity style={{flex:0.1}}  onPress={() => setisBottomSheetForSideOptionVisible(true)}>   
+          <Image
+            resizeMode="contain"
+            style={[styles.logoContainer]}
+            source={LocalImages.menuImage}
+          ></Image>
+        </TouchableOpacity>
+      </View>
+      <BottomSheet
+            onClose={() => setisBottomSheetForSideOptionVisible(false)}
+            height={150}
+            isVisible={isBottomSheetForSideOptionVisible}
+          >
+            <View style={{ height: 100, width: "100%", paddingHorizontal: 30}}>
+              <RowOption
+                rowAction={() => shareItem()}
+                title={"Share"}
+                icon={LocalImages.shareImage}
+              />
+              <RowOption
+                rowAction={() => deleteItem()}
+                title={"Delete"}
+                icon={LocalImages.deleteImage}
+              />
+            </View>
+          </BottomSheet>
+      {/* <View style={{ position: "absolute", top: 20, right: 20, zIndex: 100 }}>
+        
+        <TouchableOpacity onPress={() => props.navigation.goBack()}>   
           <Image
             resizeMode="contain"
             style={[styles.logoContainer]}
             source={LocalImages.closeImage}
           ></Image>
         </TouchableOpacity>
-      </View>
+      </View> */}
       <View style={{ flex: 1, marginTop: 70 }}>
         {documentDetails.pdf ? (
           <PDFView
@@ -123,6 +221,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Screens.black,
   },
+  text:{
+    flex:0.8,
+    fontWeight: "bold",
+    textAlign: "center", 
+    fontSize: 20, 
+    color: Screens.pureWhite
+  },
   loading: {
     position: "absolute",
     left: 0,
@@ -146,6 +251,15 @@ const styles = StyleSheet.create({
     width: 15,
     height: 15,
     tintColor: "#fff",
+  },
+  bottomLogo:{
+    width: 25,
+    height: 25,
+  },
+  categoryHeaderText: {
+    marginHorizontal: 30,
+    marginVertical: 20,
+    color: Screens.headingtextColor,
   },
 });
 
