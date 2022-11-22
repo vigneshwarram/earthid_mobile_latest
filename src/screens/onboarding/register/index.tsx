@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { View, StyleSheet, Platform, ActivityIndicator } from "react-native";
+import { View, StyleSheet, Platform, ActivityIndicator, Alert,Text } from "react-native";
 import Header from "../../../components/Header";
 import { SCREENS } from "../../../constants/Labels";
 import { Screens } from "../../../themes";
@@ -45,6 +45,7 @@ const Register = ({ navigation }: IRegister) => {
   const [successResponse, setsuccessResponse] = useState(false);
   const [openDatePicker, setopenDatePicker] = useState<boolean>();
   const [callingCode, setcallingCode] = useState<string>("1");
+  const [isValidMobileNumber, setValidMobileNumber] = useState<boolean>(false);
 
   const {
     value: firstName,
@@ -74,6 +75,7 @@ const Register = ({ navigation }: IRegister) => {
     inputBlurHandler: emailBlurHandler,
   } = useFormInput("", false, emailValidator);
 
+  
   useEffect(() => {
     getSuperAdminApiCall(superAdminApi, {}, "GET");
   }, []);
@@ -94,7 +96,7 @@ const Register = ({ navigation }: IRegister) => {
     if (
       !nameValidator(firstName, true).hasError &&
       !emailValidator(email, true).hasError &&
-      mobileNumber !== ""
+      mobileNumber !== "" && !isValidMobileNumber
     ) {
       return true;
     }
@@ -224,6 +226,10 @@ const Register = ({ navigation }: IRegister) => {
   const onMobileNumberBlur = () => {
     setKeyboardVisible(false);
   };
+  function containsSpecialChars(str: string) {
+    const specialChars = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~a-zA-Z " "]/;
+    return specialChars.test(str);
+  }
 
   return (
     <KeyboardAvoidingScrollView
@@ -294,6 +300,7 @@ const Register = ({ navigation }: IRegister) => {
                 container: styles.textContainer,
               }}
             />
+     
             <PhoneInput
               textInputProps={{
                 onFocus: onMobileNumberFocus,
@@ -305,21 +312,26 @@ const Register = ({ navigation }: IRegister) => {
                 setcallingCode(callingCode[0]);
                 console.log("code==>", callingCode[0]);
               }}
+
               autoFocus={false}
               placeholder="Mobile number"
               ref={phoneInput}
               defaultCode="US"
               layout="first"
               onChangeText={(text: any) => {
-                var format = text.replace(/[^0-9]/g, "");
-                setmobileNumber(format);
+                //var format = text.replace(/[^0-9]/g, "");
+                let validate = containsSpecialChars(text)
+                console.log('==>format',validate)
+                setValidMobileNumber(validate)
+                setmobileNumber(text);
               }}
               containerStyle={{
-                borderColor: Screens.darkGray,
-                borderWidth: 2.2,
+               borderColor: isValidMobileNumber ? Screens.red :Screens.darkGray,
+                borderWidth:isValidMobileNumber? 1:2.2,
                 borderRadius: 10,
                 height: 60,
                 marginHorizontal: 10,
+                
               }}
               flagButtonStyle={{
                 backgroundColor: Screens.thickGray,
@@ -337,6 +349,11 @@ const Register = ({ navigation }: IRegister) => {
                 backgroundColor: "#fff",
               }}
             />
+              {isValidMobileNumber && (
+      <Text allowFontScaling={false} style={styles.errorText}>
+        {'Please enter valid mobile number'}
+      </Text>
+    )}
             <Info
               title={"email"}
               style={{
@@ -507,6 +524,11 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginTop: -2,
     height: 60,
+  },
+  errorText: {
+    color: Screens.red,
+    marginBottom: 10,
+    marginHorizontal: 20,
   },
 });
 
