@@ -70,7 +70,7 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
 
   const _renderItem = ({ item }: any) => {
     return (
-      <View style={{ paddingHorizontal: 10 }}>
+      <View style={{ paddingHorizontal: 10}}>
         <Image
           resizeMode="contain"
           style={styles.logoContainers}
