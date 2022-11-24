@@ -9,6 +9,7 @@ import {
   Dimensions,
   ScrollView,
   TouchableOpacity,
+  Alert
 } from "react-native";
 
 import Button from "../../components/Button";
@@ -22,7 +23,7 @@ import { LocalImages } from "../../constants/imageUrlConstants";
 import { SCREENS } from "../../constants/Labels";
 import { useFetch } from "../../hooks/use-fetch";
 import { Screens } from "../../themes";
-import { getCategoriesApi } from "../../utils/earthid_account";
+import { alertBox, getCategoriesApi } from "../../utils/earthid_account";
 import { isEarthId } from "../../utils/PlatFormUtils";
 const deviceWidth = Dimensions.get("window").width;
 interface IDocumentScreenProps {
@@ -106,7 +107,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
     });
 
     setCategoryList([...localCategories]);
-    setIsPrceedForLivenessTest(true);
+   // setIsPrceedForLivenessTest(true);
   };
 
   const _renderItem = ({ item, index }: any) => {
@@ -172,9 +173,9 @@ console.log("selctCategorys==>",categoryList)
 
   return (
     <View style={styles.sectionContainer}>
-      <ScrollView contentContainerStyle={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={{ flex: 1}}>
         <View style={{ flex: 1 }}>
-          <View style={{ flex: 0.3 }}>
+          <View style={{ flex: 0.3}}>
             <Header
               leftIconSource={LocalImages.backImage}
               onpress={() => {
@@ -213,7 +214,7 @@ console.log("selctCategorys==>",categoryList)
               />
             </View>
           </View>
-          <View style={{ flex: 0.75 }}>
+          <View style={{ flex: 0.75}}>
 
             {
               categoryList.length !== 0 ?
@@ -225,10 +226,10 @@ console.log("selctCategorys==>",categoryList)
               >
                 {"selectDoc"}
               </GenericText>) 
-         :
-         <Text></Text>
-     
+              :
+             <Text></Text>
             }
+            
             {categoryList.map((item: any, index: number) => {
               if (item.isSelected) {
                 return (
@@ -239,10 +240,31 @@ console.log("selctCategorys==>",categoryList)
                       data={item?.value}
                       renderItem={_renderItemDocuments}
                     />
+                    <View style={{backgroundColor: Screens.pureWhite}}>
+                      <Button
+                       onPress={()=>setIsPrceedForLivenessTest(true)}
+                       style={{
+                        buttonContainer: {
+                          elevation: 5,
+                          marginLeft:15,
+                          marginRight:15,
+                        },
+                        text: {
+                          color: Screens.pureWhite,
+                        },
+                        iconStyle: {
+                          tintColor: Screens.pureWhite,
+                        },
+                      }}
+                      title={"submitt"}
+                      />
+                    </View>
+                      
                   </ScrollView>
                 );
               }
             })}
+           
           </View>
         </View>
         <ModalView height={250} isModalVisible={isPrceedForLivenessTest}>
