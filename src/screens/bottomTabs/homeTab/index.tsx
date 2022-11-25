@@ -134,15 +134,15 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
 
     return (
       <Card
-        leftAvatar={LocalImages.documentsImage}
-        absoluteCircleInnerImage={LocalImages.upImage}
-        // rightIconSrc={LocalImages.menuImage}
-        title={item?.eventValue}
-        subtitle={`      Uploaded  : ${item.createdAt}`}
-        style={{
-          ...styles.cardContainers,
-          ...{
-            avatarContainer: {
+         leftAvatar={LocalImages.documentsImage}
+         absoluteCircleInnerImage={LocalImages.upImage}
+         // rightIconSrc={LocalImages.menuImage}
+         title={item?.eventValue}
+         subtitle={`      Uploaded  : ${item.createdAt}`}
+         style={{
+           ...styles.cardContainers,
+           ...{
+             avatarContainer: {
               backgroundColor: "rgba(245, 188, 232, 1)",
               width: 60,
               height: 60,
@@ -150,11 +150,15 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
               marginTop: 25,
               marginLeft: 10,
               marginRight: 5,
-            },
+             },
             uploadImageStyle: {
               backgroundColor: "rgba(245, 188, 232, 1)",
-            },
-          },
+              borderRadius:25,
+              borderWidth:3,
+              bordercolor:'#fff',
+              borderWidthRadius:25
+             },
+           },
           title: {
             fontSize: 18,
             marginTop: -10,
@@ -166,7 +170,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
             
 
           },
-        }}
+         }}
       />
     );
   };
