@@ -56,7 +56,7 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
         <Header
           isLogoAlone={true}
           headingText={
-            route.name == "OldPincode" ? "oldpasscode" : "setpasscord"
+            route.name == "OldPincode" ? route.params.type == "pass"? 'Confirm Passcode' :"oldpasscode" : "setpasscord"
           }
           linearStyle={styles.linearStyle}
           containerStyle={{

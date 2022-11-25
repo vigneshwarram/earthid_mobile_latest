@@ -1,4 +1,5 @@
 import {
+  Alert,
   Image,
   ScrollView,
   StyleSheet,
@@ -19,6 +20,7 @@ import { useFetch } from "../../hooks/use-fetch";
 import { updatePhone, updatephoneOtp } from "../../utils/earthid_account";
 import { byPassUserDetailsRedux } from "../../redux/actions/authenticationAction";
 import { KeyboardAvoidingScrollView } from "react-native-keyboard-avoiding-scroll-view";
+import { SnackBar } from "../../components/SnackBar";
 
 const EditMobileNumOtp = (props: any) => {
   const userDetails = useAppSelector((state) => state.account);
@@ -31,8 +33,9 @@ const EditMobileNumOtp = (props: any) => {
   } = useFetch();
   const dispatch = useAppDispatch();
   const { newPhone, callingCode } = props.route.params;
-  const [oldCode, setOldCode] = useState();
-  const [newCode, setNewCode] = useState();
+  const [oldCode, setOldCode] = useState<any>();
+  const [newCode, setNewCode] = useState<any>();
+  
   const onPinCodeChangeForOld = (code: any) => {
     var format = code.replace(/[^0-9]/g, "");
     setOldCode(format);
@@ -43,16 +46,29 @@ const EditMobileNumOtp = (props: any) => {
   };
   console.log("userDetails", userDetails);
   const verfified = () => {
-    var postData = {
-      oldEmailOTP: oldCode,
-      newEmailOTP: newCode,
-      earthId: userDetails?.responseData?.earthId,
-      publicKey: userDetails?.responseData?.publicKey,
-    };
-    fetch(updatePhone, postData, "POST");
+     if(oldCode== null || oldCode?.length < 6){
+      SnackBar({
+        indicationMessage: "Please enter the old mobile OTP code",
+      });
+     }
+     else if(newCode==null || newCode.length < 6){
+      SnackBar({
+        indicationMessage: "Please enter the new mobile OTP code",
+      });     }else{
+      var postData = {
+        oldEmailOTP: oldCode,
+        newEmailOTP: newCode,
+        earthId: userDetails?.responseData?.earthId,
+        publicKey: userDetails?.responseData?.publicKey,
+      };
+      fetch(updatePhone, postData, "POST");
+     }
+     
+
+
   };
   useEffect(() => {
-    console.log("data", data);
+   console.log("data", data);
     if (data) {
       let overallResponseData = {
         ...userDetails.responseData,
@@ -62,6 +78,7 @@ const EditMobileNumOtp = (props: any) => {
         props.navigation.navigate("ProfileScreen");
       });
     }
+  
   }, [data]);
 
   const _reSend = () => {

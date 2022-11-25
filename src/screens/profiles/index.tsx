@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Platform,
   PermissionsAndroid,
+  Alert,
 } from "react-native";
 import DocumentPicker from "react-native-document-picker";
 import { ScrollView } from "react-native-gesture-handler";
@@ -25,6 +26,9 @@ import { RNCamera } from "react-native-camera";
 import DocumentMask from "../uploadDocuments/DocumentMask";
 import { useTheme } from "@react-navigation/native";
 import { savingProfilePictures } from "../../redux/actions/LocalSavingActions";
+// import { launchImageLibrary } from "react-native-image-picker";
+import * as ImagePicker from "react-native-image-picker";
+import { alertBox } from "../../utils/earthid_account";
 
 interface IHomeScreenProps {
   navigation?: any;
@@ -34,11 +38,14 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
   const userDetails = useAppSelector((state) => state.account);
   const profilePicture = useAppSelector((state) => state.savedPic);
   const [isCamerVisible, setIsCameraVisible] = useState(false);
+  const [Response, setResponse] = useState<any>('');
+
   const camRef: any = useRef();
   console.log("profilePicture", profilePicture);
   const { colors } = useTheme();
   const disPatch = useAppDispatch();
   const [cameraDataUri, setcameraDataUri] = useState();
+  const [local_img, setLocal_img] = useState("");
   const isDrawerOpen = useDrawerStatus() === "open";
   if (isDrawerOpen) {
     navigation.closeDrawer();
@@ -131,24 +138,38 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
       console.log(err);
     }
   };
+
   const openFilePicker = async () => {
     if (Platform.OS == "android") {
       await requestPermission();
     }
     try {
-      const resp: any = await DocumentPicker.pick({
-        type: [DocumentPicker.types.images, DocumentPicker.types.images],
-        readContent: true,
-      });
+      ImagePicker.launchImageLibrary(
+        ImagePicker.ImageLibraryOptions,
+        setResponse
+      )
 
-      let fileUri = resp[0].uri;
-      disPatch(savingProfilePictures(fileUri));
-      setIsCameraVisible(false);
-      setcameraDataUri(fileUri);
+      // const resp: any = await DocumentPicker.pick({
+      //   type: [DocumentPicker.types.allFiles],
+      // });
+
+      //  let fileUri = resp[0].uri;
+      //   disPatch(savingProfilePictures(fileUri));
+      //   setIsCameraVisible(false);
+      //    setcameraDataUri(fileUri);
     } catch (err) {
       console.log("data==>", err);
     }
   };
+  useEffect(() => {
+    if(Response != ''){
+    console.log('==>result',Response?.assets[0]?.uri)
+    let fileUri = Response?.assets[0]?.uri;
+    disPatch(savingProfilePictures(fileUri));
+    setIsCameraVisible(false);
+    setcameraDataUri(fileUri);
+    }
+  }, [Response]);
   const mobileVerifyAction = () => {
     navigation.navigate("OTPScreen", { type: "phone" });
   };
@@ -217,7 +238,7 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
       ) : (
         <ScrollView contentContainerStyle={styles.sectionContainer}>
           <Header
-            picUri={profilePicture?.profileData}
+            picUri={local_img == "" ? profilePicture?.profileData : local_img}
             actionIcon={LocalImages.editImage}
             avatarClick={_avatarClick}
             absoluteCircleInnerImage={LocalImages.cam}
