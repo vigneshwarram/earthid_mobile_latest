@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
   image: {
     height: 20,
     width: 20,
+  
   },
   container: {
     justifyContent: "center",
@@ -71,9 +72,12 @@ const styles = StyleSheet.create({
     borderColor: "#fff",
   },
   profileAvatar: {
-    left: 210,
+    left: 213,
     backgroundColor: "#fff",
     zIndex: 100,
+    borderRadius:25,
+    justifyContent:'center',
+    alignItems:'center'
   },
   profileUpload: {
     width: 12,

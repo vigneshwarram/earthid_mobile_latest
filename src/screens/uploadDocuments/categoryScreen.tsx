@@ -215,8 +215,27 @@ console.log("selctCategorys==>",categoryList)
             </View>
           </View>
           <View style={{ flex: 0.75}}>
+           
 
-            {
+            {/* {
+              categoryList.length !== 0 ?
+              (<GenericText
+                style={[
+                  styles.categoryHeaderText,
+                  { fontSize: 14, fontWeight: "700" },
+                ]}
+              >
+                {"selectDoc"}
+              </GenericText>) 
+              :
+             <Text></Text>
+            } */}
+            
+            {categoryList.map((item: any, index: number) => {
+              if (item.isSelected) {
+                return (
+                  <ScrollView>
+                    {
               categoryList.length !== 0 ?
               (<GenericText
                 style={[
@@ -229,11 +248,6 @@ console.log("selctCategorys==>",categoryList)
               :
              <Text></Text>
             }
-            
-            {categoryList.map((item: any, index: number) => {
-              if (item.isSelected) {
-                return (
-                  <ScrollView>
                     <FlatList<any>
                       nestedScrollEnabled
                       scrollEnabled={true}
