@@ -215,21 +215,6 @@ console.log("selctCategorys==>",categoryList)
             </View>
           </View>
           <View style={{ flex: 0.75}}>
-           
-
-            {/* {
-              categoryList.length !== 0 ?
-              (<GenericText
-                style={[
-                  styles.categoryHeaderText,
-                  { fontSize: 14, fontWeight: "700" },
-                ]}
-              >
-                {"selectDoc"}
-              </GenericText>) 
-              :
-             <Text></Text>
-            } */}
             
             {categoryList.map((item: any, index: number) => {
               if (item.isSelected) {
