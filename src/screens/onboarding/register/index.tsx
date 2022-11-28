@@ -197,7 +197,7 @@ const Register = ({ navigation }: IRegister) => {
               textDecorationLine: "underline",
             }}
           >
-            {isEarthId() ? "EarthId" : "GlobaliD"}
+            {isEarthId() ? "EarthID" : "GlobaliD"}
           </GenericText>
         </View>
       </TouchableOpacity>
@@ -302,17 +302,19 @@ const Register = ({ navigation }: IRegister) => {
             />
      
             <PhoneInput
+             
               textInputProps={{
                 onFocus: onMobileNumberFocus,
                 onBlur: onMobileNumberBlur,
                 allowFontScaling: false,
               }}
+             
               onChangeCountry={(code) => {
                 const { callingCode } = code;
                 setcallingCode(callingCode[0]);
                 console.log("code==>", callingCode[0]);
               }}
-
+          
               autoFocus={false}
               placeholder="Mobile number"
               ref={phoneInput}
@@ -348,6 +350,8 @@ const Register = ({ navigation }: IRegister) => {
                 borderTopRightRadius: 9,
                 backgroundColor: "#fff",
               }}
+              filterProps={{placeholder:"Search country"}}
+           
             />
               {isValidMobileNumber && (
       <Text allowFontScaling={false} style={styles.errorText}>

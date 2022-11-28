@@ -161,6 +161,7 @@ const EditMobileNumber = (props: any) => {
             marginEnd: 15,
             marginTop: 12,
           }}
+          filterProps={{placeholder:"Search country"}}
           flagButtonStyle={{ backgroundColor: Screens.thickGray }}
           textInputStyle={{ fontSize: 16, padding: 0, margin: 0 }}
           codeTextStyle={{ fontSize: 16, padding: 0, margin: 0 }}
