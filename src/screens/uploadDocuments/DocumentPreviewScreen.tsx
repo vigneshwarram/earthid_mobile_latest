@@ -86,7 +86,7 @@ const DocumentPreviewScreen = (props: any) => {
           ></Image>
         </TouchableOpacity>
       </View>
-      <View style={{ flex: 0.8, paddingHorizontal: 10, marginLeft: 20 }}>
+      <View style={{ flex: 0.8,alignSelf:'center'}}>
         <Image
           resizeMode={"contain"}
           style={{

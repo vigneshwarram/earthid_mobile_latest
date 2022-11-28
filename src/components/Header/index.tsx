@@ -34,7 +34,6 @@ const Header = ({
   rightIconSource,
   actionIcon = LocalImages.humbergerImage,
   rewardPoints,
-
   picUri,
   avatarClick,
   isLogoAlone,

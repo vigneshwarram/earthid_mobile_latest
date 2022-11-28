@@ -21,6 +21,7 @@ import { useSSR } from "react-i18next";
 import il8n, { getUserLanguagePreference } from ".././../utils/i18n";
 import { AppLanguage } from "../../typings/enums/AppLanguage";
 import { LanguageContext } from "../../components/LanguageContext/LanguageContextProvider";
+import Header from "../../components/Header";
 
 const CustomDrawer = (props: any) => {
   const dispatch = useAppDispatch();
@@ -108,7 +109,6 @@ const CustomDrawer = (props: any) => {
                 {
                   fontSize: 14,
                   marginHorizontal: 10,
-
                   color: Screens.black,
                   fontWeight: "500",
                 },
@@ -146,29 +146,13 @@ const CustomDrawer = (props: any) => {
   const _keyExtractor = ({ TITLE }: any) => TITLE.toString();
   return (
     <View style={styles.sectionContainer}>
-      <View style={styles.sectionHeaderContainer}>
-        <TouchableOpacity onPress={() => props.navigation.goBack()}>
-          <Image
-            resizeMode="contain"
-            style={styles.logoContainer}
-            source={LocalImages.backImage}
-          ></Image>
-        </TouchableOpacity>
-        <GenericText
-          style={[
-            {
-              fontSize: 20,
-
-              color: Screens.pureWhite,
-              fontWeight: "500",
-              marginRight: 20,
-            },
-          ]}
-        >
-          {"setting"}
-        </GenericText>
-        <View />
-      </View>
+        <Header
+            isBack
+            letfIconPress={() => props.navigation.goBack()}
+            headingText= {"setting"}
+            linearStyle={styles.linearStyle}
+        ></Header>
+     
       <FlatList<any>
         data={SETTING_LIST}
         renderItem={_renderItem}
@@ -244,6 +228,12 @@ const styles = StyleSheet.create({
   sectionContainer: {
     flex: 1,
     backgroundColor: Screens.colors.background,
+  },
+  linearStyle: {
+    height: 120,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
+    elevation: 4,
   },
   cardContainer: {
     flex: 1,

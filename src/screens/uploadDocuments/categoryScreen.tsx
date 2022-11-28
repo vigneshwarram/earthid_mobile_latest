@@ -123,16 +123,22 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
             },
           ]}
         >
-          <View style={{ flexDirection: "row" }}>
+          <View style={{ flexDirection: "row" ,}}>
             <View
               style={{
-                width: 10,
-                height: 10,
+                width: 12,
+                height: 12,
                 backgroundColor: item.isSelected ? "green" : item.color,
                 alignSelf: "center",
                 marginHorizontal: 10,
+                borderRadius:2
               }}
             >
+              {item.isSelected && <Image
+                 style={{tintColor:'#fff',width:8,height:10, alignSelf: "center",}}
+                 source={LocalImages.tikImage}
+              ></Image> }
+              
               {item?.isSelected && <View></View>}
             </View>
             <Text style={{ fontWeight: "bold" }}>{item.key}</Text>
