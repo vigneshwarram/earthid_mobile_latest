@@ -40,7 +40,7 @@
   "status": "Success !",
   "loading": "Loading...",
   "important": "Important",
-  "backupscreeninstruction": "We strongly recommend to save this QR code at a secure location, at it will be needed to recover or port your EarthiD in future.",
+  "backupscreeninstruction": "We strongly recommend to save this QR code at a secure location, at it will be needed to recover or port your Earth ID in future.",
   "backupscreeninstructions": "Save it like, millions of dollar it may one day may worth.",
   "downlaodqr": "DOWNLOAD QR CODE",
   "downlaodqrsuccess": "DOWNLOAD QR CODE",
@@ -142,7 +142,7 @@
 
   "alreadyhaveglobalid": "I already have my GlobaliD",
   "landscreensetupid": "Set Up Your GlobaliD",
-  "globalgeneratesuccess": "Your GlobalId is generated successfully.",
+  "globalgeneratesuccess": "Your GlobaliD is generated successfully.",
   "generateglobalid": "GENERATE GLOBAL ID",
   "passcodeinstruction": "Secure your GlobaliD with a memorable 6-digit code",
   "globalidwanttoaccess": "GloblId wants to access your following information",

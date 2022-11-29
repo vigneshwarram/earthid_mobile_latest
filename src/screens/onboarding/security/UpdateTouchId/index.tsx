@@ -5,6 +5,7 @@ import {
   Image,
   TouchableOpacity,
   AsyncStorage,
+  Alert
 } from "react-native";
 
 import Button from "../../../../components/Button";
@@ -33,7 +34,7 @@ const FingerPrintInstructionScreen = (props: any) => {
 
   const aunthenticateBioMetricInfo = () => {
     TouchID.isSupported(optionalConfigObject)
-      .then(async (biometryType) => {
+      .then(async (biometryType:any) => {
         // Success code
         if (biometryType === "FaceID") {
           console.log("FaceID is supported.");
@@ -49,9 +50,10 @@ const FingerPrintInstructionScreen = (props: any) => {
           console.log("TouchID is supported.");
         }
       })
-      .catch((error) => {
+      .catch((error:any) => {
         // Failure code
-        console.log(error);
+        console.log(error,"Not Support");
+        Alert.alert("TouchID is not supported!")
       });
   };
 
@@ -71,7 +73,7 @@ const FingerPrintInstructionScreen = (props: any) => {
         </TouchableOpacity>
       </View>
       <View></View>
-      <View style={{ justifyContent: "center", alignItems: "center" }}>
+      <View style={{ justifyContent: "center", alignItems: "center" ,flex:1}}>
         <Image
           resizeMode="contain"
           style={{ width: 300, height: 300 }}

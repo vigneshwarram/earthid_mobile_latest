@@ -83,7 +83,11 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
               },
               uploadImageStyle: {
                 backgroundColor: "rgba(245, 188, 232, 1)",
-              },
+                borderRadius:25,
+                borderWidth:3,
+                bordercolor:'#fff',
+                borderWidthRadius:25
+               },
             },
             title: {
               fontSize: 18,

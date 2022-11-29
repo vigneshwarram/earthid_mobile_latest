@@ -351,7 +351,7 @@ const Register = ({ navigation }: IRegister) => {
                 backgroundColor: "#fff",
               }}
               filterProps={{placeholder:"Search country"}}
-           
+              
             />
               {isValidMobileNumber && (
       <Text allowFontScaling={false} style={styles.errorText}>
