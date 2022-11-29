@@ -17,6 +17,7 @@ import { useAppSelector } from "../../hooks/hooks";
 import { useFetch } from "../../hooks/use-fetch";
 import { updatephoneOtp } from "../../utils/earthid_account";
 import { KeyboardAvoidingScrollView } from "react-native-keyboard-avoiding-scroll-view";
+import Header from "../../components/Header";
 
 const EditMobileNumber = (props: any) => {
   const [callingCode, setcallingCode] = useState<string>("1");
@@ -85,30 +86,12 @@ const EditMobileNumber = (props: any) => {
       style={styles.sectionContainer}
     >
       <View style={styles.sectionContainer}>
-        <View style={styles.sectionHeaderContainer}>
-          <TouchableOpacity onPress={() => props.navigation.goBack()}>
-            <Image
-              resizeMode="contain"
-              style={styles.logoContainer}
-              source={LocalImages.backImage}
-            ></Image>
-          </TouchableOpacity>
-          <GenericText
-            style={[
-              {
-                fontSize: 20,
-                color: Screens.pureWhite,
-                fontWeight: "500",
-                marginLeft: -10,
-              },
-            ]}
-          >
-            {"updatemobileno"}
-          </GenericText>
-
-          <View />
-        </View>
-
+      <Header
+            isBack
+            letfIconPress={() => props.navigation.goBack()}
+            headingText= {"updatemobileno"}
+            linearStyle={styles.linearStyle}
+        ></Header>
         <GenericText
           style={[
             {
@@ -185,6 +168,12 @@ const styles = StyleSheet.create({
   sectionContainer: {
     flex: 1,
     backgroundColor: Screens.colors.background,
+  },
+  linearStyle: {
+    height: 120,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
+    elevation: 4,
   },
   logoContainer: {
     width: 25,

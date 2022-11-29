@@ -145,8 +145,8 @@
   "globalgeneratesuccess": "Your GlobalId is generated successfully.",
   "generateglobalid": "GENERATE GLOBAL ID",
   "passcodeinstruction": "Secure your GlobaliD with a memorable 6-digit code",
-  "globalidwanttoaccess": "GloblId wants to access your following information",
-  "globalidwanttoaccessKyc": "GloblId wants to access your KYC token",
+  "globalidwanttoaccess": "GlobalId wants to access your following information",
+  "globalidwanttoaccessKyc": "GlobalId wants to access your KYC token",
 
   "alreadyhaveearthid": "I already have my EarthID",
   "landscreensetupearthId": "Set Up Your EarthiD",

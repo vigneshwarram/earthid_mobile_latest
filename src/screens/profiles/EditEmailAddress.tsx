@@ -13,6 +13,7 @@ import { updateEmailOtp } from "../../utils/earthid_account";
 import useFormInput from "../../hooks/use-text-input";
 import { emailValidator } from "../../utils/inputValidations";
 import { KeyboardAvoidingScrollView } from "react-native-keyboard-avoiding-scroll-view";
+import Header from "../../components/Header";
 
 const EditEmailAddress = (props: any) => {
   const { loading, data, error, fetch } = useFetch();
@@ -89,30 +90,12 @@ const EditEmailAddress = (props: any) => {
       style={styles.sectionContainer}
     >
       <View style={styles.sectionContainer}>
-        <View style={styles.sectionHeaderContainer}>
-          <TouchableOpacity onPress={() => props.navigation.goBack()}>
-            <Image
-              resizeMode="contain"
-              style={styles.logoContainer}
-              source={LocalImages.backImage}
-            ></Image>
-          </TouchableOpacity>
-          <GenericText
-            style={[
-              {
-                fontSize: 20,
-                color: Screens.pureWhite,
-                fontWeight: "500",
-                marginLeft: -10,
-              },
-            ]}
-          >
-            {"updateemailadd"}
-          </GenericText>
-
-          <View />
-        </View>
-
+      <Header
+            isBack
+            letfIconPress={() => props.navigation.goBack()}
+            headingText= {"updateemailadd"}
+            linearStyle={styles.linearStyle}
+        ></Header>
         <GenericText
           style={[
             {
@@ -164,7 +147,13 @@ export default EditEmailAddress;
 const styles = StyleSheet.create({
   sectionContainer: {
     flex: 1,
-    backgroundColor: Screens.colors.background,
+    backgroundColor:  Screens.colors.background,
+  },
+  linearStyle: {
+    height: 120,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
+    elevation: 4,
   },
   logoContainer: {
     width: 25,

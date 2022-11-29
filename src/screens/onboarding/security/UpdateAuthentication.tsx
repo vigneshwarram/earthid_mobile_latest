@@ -16,6 +16,7 @@ import BottomSheet from "../../../components/Bottomsheet";
 import il8n, { getUserLanguagePreference } from "../.././../utils/i18n";
 import { AppLanguage } from "../../../typings/enums/AppLanguage";
 import { alertBox } from "../../../utils/earthid_account";
+import Header from "../../../components/Header";
 
 const UpdateAuthentication = (props: any) => {
   const dispatch = useAppDispatch();
@@ -131,28 +132,12 @@ const UpdateAuthentication = (props: any) => {
   const _keyExtractor = ({ label }: any) => label.toString();
   return (
     <View style={styles.sectionContainer}>
-      <View style={styles.sectionHeaderContainer}>
-        <TouchableOpacity onPress={() => props.navigation.goBack()}>
-          <Image
-            resizeMode="contain"
-            style={styles.logoContainer}
-            source={LocalImages.backImage}
-          ></Image>
-        </TouchableOpacity>
-        <GenericText
-          style={[
-            {
-              fontSize: 20,
-
-              color: Screens.pureWhite,
-              fontWeight: "500",
-            },
-          ]}
-        >
-          {"updateauthenticaion"}
-        </GenericText>
-        <View />
-      </View>
+          <Header
+            isBack
+            letfIconPress={() => props.navigation.goBack()}
+            headingText= {"updateauthenticaion"}
+            linearStyle={styles.linearStyle}
+        ></Header>
       <GenericText
       style={{marginLeft:12,marginTop:10,fontSize:15,color:"gray",marginBottom:5}}
       >
@@ -171,6 +156,12 @@ const styles = StyleSheet.create({
   sectionContainer: {
     flex: 1,
     backgroundColor: Screens.colors.background,
+  },
+  linearStyle: {
+    height: 120,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
+    elevation: 4,
   },
   cardContainer: {
     flex: 1,
