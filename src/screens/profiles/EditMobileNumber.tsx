@@ -25,7 +25,7 @@ const EditMobileNumber = (props: any) => {
   const userDetails = useAppSelector((state) => state.account);
   const { loading, data, error, fetch } = useFetch();
   const [phone, setPhone] = useState<string>("");
-
+  const [isValidMobileNumber, setValidMobileNumber] = useState<boolean>(false);
   const sentOtp = () => {
     var postData = {
       oldPhone: userDetails?.responseData?.phone,
@@ -43,7 +43,8 @@ const EditMobileNumber = (props: any) => {
     if (phone.length === 10) {
       sentOtp();
     } else {
-      Alert.alert("Invalid mobile number");
+      // Alert.alert("Invalid mobile number");
+      setValidMobileNumber(true)
     }
   };
 
@@ -133,6 +134,7 @@ const EditMobileNumber = (props: any) => {
           onChangeText={(text: any) => {
             var format = text.replace(/[^0-9]/g, "");
             setPhone(format);
+            setValidMobileNumber(false)
           }}
           containerStyle={{
             borderColor: Screens.darkGray,
@@ -155,7 +157,11 @@ const EditMobileNumber = (props: any) => {
           }}
           withShadow
         />
-
+            {isValidMobileNumber  && (
+      <Text allowFontScaling={false} style={styles.errorText}>
+        {'Please enter valid mobile number'}
+      </Text>
+    )}
         <AnimatedLoader isLoaderVisible={loading} loadingText="Loading..." />
       </View>
     </KeyboardAvoidingScrollView>
@@ -189,5 +195,10 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 10,
     alignItems: "center",
+  },
+  errorText: {
+    color: Screens.red,
+    marginBottom: 10,
+    marginHorizontal: 20,
   },
 });

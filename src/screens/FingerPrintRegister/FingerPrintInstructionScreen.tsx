@@ -5,6 +5,7 @@ import {
   Image,
   TouchableOpacity,
   AsyncStorage,
+  Alert
 } from "react-native";
 
 import Button from "../../components/Button";
@@ -109,8 +110,22 @@ const FingerPrintInstructionScreen = (props: any) => {
     }
   };
 
+
+  // const _isSupported = () => {
+  //   try {
+  //     const data = TouchID.isSupported();
+  //     console.log("data", data);
+  //     if (data === "TouchID") {
+  //     aunthenticateBioMetricInfo()
+  //     }
+  //   } catch (e) {
+  //     Alert.alert("TouchID is not supported!");
+  //     console.log("datae==>", e);
+  //   }
+  // };
+
   useEffect(()=>{
-    aunthenticateBioMetricInfo()
+   aunthenticateBioMetricInfo()
   },[])
 
   return (
@@ -124,7 +139,6 @@ const FingerPrintInstructionScreen = (props: any) => {
           ></Image>
         </TouchableOpacity>
       </View>
-      <View></View>
       <View style={{ justifyContent: "center", alignItems: "center" ,flex:1}}>
         <Image
           resizeMode="contain"

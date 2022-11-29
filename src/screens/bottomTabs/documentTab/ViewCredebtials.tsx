@@ -179,13 +179,13 @@ useEffect(()=>{
 
      
 
-          <Image
+          {/* <Image
             resizeMode={"contain"}
             style={{
               flex: 1,
             }}
             source={{ uri: documentDetails.base64 }}
-          ></Image>
+          ></Image> */}
 
           <GenericText style={{ color: "#fff",fontSize:18,alignSelf:"center" }}>
            {documentDetails.name}

@@ -38,7 +38,7 @@ interface IHomeScreenProps {
   route?: any;
 }
 
-const Register = ({ navigation }: IHomeScreenProps) => {
+const Register = ({ navigation,route }: IHomeScreenProps) => {
   const [mobileNumber, setmobileNumber] = useState();
   const [isLoading, setIsLoading] = useState(false);
   let [qrBase64, setBase64] = useState("");
@@ -146,6 +146,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
 
   useEffect(() => {
     console.log("Qr==>", qrData.earthId);
+    console.log("QrNewwww==>", route);
     schemaAction();
   }, []);
 
@@ -165,7 +166,6 @@ const Register = ({ navigation }: IHomeScreenProps) => {
     <View style={styles.sectionContainer}>
       <ScrollView contentContainerStyle={styles.sectionContainer}>
         <Header
-          isBack
           letfIconPress={() => getBack()}
           isLogoAlone={true}
           headingText={"important"}

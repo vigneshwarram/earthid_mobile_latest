@@ -46,7 +46,7 @@ const Register = ({ navigation }: IRegister) => {
   const [openDatePicker, setopenDatePicker] = useState<boolean>();
   const [callingCode, setcallingCode] = useState<string>("1");
   const [isValidMobileNumber, setValidMobileNumber] = useState<boolean>(false);
-
+  const [isMobileEmpty, setMobileEmpty] = useState<boolean>(false);
   const {
     value: firstName,
     isFocused: firstNameFocus,
@@ -82,6 +82,7 @@ const Register = ({ navigation }: IRegister) => {
 
   const _navigateAction = () => {
     setKeyboardVisible(false);
+    mobileNumber==''? setMobileEmpty(true) :null
     if (isValid()) {
       dispatch(GeneratedKeysAction());
     } else {
@@ -96,7 +97,8 @@ const Register = ({ navigation }: IRegister) => {
     if (
       !nameValidator(firstName, true).hasError &&
       !emailValidator(email, true).hasError &&
-      mobileNumber !== "" && !isValidMobileNumber
+      mobileNumber !== "" && !isValidMobileNumber 
+      
     ) {
       return true;
     }
@@ -326,9 +328,10 @@ const Register = ({ navigation }: IRegister) => {
                 console.log('==>format',validate)
                 setValidMobileNumber(validate)
                 setmobileNumber(text);
+                setMobileEmpty(false)
               }}
               containerStyle={{
-               borderColor: isValidMobileNumber ? Screens.red :Screens.darkGray,
+               borderColor: isValidMobileNumber || isMobileEmpty? Screens.red :Screens.darkGray,
                 borderWidth:isValidMobileNumber? 1:2.2,
                 borderRadius: 10,
                 height: 60,
@@ -351,9 +354,9 @@ const Register = ({ navigation }: IRegister) => {
                 backgroundColor: "#fff",
               }}
               filterProps={{placeholder:"Search country"}}
-           
+              
             />
-              {isValidMobileNumber && (
+              {isValidMobileNumber || isMobileEmpty && (
       <Text allowFontScaling={false} style={styles.errorText}>
         {'Please enter valid mobile number'}
       </Text>

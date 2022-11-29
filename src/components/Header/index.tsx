@@ -57,7 +57,7 @@ const Header = ({
           <View>
             {isBack && (
               <View
-                style={{ position: "absolute", top: 40, left: 30, zIndex: 100 }}
+                style={{ position: "absolute", top: 30, left: 30, zIndex: 100 }}
               >
                 <Pressable onPress={letfIconPress}>
                   <Image
