@@ -24,6 +24,7 @@ import { BASE_URL } from "../../utils/earthid_account";
 import { useFetch } from "../../hooks/use-fetch";
 import { useAppDispatch } from "../../hooks/hooks";
 import { byPassUserDetailsRedux } from "../../redux/actions/authenticationAction";
+import * as ImagePicker from "react-native-image-picker";
 
 const UploadQr = (props: any) => {
   const { colors } = useTheme();
@@ -33,6 +34,7 @@ const UploadQr = (props: any) => {
   const [data, SetData] = useState(null);
   const [source, setSource] = useState({});
   const [filePath, setFilePath] = useState();
+  const [imageResponse, setImageResponse] = useState<any>('');
   const {
     loading: getUserLoading,
     data: getUserResponse,
@@ -60,27 +62,53 @@ const UploadQr = (props: any) => {
       await requestPermission();
     }
     try {
-      const resp: any = await DocumentPicker.pick({
-        type: [DocumentPicker.types.images, DocumentPicker.types.pdf],
-        readContent: true,
-      });
+      // const resp: any = await DocumentPicker.pick({
+      //   type: [DocumentPicker.types.images, DocumentPicker.types.pdf],
+      //   readContent: true,
+      // });
 
-      let fileUri = resp[0].uri;
-      RNFS.readFile(fileUri, "base64").then((res) => {
-        console.log("res", resp);
-        props.navigation.navigate("UploadDocumentPreviewScreen", {
-          fileUri: {
-            uri: `data:image/png;base64,${res}`,
-            base64: res,
-            file: resp[0],
-            type: "qrRreader",
-          },
-        });
-      });
+      //IMAGEPICKER
+      ImagePicker.launchImageLibrary(
+        ImagePicker.ImageLibraryOptions,
+        setImageResponse
+      )
+
+      // let fileUri = resp[0].uri;
+      // RNFS.readFile(fileUri, "base64").then((res) => {
+      //   console.log("res", resp);
+      //   props.navigation.navigate("UploadDocumentPreviewScreen", {
+      //     fileUri: {
+      //       uri: `data:image/png;base64,${res}`,
+      //       base64: res,
+      //       file: resp[0],
+      //       type: "qrRreader",
+      //     },
+      //   });
+      // });
+
+     
     } catch (err) {
       console.log("data==>", err);
     }
   };
+  useEffect(() => {
+    if(imageResponse != ''){
+    console.log('==>result',imageResponse?.assets[0]?.uri)
+    let fileUri = imageResponse?.assets[0]?.uri;
+    // disPatch(savingProfilePictures(fileUri));
+    RNFS.readFile(fileUri, "base64").then((res) => {
+      console.log("res", res);
+      props.navigation.navigate("UploadDocumentPreviewScreen", {
+        fileUri: {
+          uri: `data:image/png;base64,${res}`,
+          base64: res,
+          file: res[0],
+          type: "qrRreader",
+        },
+      });
+    });
+    }
+  }, [imageResponse]);
   const _handleBarCodeRead = (barCodeData: any) => {
     console.log("barcodedata", barCodeData?.data);
     detectedBarCodes(barCodeData?.data);
