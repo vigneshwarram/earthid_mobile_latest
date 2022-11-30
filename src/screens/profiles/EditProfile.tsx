@@ -1,5 +1,5 @@
 import { values } from "lodash";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState,useEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -28,7 +28,7 @@ import { useTheme } from "@react-navigation/native";
 import { savingProfilePictures } from "../../redux/actions/LocalSavingActions";
 import { RNCamera } from "react-native-camera";
 import GenericText from "../../components/Text";
-
+import * as ImagePicker from "react-native-image-picker";
 interface IHomeScreenProps {
   navigation?: any;
 }
@@ -46,7 +46,7 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
   const phoneInput: any = useRef();
   const [cameraDataUri, setcameraDataUri] = useState();
   const userDetails = useAppSelector((state) => state.account);
-
+  const [Response, setResponse] = useState<any>('');
   const _letfIconPress = () => {
     navigation.goBack();
   };
@@ -138,19 +138,34 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
       await requestPermission();
     }
     try {
-      const resp: any = await DocumentPicker.pick({
-        type: [DocumentPicker.types.images, DocumentPicker.types.images],
-        readContent: true,
-      });
+      ImagePicker.launchImageLibrary(
+        ImagePicker.ImageLibraryOptions,
+        setResponse
+      )
 
-      let fileUri = resp[0].uri;
-      disPatch(savingProfilePictures(fileUri));
-      setIsCameraVisible(false);
-      setcameraDataUri(fileUri);
+      // const resp: any = await DocumentPicker.pick({
+      //   type: [DocumentPicker.types.images, DocumentPicker.types.images],
+      //   readContent: true,
+      // });
+
+      // let fileUri = resp[0].uri;
+      // disPatch(savingProfilePictures(fileUri));
+      // setIsCameraVisible(false);
+      // setcameraDataUri(fileUri);
     } catch (err) {
       console.log("data==>", err);
     }
   };
+  useEffect(() => {
+    if(Response != ''){
+    console.log('==>result',Response?.assets[0]?.uri)
+    let fileUri = Response?.assets[0]?.uri;
+    disPatch(savingProfilePictures(fileUri));
+    setIsCameraVisible(false);
+    setcameraDataUri(fileUri);
+    setisCameraOptionVisible(false)
+    }
+  }, [Response]);
   const _renderItem = ({ item, index }: any) => {
     return (
       <View>
@@ -171,6 +186,7 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
           leftIcon={item.uri}
           value={item.domain}
           onChangeText={(text) => onChangeHandler(text, index)}
+          
         />
       </View>
     );

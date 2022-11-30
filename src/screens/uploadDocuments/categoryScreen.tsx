@@ -67,6 +67,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
           isSelected: false,
         });
       });
+      console.log('==>localCategories',localCategories)
       setCategoryList(localCategories);
     }
   }, [getCategoryData]);
@@ -156,7 +157,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
           <Card
             rightIconSrc={item?.isSelected && LocalImages.successTikImage}
             leftIconSrc={LocalImages.documentsImage}
-            title={item?.title}
+            title={item?.title == 'DL'?'Driving License':item?.title}
             style={[
               styles.cardContainer1,
               {
