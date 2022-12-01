@@ -29,11 +29,15 @@ const CameraScreen = (props: any) => {
   const getGeneratedKeys = useAppSelector((state) => state.user);
   const accountDetails = useAppSelector((state) => state.account);
   const viewShot: any = useRef();
-
+ const username=accountDetails?.responseData?.username;
+ const earthId= accountDetails?.responseData?.earthId;
   let qrData = {
     accountId: accountDetails?.responseData.toString().split(".")[2],
-    passPhrase: getGeneratedKeys?.responseData.mnemonics,
+    // passPhrase: getGeneratedKeys?.responseData.mnemonics,
   };
+
+  console.log('accID',accountDetails?.responseData?.username)
+ 
   var encryptedString: any = CryptoJS.AES.encrypt(
     JSON.stringify(qrData),
     AES_ENCRYPTION_SALT
@@ -146,7 +150,7 @@ const CameraScreen = (props: any) => {
               },
             ]}
           >
-            {"Robert Downey"}
+            {username}
           </GenericText>
           <GenericText
             style={[
@@ -159,7 +163,7 @@ const CameraScreen = (props: any) => {
               },
             ]}
           >
-            {"ID: 37578810"}
+            {"ID: "+earthId}
           </GenericText>
 
           <View style={{ justifyContent: "center", alignItems: "center" }}>
