@@ -108,7 +108,6 @@ const CustomizeQr = ({ navigation }: IDocumentScreenProps) => {
   return (
     <View style={styles.sectionContainer}>
       <Header
-        isBack
         headingText="customizeqrcode"
         letfIconPress={() => navigation.goBack()}
         linearStyle={styles.linearStyle}

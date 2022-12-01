@@ -238,7 +238,7 @@ console.log("selctCategorys==>",categoryList)
                 {"selectDoc"}
               </GenericText>) 
               :
-             <Text></Text>
+             <></>
             }
                     <FlatList<any>
                       nestedScrollEnabled

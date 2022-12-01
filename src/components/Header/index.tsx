@@ -81,7 +81,7 @@ const Header = ({
                 textAlign: "center",
                 fontSize: 20,
                 color: isEarthId() ? Screens.pureWhite : Screens.black,
-                marginTop: 35,
+                marginTop: 30,
               }}
             >
               {headingText}
