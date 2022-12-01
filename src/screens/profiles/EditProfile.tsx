@@ -1,5 +1,5 @@
 import { values } from "lodash";
-import React, { useRef, useState,useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -9,6 +9,7 @@ import {
   PermissionsAndroid,
   TouchableOpacity,
   Image,
+  Alert,
 } from "react-native";
 import Avatar from "../../components/Avatar";
 import BottomSheet from "../../components/Bottomsheet";
@@ -46,7 +47,9 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
   const phoneInput: any = useRef();
   const [cameraDataUri, setcameraDataUri] = useState();
   const userDetails = useAppSelector((state) => state.account);
-  const [Response, setResponse] = useState<any>('');
+  const [Response, setResponse] = useState<any>("");
+  const [focus, setFocus] = useState<any>("");
+  const [nameFocus, setNameFocus] = useState<boolean>("");
   const _letfIconPress = () => {
     navigation.goBack();
   };
@@ -141,7 +144,7 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
       ImagePicker.launchImageLibrary(
         ImagePicker.ImageLibraryOptions,
         setResponse
-      )
+      );
 
       // const resp: any = await DocumentPicker.pick({
       //   type: [DocumentPicker.types.images, DocumentPicker.types.images],
@@ -157,13 +160,13 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
     }
   };
   useEffect(() => {
-    if(Response != ''){
-    console.log('==>result',Response?.assets[0]?.uri)
-    let fileUri = Response?.assets[0]?.uri;
-    disPatch(savingProfilePictures(fileUri));
-    setIsCameraVisible(false);
-    setcameraDataUri(fileUri);
-    setisCameraOptionVisible(false)
+    if (Response != "") {
+      console.log("==>result", Response?.assets[0]?.uri);
+      let fileUri = Response?.assets[0]?.uri;
+      disPatch(savingProfilePictures(fileUri));
+      setIsCameraVisible(false);
+      setcameraDataUri(fileUri);
+      setisCameraOptionVisible(false);
     }
   }, [Response]);
   const _renderItem = ({ item, index }: any) => {
@@ -175,7 +178,16 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
 
         <TextInput
           style={{
-            container: styles.containerForSocialMedia,
+            container: [
+              styles.containerForSocialMedia,
+              {
+                borderColor:
+                  focus === index
+                    ? Screens.colors.primary
+                    : Screens.grayShadeColor,
+                borderWidth: focus === index ? 2 : 1,
+              },
+            ],
             leftIconStyle: {
               width: 15,
               height: 15,
@@ -186,7 +198,9 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
           leftIcon={item.uri}
           value={item.domain}
           onChangeText={(text) => onChangeHandler(text, index)}
-          
+          onFocus={() => setFocus(index) }
+          onBlur={()=>setFocus(false)}
+          // isFocused={true}
         />
       </View>
     );
@@ -301,16 +315,27 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
 
             <TextInput
               style={{
-                container: styles.textInputContainer,
+                container: [
+                  styles.textInputContainer,
+                  {
+                    borderColor: nameFocus
+                      ? Screens.colors.primary
+                      : Screens.grayShadeColor,
+                    borderWidth: nameFocus ? 2 : 1,
+                  },
+                ],
               }}
               isError={isfullNameError}
               errorText={isfullNameErrorMessage}
               onFocus={fullNameFocusHandlur}
               onBlur={fullNameBlurHandler}
+              // onFocus={() => setNameFocus(true)}
+              // onBlur={() => setNameFocus(false)}
               maxLength={60}
               isFocused={fullNameFocus}
               value={fullName}
               onChangeText={fullNameChangeHandler}
+             
             />
           </View>
 
