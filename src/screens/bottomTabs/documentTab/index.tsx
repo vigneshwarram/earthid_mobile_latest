@@ -61,6 +61,12 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
           navigation.navigate("ViewCredential", { documentDetails: item })
         }
       >
+          <View style={{ flexDirection: "row"}}>
+            <GenericText style={[styles.categoryHeaderText, { fontSize: 13 }]}>
+             {SCREENS.HOMESCREEN.upload}
+            </GenericText>
+          </View>
+
         <Card
           titleIcon={item?.isVc ? LocalImages.vcImage : null}
           leftAvatar={LocalImages.documentsImage}
@@ -221,32 +227,7 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
             value={searchText}
             onChangeText={onChangeHandler}
           />
-          <View style={{ flexDirection: "row" }}>
-            <GenericText style={[styles.categoryHeaderText, { fontSize: 13 }]}>
-              {SCREENS.HOMESCREEN.upload}
-            </GenericText>
-            {/* <GenericText
-          style={[
-            styles.categoryHeaderText,
-            { fontSize: 13, color: Screens.colors.primary },
-          ]}
-        >
-          {"presshold"}
-        </GenericText> */}
-            {/* <TouchableOpacity
-          style={{ justifyContent: "center", alignItems: "center" }}
-          onPress={() => setisBottomSheetForFilterVisible(true)}
-        >
-          <View>
-            <Image
-              resizeMode="contain"
-              style={styles.logoContainer}
-              source={LocalImages.filter}
-            ></Image>
-          </View>
-        </TouchableOpacity> */}
-          </View>
-
+         
           <FlatList<any>
             data={getFilteredData()}
             renderItem={_renderItem}
@@ -275,7 +256,7 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
             height={150}
             isVisible={isBottomSheetForFilterVisible}
           >
-            <View style={{ height: 150, width: "100%", paddingHorizontal: 30 }}>
+            <View style={{ height: 150, width: "100%", paddingHorizontal: 30, }}>
               <RowOption title={"By Category"} />
               <RowOption title={"By Date"} />
               <RowOption title={"By Frequency"} />
