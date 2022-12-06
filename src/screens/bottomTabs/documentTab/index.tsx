@@ -32,6 +32,7 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
     navigation.openDrawer();
   };
   let documentsDetailsList = useAppSelector((state) => state.Documents);
+  console.log('documentsDetailsList===>',documentsDetailsList)
   const dispatch = useAppDispatch();
   const [selectedItem, setselectedItem] = useState();
 
@@ -48,6 +49,7 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
     useState<boolean>(false);
 
   const _rightIconOnPress = (selecteArrayItem: any) => {
+ console.log(',,,,selecteArrayItem',selecteArrayItem)
     setselectedItem(selecteArrayItem);
     setisBottomSheetForSideOptionVisible(true);
   };
@@ -159,11 +161,7 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
       await Share.open({
         url: `${selectedItem?.base64}`,
       });
-    } else {
-      await Share.open({
-        title: selectedItem?.name,
-      });
-    }
+    } 
   };
 
   const deleteItem = () => {
@@ -184,7 +182,7 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
 
   const getFilteredData = () => {
     let data = documentsDetailsList?.responseData;
-    console.log("searchedData====>", searchText);
+ 
     if (searchedData.length > 0) {
       data = searchedData;
       return data;
@@ -192,7 +190,7 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
     if (searchedData.length === 0 && searchText != "") {
       return [];
     }
-
+    console.log("searchedData====>{{}}}}}", data);
     return data;
   };
 

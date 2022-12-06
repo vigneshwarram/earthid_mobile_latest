@@ -163,11 +163,14 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
   };
   useEffect(() => {
     if(Response != ''){
-    console.log('==>result',Response?.assets[0]?.uri)
-    let fileUri = Response?.assets[0]?.uri;
-    disPatch(savingProfilePictures(fileUri));
-    setIsCameraVisible(false);
-    setcameraDataUri(fileUri);
+      if(Response?.assets?.length>0){
+        console.log('==>result',Response?.assets[0]?.uri)
+        let fileUri = Response?.assets[0]?.uri;
+        disPatch(savingProfilePictures(fileUri));
+        setIsCameraVisible(false);
+        setcameraDataUri(fileUri);
+      }
+ 
     }
   }, [Response]);
   const mobileVerifyAction = () => {
@@ -391,7 +394,7 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
 
               <ColoumnOption
                 avatarClick={() => {
-                  setisCameraOptionVisible(false);
+                
                   openFilePicker();
                 }}
                 title={"gallery"}

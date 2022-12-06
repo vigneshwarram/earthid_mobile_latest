@@ -37,12 +37,12 @@ const DocumentPreviewScreen = (props: any) => {
     isBottomSheetForSideOptionVisible,
     setisBottomSheetForSideOptionVisible,
   ] = useState<boolean>(false);
-  const [selectedItem, setselectedItem] = useState();
+  const [selectedItem, setselectedItem] = useState(documentDetails);
   console.log("documentDetails?.base64", documentDetails?.base64);
   const resources = {
     file:
       Platform.OS === "ios"
-        ? " documentDetails?.base64"
+        ? "documentDetails?.base64"
         : "/sdcard/Download/test-pdf.pdf",
     url: documentDetails?.base64,
     base64: documentDetails?.base64,
@@ -53,11 +53,7 @@ const DocumentPreviewScreen = (props: any) => {
       await Share.open({
         url: `${selectedItem?.base64}`,
       });
-    } else {
-      await Share.open({
-        title: selectedItem?.name,
-      });
-    }
+    } 
   };
 
   const deleteItem = () => {
