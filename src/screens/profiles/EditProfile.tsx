@@ -161,12 +161,15 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
   };
   useEffect(() => {
     if (Response != "") {
-      console.log("==>result", Response?.assets[0]?.uri);
-      let fileUri = Response?.assets[0]?.uri;
-      disPatch(savingProfilePictures(fileUri));
-      setIsCameraVisible(false);
-      setcameraDataUri(fileUri);
-      setisCameraOptionVisible(false);
+      if(Response?.assets?.length>0){
+        console.log("==>result", Response?.assets[0]?.uri);
+        let fileUri = Response?.assets[0]?.uri;
+        disPatch(savingProfilePictures(fileUri));
+        setIsCameraVisible(false);
+        setcameraDataUri(fileUri);
+        setisCameraOptionVisible(false);
+      }
+   
     }
   }, [Response]);
   const _renderItem = ({ item, index }: any) => {
