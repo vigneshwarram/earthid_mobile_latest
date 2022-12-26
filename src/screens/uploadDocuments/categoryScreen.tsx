@@ -11,20 +11,26 @@ import {
   TouchableOpacity,
   Alert
 } from "react-native";
+import RNFetchBlob from "rn-fetch-blob";
 
 import Button from "../../components/Button";
 
 import Card from "../../components/Card";
 import Header from "../../components/Header";
+import SuccessPopUp from "../../components/Loader";
 import AnimatedLoader from "../../components/Loader/AnimatedLoader";
 import ModalView from "../../components/Modal";
 import GenericText from "../../components/Text";
 import { LocalImages } from "../../constants/imageUrlConstants";
 import { SCREENS } from "../../constants/Labels";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { useFetch } from "../../hooks/use-fetch";
+import { saveDocuments } from "../../redux/actions/authenticationAction";
 import { Screens } from "../../themes";
 import { alertBox, getCategoriesApi } from "../../utils/earthid_account";
+import { dateTime } from "../../utils/encryption";
 import { isEarthId } from "../../utils/PlatFormUtils";
+import { IDocumentProps } from "./VerifiDocumentScreen";
 const deviceWidth = Dimensions.get("window").width;
 interface IDocumentScreenProps {
   navigation?: any;
@@ -37,19 +43,64 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const [categoryList, setCategoryList] = useState([]);
   const [selectedDocument, setselectedDocument] = useState();
   const [selectedParentIndex, setSelectedParentIndex] = useState(0);
+  const documentsDetailsList = useAppSelector((state) => state.Documents);
+  const [successResponse, setsuccessResponse] = useState(false);
+  const dispatch =useAppDispatch()
   const {
     loading: isCategoryLoading,
     data: getCategoryData,
     error,
     fetch: getCategories,
   } = useFetch();
+
   const _toggleDrawer = () => {
     navigation.openDrawer();
   };
+  console.log('fileUri==>',fileUri?.file)
+
+  const onSubmitAction=()=>{
+    if(fileUri?.type==='application/pdf'){
+      
+                var date = dateTime();
+       
+                const filePath =
+                  RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
+                var documentDetails: IDocumentProps = {
+                  name: fileUri?.file?.name,
+                  path: filePath,
+                  date: date?.date,
+                  time: date?.time,
+                  txId:'e4343434343434443',
+                  docType: "pdf",
+                  docExt: ".jpg",
+                  processedDoc: "",
+                  base64: fileUri?.base64,
+                  categoryType:categoryList[selectedParentIndex].key,
+                  pdf: true,
+                };
+                var DocumentList = documentsDetailsList?.responseData
+                  ? documentsDetailsList?.responseData
+                  : [];
+                DocumentList.push(documentDetails);
+                dispatch(saveDocuments(DocumentList));
+                setsuccessResponse(true);
+                setTimeout(() => {
+                  setsuccessResponse(false);
+                  navigation.navigate("Documents");
+                }, 2000);
+               
+            
+    }
+    else{
+      setIsPrceedForLivenessTest(true)
+    }
+
+  }
 
   useEffect(() => {
     getCategories(getCategoriesApi, {}, "GET");
   }, []);
+
   useEffect(() => {
     if (getCategoryData) {
       var localCategories: any = [];
@@ -67,7 +118,6 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
           isSelected: false,
         });
       });
-      console.log('==>localCategories',localCategories)
       setCategoryList(localCategories);
     }
   }, [getCategoryData]);
@@ -248,7 +298,7 @@ console.log("selctCategorys==>",categoryList)
                     />
                     <View style={{backgroundColor: Screens.pureWhite}}>
                       <Button
-                       onPress={()=>setIsPrceedForLivenessTest(true)}
+                       onPress={()=>onSubmitAction()}
                        style={{
                         buttonContainer: {
                           elevation: 5,
@@ -304,7 +354,7 @@ console.log("selctCategorys==>",categoryList)
                 setTimeout(() => {
                   navigation.navigate("LivenessCameraScreen", {
                     fileUri,
-                    selectedDocument,
+                    selectedDocument:categoryList[selectedParentIndex].key,
                   });
                 }, 100);
               }}
@@ -329,6 +379,10 @@ console.log("selctCategorys==>",categoryList)
           isLoaderVisible={isCategoryLoading}
           loadingText="Loading..."
         />
+           <SuccessPopUp
+        isLoaderVisible={successResponse}
+        loadingText={"Pdf uploaded successfully"}
+      />
       </ScrollView>
     </View>
   );

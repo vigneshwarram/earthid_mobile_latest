@@ -49,9 +49,15 @@ const DocumentPreviewScreen = (props: any) => {
   };
   const resourceType = "base64";
   const shareItem = async () => {
-    if (selectedItem?.base64) {
+    console.log('selectedItem?.base64===>',selectedItem?.base64)
+    if(selectedItem?.docType==='jpg'){
       await Share.open({
-        url: `${selectedItem?.base64}`,
+        url : selectedItem?.base64
+      });
+    }
+    else {
+      await Share.open({
+        url :`data:image/jpeg;base64,${selectedItem?.base64}`
       });
     } 
   };

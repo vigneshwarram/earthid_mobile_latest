@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Image, TouchableOpacity, Platform } from "react-native";
 
 import Button from "../../components/Button";
 import SuccessPopUp from "../../components/Loader";
@@ -9,9 +9,10 @@ import { useFetch } from "../../hooks/use-fetch";
 import { Screens } from "../../themes/index";
 import { BASE_URL, uploadDocument } from "../../utils/earthid_account";
 import { useAppSelector } from "../../hooks/hooks";
+import PDFView from "react-native-view-pdf";
 
 const DocumentPreviewScreen = (props: any) => {
-  const { fileUri, type } = props.route.params;
+  const { fileUri } = props.route.params;
   const { value } = props.route.params;
   const userDetails = useAppSelector((state) => state.account);
   const { loading, data, error, fetch: postFormfetch } = useFetch();
@@ -26,6 +27,16 @@ const DocumentPreviewScreen = (props: any) => {
     error: getUserError,
     fetch: getUser,
   } = useFetch();
+  console.log('fileUri===>',fileUri?.type)
+  const resources = {
+    file:
+      Platform.OS === "ios"
+        ? "documentDetails?.base64"
+        : "/sdcard/Download/test-pdf.pdf",
+    url: fileUri?.base64,
+    base64: fileUri?.base64,
+  };
+  const resourceType = "base64";
 
   const uploadDoc = async () => {
     let type = "qrRreader";
@@ -34,27 +45,13 @@ const DocumentPreviewScreen = (props: any) => {
       setFilePath(fileUri?.file?.uri);
 
       if (filePath) {
-        let url = `${BASE_URL}+/user/getUser?earthId=${userDetails?.responseData?.earthId}`;
-        const getUserData = {
-          type: fileUri?.file?.type,
-          name: fileUri?.file?.name,
-          image: fileUri?.file?.uri,
-        };
-        getUser(getUserData, url, "GET").then(() => {
-          props.navigation.navigate("DrawerNavigator", { fileUri });
-          console.log("success==>", "qrsuccess");
-        });
+        props.navigation.navigate("DrawerNavigator", { fileUri });
       }
     } else {
-      const requestedData = {
-        type: fileUri?.file?.type,
-        name: fileUri?.file?.name,
-        image: fileUri?.file?.uri,
-      };
-      postFormfetch(uploadDocument, requestedData, "FORM-DATA").then(() => {
+      
         props.navigation.navigate("categoryScreen", { fileUri });
         console.log("success==>", "Success");
-      });
+      
     }
   };
 
@@ -64,16 +61,16 @@ const DocumentPreviewScreen = (props: any) => {
 
   //Qr Code Reader From the image
 
-  useEffect(() => {
-    if (data) {
-      setsuccessResponse(true);
-      setTimeout(() => {
-        setsuccessResponse(false);
-        props.navigation.navigate("categoryScreen", { fileUri });
-      }, 3000);
-    }
-    console.log("filename==>", fileUri?.file?.type);
-  }, [data]);
+  // useEffect(() => {
+  //   if (data) {
+  //     setsuccessResponse(true);
+  //     setTimeout(() => {
+  //       setsuccessResponse(false);
+  //       props.navigation.navigate("categoryScreen", { fileUri });
+  //     }, 3000);
+  //   }
+  //   console.log("filename==>", fileUri?.file?.type);
+  // }, [data]);
 
   return (
     <View style={styles.sectionContainer}>
@@ -86,16 +83,25 @@ const DocumentPreviewScreen = (props: any) => {
           ></Image>
         </TouchableOpacity>
       </View>
-      <View style={{ flex: 0.8,alignSelf:'center'}}>
-        <Image
+    
+        {fileUri?.type ==='application/pdf'?<View style={{flex:1,marginTop:70}}><PDFView
+            fadeInDuration={100.0}
+            style={{ flex: 1 }}
+            resource={resources[resourceType]}
+            resourceType={resourceType}
+            onLoad={() => console.log(`PDF rendered from ${resourceType}`)}
+            onError={() => console.log("Cannot render PDF", error)}
+          /></View>:<View style={{ flex: 0.8,alignSelf:'center'}}>
+            <Image
           resizeMode={"contain"}
           style={{
             width: 330,
             height: "100%",
           }}
           source={{ uri: fileUri.uri }}
-        ></Image>
-      </View>
+        ></Image></View>}
+       
+  
 
       <View
         style={{
@@ -139,11 +145,8 @@ const DocumentPreviewScreen = (props: any) => {
           title={"uploads"}
         ></Button>
       </View>
-      <AnimatedLoader isLoaderVisible={loading} loadingText={"uploaddocs"} />
-      <SuccessPopUp
-        isLoaderVisible={successResponse}
-        loadingText={"docvalidated"}
-      />
+  
+     
     </View>
   );
 };

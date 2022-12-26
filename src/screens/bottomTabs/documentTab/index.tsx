@@ -1,5 +1,5 @@
 import { values } from "lodash";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -25,14 +25,21 @@ import { Screens } from "../../../themes";
 
 interface IDocumentScreenProps {
   navigation?: any;
+  route?:any;
 }
 
-const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
+const DocumentScreen = ({ navigation,route }: IDocumentScreenProps) => {
   const _toggleDrawer = () => {
     navigation.openDrawer();
   };
+
   let documentsDetailsList = useAppSelector((state) => state.Documents);
-  console.log('documentsDetailsList===>',documentsDetailsList)
+let categoryTypes='';
+if(route?.params && route?.params?.category){
+  categoryTypes=route?.params?.category;
+  
+   
+}
   const dispatch = useAppDispatch();
   const [selectedItem, setselectedItem] = useState();
 
@@ -45,6 +52,10 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
 
   const [searchText, setsearchText] = useState("");
 
+  useEffect(()=>{
+
+  },[route?.params?.category])
+
   const [isBottomSheetForFilterVisible, setisBottomSheetForFilterVisible] =
     useState<boolean>(false);
 
@@ -54,21 +65,49 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
     setisBottomSheetForSideOptionVisible(true);
   };
 
+  const getCategoryImages =(item: {
+    categoryType: any; name: any; 
+})=>{
+  const getItems =  SCREENS.HOMESCREEN.categoryList.filter((itemFiltered,index)=>{
+      return itemFiltered.TITLE.toLowerCase()===item?.categoryType?.toLowerCase();
+    })
+   
+   return getItems[0];
+
+  }
+
   const _renderItem = ({ item }: any) => {
     AsyncStorage.setItem("day", item.date);
 
     return (
       <TouchableOpacity
+      style={{marginBottom:20}}
         onPress={() =>
           navigation.navigate("ViewCredential", { documentDetails: item })
         }
       >
-          <View style={{ flexDirection: "row"}}>
-            <GenericText style={[styles.categoryHeaderText, { fontSize: 13 }]}>
-             {SCREENS.HOMESCREEN.upload}
+        <View style={{flexDirection:"row",marginTop:5}}>
+        <View style={{justifyContent:'center',alignItems:'center'}}>
+        <Avatar   
+        isCategory={true}
+        isUploaded={false}
+        iconSource={getCategoryImages(item)?.URI}
+        style={{
+          container: [styles.avatarContainer, { backgroundColor: getCategoryImages(item)?.COLOR ,flexDirection:'row'}],
+          imgContainer: styles.avatarImageContainer,
+          text: styles.avatarTextContainer,
+        }}
+      />
+      </View>
+      <View style={{justifyContent:'center',alignItems:'center',marginTop:-20}}>
+      <GenericText style={[ { fontSize: 15,fontWeight:'bold',marginHorizontal:9 }]}>
+             {item?.categoryType}
             </GenericText>
-          </View>
-
+      </View>
+     
+        </View>
+      
+<View style={{marginTop:-20}}>
         <Card
           titleIcon={item?.isVc ? LocalImages.vcImage : null}
           leftAvatar={LocalImages.documentsImage}
@@ -108,6 +147,7 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
             },
           }}
         />
+        </View>
       </TouchableOpacity>
     );
   };
@@ -145,21 +185,27 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
     const newData = documentsDetailsList?.responseData.filter(function (item: {
       name: string;
      }) {
-      const itemData = item.name ? item.name.toUpperCase() : "".toUpperCase();
+      const itemData = item.name ? item?.name.toUpperCase() : "".toUpperCase();
 
-      const textData = text.toUpperCase();
+      const textData = text?.toUpperCase();
 
       return itemData.indexOf(textData) > -1;
     });
     setsearchText(text);
-    console.log("newData===>", newData);
+   
     setSearchedData(newData);
   };
 
   const shareItem = async () => {
-    if (selectedItem?.base64) {
+    console.log('selectedItem?.base64===>',selectedItem?.base64)
+    if(selectedItem?.docType==='jpg'){
       await Share.open({
-        url: `${selectedItem?.base64}`,
+        url : selectedItem?.base64
+      });
+    }
+    else {
+      await Share.open({
+        url :`data:image/jpeg;base64,${selectedItem?.base64}`
       });
     } 
   };
@@ -182,11 +228,19 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
 
   const getFilteredData = () => {
     let data = documentsDetailsList?.responseData;
+        if(categoryTypes!==''){
+          data =   data.filter((item: { categoryType: string; })=>{    
+        return item?.categoryType?.toLowerCase()===categoryTypes?.toLowerCase()
+      })
+   
+      return data;
+    }
  
     if (searchedData.length > 0) {
       data = searchedData;
       return data;
     }
+
     if (searchedData.length === 0 && searchText != "") {
       return [];
     }
@@ -349,6 +403,22 @@ const styles = StyleSheet.create({
   logoContainer: {
     width: 25,
     height: 25,
+  },
+  avatarContainer: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    marginHorizontal: 8,
+  },
+  avatarImageContainer: {
+    width: 15,
+    height: 15,
+    marginTop: 5,
+    tintColor:'#fff'
+  },
+  avatarTextContainer: {
+    fontSize: 13,
+    fontWeight: "500",
   },
 });
 

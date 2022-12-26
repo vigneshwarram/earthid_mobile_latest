@@ -38,9 +38,10 @@ export interface IDocumentProps {
   isVc: boolean;
   base64: any;
   pdf?: boolean;
+  categoryType?:any
 }
 const VerifiDocumentScreen = (props: any) => {
-  const { uploadedDocuments } = props.route.params;
+  const { uploadedDocuments, } = props.route.params;
   const { faceImageData, selectedDocument } = props.route.params;
   const { loading, data, error, fetch } = useFetch();
   const userDetails = useAppSelector((state) => state.account);
@@ -87,10 +88,11 @@ const VerifiDocumentScreen = (props: any) => {
           date: date?.date,
           time: date?.time,
           txId: data?.result,
-          docType: "pdf",
+          docType: "jpg",
           docExt: ".jpg",
           processedDoc: "",
           base64: uploadedDocumentsBase64,
+          categoryType:selectedDocument
         };
 
         var DocumentList = documentsDetailsList?.responseData

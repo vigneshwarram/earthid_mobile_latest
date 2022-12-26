@@ -5,9 +5,7 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
-  PermissionsAndroid,
   Platform,
-  Alert,
   ActivityIndicator,
 } from "react-native";
 import { RNCamera } from "react-native-camera";
@@ -18,35 +16,21 @@ import { Screens } from "../../themes/index";
 import DocumentMask from "../uploadDocuments/DocumentMask";
 import RNFS from "react-native-fs";
 import GenericText from "../../components/Text";
-import { launchImageLibrary } from "react-native-image-picker";
 import { useFetch } from "../../hooks/use-fetch";
-import { uploadDocument } from "../../utils/earthid_account";
-import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
-import {
-  getHistory,
-  saveDocuments,
-} from "../../redux/actions/authenticationAction";
-import { dateTime } from "../../utils/encryption";
-import RNFetchBlob from "rn-fetch-blob";
-import { IDocumentProps } from "./VerifiDocumentScreen";
-import AnimatedLoader from "../../components/Loader/AnimatedLoader";
+import { useAppSelector } from "../../hooks/hooks";
 import SuccessPopUp from "../../components/Loader";
 
-const ImagePicker = require("react-native-image-picker");
 
 const UploadScreen = (props: any) => {
-  const _handleBarCodeRead = (barCodeData: any) => {};
+  const _handleBarCodeRead = () => {};
   const { colors } = useTheme();
   const camRef: any = useRef();
-  const { loading, data, error, fetch: postFormfetch } = useFetch();
-  const userDetails = useAppSelector((state) => state.account);
+  const { loading } = useFetch();
   const [successResponse, setsuccessResponse] = useState(false);
   const getHistoryReducer = useAppSelector((state) => state.getHistoryReducer);
   const [message, Setmessage] = useState<string>("ooo");
   const [source, setSource] = useState({});
-  let documentsDetailsList = useAppSelector((state) => state.Documents);
   const [filePath, setFilePath] = useState();
-  const dispatch = useAppDispatch();
   const _takePicture = async () => {
     const options = { quality: 0.1, base64: true };
     const data = await camRef.current.takePictureAsync(options);
@@ -57,16 +41,6 @@ const UploadScreen = (props: any) => {
   };
   const requestPermission = async () => {
     try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-        {
-          title: "EarthId Storage Acess",
-          message: "EarthId needs access to your storage ",
-          buttonNeutral: "Ask Me Later",
-          buttonNegative: "Cancel",
-          buttonPositive: "OK",
-        }
-      );
     } catch (err) {
       console.log(err);
     }
@@ -82,56 +56,24 @@ const UploadScreen = (props: any) => {
       });
 
       let fileUri = resp[0].uri;
-      console.log("check==>", resp[0].type);
+      console.log("check==>####", resp[0]);
+      fileUri= resp[0]?.uri?.replaceAll('%20',' ')
       RNFS.readFile(fileUri, "base64").then((res) => {
         console.log("res", resp);
         console.log("typePDF", resp[0].uri);
 
         if (resp[0].type == "application/pdf") {
-          const requestedData = {
-            type: resp[0].type,
-            name: resp[0].name,
-            image: resp[0].uri,
-          };
-
-          postFormfetch(uploadDocument, requestedData, "FORM-DATA")
-            .then(() => {
-              const PayLoad = {
-                userId: userDetails?.responseData?.Id,
-                publicKey: userDetails?.responseData?.publicKey,
-              };
-              dispatch(getHistory(PayLoad)).then(() => {
-                var date = dateTime();
-                console.log("res==>base64", res);
-                const filePath =
-                  RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
-                var documentDetails: IDocumentProps = {
-                  name: resp[0].name,
-                  path: filePath,
-                  date: date?.date,
-                  time: date?.time,
-                  txId: data?.result,
-                  docType: "pdf",
-                  docExt: ".jpg",
-                  processedDoc: "",
-                  base64: res,
-                  pdf: true,
-                };
-
-                var DocumentList = documentsDetailsList?.responseData
-                  ? documentsDetailsList?.responseData
-                  : [];
-                DocumentList.push(documentDetails);
-                dispatch(saveDocuments(DocumentList));
-                setsuccessResponse(true);
-                getHistoryReducer.isSuccess = false;
-                setTimeout(() => {
-                  setsuccessResponse(false);
-                  props.navigation.navigate("Documents");
-                }, 2000);
-              });
-            })
-            .catch((error: any) => console.log(error));
+          props.navigation.navigate("DocumentPreviewScreen", {
+            fileUri: {
+              uri: `data:image/png;base64,${res}`,
+              base64: res,
+              file: resp[0],
+              type: "application/pdf",
+            },
+          });
+          
+          
+          
         } else {
           props.navigation.navigate("DocumentPreviewScreen", {
             fileUri: {
@@ -142,7 +84,9 @@ const UploadScreen = (props: any) => {
             },
           });
         }
-      });
+      }).catch((out)=>{
+        console.log('real error====>',out)
+      })
     } catch (err) {
       console.log("data==>", err);
     }

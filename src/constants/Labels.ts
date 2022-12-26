@@ -60,12 +60,7 @@ export const SCREENS = {
         COLOR: "#D7EFFB",
       },
       {
-        TITLE: "education",
-        URI: LocalImages.CATEGORIES.educationImage,
-        COLOR: "#FFDD9B",
-      },
-      {
-        TITLE: "insurance",
+        TITLE: "Healthcare",
         URI: LocalImages.CATEGORIES.insuranceImage,
         COLOR: "#C5BDF6",
       },
@@ -74,6 +69,18 @@ export const SCREENS = {
         URI: LocalImages.CATEGORIES.travelImage,
         COLOR: "#F5BCE8",
       },
+      {
+        TITLE: "insurance",
+        URI: LocalImages.CATEGORIES.insuranceImage,
+        COLOR: "#C5BDF6",
+      },
+      {
+        TITLE: "education",
+        URI: LocalImages.CATEGORIES.educationImage,
+        COLOR: "#FFDD9B",
+      },
+  
+    
     ],
     CategoryCustomiseList: [
       {

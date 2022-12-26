@@ -18,6 +18,7 @@ const {
     APPROVE_PHONE_OTP: approvePhoneOtp,
     GET_HISTORY: get_History,
     GET_USERDID: getUser_did,
+    GENERATE_KEYS:generateKeys
   },
 } = URI;
 
@@ -35,7 +36,8 @@ export const GeneratedKeysAction =
         "https://api-stage.myearth.id/contract/generateKeys"
       );
       responseData = await _responseHandler(response);
-      console.log("responseData", responseData);
+      console.log("reuesturl===>", getUser_did);
+      console.log("reuestparams===>", responseData);
       const responsedataSSI = await ssiGetCall(
         getUser_did,
         "GET",

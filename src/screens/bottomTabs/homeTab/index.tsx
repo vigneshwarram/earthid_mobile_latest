@@ -71,7 +71,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
   const _renderItem = ({ item }: any) => {
     return (
       <Avatar
-      avatarClick={()=>navigation.navigate('Documents')}
+      avatarClick={()=>navigation.navigate('Documents',{category:item.title})}
         isCategory={true}
         isUploaded={false}
         text={item.title}

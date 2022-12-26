@@ -25,7 +25,7 @@ const Info = ({
     {title && (
       <View style={styles.titleTextContainer}>
         <View>
-          <GenericText style={[styles.title, style.title]}>{title}</GenericText>
+          <GenericText  style={[styles.title, style.title,{flexShrink: 1,width:200}]}>{title}</GenericText>
           {subtitle && (
             <View
               style={{ justifyContent: "space-between", flexDirection: "row" }}

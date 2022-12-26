@@ -55,7 +55,9 @@ export const BottomMenus = (propss: any) => {
       <Tab.Screen
         name="Documents"
         component={DocumentScreen}
+        
         options={{
+          unmountOnBlur: true,
           tabBarLabelStyle: styles.tabBarLabelStyle,
           tabBarIcon: ({ focused }: any) => (
             <View
