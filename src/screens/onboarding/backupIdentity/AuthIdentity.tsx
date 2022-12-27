@@ -162,7 +162,7 @@ const AuthBackupIdentity = ({ navigation, route }: IHomeScreenProps) => {
               ]}
             >
               {isEarthId()
-                ? "backupscreeninstruction"
+                ? SCREENS.BACKUPIDENTYSCREEN.instructionEarthID
                 : SCREENS.BACKUPIDENTYSCREEN.instruction}
             </GenericText>
           </View>

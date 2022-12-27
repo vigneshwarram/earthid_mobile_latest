@@ -123,6 +123,8 @@ const Register = ({ navigation }: IRegister) => {
       };
 
       dispatch(createAccount(payLoad));
+
+      
     } else {
       SnackBar({
         indicationMessage: "Registered Id is not generated ,please try again",
@@ -151,12 +153,14 @@ const Register = ({ navigation }: IRegister) => {
   if (userDetails && userDetails?.isAccountCreatedFailure) {
     userDetails.isAccountCreatedFailure = false;
     if (userDetails?.errorMesssage && isArray(userDetails?.errorMesssage)) {
+      
       SnackBar({
         indicationMessage: userDetails?.errorMesssage[0],
       });
     } else {
+      const errorMsg =userDetails?.errorMesssage ==='Internal server error'? 'Mobile Number already exists':userDetails?.errorMesssage
       SnackBar({
-        indicationMessage: userDetails?.errorMesssage,
+        indicationMessage: errorMsg,
       });
     }
   }

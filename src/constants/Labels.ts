@@ -218,6 +218,7 @@ export const SCREENS = {
   },
 
   BACKUPIDENTYSCREEN: {
+    instructionEarthID:"backupscreeninstructionEarthID",
     instruction: "backupscreeninstruction",
     instructions: "backupscreeninstructions",
   },

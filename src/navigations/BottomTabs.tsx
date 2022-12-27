@@ -55,7 +55,11 @@ export const BottomMenus = (propss: any) => {
       <Tab.Screen
         name="Documents"
         component={DocumentScreen}
-        
+     
+        listeners={({ navigation }) => ({
+          blur: () => navigation.setParams({ category:undefined }),
+        })}
+        initialParams={{category:undefined}}
         options={{
           unmountOnBlur: true,
           tabBarLabelStyle: styles.tabBarLabelStyle,

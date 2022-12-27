@@ -1,3 +1,4 @@
+import { useIsFocused } from "@react-navigation/native";
 import { values } from "lodash";
 import React, { useEffect, useState } from "react";
 import {
@@ -32,9 +33,11 @@ const DocumentScreen = ({ navigation,route }: IDocumentScreenProps) => {
   const _toggleDrawer = () => {
     navigation.openDrawer();
   };
-
+const isFoused=useIsFocused()
   let documentsDetailsList = useAppSelector((state) => state.Documents);
 let categoryTypes='';
+
+
 if(route?.params && route?.params?.category){
   categoryTypes=route?.params?.category;
   
@@ -53,7 +56,11 @@ if(route?.params && route?.params?.category){
   const [searchText, setsearchText] = useState("");
 
   useEffect(()=>{
-
+  console.log('DOCUMENTS=====>>>>>>>>>>>',route?.params?.category)
+  const chek = route?.params?.category
+  chek===undefined ? console.log('All posts') :console.log('filtrd')
+ 
+  
   },[route?.params?.category])
 
   const [isBottomSheetForFilterVisible, setisBottomSheetForFilterVisible] =
@@ -228,9 +235,10 @@ if(route?.params && route?.params?.category){
 
   const getFilteredData = () => {
     let data = documentsDetailsList?.responseData;
+    console.log(data,'DaTa==>')
         if(categoryTypes!==''){
-          data =   data.filter((item: { categoryType: string; })=>{    
-        return item?.categoryType?.toLowerCase()===categoryTypes?.toLowerCase()
+          data =   data.filter((item: { categoryType: string; })=>{  
+              return item?.categoryType?.toLowerCase()===categoryTypes?.toLowerCase()
       })
    
       return data;
