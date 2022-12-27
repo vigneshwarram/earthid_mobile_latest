@@ -1,5 +1,13 @@
 import React, { useEffect } from "react";
-import { View, StyleSheet, FlatList, ScrollView } from "react-native";
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  ScrollView,
+  Alert,
+  Text,
+} from "react-native";
+import { json } from "stream/consumers";
 
 import Card from "../../../components/Card";
 import Header from "../../../components/Header";
@@ -19,6 +27,9 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
   const getHistoryReducer = useAppSelector((state) => state.getHistoryReducer);
   const userDetails = useAppSelector((state) => state.account);
   const dispatch = useAppDispatch();
+  let documentsDetailsList = useAppSelector((state) => state.Documents);
+  let data = documentsDetailsList?.responseData;
+
   const _toggleDrawer = () => {
     navigation.openDrawer();
   };
@@ -30,9 +41,11 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
       userId: userDetails?.responseData?.Id,
       publicKey: userDetails?.responseData?.publicKey,
     };
-    console.log("PayLoad", PayLoad);
+
     dispatch(getHistory(PayLoad));
   }, []);
+
+  console.log("----+++,", data);
 
   const _renderItem = ({ item }: any) => {
     return (
@@ -40,8 +53,8 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
         leftAvatar={LocalImages.documentsImage}
         absoluteCircleInnerImage={LocalImages.upImage}
         //  rightIconSrc={LocalImages.menuImage}
-        title={item?.eventValue}
-        subtitle={`      Uploaded  : ${item.createdAt}`}
+        title={item.name}
+        subtitle={`      Uploaded  : ${item.date}`}
         style={{
           ...styles.cardContainer,
           ...{
@@ -56,10 +69,10 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
             },
             uploadImageStyle: {
               backgroundColor: "rgba(245, 188, 232, 1)",
-              borderRadius:25,
-              borderWidth:3,
-              bordercolor:'#fff',
-              borderWidthRadius:25
+              borderRadius: 25,
+              borderWidth: 3,
+              bordercolor: "#fff",
+              borderWidthRadius: 25,
             },
           },
           title: {
@@ -87,6 +100,9 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
           backgroundColor: "#fff",
         }}
       >
+        {getHistoryReducer?.responseData
+          ? console.log("gettingResponse of HISTORY====>", getHistoryReducer)
+          : null}
         <Header
           leftIconSource={LocalImages.logoImage}
           onpress={() => {
@@ -94,19 +110,23 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
           }}
           linearStyle={styles.linearStyle}
         ></Header>
-        <GenericText style={[styles.categoryHeaderText, { fontSize: 14,marginTop:10 }]}>
+        <GenericText
+          style={[styles.categoryHeaderText, { fontSize: 14, marginTop: 10 }]}
+        >
           {SCREENS.HOMESCREEN.History}
         </GenericText>
 
         <FlatList<any>
           showsHorizontalScrollIndicator={false}
-          data={
-            getHistoryReducer && getHistoryReducer?.responseData
-              ? getHistoryReducer.responseData
-              : []
-          }
+          // data={
+          //   getHistoryReducer && getHistoryReducer?.responseData
+          //     ? getHistoryReducer.responseData
+          //     : []
+          // }
+          data={data}
+          extraData={data}
           renderItem={_renderItem}
-          keyExtractor={_keyExtractor}
+          keyExtractor={(item) => item.id}
         />
         <AnimatedLoader
           isLoaderVisible={getHistoryReducer?.isLoading}
@@ -154,7 +174,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 30,
     marginVertical: 10,
     color: Screens.headingtextColor,
-    
   },
 
   cardContainer: {
