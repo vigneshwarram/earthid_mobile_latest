@@ -8,6 +8,7 @@ import {
   Platform,
   PermissionsAndroid,
   Alert,
+  AsyncStorage,
 } from "react-native";
 import DocumentPicker from "react-native-document-picker";
 import { ScrollView } from "react-native-gesture-handler";
@@ -39,6 +40,7 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
   const profilePicture = useAppSelector((state) => state.savedPic);
   const [isCamerVisible, setIsCameraVisible] = useState(false);
   const [Response, setResponse] = useState<any>('');
+  const [pic, setPic] = useState<any>('');
 
   const camRef: any = useRef();
   console.log("profilePicture", profilePicture);
@@ -161,18 +163,36 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
       console.log("data==>", err);
     }
   };
+
+  useEffect(()=>{
+    getImage()
+  },[])
+
+
+  const getImage= async ()=>{
+    const profilePic = await AsyncStorage.getItem("profilePic")
+    disPatch(savingProfilePictures(profilePic))
+    console.log('GetImage=>',profilePic)
+  }
+
+
   useEffect(() => {
     if(Response != ''){
       if(Response?.assets?.length>0){
-        console.log('==>result',Response?.assets[0]?.uri)
+        console.log('ImageResult==>',Response?.assets[0]?.uri)
         let fileUri = Response?.assets[0]?.uri;
         disPatch(savingProfilePictures(fileUri));
         setIsCameraVisible(false);
         setcameraDataUri(fileUri);
+        console.log('ImageJson==>',JSON.stringify(fileUri))
+        AsyncStorage.setItem("profilePic",fileUri)
       }
- 
     }
   }, [Response]);
+
+
+
+
   const mobileVerifyAction = () => {
     navigation.navigate("OTPScreen", { type: "phone" });
   };

@@ -24,6 +24,7 @@ import {
   byPassUserDetailsRedux,
   getHistory,
 } from "../../../redux/actions/authenticationAction";
+import { savingProfilePictures } from "../../../redux/actions/LocalSavingActions";
 import { Screens } from "../../../themes";
 import { alertBox } from "../../../utils/earthid_account";
 
@@ -37,6 +38,8 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
   const getHistoryReducer = useAppSelector((state) => state.getHistoryReducer);
   const profilePicture = useAppSelector((state) => state.savedPic);
   const securityReducer: any = useAppSelector((state) => state.security);
+  const disPatch = useAppDispatch();
+
   console.log("securityReducer====>rrr", securityReducer?.securityData?.length);
   const dispatch = useAppDispatch();
   const _toggleDrawer = () => {
@@ -129,6 +132,19 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
     setValueSecurity();
     console.log("items==>", userDetails);
   }, []);
+
+  
+  useEffect(()=>{
+    getImage()
+  },[])
+
+
+  const getImage= async()=>{
+    const profilePic = await AsyncStorage.getItem("profilePic")
+    disPatch(savingProfilePictures(profilePic))
+    console.log('GetImage=>',profilePic)
+  }
+
 
   const _renderItemHistory = ({ item }: any) => {
     console.log("itemsnews==>", item);
