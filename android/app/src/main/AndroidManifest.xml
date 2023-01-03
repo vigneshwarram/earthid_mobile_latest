@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
- package="com.globalidiqtechandroid">
- <!-- package="com.globalidiqtechandroid"> -->
+ package="com.myearthid">
+ <!-- package="com.myearthid"> -->
  
 
     <uses-permission android:name="android.permission.INTERNET" />

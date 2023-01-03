@@ -1,4 +1,4 @@
-package com.globalidiqtechandroid.newarchitecture.modules;
+package com.myearthid.newarchitecture.modules;
 
 import com.facebook.jni.HybridData;
 import com.facebook.react.ReactPackage;
