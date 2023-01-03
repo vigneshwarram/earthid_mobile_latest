@@ -24,6 +24,7 @@ import {
   byPassUserDetailsRedux,
   getHistory,
 } from "../../../redux/actions/authenticationAction";
+import { savingProfilePictures } from "../../../redux/actions/LocalSavingActions";
 import { Screens } from "../../../themes";
 import { alertBox } from "../../../utils/earthid_account";
 
@@ -37,6 +38,11 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
   const getHistoryReducer = useAppSelector((state) => state.getHistoryReducer);
   const profilePicture = useAppSelector((state) => state.savedPic);
   const securityReducer: any = useAppSelector((state) => state.security);
+  const disPatch = useAppDispatch();
+ //recent activity
+ let documentsDetailsList = useAppSelector((state) => state.Documents);
+  let recentData = documentsDetailsList?.responseData;
+
   console.log("securityReducer====>rrr", securityReducer?.securityData?.length);
   const dispatch = useAppDispatch();
   const _toggleDrawer = () => {
@@ -130,6 +136,19 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
     console.log("items==>", userDetails);
   }, []);
 
+  
+  useEffect(()=>{
+    getImage()
+  },[])
+
+
+  const getImage= async()=>{
+    const profilePic = await AsyncStorage.getItem("profilePic")
+    disPatch(savingProfilePictures(profilePic))
+    console.log('GetImage=>',profilePic)
+  }
+
+
   const _renderItemHistory = ({ item }: any) => {
     console.log("itemsnews==>", item);
 
@@ -138,8 +157,8 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
          leftAvatar={LocalImages.documentsImage}
          absoluteCircleInnerImage={LocalImages.upImage}
          // rightIconSrc={LocalImages.menuImage}
-         title={item?.eventValue}
-         subtitle={`      Uploaded  : ${item.createdAt}`}
+         title={item?.name}
+         subtitle={`      Uploaded  : ${item.date}`}
          style={{
            ...styles.cardContainers,
            ...{
@@ -232,11 +251,13 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
           </GenericText>
           <FlatList<any>
             showsHorizontalScrollIndicator={false}
-            data={
-              getHistoryReducer && getHistoryReducer?.responseData
-                ? getHistoryReducer.responseData
-                : []
-            }
+            // data={
+            //   getHistoryReducer && getHistoryReducer?.responseData
+            //     ? getHistoryReducer.responseData
+            //     : []
+            // }
+            data={recentData}
+            inverted
             renderItem={_renderItemHistory}
           />
           {/* <AnimatedLoader
