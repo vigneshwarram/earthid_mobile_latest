@@ -10,7 +10,10 @@ import {
   TouchableOpacity,
   ScrollView,
   AsyncStorage,
+  Alert,
+  Button,
 } from "react-native";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import Share from "react-native-share";
 import Avatar from "../../../components/Avatar";
 import BottomSheet from "../../../components/Bottomsheet";
@@ -26,136 +29,183 @@ import { Screens } from "../../../themes";
 
 interface IDocumentScreenProps {
   navigation?: any;
-  route?:any;
+  route?: any;
 }
 
-const DocumentScreen = ({ navigation,route }: IDocumentScreenProps) => {
+const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const _toggleDrawer = () => {
     navigation.openDrawer();
   };
-const isFoused=useIsFocused()
-  let documentsDetailsList = useAppSelector((state) => state.Documents);
-let categoryTypes='';
+  const isFoused = useIsFocused();
+  let documentsDetailsListData = useAppSelector((state) => state.Documents);
+  const [documentsDetailsList, setdocumentsDetailsList] = useState(
+    documentsDetailsListData
+  );
 
+  let categoryTypes = "";
 
-if(route?.params && route?.params?.category){
-  categoryTypes=route?.params?.category;
-  
-   
-}
+  if (route?.params && route?.params?.category) {
+    categoryTypes = route?.params?.category;
+  }
   const dispatch = useAppDispatch();
   const [selectedItem, setselectedItem] = useState();
-
+  const [multiSelectionEnabled, setMultiSelectionEnabled] = useState(false);
+  const [clearMultiselection,setClearMultiSelection] = useState(false)
   const [
     isBottomSheetForSideOptionVisible,
     setisBottomSheetForSideOptionVisible,
   ] = useState<boolean>(false);
-
+  const [multpleDocuments, setMultipleDucuments] = useState({
+    isSelected: false,
+  });
   const [searchedData, setSearchedData] = useState([]);
 
   const [searchText, setsearchText] = useState("");
-
-  useEffect(()=>{
-  console.log('DOCUMENTS=====>>>>>>>>>>>',route?.params?.category)
-  const chek = route?.params?.category
-  chek===undefined ? console.log('All posts') :console.log('filtrd')
- 
-  
-  },[route?.params?.category])
+  const [isCheckBoxEnable, setCheckBoxEnable] = useState(false);
+  const [clear,setClear] = useState(false)
+  useEffect(() => {
+    console.log("DOCUMENTS=====>>>>>>>>>>>", route?.params?.category);
+    const chek = route?.params?.category;
+    chek === undefined ? console.log("All posts") : console.log("filtrd");
+  }, [route?.params?.category]);
 
   const [isBottomSheetForFilterVisible, setisBottomSheetForFilterVisible] =
     useState<boolean>(false);
-
+const [isBottomSheetForShare,setIsBottomSheetForShare]= useState<boolean>(false);
   const _rightIconOnPress = (selecteArrayItem: any) => {
- console.log(',,,,selecteArrayItem',selecteArrayItem)
+    console.log(",,,,selecteArrayItem", selecteArrayItem);
+    setselectedItem(selecteArrayItem);
+    setisBottomSheetForSideOptionVisible(true);
+  };
+  const _shareIconPress = (selecteArrayItem: any) => {
+    console.log(",,,,selecteArrayItem", selecteArrayItem);
     setselectedItem(selecteArrayItem);
     setisBottomSheetForSideOptionVisible(true);
   };
 
-  const getCategoryImages =(item: {
-    categoryType: any; name: any; 
-})=>{
-  const getItems =  SCREENS.HOMESCREEN.categoryList.filter((itemFiltered,index)=>{
-      return itemFiltered.TITLE.toLowerCase()===item?.categoryType?.toLowerCase();
-    })
-   
-   return getItems[0];
+  const getCategoryImages = (item: { categoryType: any; name: any }) => {
+    const getItems = SCREENS.HOMESCREEN.categoryList.filter(
+      (itemFiltered, index) => {
+        return (
+          itemFiltered.TITLE.toLowerCase() === item?.categoryType?.toLowerCase()
+        );
+      }
+    );
 
-  }
-
-  const _renderItem = ({ item }: any) => {
+    return getItems[0];
+  };
+  const multiSelect = (item) => {
+    // console.log(item?.base64, "@@@@@@@@@");
+    // setMultipleDucuments(item);
+    setCheckBoxEnable(!isCheckBoxEnable);
+ 
+  };
+  const _selectTigger = (item: any) => {
+    item.isSelected = !item.isSelected;
+    setdocumentsDetailsList({ ...documentsDetailsList });
+  };
+  const _renderItem = ({ item, index }: any) => {
     AsyncStorage.setItem("day", item.date);
 
     return (
-      <TouchableOpacity
-      style={{marginBottom:20}}
-        onPress={() =>
-          navigation.navigate("ViewCredential", { documentDetails: item })
+      <TouchableWithoutFeedback
+        onLongPress={() => multiSelect(item)}
+        style={{
+          marginBottom: 20,
+        }}
+        onPress={
+          isCheckBoxEnable
+            ? () => _selectTigger(item)
+            : () =>
+                navigation.navigate("ViewCredential", { documentDetails: item })
         }
       >
-        <View style={{flexDirection:"row",marginTop:5}}>
-        <View style={{justifyContent:'center',alignItems:'center'}}>
-        <Avatar   
-        isCategory={true}
-        isUploaded={false}
-        iconSource={getCategoryImages(item)?.URI}
-        style={{
-          container: [styles.avatarContainer, { backgroundColor: getCategoryImages(item)?.COLOR ,flexDirection:'row'}],
-          imgContainer: styles.avatarImageContainer,
-          text: styles.avatarTextContainer,
-        }}
-      />
-      </View>
-      <View style={{justifyContent:'center',alignItems:'center',marginTop:-20}}>
-      <GenericText style={[ { fontSize: 15,fontWeight:'bold',marginHorizontal:9 }]}>
-             {item?.categoryType}
+        <View style={{ flexDirection: "row", marginTop: 5 }}>
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <Avatar
+              isCategory={true}
+              isUploaded={false}
+              iconSource={getCategoryImages(item)?.URI}
+              style={{
+                container: [
+                  styles.avatarContainer,
+                  {
+                    backgroundColor: getCategoryImages(item)?.COLOR,
+                    flexDirection: "row",
+                  },
+                ],
+                imgContainer: styles.avatarImageContainer,
+                text: styles.avatarTextContainer,
+              }}
+            />
+          </View>
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: -20,
+            }}
+          >
+            <GenericText
+              style={[
+                { fontSize: 15, fontWeight: "bold", marginHorizontal: 9 },
+              ]}
+            >
+              {item?.categoryType}
             </GenericText>
-      </View>
-     
+          </View>
         </View>
-      
-<View style={{marginTop:-20}}>
-        <Card
-          titleIcon={item?.isVc ? LocalImages.vcImage : null}
-          leftAvatar={LocalImages.documentsImage}
-          absoluteCircleInnerImage={LocalImages.upImage}
-          rightIconSrc={LocalImages.menuImage}
-          rightIconOnPress={() => _rightIconOnPress(item)}
-          title={item.name}
-          subtitle={`      Uploaded  : ${item.date}`}
-          style={{
-            ...styles.cardContainer,
-            ...{
-              avatarContainer: {
-                backgroundColor: "rgba(245, 188, 232, 1)",
-                width: 60,
-                height: 60,
-                borderRadius: 20,
-                marginTop: 25,
-                marginLeft: 10,
-                marginRight: 5,
+
+        <View style={{ marginTop: -20 }}>
+          <Card
+            titleIcon={item?.isVc ? LocalImages.vcImage : null}
+            leftAvatar={LocalImages.documentsImage}
+            absoluteCircleInnerImage={LocalImages.upImage}
+            rightIconSrc={LocalImages.menuImage}
+            rightIconOnPress={() => _rightIconOnPress(item)}
+            title={item.name}
+            subtitle={`      Uploaded  : ${item.date}`}
+            isCheckBoxEnable={isCheckBoxEnable}
+            onCheckBoxValueChange={(value: any) => {
+              Alert.alert(value);
+            
+              item.isSelected = value;
+              setdocumentsDetailsList(documentsDetailsList);
+            }}
+            checkBoxValue={item.isSelected}
+            style={{
+              ...styles.cardContainer,
+              ...{
+                avatarContainer: {
+                  backgroundColor: "rgba(245, 188, 232, 1)",
+                  width: 60,
+                  height: 60,
+                  borderRadius: 20,
+                  marginTop: 25,
+                  marginLeft: 10,
+                  marginRight: 5,
+                },
+                uploadImageStyle: {
+                  backgroundColor: "rgba(245, 188, 232, 1)",
+                  borderRadius: 25,
+                  borderWidth: 3,
+                  bordercolor: "#fff",
+                  borderWidthRadius: 25,
+                },
               },
-              uploadImageStyle: {
-                backgroundColor: "rgba(245, 188, 232, 1)",
-                borderRadius:25,
-                borderWidth:3,
-                bordercolor:'#fff',
-                borderWidthRadius:25
-               },
-            },
-            title: {
-              fontSize: 18,
-              marginTop: -10,
-              fontWeight: "bold",
-            },
-            subtitle: {
-              fontSize: 14,
-              marginTop: 5,
-            },
-          }}
-        />
+              title: {
+                fontSize: 18,
+                marginTop: -10,
+                fontWeight: "bold",
+              },
+              subtitle: {
+                fontSize: 14,
+                marginTop: 5,
+              },
+            }}
+          />
         </View>
-      </TouchableOpacity>
+      </TouchableWithoutFeedback>
     );
   };
   const RowOption = ({ icon, title, rowAction }: any) => (
@@ -191,7 +241,7 @@ if(route?.params && route?.params?.category){
   const onChangeHandler = (text: any) => {
     const newData = documentsDetailsList?.responseData.filter(function (item: {
       name: string;
-     }) {
+    }) {
       const itemData = item.name ? item?.name.toUpperCase() : "".toUpperCase();
 
       const textData = text?.toUpperCase();
@@ -199,24 +249,48 @@ if(route?.params && route?.params?.category){
       return itemData.indexOf(textData) > -1;
     });
     setsearchText(text);
-   
+
     setSearchedData(newData);
   };
 
   const shareItem = async () => {
-    console.log('selectedItem?.base64===>',selectedItem?.base64)
-    if(selectedItem?.docType==='jpg'){
+    console.log("selectedItem?.base64===>", selectedItem?.base64);
+    if (selectedItem?.docType === "jpg") {
       await Share.open({
-        url : selectedItem?.base64
+        url: selectedItem?.base64,
+      });
+    } else {
+      await Share.open({
+        url: `data:image/jpeg;base64,${selectedItem?.base64}`,
       });
     }
-    else {
-      await Share.open({
-        url :`data:image/jpeg;base64,${selectedItem?.base64}`
-      });
-    } 
   };
 
+  
+  const shareMultipleItem = async () => {
+    let temp = []
+    temp = documentsDetailsList?.responseData.filter((el)=>{
+      // console.log(i[0].isSelected,'IIII')
+     return el.isSelected == true          
+      
+    })
+    console.log(temp,'IIII')
+    let ShareBase64Array: string[] = []
+    temp.map(async (item: any, index: number) => {
+      if (item?.docType === "jpg") {
+        ShareBase64Array.push(`data:image/jpg;base64,${item?.base64}`)
+      } else {
+        ShareBase64Array.push(`data:application/pdf;base64,${item?.base64}`)
+      }
+      setTimeout (async ()=>{
+         await Share.open({
+          urls: ShareBase64Array,
+        });
+      },1000)
+    })
+   
+  
+  };
   const deleteItem = () => {
     setisBottomSheetForSideOptionVisible(false);
 
@@ -235,15 +309,18 @@ if(route?.params && route?.params?.category){
 
   const getFilteredData = () => {
     let data = documentsDetailsList?.responseData;
-    console.log(data,'DaTa==>')
-        if(categoryTypes!==''){
-          data =   data.filter((item: { categoryType: string; })=>{  
-              return item?.categoryType?.toLowerCase()===categoryTypes?.toLowerCase()
-      })
-   
+
+    console.log(data, "DaTa==>");
+    if (categoryTypes !== "") {
+      data = data.filter((item: { categoryType: string }) => {
+        return (
+          item?.categoryType?.toLowerCase() === categoryTypes?.toLowerCase()
+        );
+      });
+
       return data;
     }
- 
+
     if (searchedData.length > 0) {
       data = searchedData;
       return data;
@@ -255,6 +332,9 @@ if(route?.params && route?.params?.category){
     console.log("searchedData====>{{}}}}}", data);
     return data;
   };
+  const clearData = ()=>{
+
+  }
 
   return (
     <View style={styles.sectionContainer}>
@@ -287,12 +367,38 @@ if(route?.params && route?.params?.category){
             value={searchText}
             onChangeText={onChangeHandler}
           />
-         
+          { isCheckBoxEnable &&  (
+            <View
+              style={{ alignItems: "flex-end", marginTop: 20, marginRight: 25 }}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  // width: "20%",
+                  alignItems: "center",
+                }}
+              >
+                <TouchableOpacity onPress={()=>shareMultipleItem() }>
+                <Image
+                  source={LocalImages.shareImage}
+                  style={{ height: 18, width:18,marginRight:15,tintColor:'#293fee' }}
+                />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={()=>setCheckBoxEnable(false)}   >
+                  <Text style={{ color: "tomato", fontWeight: "500" }}>
+                    CLEAR
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
           <FlatList<any>
             data={getFilteredData()}
             renderItem={_renderItem}
             keyExtractor={_keyExtractor}
           />
+
           <BottomSheet
             onClose={() => setisBottomSheetForSideOptionVisible(false)}
             height={150}
@@ -312,11 +418,24 @@ if(route?.params && route?.params?.category){
             </View>
           </BottomSheet>
           <BottomSheet
+            onClose={() => setIsBottomSheetForShare(false)}
+            height={150}
+            isVisible={isBottomSheetForShare}
+          >
+            <View style={{ height: 50, width: "100%", paddingHorizontal: 30 }}>
+              <RowOption
+                rowAction={() => shareItem()}
+                title={"Share"}
+                icon={LocalImages.shareImage}
+              />
+            </View>
+          </BottomSheet>
+          <BottomSheet
             onClose={() => setisBottomSheetForFilterVisible(false)}
             height={150}
             isVisible={isBottomSheetForFilterVisible}
           >
-            <View style={{ height: 150, width: "100%", paddingHorizontal: 30, }}>
+            <View style={{ height: 150, width: "100%", paddingHorizontal: 30 }}>
               <RowOption title={"By Category"} />
               <RowOption title={"By Date"} />
               <RowOption title={"By Frequency"} />
@@ -384,6 +503,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 20,
     backgroundColor: Screens.pureWhite,
+    // backgroundColor:'red',
     title: {
       color: Screens.black,
     },
@@ -422,7 +542,7 @@ const styles = StyleSheet.create({
     width: 15,
     height: 15,
     marginTop: 5,
-    tintColor:'#fff'
+    tintColor: "#fff",
   },
   avatarTextContainer: {
     fontSize: 13,

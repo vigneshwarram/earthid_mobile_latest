@@ -1,8 +1,11 @@
 import React from "react";
-import { StyleSheet, View, TouchableOpacity, Image } from "react-native";
+import { StyleSheet, View, TouchableOpacity, Image, Alert } from "react-native";
 import Avatar from "../Avatar";
 import Icon from "../Icon";
 import Info from "../Info";
+import CheckBox from "@react-native-community/checkbox";
+import { Value } from "react-native-reanimated";
+import { alertBox } from "../../utils/earthid_account";
 
 /**
  * @author  vicky@
@@ -22,6 +25,9 @@ interface ICardProps {
   rightIconOnPress?: any;
   absoluteCircleInnerImage?: any;
   isUploaded?: boolean;
+  isCheckBoxEnable?: boolean;
+  onCheckBoxValueChange?: any;
+  checkBoxValue?: boolean;
 }
 
 const Card = ({
@@ -36,9 +42,21 @@ const Card = ({
   rightIconOnPress,
   isUploaded = true,
   style = {},
+  isCheckBoxEnable,
+  onCheckBoxValueChange,
+  checkBoxValue,
 }: ICardProps) => {
   return (
     <View style={[styles.container, style]}>
+      {isCheckBoxEnable && (
+        <CheckBox
+          onValueChange={(value) => {
+           onCheckBoxValueChange(value);
+          }}
+          disabled={false}
+          value={checkBoxValue}
+        />
+      )}
       {leftAvatar && (
         <Avatar
           isUploaded={isUploaded}
@@ -70,7 +88,7 @@ const Card = ({
           container: style.textContainer,
         }}
       />
-      {rightIconSrc && (
+      {rightIconSrc && !isCheckBoxEnable && (
         <Icon
           onPress={rightIconOnPress}
           src={rightIconSrc}
