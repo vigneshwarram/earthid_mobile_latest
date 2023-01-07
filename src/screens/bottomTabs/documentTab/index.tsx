@@ -38,9 +38,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
   };
   const isFoused = useIsFocused();
   let documentsDetailsListData = useAppSelector((state) => state.Documents);
-  const [documentsDetailsList, setdocumentsDetailsList] = useState(
-    documentsDetailsListData
-  );
+  
 
   let categoryTypes = "";
 
@@ -102,7 +100,7 @@ const [isBottomSheetForShare,setIsBottomSheetForShare]= useState<boolean>(false)
   };
   const _selectTigger = (item: any) => {
     item.isSelected = !item.isSelected;
-    setdocumentsDetailsList({ ...documentsDetailsList });
+  //  setdocumentsDetailsList({ ...documentsDetailsList });
   };
   const _renderItem = ({ item, index }: any) => {
     AsyncStorage.setItem("day", item.date);
@@ -167,10 +165,9 @@ const [isBottomSheetForShare,setIsBottomSheetForShare]= useState<boolean>(false)
             subtitle={`      Uploaded  : ${item.date}`}
             isCheckBoxEnable={isCheckBoxEnable}
             onCheckBoxValueChange={(value: any) => {
-              Alert.alert(value);
-            
+    
               item.isSelected = value;
-              setdocumentsDetailsList(documentsDetailsList);
+              //setdocumentsDetailsList(documentsDetailsList);
             }}
             checkBoxValue={item.isSelected}
             style={{
@@ -239,7 +236,7 @@ const [isBottomSheetForShare,setIsBottomSheetForShare]= useState<boolean>(false)
   );
 
   const onChangeHandler = (text: any) => {
-    const newData = documentsDetailsList?.responseData.filter(function (item: {
+    const newData = documentsDetailsListData?.responseData.filter(function (item: {
       name: string;
     }) {
       const itemData = item.name ? item?.name.toUpperCase() : "".toUpperCase();
@@ -269,7 +266,7 @@ const [isBottomSheetForShare,setIsBottomSheetForShare]= useState<boolean>(false)
   
   const shareMultipleItem = async () => {
     let temp = []
-    temp = documentsDetailsList?.responseData.filter((el)=>{
+    temp = documentsDetailsListData?.responseData.filter((el)=>{
       // console.log(i[0].isSelected,'IIII')
      return el.isSelected == true          
       
@@ -282,19 +279,19 @@ const [isBottomSheetForShare,setIsBottomSheetForShare]= useState<boolean>(false)
       } else {
         ShareBase64Array.push(`data:application/pdf;base64,${item?.base64}`)
       }
-      setTimeout (async ()=>{
-         await Share.open({
-          urls: ShareBase64Array,
-        });
-      },1000)
     })
+    setTimeout (async ()=>{
+      await Share.open({
+       urls: ShareBase64Array,
+     });
+   },1000)
    
   
   };
   const deleteItem = () => {
     setisBottomSheetForSideOptionVisible(false);
 
-    const newData = documentsDetailsList?.responseData.filter(function (item: {
+    const newData = documentsDetailsListData?.responseData.filter(function (item: {
       name: any;
     }) {
       return item.name !== selectedItem?.name;
@@ -308,18 +305,18 @@ const [isBottomSheetForShare,setIsBottomSheetForShare]= useState<boolean>(false)
   const _keyExtractor = ({ path }: any) => path.toString();
 
   const getFilteredData = () => {
-    let data = documentsDetailsList?.responseData;
+    let data = documentsDetailsListData?.responseData;
 
-    console.log(data, "DaTa==>");
-    if (categoryTypes !== "") {
-      data = data.filter((item: { categoryType: string }) => {
-        return (
-          item?.categoryType?.toLowerCase() === categoryTypes?.toLowerCase()
-        );
-      });
+    console.log( "DaTa==>",data);
+    // if (categoryTypes !== "") {
+    //   data = data.filter((item: { categoryType: string }) => {
+    //     return (
+    //       item?.categoryType?.toLowerCase() === categoryTypes?.toLowerCase()
+    //     );
+    //   });
 
-      return data;
-    }
+    //   return data;
+    // }
 
     if (searchedData.length > 0) {
       data = searchedData;

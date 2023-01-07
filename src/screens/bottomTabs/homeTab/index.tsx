@@ -264,9 +264,9 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
             isLoaderVisible={getHistoryReducer?.isLoading}
             loadingText="loading"
           /> */}
-          {getHistoryReducer &&
-            getHistoryReducer?.responseData &&
-            getHistoryReducer?.responseData.length === 0 && (
+          {recentData &&
+         
+         recentData?.length === 0 && (
               <View style={{ justifyContent: "center", alignItems: "center" }}>
                 <Image
                   resizeMode="contain"
@@ -361,7 +361,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginVertical: 10,
     elevation: 10,
-
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 2,
     alignItems: "center",
     borderRadius: 20,
     backgroundColor: Screens.pureWhite,
