@@ -1,4 +1,4 @@
-import { ssiApiKey } from "./earthid_account";
+import { ssiApiKey,veriffAuthKey } from "./earthid_account";
 
 /**
  * @function postFormData - function to call the backend with the request and fetches response.
@@ -113,6 +113,24 @@ export const ssiPostCall = (
     headers: {
       "Content-Type": "application/json",
       "X-API-KEY": ssiApiKey,
+    },
+    body: JSON.stringify(payload),
+  });
+};
+
+export const xAuthPostCall = (
+  uri: string,
+  payload?: any,
+  method: string = "POST",
+ 
+): Promise<any> => {
+  console.log("requests==>", JSON.stringify(payload));
+
+  return fetch(uri, {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+      "X-AUTH-CLIENT": veriffAuthKey,
     },
     body: JSON.stringify(payload),
   });

@@ -29,6 +29,7 @@ export const accountUpdate = BASE_URL + "/authorize/accountUpdate";
 export const issuerGenerateCredentials = BASE_URL + "/ssi/generateCredentials";
 export const verifyshareCredentials = BASE_URL + "/ssi/shareCredentials";
 export const ssiApiKey = "Api-Key 01a41742-aa8e-4dd6-8c71-d577ac7d463c";
+export const veriffAuthKey="85aa015e-c291-4a3a-983a-088629ffeae1"
 export const generateUserDid = "https://ssi-gbg.myearth.id/api/user/did";
 export const generateIssuerDid = "https://ssi-gbg.myearth.id/api/issuer/did";
 export const generateCryptograph = BASE_URL + "/tech5/cryptoEncode";

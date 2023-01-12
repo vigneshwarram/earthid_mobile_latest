@@ -2,7 +2,7 @@
 //export const EARTHID_DEV_BASE = "https://apiv2.myearth.id";
 export const EARTHID_DEV_BASE = "https://stage-apiv2.myearth.id";
 export const SSI_BASE_URL = "https://ssi-gbg.myearth.id/api";
-
+export const VERIFF_BASE_URL = "https://api.veriff.me/v1"
 export const URI = {
   ACCOUNT: {
     GENERATE_KEYS: `${EARTHID_DEV_BASE}/contract/generateKeys`,
@@ -12,6 +12,8 @@ export const URI = {
     CONTRACT_CALL: `${EARTHID_DEV_BASE}/contract/functionCall`,
     GET_HISTORY: `${EARTHID_DEV_BASE}/history/getHistory`,
     GET_USERDID: `${SSI_BASE_URL}/user/did`,
+    VERIFF_SESSION: `${VERIFF_BASE_URL}/sessions/`,
+
   },
 };
 

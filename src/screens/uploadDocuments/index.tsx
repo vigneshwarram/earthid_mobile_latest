@@ -46,12 +46,17 @@ const UploadScreen = (props: any) => {
     }
   };
   const openFilePicker = async () => {
+    console.log('Inside filepicker')
+    
     if (Platform.OS == "android") {
       await requestPermission();
     }
     try {
+      
+      
       const resp: any = await DocumentPicker.pick({
         type: [DocumentPicker.types.images, DocumentPicker.types.pdf],
+        // type:DocumentPicker.types.allFiles,
         readContent: true,
       });
 
@@ -63,6 +68,7 @@ const UploadScreen = (props: any) => {
         console.log("typePDF", resp[0].uri);
 
         if (resp[0].type == "application/pdf") {
+     
           props.navigation.navigate("DocumentPreviewScreen", {
             fileUri: {
               uri: `data:image/png;base64,${res}`,

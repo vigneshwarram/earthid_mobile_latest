@@ -33,6 +33,7 @@ buildscript {
 
 allprojects {
     repositories {
+         maven { url "https://cdn.veriff.me/android/" } //veriff
            google()
         //    maven { url 'https://jitpack.io' } //added
         maven {

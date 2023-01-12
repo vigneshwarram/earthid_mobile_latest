@@ -9,6 +9,7 @@ import {
   documentListReducer,
   schemaReducer,
   getHistoryReducer,
+  VeriffSessionReducer
 } from "./reducer/user.reducer";
 import {
   SavedProfilePictures,
@@ -41,6 +42,7 @@ const rootReducer = combineReducers({
   getHistoryReducer: getHistoryReducer,
   savedPic: SavedProfilePictures,
   security: SavedSecurityDatas,
+  VeriffSession:VeriffSessionReducer
 });
 
 const appreducer = (state: any, action: any) => {

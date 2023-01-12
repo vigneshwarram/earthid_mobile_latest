@@ -2,6 +2,7 @@ const SERVER_BASE_URL =
   "https://rr6pyh6ocg.execute-api.ap-south-1.amazonaws.com";
 const API_VERSION = "/api";
 
+
 export const API_URL = {
   FACE_REGISTER: `${SERVER_BASE_URL}${API_VERSION}/device/registerFaceInEarthId`,
   IDENTIFY_FACE: `${SERVER_BASE_URL}${API_VERSION}/device/checkFaceAccessInEarthId`,

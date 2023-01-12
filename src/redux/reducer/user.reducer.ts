@@ -180,7 +180,35 @@ export const getHistoryReducer = (state = {}, { type, payload }: any) => {
       return state;
   }
 };
-
+export const VeriffSessionReducer = (state = {}, { type, payload }: any) => {
+  switch (type) {
+    case ACTION_TYPES.VERIFF_SESSION_CALL:
+      return {
+        ...state,
+        isLoading: true,
+        isSuccess: false,
+        isError: false,
+      };
+    case ACTION_TYPES.VERIFF_SESSION_CALL_RESPONSE:
+      return {
+        ...state,
+        ...payload,
+        isLoading: false,
+        isSuccess: true,
+        isError: false,
+      };
+    case ACTION_TYPES.VERIFF_SESSION_CALL_ERROR:
+      return {
+        ...state,
+        ...payload,
+        isLoading: false,
+        isSuccess: false,
+        isError: true,
+      };
+    default:
+      return state;
+  }
+};
 export const documentListReducer = (state = {}, { type, payload }: any) => {
   switch (type) {
     case ACTION_TYPES.SAVE_DOCUMENTS:

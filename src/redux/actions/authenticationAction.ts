@@ -4,6 +4,7 @@ import {
   postCall,
   ssiGetCall,
   ssiPostCall,
+  xAuthPostCall
 } from "../../utils/service";
 import { ACTION_TYPES } from "./types";
 import { URI } from "../../constants/URLContstants";
@@ -18,7 +19,8 @@ const {
     APPROVE_PHONE_OTP: approvePhoneOtp,
     GET_HISTORY: get_History,
     GET_USERDID: getUser_did,
-    GENERATE_KEYS:generateKeys
+    GENERATE_KEYS:generateKeys,
+    VERIFF_SESSION:veriff_Session
   },
 } = URI;
 
@@ -197,7 +199,40 @@ export const getHistory =
       });
     }
   };
+  export const getVeriffSession =
+  (requestPayload: any) =>
+  async (dispatch: any): Promise<any> => {
 
+   
+    
+    let responseData;
+    try {
+      dispatch({
+        type: ACTION_TYPES.VERIFF_SESSION_CALL
+      });
+      const response = await xAuthPostCall(
+        veriff_Session,requestPayload
+      );
+      responseData = await _responseHandler(response);
+      console.log("VERIFF DATA@@==>", responseData);
+
+      dispatch({
+        type: ACTION_TYPES.VERIFF_SESSION_CALL_RESPONSE,
+        payload: {
+          responseData,
+          errorMesssage: "",
+        },
+      });
+    } catch (error) {
+      console.log("error", error);
+      dispatch({
+        type: ACTION_TYPES.VERIFF_SESSION_CALL_ERROR,
+        payload: {
+          errorMesssage: error,
+        },
+      });
+    }
+  };
 export const byPassUserDetailsRedux =
   (userDetails: any) =>
   async (dispatch: any): Promise<any> => {
@@ -231,6 +266,8 @@ export const FlushData =
   };
 
 const _responseHandler = async (response: any): Promise<any> => {
+  console.log(response,'RES')
+  
   return new Promise(async (resolve, reject) => {
     if (response.status === 200 || response.status === 201) {
       const responseData = await response.json();

@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -6,7 +6,8 @@ import {
   ScrollView,
   Alert,
   Text,
-  TouchableOpacity
+  TouchableOpacity,
+  Button,
 } from "react-native";
 import { json } from "stream/consumers";
 
@@ -17,16 +18,22 @@ import GenericText from "../../../components/Text";
 import { LocalImages } from "../../../constants/imageUrlConstants";
 import { SCREENS } from "../../../constants/Labels";
 import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
-import { getHistory } from "../../../redux/actions/authenticationAction";
+import {
+  getHistory,
+  getVeriffSession,
+} from "../../../redux/actions/authenticationAction";
 import { Screens } from "../../../themes";
 import Avatar from "../../../components/Avatar";
-
+import VeriffSdk from "@veriff/react-native-sdk";
 interface IDocumentScreenProps {
   navigation?: any;
 }
 
 const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
   const getHistoryReducer = useAppSelector((state) => state.getHistoryReducer);
+  const veriffSession = useAppSelector((state) => state.VeriffSession);
+  const SESSION_URL = veriffSession?.responseData?.verification?.url; // Veriff Session
+
   const userDetails = useAppSelector((state) => state.account);
   const [selectedItem, setselectedItem] = useState();
 
@@ -54,25 +61,26 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
     dispatch(getHistory(PayLoad));
   }, []);
 
-  console.log("----+++,", data);
+  // console.log("----+++,", data);
 
   //open document
   const _rightIconOnPress = (selecteArrayItem: any) => {
-    console.log(',,,,selecteArrayItem',selecteArrayItem)
-       setselectedItem(selecteArrayItem);
-       setisBottomSheetForSideOptionVisible(true);
-     };
+    console.log(",,,,selecteArrayItem", selecteArrayItem);
+    setselectedItem(selecteArrayItem);
+    setisBottomSheetForSideOptionVisible(true);
+  };
 
-     const getCategoryImages =(item: {
-      categoryType: any; name: any; 
-  })=>{
-    const getItems =  SCREENS.HOMESCREEN.categoryList.filter((itemFiltered,index)=>{
-        return itemFiltered.TITLE.toLowerCase()===item?.categoryType?.toLowerCase();
-      })
-     
-     return getItems[0];
-  
-    }
+  const getCategoryImages = (item: { categoryType: any; name: any }) => {
+    const getItems = SCREENS.HOMESCREEN.categoryList.filter(
+      (itemFiltered, index) => {
+        return (
+          itemFiltered.TITLE.toLowerCase() === item?.categoryType?.toLowerCase()
+        );
+      }
+    );
+
+    return getItems[0];
+  };
 
   const _renderItem = ({ item }: any) => {
     return (
@@ -114,77 +122,127 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
       //   }}
       // />
       <TouchableOpacity
-      style={{marginBottom:20}}
+        style={{ marginBottom: 20 }}
         onPress={() =>
           navigation.navigate("ViewCredential", { documentDetails: item })
         }
       >
-        <View style={{flexDirection:"row",marginTop:5}}>
-        <View style={{justifyContent:'center',alignItems:'center'}}>
-        <Avatar   
-        isCategory={true}
-        isUploaded={false}
-        iconSource={getCategoryImages(item)?.URI}
-        style={{
-          container: [styles.avatarContainer, { backgroundColor: getCategoryImages(item)?.COLOR ,flexDirection:'row'}],
-          imgContainer: styles.avatarImageContainer,
-          text: styles.avatarTextContainer,
-        }}
-      />
-      </View>
-      <View style={{justifyContent:'center',alignItems:'center',marginTop:-20}}>
-      <GenericText style={[ { fontSize: 15,fontWeight:'bold',marginHorizontal:9 }]}>
-             {item?.categoryType}
+        <View style={{ flexDirection: "row", marginTop: 5 }}>
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <Avatar
+              isCategory={true}
+              isUploaded={false}
+              iconSource={getCategoryImages(item)?.URI}
+              style={{
+                container: [
+                  styles.avatarContainer,
+                  {
+                    backgroundColor: getCategoryImages(item)?.COLOR,
+                    flexDirection: "row",
+                  },
+                ],
+                imgContainer: styles.avatarImageContainer,
+                text: styles.avatarTextContainer,
+              }}
+            />
+          </View>
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: -20,
+            }}
+          >
+            <GenericText
+              style={[
+                { fontSize: 15, fontWeight: "bold", marginHorizontal: 9 },
+              ]}
+            >
+              {item?.categoryType}
             </GenericText>
-      </View>
-     
+          </View>
         </View>
-      
-<View style={{marginTop:-20}}>
-        <Card
-          titleIcon={item?.isVc ? LocalImages.vcImage : null}
-          leftAvatar={LocalImages.documentsImage}
-          absoluteCircleInnerImage={LocalImages.upImage}
-          // rightIconSrc={LocalImages.menuImage}
-          rightIconOnPress={() => _rightIconOnPress(item)}
-          title={item.name}
-          subtitle={`      Uploaded  : ${item.date}`}
-          style={{
-            ...styles.cardContainer,
-            ...{
-              avatarContainer: {
-                backgroundColor: "rgba(245, 188, 232, 1)",
-                width: 60,
-                height: 60,
-                borderRadius: 20,
-                marginTop: 25,
-                marginLeft: 10,
-                marginRight: 5,
+
+        <View style={{ marginTop: -20 }}>
+          <Card
+            titleIcon={item?.isVc ? LocalImages.vcImage : null}
+            leftAvatar={LocalImages.documentsImage}
+            absoluteCircleInnerImage={LocalImages.upImage}
+            // rightIconSrc={LocalImages.menuImage}
+            rightIconOnPress={() => _rightIconOnPress(item)}
+            title={item.name}
+            subtitle={`      Uploaded  : ${item.date}`}
+            style={{
+              ...styles.cardContainer,
+              ...{
+                avatarContainer: {
+                  backgroundColor: "rgba(245, 188, 232, 1)",
+                  width: 60,
+                  height: 60,
+                  borderRadius: 20,
+                  marginTop: 25,
+                  marginLeft: 10,
+                  marginRight: 5,
+                },
+                uploadImageStyle: {
+                  backgroundColor: "rgba(245, 188, 232, 1)",
+                  borderRadius: 25,
+                  borderWidth: 3,
+                  bordercolor: "#fff",
+                  borderWidthRadius: 25,
+                },
               },
-              uploadImageStyle: {
-                backgroundColor: "rgba(245, 188, 232, 1)",
-                borderRadius:25,
-                borderWidth:3,
-                bordercolor:'#fff',
-                borderWidthRadius:25
-               },
-            },
-            title: {
-              fontSize: 18,
-              marginTop: -10,
-              fontWeight: "bold",
-            },
-            subtitle: {
-              fontSize: 14,
-              marginTop: 5,
-            },
-          }}
-        />
+              title: {
+                fontSize: 18,
+                marginTop: -10,
+                fontWeight: "bold",
+              },
+              subtitle: {
+                fontSize: 14,
+                marginTop: 5,
+              },
+            }}
+          />
         </View>
       </TouchableOpacity>
-
     );
   };
+  var timeStamp = {
+    verification: {
+      timestamp: new Date(),
+    },
+  };
+
+  //Veriff Session
+
+  // const generateSessionKey = () => {
+ 
+
+  //   dispatch(getVeriffSession(timeStamp));
+  //   console.log(
+  //     "$$$$,",
+  //     veriffSession?.responseData?.verification?.sessionToken
+  //   );
+  // };
+
+  // const btnPress = async () => {
+  //   var result = await VeriffSdk.launchVeriff({ sessionUrl: SESSION_URL });
+  //   console.log(result, "===>res");
+  //   switch (result.status) {
+  //     case VeriffSdk.statusDone:
+  //       console.log();
+  //       // user submitted the images and completed the flow
+  //       // note that this does not mean a final decision yet
+  //       break;
+  //     case VeriffSdk.statusCanceled:
+  //       // user canceled the flow before completing
+  //       break;
+  //     case VeriffSdk.statusError:
+  //       // the flow could not be completed due to an error
+  //       console.log("Veriff verification failed with error=" + result.error);
+  //       break;
+  //   }
+  // };
 
   const _keyExtractor = ({ id }: any) => id.toString();
   return (
@@ -198,7 +256,7 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
         }}
       >
         {getHistoryReducer?.responseData
-          ? console.log("gettingResponse of HISTORY====>", getHistoryReducer)
+          ? console.log("gettingResponse of HISTORY====>")
           : null}
         <Header
           leftIconSource={LocalImages.logoImage}
@@ -212,6 +270,13 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
         >
           {SCREENS.HOMESCREEN.History}
         </GenericText>
+    {/* Veriff Session  */}
+        
+        {/* <Button
+          title="Generate Session key"
+          onPress={() => generateSessionKey()}
+        />
+        <Button title="Verify Document" onPress={() => btnPress()} /> */}
 
         <FlatList<any>
           showsHorizontalScrollIndicator={false}
@@ -327,7 +392,7 @@ const styles = StyleSheet.create({
     width: 15,
     height: 15,
     marginTop: 5,
-    tintColor:'#fff'
+    tintColor: "#fff",
   },
   avatarTextContainer: {
     fontSize: 13,
