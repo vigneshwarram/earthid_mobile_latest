@@ -35,18 +35,19 @@ interface IDocumentScreenProps {
 const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const _toggleDrawer = () => {
     navigation.openDrawer();
-  };
+  }
   const isFoused = useIsFocused();
   let documentsDetailsListData = useAppSelector((state) => state.Documents);
-  
+  const [documentsDetailsList, setdocumentsDetailsList] = useState(documentsDetailsListData);
 
+  
   let categoryTypes = "";
 
   if (route?.params && route?.params?.category) {
     categoryTypes = route?.params?.category;
   }
   const dispatch = useAppDispatch();
-  const [selectedItem, setselectedItem] = useState();
+  const [selectedItem, setselectedItem] = useState()
   const [multiSelectionEnabled, setMultiSelectionEnabled] = useState(false);
   const [clearMultiselection,setClearMultiSelection] = useState(false)
   const [
@@ -60,7 +61,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
 
   const [searchText, setsearchText] = useState("");
   const [isCheckBoxEnable, setCheckBoxEnable] = useState(false);
-  const [clear,setClear] = useState(false)
+  const [isClear,setIsClear] = useState(false)
   useEffect(() => {
     console.log("DOCUMENTS=====>>>>>>>>>>>", route?.params?.category);
     const chek = route?.params?.category;
@@ -96,12 +97,15 @@ const [isBottomSheetForShare,setIsBottomSheetForShare]= useState<boolean>(false)
     // console.log(item?.base64, "@@@@@@@@@");
     // setMultipleDucuments(item);
     setCheckBoxEnable(!isCheckBoxEnable);
- 
+  
   };
   const _selectTigger = (item: any) => {
     item.isSelected = !item.isSelected;
-  //  setdocumentsDetailsList({ ...documentsDetailsList });
+   
+    
+   setdocumentsDetailsList({ ...documentsDetailsList });
   };
+
   const _renderItem = ({ item, index }: any) => {
     AsyncStorage.setItem("day", item.date);
 
@@ -165,11 +169,10 @@ const [isBottomSheetForShare,setIsBottomSheetForShare]= useState<boolean>(false)
             subtitle={`      Uploaded  : ${item.date}`}
             isCheckBoxEnable={isCheckBoxEnable}
             onCheckBoxValueChange={(value: any) => {
-    
-              item.isSelected = value;
-              //setdocumentsDetailsList(documentsDetailsList);
+             // item.isSelected = value;
+              //setdocumentsDetailsList({ ...documentsDetailsList });
             }}
-            checkBoxValue={item.isSelected}
+            checkBoxValue={ item.isSelected}
             style={{
               ...styles.cardContainer,
               ...{
@@ -236,7 +239,7 @@ const [isBottomSheetForShare,setIsBottomSheetForShare]= useState<boolean>(false)
   );
 
   const onChangeHandler = (text: any) => {
-    const newData = documentsDetailsListData?.responseData.filter(function (item: {
+    const newData = documentsDetailsList?.responseData.filter(function (item: {
       name: string;
     }) {
       const itemData = item.name ? item?.name.toUpperCase() : "".toUpperCase();
@@ -266,7 +269,7 @@ const [isBottomSheetForShare,setIsBottomSheetForShare]= useState<boolean>(false)
   
   const shareMultipleItem = async () => {
     let temp = []
-    temp = documentsDetailsListData?.responseData.filter((el)=>{
+    temp = documentsDetailsList?.responseData.filter((el)=>{
       // console.log(i[0].isSelected,'IIII')
      return el.isSelected == true          
       
@@ -291,7 +294,7 @@ const [isBottomSheetForShare,setIsBottomSheetForShare]= useState<boolean>(false)
   const deleteItem = () => {
     setisBottomSheetForSideOptionVisible(false);
 
-    const newData = documentsDetailsListData?.responseData.filter(function (item: {
+    const newData = documentsDetailsList?.responseData.filter(function (item: {
       name: any;
     }) {
       return item.name !== selectedItem?.name;
@@ -305,7 +308,7 @@ const [isBottomSheetForShare,setIsBottomSheetForShare]= useState<boolean>(false)
   const _keyExtractor = ({ path }: any) => path.toString();
 
   const getFilteredData = () => {
-    let data = documentsDetailsListData?.responseData;
+    let data = documentsDetailsList?.responseData;
 
     console.log( "DaTa==>",data);
     // if (categoryTypes !== "") {
@@ -382,7 +385,11 @@ const [isBottomSheetForShare,setIsBottomSheetForShare]= useState<boolean>(false)
                   style={{ height: 18, width:18,marginRight:15,tintColor:'#293fee' }}
                 />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={()=>setCheckBoxEnable(false)}   >
+                <TouchableOpacity onPress={()=>
+                {
+                  setCheckBoxEnable(false)
+                  setIsClear(true)
+                }}   >
                   <Text style={{ color: "tomato", fontWeight: "500" }}>
                     CLEAR
                   </Text>
