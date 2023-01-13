@@ -51,7 +51,7 @@ const UploadScreen = (props: any) => {
     }
     try {
       const resp: any = await DocumentPicker.pick({
-        type: [DocumentPicker.types.images, DocumentPicker.types.pdf],
+        type: [DocumentPicker.types.allFiles],
         readContent: true,
       });
 

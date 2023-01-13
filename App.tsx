@@ -25,7 +25,7 @@ global.Buffer = Buffer;
 
 const App = () => {
   return (
-    <Provider store={store}>
+    <Provider store={store} children={undefined}>
       <PersistGate loading={null} persistor={persistor}>
         <SafeAreaView style={styles.container}>
           <LanguageContextProvider>
