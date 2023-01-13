@@ -311,15 +311,15 @@ const [isBottomSheetForShare,setIsBottomSheetForShare]= useState<boolean>(false)
     let data = documentsDetailsList?.responseData;
 
     console.log( "DaTa==>",data);
-    // if (categoryTypes !== "") {
-    //   data = data.filter((item: { categoryType: string }) => {
-    //     return (
-    //       item?.categoryType?.toLowerCase() === categoryTypes?.toLowerCase()
-    //     );
-    //   });
+    if (categoryTypes !== "") {
+      data = data.filter((item: { categoryType: string }) => {
+        return (
+          item?.categoryType?.toLowerCase() === categoryTypes?.toLowerCase()
+        );
+      });
 
-    //   return data;
-    // }
+      return data;
+    }
 
     if (searchedData.length > 0) {
       data = searchedData;
