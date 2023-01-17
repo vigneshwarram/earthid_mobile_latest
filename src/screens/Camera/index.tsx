@@ -290,7 +290,7 @@ const CameraScreen = (props: any) => {
                 tintColor: Screens.pureWhite,
               },
             }}
-            title={"authorize"}
+            title={"Authorize"}
           ></Button>
         </View>
       </ModalView>
@@ -311,7 +311,7 @@ const CameraScreen = (props: any) => {
               marginTop: 20,
             }}
           >
-            {"earthidwanttoaccess"}
+            {"EarthiD wants to access your following information"}
           </GenericText>
           <View>
             <View style={{ flexDirection: "row", marginVertical: 10 }}>
@@ -332,7 +332,7 @@ const CameraScreen = (props: any) => {
                     fontWeight: "300",
                   }}
                 >
-                  {"drivinglicense"}
+                  {"Driving License"}
                 </GenericText>
               </View>
             </View>
@@ -354,7 +354,7 @@ const CameraScreen = (props: any) => {
                     fontWeight: "300",
                   }}
                 >
-                  {"nationalidcard"}
+                  {"National Identification Card"}
                 </GenericText>
               </View>
             </View>
@@ -368,7 +368,7 @@ const CameraScreen = (props: any) => {
               fontWeight: "bold",
             }}
           >
-            {"duration"}
+            {"Duration"}
           </GenericText>
           <Dropdown
             style={[styles.dropdown]}
@@ -407,7 +407,7 @@ const CameraScreen = (props: any) => {
               <GenericText
                 style={{ color: "green", fontSize: 16, fontWeight: "700" }}
               >
-                {"authorize"}
+                {"Authorize"}
               </GenericText>
             </TouchableOpacity>
           </View>
@@ -431,7 +431,7 @@ const CameraScreen = (props: any) => {
               marginTop: 20,
             }}
           >
-            {"globalidwanttoaccess"}
+            {"EarthId wants to access your following informationtoaccess"}
           </GenericText>
           <View>
             <View style={{ flexDirection: "row", marginVertical: 10 }}>
@@ -452,7 +452,7 @@ const CameraScreen = (props: any) => {
                     fontWeight: "300",
                   }}
                 >
-                  {"kyctoken"}
+                  {"KYC Token"}
                 </GenericText>
               </View>
             </View>
