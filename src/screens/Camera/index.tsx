@@ -26,6 +26,7 @@ import QrScannerMaskedWidget from "../Camera/QrScannerMaskedWidget";
 import { useCreateScehma } from "../../hooks/use-create-shecma";
 import { saveDocuments } from "../../redux/actions/authenticationAction";
 import { IDocumentProps } from "../uploadDocuments/VerifiDocumentScreen";
+import GenericText from "../../components/CustomText/GenericTexts";
 const data = [
   { label: " 1", value: "1" },
   { label: " 2", value: "2" },
@@ -43,14 +44,31 @@ const CameraScreen = (props: any) => {
     data: issuerDataResponse,
     fetch: issuerFetch,
   } = useFetch();
+  const {
+    loading: shareCredientialLoading,
+    data: shareCredientialData,
+    fetch: shareCredientialFetch,
+  } = useFetch();
+
+  const {
+    loading: schemaLoding,
+    data: schemaList,
+    fetch: getScheme,
+  } = useFetch();
+
   const { loading: sendDataLoading, fetch: sendDataFetch } = useSendData();
 
   const dispatch = useAppDispatch();
-  const contractDetails = useAppSelector((state) => state.contract);
+  const userDetails = useAppSelector((state) => state.contract);
   const [successResponse, setsuccessResponse] = useState(false);
   const [isDocumentModal, setisDocumentModal] = useState(false);
   const documentsDetailsList = useAppSelector((state) => state.Documents);
   const [value, setValue] = useState(null);
+  const [isDocumentModalkyc, setisDocumentModalkyc] = useState(false);
+  const [
+    isDocumentModalGenerateCredientials,
+    setisDocumentModalGenerateCredientials,
+  ] = useState(false);
   const [checkbox1, setcheckbox1] = useState(true);
   const [checkbox2, setcheckbox2] = useState(true);
   const [issuerLogin, setissuerLogin] = useState(false);
@@ -70,13 +88,37 @@ const CameraScreen = (props: any) => {
     if (serviceData.requestType === "document") {
       setisDocumentModal(true);
     }
+    if (serviceData.requestType === "shareCredentials") {
+      setisDocumentModalkyc(true);
+    }
+    if (serviceData.requestType === "generateCredentials") {
+      const { apikey, reqNo, requestType } = serviceData;
+      issuerFetch(
+        `${serviceProviderApi}?apikey=${apikey}&reqNo=${reqNo}&requestType=${requestType}`,
+        {},
+        "GET"
+      );
+    }
   };
-
   useEffect(() => {
+    console.log("sharecredientials", shareCredientialData);
+    if (shareCredientialData?.status === "success") {
+      setisDocumentModalkyc(false);
+      props.navigation.goBack(null);
+    }
+  }, [shareCredientialData]);
+  const getSchemeDetails = () => {
+    getScheme();
+  };
+  useEffect(() => {
+    console.log("issuerDataResponse", issuerDataResponse);
     if (issuerDataResponse?.status === "success") {
       console.log("issuerData", issuerDataResponse);
       if (barCodeDataDetails?.requestType === "login") {
-        Alert.alert("Login successfully");
+        props.navigation.navigate.goBack(null);
+      } else if (barCodeDataDetails?.requestType === "generateCredentials") {
+        // setisDocumentModalGenerateCredientials(true);
+        getSchemeDetails();
       } else if (barCodeDataDetails?.requestType === "document") {
         setsuccessResponse(true);
         var documentDetails: IDocumentProps = {
@@ -113,6 +155,7 @@ const CameraScreen = (props: any) => {
         setTimeout(() => {
           setsuccessResponse(false);
           setisDocumentModal(false);
+          setisDocumentModalkyc(false);
           props.navigation.navigate("Document");
         }, 2000);
       }
@@ -127,17 +170,25 @@ const CameraScreen = (props: any) => {
       "GET"
     );
   };
+  const shareCredientials = () => {
+    const { apikey, reqNo, requestType } = barCodeDataDetails;
+    shareCredientialFetch(
+      `${serviceProviderApi}?apikey=${apikey}&reqNo=${reqNo}&requestType=${requestType}`,
+      {},
+      "GET"
+    );
+  };
 
   const getData = () => {
     if (barCodeDataDetails) {
       const encrypted_object = {
-        earthId: contractDetails?.responseData?.earthId,
-        fname: contractDetails?.responseData?.name,
-        userEmail: contractDetails?.responseData?.email,
-        userMobileNo: contractDetails?.responseData?.mobile,
-        emailVerified: contractDetails?.responseData?.emailApproved,
+        earthId: userDetails?.responseData?.earthId,
+        fname: userDetails?.responseData?.name,
+        userEmail: userDetails?.responseData?.email,
+        userMobileNo: userDetails?.responseData?.mobile,
+        emailVerified: userDetails?.responseData?.emailApproved,
         trustScore: "33",
-        mobileVerified: contractDetails?.responseData?.mobileApproved,
+        mobileVerified: userDetails?.responseData?.mobileApproved,
         pressed: false,
         dob: "22/02/1995",
         requestType: barCodeDataDetails?.requestType,
@@ -154,7 +205,7 @@ const CameraScreen = (props: any) => {
         testnet: true,
         encrypted_object: {
           ciphertext,
-          earthId: contractDetails?.responseData?.earthId,
+          earthId: userDetails?.responseData?.earthId,
         },
       };
       sendDataFetch(userDataApi, data, "POST");
@@ -192,15 +243,28 @@ const CameraScreen = (props: any) => {
       </RNCamera>
       <AnimatedLoader
         isLoaderVisible={issuerLoading || sendDataLoading}
-        loadingText="Sending Data..."
+        loadingText="sendingdata"
       />
       <SuccessPopUp
         isLoaderVisible={successResponse}
         loadingText={successMessage}
       />
-      <ModalView isModalVisible={issuerLogin}>
-        <View style={{ flex: 1, paddingHorizontal: 5 }}>
-          <View style={{ justifyContent: "center", alignItems: "center" }}>
+      <ModalView height={250} isModalVisible={issuerLogin}>
+        <View
+          style={{
+            flex: 1,
+            paddingHorizontal: 5,
+            justifyContent: "space-between",
+          }}
+        >
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "#8059D0",
+              width: deviceWidth / 1.5,
+            }}
+          >
             <Image
               resizeMode="contain"
               style={[styles.imageLogo]}
@@ -216,6 +280,7 @@ const CameraScreen = (props: any) => {
             style={{
               buttonContainer: {
                 elevation: 5,
+                marginHorizontal: 10,
               },
               text: {
                 color: Screens.pureWhite,
@@ -225,7 +290,7 @@ const CameraScreen = (props: any) => {
                 tintColor: Screens.pureWhite,
               },
             }}
-            title={"Authorize"}
+            title={"authorize"}
           ></Button>
         </View>
       </ModalView>
@@ -236,7 +301,7 @@ const CameraScreen = (props: any) => {
         isModalVisible={isDocumentModal}
       >
         <View style={{ flex: 1, paddingHorizontal: 5 }}>
-          <Text
+          <GenericText
             style={{
               textAlign: "center",
               padding: 5,
@@ -246,8 +311,8 @@ const CameraScreen = (props: any) => {
               marginTop: 20,
             }}
           >
-            EarthId wants to access your following information
-          </Text>
+            {"earthidwanttoaccess"}
+          </GenericText>
           <View>
             <View style={{ flexDirection: "row", marginVertical: 10 }}>
               <CheckBox
@@ -258,7 +323,7 @@ const CameraScreen = (props: any) => {
                 value={checkbox1}
               />
               <View style={{ justifyContent: "center", alignItems: "center" }}>
-                <Text
+                <GenericText
                   style={{
                     textAlign: "center",
                     padding: 5,
@@ -267,8 +332,8 @@ const CameraScreen = (props: any) => {
                     fontWeight: "300",
                   }}
                 >
-                  Drriving License
-                </Text>
+                  {"drivinglicense"}
+                </GenericText>
               </View>
             </View>
             <View style={{ flexDirection: "row", marginVertical: 10 }}>
@@ -280,7 +345,7 @@ const CameraScreen = (props: any) => {
                 value={checkbox2}
               />
               <View style={{ justifyContent: "center", alignItems: "center" }}>
-                <Text
+                <GenericText
                   style={{
                     textAlign: "center",
                     padding: 5,
@@ -289,12 +354,12 @@ const CameraScreen = (props: any) => {
                     fontWeight: "300",
                   }}
                 >
-                  National Identification Card
-                </Text>
+                  {"nationalidcard"}
+                </GenericText>
               </View>
             </View>
           </View>
-          <Text
+          <GenericText
             style={{
               textAlign: "center",
               padding: 5,
@@ -303,8 +368,8 @@ const CameraScreen = (props: any) => {
               fontWeight: "bold",
             }}
           >
-            Duration
-          </Text>
+            {"duration"}
+          </GenericText>
           <Dropdown
             style={[styles.dropdown]}
             placeholderStyle={styles.placeholderStyle}
@@ -316,7 +381,7 @@ const CameraScreen = (props: any) => {
             maxHeight={300}
             labelField="label"
             valueField="value"
-            placeholder={"Expirational Time (default 1 day)"}
+            placeholder={"Expiry Time (default 1 day)"}
             searchPlaceholder="Search..."
             value={"value"}
             onChange={(item) => {
@@ -332,11 +397,205 @@ const CameraScreen = (props: any) => {
             }}
           >
             <TouchableOpacity onPress={() => setisDocumentModal(false)}>
+              <GenericText
+                style={{ color: "red", fontSize: 16, fontWeight: "700" }}
+              >
+                {"cancel"}
+              </GenericText>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={documentShare}>
+              <GenericText
+                style={{ color: "green", fontSize: 16, fontWeight: "700" }}
+              >
+                {"authorize"}
+              </GenericText>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ModalView>
+
+      <ModalView
+        left={deviceWidth / 9}
+        width={deviceWidth / 1.2}
+        height={300}
+        isModalVisible={isDocumentModalkyc}
+      >
+        <View style={{ flex: 1, paddingHorizontal: 5 }}>
+          <GenericText
+            style={{
+              textAlign: "center",
+              padding: 5,
+              color: "#000",
+              fontSize: 14,
+              fontWeight: "900",
+              marginTop: 20,
+            }}
+          >
+            {"globalidwanttoaccess"}
+          </GenericText>
+          <View>
+            <View style={{ flexDirection: "row", marginVertical: 10 }}>
+              <CheckBox
+                disabled={false}
+                onValueChange={(value) => {
+                  setcheckbox1(value);
+                }}
+                value={checkbox1}
+              />
+              <View style={{ justifyContent: "center", alignItems: "center" }}>
+                <GenericText
+                  style={{
+                    textAlign: "center",
+                    padding: 5,
+                    color: "#000",
+                    fontSize: 14,
+                    fontWeight: "300",
+                  }}
+                >
+                  {"kyctoken"}
+                </GenericText>
+              </View>
+            </View>
+          </View>
+          <GenericText
+            style={{
+              textAlign: "center",
+              padding: 5,
+              color: "#000",
+              fontSize: 16,
+              fontWeight: "bold",
+            }}
+          >
+            {"duration"}
+          </GenericText>
+          <Dropdown
+            style={[styles.dropdown]}
+            placeholderStyle={styles.placeholderStyle}
+            selectedTextStyle={styles.selectedTextStyle}
+            inputSearchStyle={styles.inputSearchStyle}
+            iconStyle={styles.iconStyle}
+            data={data}
+            search
+            maxHeight={300}
+            labelField="label"
+            valueField="value"
+            placeholder={"Expiry Time (default 1 day)"}
+            searchPlaceholder="Search..."
+            value={"value"}
+            onChange={(item) => {
+              setValue(item.value);
+            }}
+          />
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              marginVertical: 50,
+              marginHorizontal: 20,
+            }}
+          >
+            <TouchableOpacity onPress={() => setisDocumentModalkyc(false)}>
               <Text style={{ color: "red", fontSize: 16, fontWeight: "700" }}>
                 Cancel
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={documentShare}>
+            <TouchableOpacity onPress={shareCredientials}>
+              <Text style={{ color: "green", fontSize: 16, fontWeight: "700" }}>
+                Authorize
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ModalView>
+
+      <ModalView
+        left={deviceWidth / 9}
+        width={deviceWidth / 1.2}
+        height={300}
+        isModalVisible={isDocumentModalGenerateCredientials}
+      >
+        <View style={{ flex: 1, paddingHorizontal: 5 }}>
+          <GenericText
+            style={{
+              textAlign: "center",
+              padding: 5,
+              color: "#000",
+              fontSize: 14,
+              fontWeight: "900",
+              marginTop: 20,
+            }}
+          >
+            {"Select anyone type to Generate Credentials"}
+          </GenericText>
+          <View>
+            <View style={{ flexDirection: "row", marginVertical: 10 }}>
+              <CheckBox
+                disabled={false}
+                onValueChange={(value) => {
+                  setcheckbox1(value);
+                }}
+                value={checkbox1}
+              />
+              <View style={{ justifyContent: "center", alignItems: "center" }}>
+                <GenericText
+                  style={{
+                    textAlign: "center",
+                    padding: 5,
+                    color: "#000",
+                    fontSize: 14,
+                    fontWeight: "300",
+                  }}
+                >
+                  {"Encrypt Credentials  "}
+                </GenericText>
+              </View>
+            </View>
+          </View>
+          <GenericText
+            style={{
+              textAlign: "center",
+              padding: 5,
+              color: "#000",
+              fontSize: 16,
+              fontWeight: "bold",
+            }}
+          >
+            {"duration"}
+          </GenericText>
+          <Dropdown
+            style={[styles.dropdown]}
+            placeholderStyle={styles.placeholderStyle}
+            selectedTextStyle={styles.selectedTextStyle}
+            inputSearchStyle={styles.inputSearchStyle}
+            iconStyle={styles.iconStyle}
+            data={data}
+            search
+            maxHeight={300}
+            labelField="label"
+            valueField="value"
+            placeholder={"Expiry Time (default 1 day)"}
+            searchPlaceholder="Search..."
+            value={"value"}
+            onChange={(item) => {
+              setValue(item.value);
+            }}
+          />
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              marginVertical: 50,
+              marginHorizontal: 20,
+            }}
+          >
+            <TouchableOpacity
+              onPress={() => setisDocumentModalGenerateCredientials(false)}
+            >
+              <Text style={{ color: "red", fontSize: 16, fontWeight: "700" }}>
+                Cancel
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={shareCredientials}>
               <Text style={{ color: "green", fontSize: 16, fontWeight: "700" }}>
                 Authorize
               </Text>
@@ -402,3 +661,4 @@ const styles = StyleSheet.create({
 });
 
 export default CameraScreen;
+
