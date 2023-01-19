@@ -93,6 +93,15 @@ const [isBottomSheetForShare,setIsBottomSheetForShare]= useState<boolean>(false)
 
     return getItems[0];
   };
+
+  useEffect(()=>{
+    if(documentsDetailsListData){
+      setdocumentsDetailsList(documentsDetailsListData)
+    }
+
+  },[documentsDetailsListData])
+
+
   const multiSelect = (item) => {
     // console.log(item?.base64, "@@@@@@@@@");
     // setMultipleDucuments(item);
@@ -110,7 +119,7 @@ const [isBottomSheetForShare,setIsBottomSheetForShare]= useState<boolean>(false)
     AsyncStorage.setItem("day", item.date);
 
     return (
-      <TouchableWithoutFeedback
+      <TouchableOpacity
         onLongPress={() => multiSelect(item)}
         style={{
           marginBottom: 20,
@@ -205,7 +214,7 @@ const [isBottomSheetForShare,setIsBottomSheetForShare]= useState<boolean>(false)
             }}
           />
         </View>
-      </TouchableWithoutFeedback>
+      </TouchableOpacity>
     );
   };
   const RowOption = ({ icon, title, rowAction }: any) => (
