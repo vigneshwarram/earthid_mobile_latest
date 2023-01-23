@@ -33,6 +33,7 @@ import { IDocumentProps } from "../uploadDocuments/VerifiDocumentScreen";
 import GenericText from "../../components/Text";
 import Loader from "../../components/Loader";
 import { isEarthId } from "../../utils/PlatFormUtils";
+import { dateTime } from "../../utils/encryption";
 const data = [
   { label: " 1", value: "1" },
   { label: " 2", value: "2" },
@@ -212,11 +213,12 @@ const CameraScreen = (props: any) => {
   const createVerifiableCredentials = async () => {
     getData();
     setloadingforGentSchemaAPI(true);
+    var date = dateTime();
     var documentDetails: IDocumentProps = {
       name: "Membership Credientials",
       path: "filePath",
-      date: "1/08/2022",
-      time: "date?.time",
+      date: date?.date,
+      time: date?.time,
       txId: "data?.result",
       docType: "pdf",
       docExt: ".jpg",
@@ -225,8 +227,8 @@ const CameraScreen = (props: any) => {
       vc: JSON.stringify({
         name: "Membership Credientials",
         path: "filePath",
-        date: "1/08/2022",
-        time: "date?.time",
+        date: date?.date,
+          time: date?.time,
         txId: "data?.result",
         docType: "pdf",
         docExt: ".jpg",
