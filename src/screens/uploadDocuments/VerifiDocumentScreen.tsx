@@ -26,6 +26,7 @@ import { dateTime } from "../../utils/encryption";
 import GenericText from "../../components/Text";
 
 export interface IDocumentProps {
+  id:string;
   name: string;
   path: string;
   date: string;
@@ -69,46 +70,40 @@ const VerifiDocumentScreen = (props: any) => {
       userId: userDetails?.responseData?.Id,
       publicKey: userDetails?.responseData?.publicKey,
     };
-    AddDocumehtfetch(CreateHistory, payLoad, "POST");
+   // AddDocumehtfetch(CreateHistory, payLoad, "POST");
+   setTimeout(() => {
+    var date = dateTime();
+    const filePath = RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
+    var documentDetails: IDocumentProps = {
+      id:`ID_VERIFICATION${Math.random()}${selectedDocument}${Math.random()}`,
+      name: selectedDocument,
+      path: filePath,
+      date: date?.date,
+      time: date?.time,
+      txId: data?.result,
+      docType: "jpg",
+      docExt: ".jpg",
+      processedDoc: "",
+      base64: uploadedDocumentsBase64,
+      categoryType:selectedDocument
+    };
+
+    var DocumentList = documentsDetailsList?.responseData
+      ? documentsDetailsList?.responseData
+      : [];
+    DocumentList.push(documentDetails);
+    dispatch(saveDocuments(DocumentList));
+    setsuccessResponse(true);
+    getHistoryReducer.isSuccess = false;
+    setTimeout(() => {
+      setsuccessResponse(false);
+      props.navigation.navigate("Documents");
+    }, 2000);
+   }, 200);
+   setLoad(false);
   };
 
-  useEffect(() => {
-    console.log("DataAdded===>", DataAdded);
-    if (DataAdded) {
-      const PayLoad = {
-        userId: userDetails?.responseData?.Id,
-        publicKey: userDetails?.responseData?.publicKey,
-      };
-      dispatch(getHistory(PayLoad)).then(() => {
-        var date = dateTime();
-        const filePath = RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
-        var documentDetails: IDocumentProps = {
-          name: selectedDocument,
-          path: filePath,
-          date: date?.date,
-          time: date?.time,
-          txId: data?.result,
-          docType: "jpg",
-          docExt: ".jpg",
-          processedDoc: "",
-          base64: uploadedDocumentsBase64,
-          categoryType:selectedDocument
-        };
-
-        var DocumentList = documentsDetailsList?.responseData
-          ? documentsDetailsList?.responseData
-          : [];
-        DocumentList.push(documentDetails);
-        dispatch(saveDocuments(DocumentList));
-        setsuccessResponse(true);
-        getHistoryReducer.isSuccess = false;
-        setTimeout(() => {
-          setsuccessResponse(false);
-          props.navigation.navigate("Documents");
-        }, 2000);
-      });
-    }
-  }, [DataAdded]);
+ 
 
   if (getHistoryReducer?.isSuccess) {
     setsuccessResponse(true);

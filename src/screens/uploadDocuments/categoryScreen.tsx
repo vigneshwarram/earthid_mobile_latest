@@ -223,10 +223,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
     );
   };
 
-  useEffect(()=>{
-console.log("selctCategorys==>",categoryList)
 
-  },[])
 
   return (
     <View style={styles.sectionContainer}>
@@ -351,11 +348,12 @@ console.log("selctCategorys==>",categoryList)
             <Button
               onPress={() => {
                 setIsPrceedForLivenessTest(false);
+             const document: any[0] = categoryList[selectedParentIndex]?.value?.filter((data:any)=>data.isSelected)
                 setTimeout(() => {
-                  navigation.navigate("LivenessCameraScreen", {
-                    fileUri,
-                    selectedDocument:categoryList[selectedParentIndex].key,
-                  });
+                   navigation.navigate("LivenessCameraScreen", {
+                     fileUri,
+                     selectedDocument:`${categoryList[selectedParentIndex].key} (${document[0]?.title})`,
+                 });
                 }, 100);
               }}
               style={{

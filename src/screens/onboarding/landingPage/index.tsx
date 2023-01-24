@@ -74,6 +74,7 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
       changeLanguagePreference(storedUserLanguagePref, "SplashScreen");
     }
   };
+  
   const selectLanguage = async (item: any) => {
     il8n.changeLanguage(item.value);
     await AsyncStorage.setItem("setLanguage", item.value);

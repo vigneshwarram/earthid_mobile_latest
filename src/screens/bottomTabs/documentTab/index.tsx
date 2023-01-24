@@ -39,6 +39,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const isFoused = useIsFocused();
   let documentsDetailsListData = useAppSelector((state) => state.Documents);
   const [documentsDetailsList, setdocumentsDetailsList] = useState(documentsDetailsListData);
+  const [selectedDocuments,setselectedDocuments]=useState()
 
   
   let categoryTypes = "";
@@ -73,6 +74,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
 const [isBottomSheetForShare,setIsBottomSheetForShare]= useState<boolean>(false);
   const _rightIconOnPress = (selecteArrayItem: any) => {
     console.log(",,,,selecteArrayItem", selecteArrayItem);
+    setselectedDocuments(selecteArrayItem)   
     setselectedItem(selecteArrayItem);
     setisBottomSheetForSideOptionVisible(true);
   };
@@ -110,8 +112,7 @@ const [isBottomSheetForShare,setIsBottomSheetForShare]= useState<boolean>(false)
   };
   const _selectTigger = (item: any) => {
     item.isSelected = !item.isSelected;
-   
-    
+    setselectedDocuments(item)   
    setdocumentsDetailsList({ ...documentsDetailsList });
   };
 
@@ -175,7 +176,7 @@ const [isBottomSheetForShare,setIsBottomSheetForShare]= useState<boolean>(false)
             rightIconSrc={LocalImages.menuImage}
             rightIconOnPress={() => _rightIconOnPress(item)}
             title={item.name}
-            subtitle={`      Uploaded  : ${item.date}`}
+            subtitle={item.isVc?`      Received  : ${item.date}`:`      Uploaded  : ${item.date}`}
             isCheckBoxEnable={isCheckBoxEnable}
             onCheckBoxValueChange={(value: any) => {
              // item.isSelected = value;
@@ -263,16 +264,25 @@ const [isBottomSheetForShare,setIsBottomSheetForShare]= useState<boolean>(false)
   };
 
   const shareItem = async () => {
-    console.log("selectedItem?.base64===>", selectedItem?.base64);
-    if (selectedItem?.docType === "jpg") {
+    if(selectedDocuments?.isVc){
       await Share.open({
-        url: selectedItem?.base64,
+        message: selectedItem?.vc,
+        title:'Token'
       });
-    } else {
-      await Share.open({
-        url: `data:image/jpeg;base64,${selectedItem?.base64}`,
-      });
+      }
+    else{
+      console.log("selectedItem?.base64===>", selectedItem?.base64);
+      if (selectedItem?.docType === "jpg") {
+        await Share.open({
+          url: selectedItem?.base64,
+        });
+      } else {
+        await Share.open({
+          url: `data:image/jpeg;base64,${selectedItem?.base64}`,
+        });
+      }
     }
+
   };
 
   
@@ -321,7 +331,7 @@ const [isBottomSheetForShare,setIsBottomSheetForShare]= useState<boolean>(false)
 
     console.log( "DaTa==>",data);
     if (categoryTypes !== "") {
-      data = data.filter((item: { categoryType: string }) => {
+      data = data?.filter((item: { categoryType: string }) => {
         return (
           item?.categoryType?.toLowerCase() === categoryTypes?.toLowerCase()
         );
