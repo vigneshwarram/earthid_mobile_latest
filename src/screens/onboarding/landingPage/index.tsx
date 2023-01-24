@@ -90,6 +90,7 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
     setLanguageList(languageList);
     setLanguageVisible(false);
   };
+
   useEffect(() => {
     initializeUserPreferences();
   }, []);
@@ -117,6 +118,7 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
       console.log("data==>", err);
     }
   };
+  
   const _handleBarCodeRead = (barCodeData: any) => {
     console.log("barcodedata", barCodeData);
   };

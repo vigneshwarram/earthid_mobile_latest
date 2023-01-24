@@ -79,7 +79,9 @@ const CameraScreen = (props: any) => {
   const [isCameraVisible, setIsCamerVisible] = useState(true);
   const [isDocumentModal, setisDocumentModal] = useState(false);
   const documentsDetailsList = useAppSelector((state) => state.Documents);
-  const [selectedCheckBox,setselectedCheckBox]=useState(documentsDetailsList.responseData)
+  const [selectedCheckBox, setselectedCheckBox] = useState(
+    documentsDetailsList.responseData
+  );
   const [issuerSchemaJSON, setissuerSchemaJSON] = useState();
   const [issuerSchemaName, setissuerSchemaName] = useState([{}]);
   const [issuerSchemaDropDown, setissuerSchemaDropDown] = useState(false);
@@ -119,13 +121,15 @@ const CameraScreen = (props: any) => {
     }
     setIsCamerVisible(false);
   };
-useEffect(()=>{
-  const selectedCheckBoxs =documentsDetailsList.responseData.map((item: { selectedForCheckBox: boolean; },index: any)=>{
-    item.selectedForCheckBox =true
-    return item
-  })
-  setselectedCheckBox([...selectedCheckBoxs])
-},[isDocumentModalkyc,documentsDetailsList])
+  useEffect(() => {
+    const selectedCheckBoxs = documentsDetailsList?.responseData?.map(
+      (item: { selectedForCheckBox: boolean }, index: any) => {
+        item.selectedForCheckBox = true;
+        return item;
+      }
+    );
+    setselectedCheckBox(selectedCheckBoxs);
+  }, [isDocumentModalkyc]);
   //service provider API responses handled
   useEffect(() => {
     if (
@@ -133,24 +137,19 @@ useEffect(()=>{
       serviceProviderResponse?.values &&
       serviceProviderResponse?.values?.length > 0
     ) {
-      setisDocumentModalkyc(false)
-      console.log("ios coming insie", barCodeDataDetails);
+      setisDocumentModalkyc(false);
+   
       if (barCodeDataDetails?.requestType === "login") {
         setTimeout(() => {
           setissuerLogin(true);
         }, 100);
       } else if (barCodeDataDetails?.requestType === "shareCredentials") {
-       setisDocumentModalkyc(true)
-     
+        setisDocumentModalkyc(true);
+      } else if (barCodeDataDetails?.requestType === "document") {
+        setisDocumentModalkyc(true);
+      } else if (barCodeDataDetails?.requestType === "generateCredentials") {
+        setisDocumentModalkyc(true);
       }
-     else if (barCodeDataDetails?.requestType === "document") {
-      setisDocumentModalkyc(true)
-    }
-      else if (barCodeDataDetails?.requestType === "generateCredentials") {
-               setisDocumentModalkyc(true)
-   
-      }
-   
     }
   }, [serviceProviderResponse]);
 
@@ -161,32 +160,30 @@ useEffect(()=>{
     );
     if (sendDatatoServiceProviderData) {
       //passwordless login flow
-      setisDocumentModalkyc(false)
-      if (barCodeDataDetails.requestType === "login") {
+      setisDocumentModalkyc(false);
+      if (barCodeDataDetails?.requestType === "login") {
         setIsCamerVisible(true);
         Alert.alert("Login Successfully");
       }
-      if (barCodeDataDetails.requestType === "generateCredentials") {
+      if (barCodeDataDetails?.requestType === "generateCredentials") {
         setIsCamerVisible(true);
       }
-      if (barCodeDataDetails.requestType === "shareCredentials") {
+      if (barCodeDataDetails?.requestType === "shareCredentials") {
         setIsCamerVisible(true);
         Alert.alert("credential has been shared successfully");
       }
-      if (barCodeDataDetails.requestType === "document") {
+      if (barCodeDataDetails?.requestType === "document") {
         setIsCamerVisible(true);
-        
       }
     }
   }, [sendDatatoServiceProviderData]);
 
-
-  useEffect(()=>{
-   return()=>{
-    setIsCamerVisible(true)
-    setisDocumentModalkyc(false)
-   }
-  },[])
+  useEffect(() => {
+    return () => {
+      setIsCamerVisible(true);
+      setisDocumentModalkyc(false);
+    };
+  }, []);
 
   useEffect(() => {
     console.log("sharecredientials", shareCredientialData);
@@ -200,22 +197,22 @@ useEffect(()=>{
     getData();
   };
   const getDropDownList = () => {
-    let datas=[];
-      datas= documentsDetailsList?.responseData;
-         if(barCodeDataDetails.requestType === "shareCredentials"){
-          datas =datas.filter((item)=>item.isVc)
-          return datas;
-         }
-         return datas;
+    let datas = [];
+    datas = documentsDetailsList?.responseData;
+    if (barCodeDataDetails?.requestType === "shareCredentials") {
+      datas = datas?.filter((item) => item.isVc);
+      return datas;
+    }
+    return datas;
   };
 
   const createVerifiableCredentials = async () => {
     getData();
     setloadingforGentSchemaAPI(true);
-    if(barCodeDataDetails.requestType === "document"){
+    if (barCodeDataDetails?.requestType === "document") {
       var date = dateTime();
       var documentDetails: IDocumentProps = {
-        id:`ID_VERIFICATION${Math.random()}${'selectedDocument'}${Math.random()}`,
+        id: `ID_VERIFICATION${Math.random()}${"selectedDocument"}${Math.random()}`,
         name: "VC - KYC Token",
         path: "filePath",
         date: date?.date,
@@ -229,7 +226,7 @@ useEffect(()=>{
           name: "VC - KYC Token",
           path: "filePath",
           date: date?.date,
-            time: date?.time,
+          time: date?.time,
           txId: "data?.result",
           docType: "pdf",
           docExt: ".jpg",
@@ -237,15 +234,15 @@ useEffect(()=>{
           isVc: true,
         }),
       };
-  
+
       var DocumentList = documentsDetailsList?.responseData
         ? documentsDetailsList?.responseData
         : [];
-  
+
       DocumentList.push(documentDetails);
       console.log("documentsDetailsList", documentsDetailsList);
       dispatch(saveDocuments(DocumentList));
-  
+
       setIsCamerVisible(true);
       setTimeout(() => {
         setloadingforGentSchemaAPI(false);
@@ -253,13 +250,12 @@ useEffect(()=>{
         Alert.alert("KYC token Saved successfully");
         props.navigation.navigate("Documents");
       }, 3000);
-    }else if(barCodeDataDetails.requestType === "shareCredentials"){
-     // getData();
-    }
-    else{
+    } else if (barCodeDataDetails.requestType === "shareCredentials") {
+      // getData();
+    } else {
       var date = dateTime();
       var documentDetails: IDocumentProps = {
-        id:`ID_VERIFICATION${Math.random()}${'selectedDocument'}${Math.random()}`,
+        id: `ID_VERIFICATION${Math.random()}${"selectedDocument"}${Math.random()}`,
         name: "Membership Credientials",
         path: "filePath",
         date: date?.date,
@@ -273,7 +269,7 @@ useEffect(()=>{
           name: "Membership Credientials",
           path: "filePath",
           date: date?.date,
-            time: date?.time,
+          time: date?.time,
           txId: "data?.result",
           docType: "pdf",
           docExt: ".jpg",
@@ -281,15 +277,15 @@ useEffect(()=>{
           isVc: true,
         }),
       };
-  
+
       var DocumentList = documentsDetailsList?.responseData
         ? documentsDetailsList?.responseData
         : [];
-  
+
       DocumentList.push(documentDetails);
       console.log("documentsDetailsList", documentsDetailsList);
       dispatch(saveDocuments(DocumentList));
-  
+
       setIsCamerVisible(true);
       setTimeout(() => {
         setloadingforGentSchemaAPI(false);
@@ -298,7 +294,6 @@ useEffect(()=>{
         props.navigation.navigate("Documents");
       }, 3000);
     }
-    
   };
 
   const serviceProviderApiCall = (serviceData: any) => {
@@ -317,29 +312,36 @@ useEffect(()=>{
     getSchemeDetails();
   };
 
-  const navigateToCamerScreen=()=>{
-    setisDocumentModalkyc(false)
+  const navigateToCamerScreen = () => {
+    setisDocumentModalkyc(false);
     setIsCamerVisible(true);
-    props.navigation.navigate('uploadDocumentsScreen')
-  }
+    props.navigation.navigate("uploadDocumentsScreen");
+  };
 
   const checkDisable = () => {
-    let trap =false
-    if(documentsDetailsList?.responseData?.length === 0 || documentsDetailsList?.responseData){
-      trap= true
+    let trap = false;
+    if (
+      documentsDetailsList?.responseData?.length === 0 ||
+      documentsDetailsList?.responseData ===undefined 
+    ) {
+      trap = true;
     }
-     if(selectedCheckBox.some((item: { selectedForCheckBox: boolean; })=>item?.selectedForCheckBox===true)){
-      trap= false
-     }
-     return trap
-   
+    if (
+      selectedCheckBox?.some(
+        (item: { selectedForCheckBox: boolean }) =>
+          item?.selectedForCheckBox === true
+      )
+    ) {
+      trap = false;
+    }
+    return trap;
   };
 
   const getData = () => {
     console.log("userDetails", userDetails);
     if (barCodeDataDetails) {
       let data;
-      if (barCodeDataDetails.requestType === "login") {
+      if (barCodeDataDetails?.requestType === "login") {
         data = {
           sessionKey: barCodeDataDetails?.sessionKey,
           encrypted_object: {
@@ -347,7 +349,7 @@ useEffect(()=>{
             pressed: false,
           },
         };
-      } else if (barCodeDataDetails.requestType === "generateCredentials") {
+      } else if (barCodeDataDetails?.requestType === "generateCredentials") {
         data = {
           sessionKey: barCodeDataDetails?.sessionKey,
           encrypted_object: {
@@ -355,8 +357,7 @@ useEffect(()=>{
             pressed: false,
           },
         };
-      } 
-      else if (barCodeDataDetails.requestType === "document") {
+      } else if (barCodeDataDetails?.requestType === "document") {
         data = {
           sessionKey: barCodeDataDetails?.sessionKey,
           encrypted_object: {
@@ -372,11 +373,11 @@ useEffect(()=>{
             //documents: documentsDetailsList?.responseData,
             requestType: barCodeDataDetails?.requestType,
             reqNo: barCodeDataDetails?.reqNo,
-            "kycToken": "6hrFDATxrG9w14QY9wwnmVhLE0Wg6LIvwOwUaxz761m1JfRp4rs8Mzozk5xhSkw0_MQz6bpcJnrFUDwp5lPPFC157dHxbkKlDiQ9XY3ZIP8zAGCsS8ruN2uKjIaIargX",
+            kycToken:
+              "6hrFDATxrG9w14QY9wwnmVhLE0Wg6LIvwOwUaxz761m1JfRp4rs8Mzozk5xhSkw0_MQz6bpcJnrFUDwp5lPPFC157dHxbkKlDiQ9XY3ZIP8zAGCsS8ruN2uKjIaIargX",
           },
         };
-      }
-      else if (barCodeDataDetails.requestType === "shareCredentials") {
+      } else if (barCodeDataDetails.requestType === "shareCredentials") {
         data = {
           sessionKey: barCodeDataDetails?.sessionKey,
           encrypted_object: {
@@ -392,7 +393,8 @@ useEffect(()=>{
             //documents: documentsDetailsList?.responseData,
             requestType: barCodeDataDetails?.requestType,
             reqNo: barCodeDataDetails?.reqNo,
-            "kycToken": "6hrFDATxrG9w14QY9wwnmVhLE0Wg6LIvwOwUaxz761m1JfRp4rs8Mzozk5xhSkw0_MQz6bpcJnrFUDwp5lPPFC157dHxbkKlDiQ9XY3ZIP8zAGCsS8ruN2uKjIaIargX",
+            kycToken:
+              "6hrFDATxrG9w14QY9wwnmVhLE0Wg6LIvwOwUaxz761m1JfRp4rs8Mzozk5xhSkw0_MQz6bpcJnrFUDwp5lPPFC157dHxbkKlDiQ9XY3ZIP8zAGCsS8ruN2uKjIaIargX",
           },
         };
       }
@@ -518,7 +520,6 @@ useEffect(()=>{
           </View>
         </View>
       </ModalView>
- 
 
       <ModalView
         left={deviceWidth / 9}
@@ -526,27 +527,24 @@ useEffect(()=>{
         height={500}
         isModalVisible={isDocumentModalkyc}
       >
-     
-  
         <View style={{ flex: 1, paddingHorizontal: 5 }}>
-        {documentsDetailsList?.responseData?.length === 0 || documentsDetailsList?.responseData === undefined &&
-        <TouchableOpacity onPress={()=>navigateToCamerScreen()}>
-                  <View style={{  paddingHorizontal: 5,marginTop:10 }}>
-          <GenericText
-            style={{
-              textAlign: "center",
-              color:  Screens.colors.ScanButton.startColor,
-              fontSize: 14,
-              fontWeight: "900",
-       
-            }}
-          >
-            {'+ Add Documents'}
-          </GenericText>
-          </View>
-        </TouchableOpacity>
-
-            }
+          {documentsDetailsList?.responseData?.length === 0 ||
+            (documentsDetailsList?.responseData === undefined && (
+              <TouchableOpacity onPress={() => navigateToCamerScreen()}>
+                <View style={{ paddingHorizontal: 5, marginTop: 10 }}>
+                  <GenericText
+                    style={{
+                      textAlign: "center",
+                      color: Screens.colors.ScanButton.startColor,
+                      fontSize: 14,
+                      fontWeight: "900",
+                    }}
+                  >
+                    {"+ Add Documents"}
+                  </GenericText>
+                </View>
+              </TouchableOpacity>
+            ))}
           <GenericText
             style={{
               textAlign: "center",
@@ -559,81 +557,108 @@ useEffect(()=>{
           >
             {isEarthId() ? "earthidwanttoaccess" : "globalidwanttoaccess"}
           </GenericText>
-          <View style={{height:300}}>
-            <ScrollView style={{flexGrow:1}} contentContainerStyle={{flexGrow:1}}>
+          <View style={{ height: 300 }}>
+            <ScrollView
+              style={{ flexGrow: 1 }}
+              contentContainerStyle={{ flexGrow: 1 }}
+            >
               <View>
-            {getDropDownList()?.map((item: {
-              id: any; name: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null | undefined; 
-},index: any)=>{
-                       return(
-              <View style={{ flexDirection: "row", marginVertical: 10 }}>
-              <CheckBox
-                disabled={false}
-                onValueChange={(value) => {
-                  const selectedCheckBoxs =selectedCheckBox.map((itemLocal: {
-                    id: any; selectedForCheckBox: boolean; 
-},index: any)=>{
-                    if(itemLocal?.id===item?.id){
-                      itemLocal.selectedForCheckBox =!itemLocal.selectedForCheckBox
-                    }
-                   
-                    return itemLocal
-                  })
-                  setselectedCheckBox([...selectedCheckBoxs])
-                }}
-                value={selectedCheckBox[index]?.selectedForCheckBox}
-              />
-              <View style={{ justifyContent: "center", alignItems: "center" }}>
-                <GenericText
-                  style={{
-                    textAlign: "center",
-                    padding: 5,
-                    color: "#000",
-                    fontSize: 14,
-                    fontWeight: "300",
-                  }}
-                >
-                {item.name}
-                </GenericText>
+                {getDropDownList() && getDropDownList().length>0 && getDropDownList()?.map(
+                  (
+                    item: {
+                      id: any;
+                      name:
+                        | boolean
+                        | React.ReactChild
+                        | React.ReactFragment
+                        | React.ReactPortal
+                        | null
+                        | undefined;
+                    },
+                    index: any
+                  ) => {
+                    return (
+                      <View
+                        style={{ flexDirection: "row", marginVertical: 10 }}
+                      >
+                        <CheckBox
+                          disabled={false}
+                          onValueChange={(value) => {
+                            const selectedCheckBoxs = selectedCheckBox?.map(
+                              (
+                                itemLocal: {
+                                  id: any;
+                                  selectedForCheckBox: boolean;
+                                },
+                                index: any
+                              ) => {
+                                if (itemLocal?.id === item?.id) {
+                                  itemLocal.selectedForCheckBox =
+                                    !itemLocal.selectedForCheckBox;
+                                }
+
+                                return itemLocal;
+                              }
+                            );
+                            setselectedCheckBox([...selectedCheckBoxs]);
+                          }}
+                          value={selectedCheckBox && selectedCheckBox.length>0 ? selectedCheckBox[index]?.selectedForCheckBox:false}
+                        />
+                        <View
+                          style={{
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          <GenericText
+                            style={{
+                              textAlign: "center",
+                              padding: 5,
+                              color: "#000",
+                              fontSize: 14,
+                              fontWeight: "300",
+                            }}
+                          >
+                            {item.name}
+                          </GenericText>
+                        </View>
+                      </View>
+                    );
+                  }
+                )}
               </View>
-            </View>
-            )
-                     
-        
-      })}
-      </View>
             </ScrollView>
-    
+
             <GenericText
-            style={{
-              textAlign: "center",
-              padding: 5,
-              color: "#000",
-              fontSize: 16,
-              fontWeight: "bold",
-            }}
-          >
-            {"Selected Duration"}
-          </GenericText>
-          <Dropdown
-            style={[styles.dropdown]}
-            placeholderStyle={styles.placeholderStyle}
-            selectedTextStyle={styles.selectedTextStyle}
-            inputSearchStyle={styles.inputSearchStyle}
-            iconStyle={styles.iconStyle}
-            data={data}
-            search
-            maxHeight={300}
-            labelField="label"
-            valueField="value"
-            placeholder={"Expiry Time (default 1 day)"}
-            searchPlaceholder="Search..."
-            value={"value"}
-            onChange={(item) => {
-              setValue(item.value);
-            }}
-          />
-               </View>
+              style={{
+                textAlign: "center",
+                padding: 5,
+                color: "#000",
+                fontSize: 16,
+                fontWeight: "bold",
+              }}
+            >
+              {"Selected Duration"}
+            </GenericText>
+            <Dropdown
+              style={[styles.dropdown]}
+              placeholderStyle={styles.placeholderStyle}
+              selectedTextStyle={styles.selectedTextStyle}
+              inputSearchStyle={styles.inputSearchStyle}
+              iconStyle={styles.iconStyle}
+              data={data}
+              search
+              maxHeight={300}
+              labelField="label"
+              valueField="value"
+              placeholder={"Expiry Time (default 1 day)"}
+              searchPlaceholder="Search..."
+              value={"value"}
+              onChange={(item) => {
+                setValue(item.value);
+              }}
+            />
+          </View>
           <View
             style={{
               flexDirection: "row",
@@ -645,7 +670,7 @@ useEffect(()=>{
             <TouchableOpacity
               onPress={() => {
                 setisDocumentModalkyc(false);
-                setIsCamerVisible(true)
+                setIsCamerVisible(true);
               }}
             >
               <GenericText
@@ -654,7 +679,11 @@ useEffect(()=>{
                 Cancel
               </GenericText>
             </TouchableOpacity>
-            <TouchableOpacity style={{opacity :checkDisable()? 0.5:1}} disabled={checkDisable()}  onPress={createVerifiableCredentials}>
+            <TouchableOpacity
+              style={{ opacity: checkDisable() ? 0.5 : 1 }}
+              disabled={checkDisable()}
+              onPress={createVerifiableCredentials}
+            >
               <GenericText
                 style={{ color: "green", fontSize: 16, fontWeight: "700" }}
               >
@@ -665,7 +694,6 @@ useEffect(()=>{
         </View>
       </ModalView>
 
-  
       <Loader
         loadingText={
           barCodeDataDetails?.requestType === "generateCredentials"
