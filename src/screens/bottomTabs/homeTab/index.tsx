@@ -1,5 +1,5 @@
 import { values } from "lodash";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import {
   View,
   StyleSheet,
@@ -8,6 +8,7 @@ import {
   ScrollView,
   Image,
   AsyncStorage,
+  TouchableOpacity,
 } from "react-native";
 import CircularProgress from "react-native-circular-progress-indicator";
 import { EventRegister } from "react-native-event-listeners";
@@ -39,6 +40,10 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
   const profilePicture = useAppSelector((state) => state.savedPic);
   const securityReducer: any = useAppSelector((state) => state.security);
   const disPatch = useAppDispatch();
+
+  let flatListRef:any = useRef();
+
+
  //recent activity
  let documentsDetailsList = useAppSelector((state) => state.Documents);
   let recentData = documentsDetailsList?.responseData;
@@ -153,45 +158,52 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
     console.log("itemsnews==>", item);
 
     return (
-      <Card
-         leftAvatar={LocalImages.documentsImage}
-         absoluteCircleInnerImage={LocalImages.upImage}
-         // rightIconSrc={LocalImages.menuImage}
-         title={item?.name}
-         subtitle={`      Uploaded  : ${item.date}`}
-         style={{
-           ...styles.cardContainers,
-           ...{
-             avatarContainer: {
-              backgroundColor: "rgba(245, 188, 232, 1)",
-              width: 60,
-              height: 60,
-              borderRadius: 20,
-              marginTop: 25,
-              marginLeft: 10,
-              marginRight: 5,
-             },
-            uploadImageStyle: {
-              backgroundColor: "rgba(245, 188, 232, 1)",
-              borderRadius:25,
-              borderWidth:3,
-              bordercolor:'#fff',
-              borderWidthRadius:25
-             },
-           },
-          title: {
-            fontSize: 18,
-            marginTop: -10,
-            fontWeight: "bold",
-          },
-          subtitle: {
-            fontSize: 14,
-            marginTop: 5,
-            
 
-          },
-         }}
-      />
+      <TouchableOpacity
+      onPress={() =>
+        navigation.navigate("ViewCredential", { documentDetails: item })
+      }
+      >
+        <Card
+           leftAvatar={LocalImages.documentsImage}
+           absoluteCircleInnerImage={LocalImages.upImage}
+           // rightIconSrc={LocalImages.menuImage}
+           title={item?.name}
+           subtitle={`      Uploaded  : ${item.date}`}
+           style={{
+             ...styles.cardContainers,
+             ...{
+               avatarContainer: {
+                backgroundColor: "rgba(245, 188, 232, 1)",
+                width: 60,
+                height: 60,
+                borderRadius: 20,
+                marginTop: 25,
+                marginLeft: 10,
+                marginRight: 5,
+               },
+              uploadImageStyle: {
+                backgroundColor: "rgba(245, 188, 232, 1)",
+                borderRadius:25,
+                borderWidth:3,
+                bordercolor:'#fff',
+                borderWidthRadius:25
+               },
+             },
+            title: {
+              fontSize: 18,
+              marginTop: -10,
+              fontWeight: "bold",
+            },
+            subtitle: {
+              fontSize: 14,
+              marginTop: 5,
+              
+  
+            },
+           }}
+        />
+      </TouchableOpacity>
     );
   };
 
@@ -235,12 +247,78 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
               activeStrokeColor={Screens.colors.primary}
             /> */}
           </View>
+          <View 
+          style={{
+            flexDirection:"row",
+            justifyContent:"space-between",
+            
+          }}>
+
+          <View>
           <GenericText style={[styles.categoryHeaderText, { fontSize: 13 }]}>
             {SCREENS.HOMESCREENTITLES.CATEGORIES}
           </GenericText>
+          </View>
+
+
+
+          <View
+          style={{flexDirection:"row"}}
+          >
+          <TouchableOpacity  
+          style={{
+            width:20,
+            height:20,
+            alignSelf:"center",
+            marginRight:40
+          }} 
+
+          onPress={() => flatListRef.scrollToIndex({ index: 0 })}
+          >
+
+          <Image
+            source={LocalImages.backicon}
+            style={{
+                width:20,
+                height:20,
+                tintColor:"gray",
+                alignSelf:"center",
+            }}        
+          />
+          </TouchableOpacity>
+
+
+          <TouchableOpacity  
+          style={{
+            width:20,
+            height:20,
+            alignSelf:"center"
+          }} 
+
+          onPress={() => flatListRef.scrollToEnd()}
+          >
+
+          <Image
+            source={LocalImages.nexticon}
+            style={{
+                width:20,
+                height:20,
+                tintColor:"gray",
+                alignSelf:"center",
+                marginRight:50
+            }}        
+          />
+          </TouchableOpacity>
+
+          </View>
+
+          
+
+          </View>
           <View style={[styles.flatPanel, { height: 130, marginTop: -10 }]}>
             <FlatList<any>
               horizontal
+              ref={(ref) => { flatListRef = ref }}
               showsHorizontalScrollIndicator={false}
               data={categoryList}
               renderItem={_renderItem}
@@ -266,7 +344,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
           /> */}
           {recentData &&
          
-         recentData?.length === 0 && (
+          recentData?.length === 0 && (
               <View style={{ justifyContent: "center", alignItems: "center" }}>
                 <Image
                   resizeMode="contain"
