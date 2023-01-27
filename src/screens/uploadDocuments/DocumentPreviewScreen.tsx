@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Image, TouchableOpacity, Platform } from "react-native";
+import { View, StyleSheet, Image, TouchableOpacity, Platform, Alert } from "react-native";
 
 import Button from "../../components/Button";
 import SuccessPopUp from "../../components/Loader";
@@ -37,6 +37,27 @@ const DocumentPreviewScreen = (props: any) => {
     base64: fileUri?.base64,
   };
   const resourceType = "base64";
+
+
+  function alertUploadDoc(){
+    Alert.alert(
+      'Confirmation!',
+      'Please confirm that this is a self-attested document',
+      [
+        
+        {
+          text: 'Yes',
+          onPress: () => uploadDoc(),
+          style: 'cancel',
+        },
+        {
+          text: 'No', 
+          onPress: () => uploadDoc()
+        },
+      ],
+      {cancelable: false},
+    );
+  }
 
   const uploadDoc = async () => {
     let type = "qrRreader";
@@ -129,7 +150,7 @@ const DocumentPreviewScreen = (props: any) => {
           title={"retakes"}
         ></Button>
         <Button
-          onPress={uploadDoc}
+          onPress={alertUploadDoc}
           style={{
             buttonContainer: {
               elevation: 5,

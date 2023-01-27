@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Dimensions,
   Platform,
+  Alert,
 } from "react-native";
 import PDFView from "react-native-view-pdf";
 import SuccessPopUp from "../../../components/Loader";
@@ -62,6 +63,27 @@ const DocumentPreviewScreen = (props: any) => {
     } 
   };
 
+
+  function deleteAlert(){
+    Alert.alert(
+      'Confirmation!',
+      'Are you sure to delete this document?',
+      [
+        
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {
+          text: 'OK', 
+          onPress: () => deleteItem()
+        },
+      ],
+      {cancelable: false},
+    );
+  }
+
   const deleteItem = () => {
     setisBottomSheetForSideOptionVisible(false);
     const newData = documentsDetailsList?.responseData.filter(function (item: {
@@ -71,6 +93,7 @@ const DocumentPreviewScreen = (props: any) => {
     });
 
     dispatch(saveDocuments(newData));
+    props.navigation.navigate("Documents")
   };
   const RowOption = ({ icon, title, rowAction }: any) => (
     <TouchableOpacity onPress={rowAction}>
@@ -105,6 +128,7 @@ const DocumentPreviewScreen = (props: any) => {
 useEffect(()=>{
   
   console.log("userDetails==>",documentDetails)
+  console.log("documentsDetailsList==>",documentsDetailsList)
 },[])
 
   return (
@@ -138,7 +162,7 @@ useEffect(()=>{
                 icon={LocalImages.shareImage}
               />
               <RowOption
-                rowAction={() => deleteItem()}
+                rowAction={() => deleteAlert()}
                 title={"Delete"}
                 icon={LocalImages.deleteImage}
               />

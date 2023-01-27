@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>EarthId.ipa</key>
+	<array>
+		<dict>
+			<key>architectures</key>
+			<array>
+				<string>arm64</string>
+			</array>
+			<key>buildNumber</key>
+			<string>1</string>
+			<key>certificate</key>
+			<dict>
+				<key>SHA1</key>
+				<string>DBB5FB88F8BF433E087C158092F26C0CD1A68C8D</string>
+				<key>dateExpires</key>
+				<string>20/05/23</string>
+				<key>type</key>
+				<string>Apple Development</string>
+			</dict>
+			<key>embeddedBinaries</key>
+			<array>
+				<dict>
+					<key>architectures</key>
+					<array>
+						<string>arm64</string>
+					</array>
+					<key>buildNumber</key>
+					<string>0.11.0</string>
+					<key>certificate</key>
+					<dict>
+						<key>SHA1</key>
+						<string>DBB5FB88F8BF433E087C158092F26C0CD1A68C8D</string>
+						<key>dateExpires</key>
+						<string>20/05/23</string>
+						<key>type</key>
+						<string>Apple Development</string>
+					</dict>
+					<key>name</key>
+					<string>hermes.framework</string>
+					<key>team</key>
+					<dict>
+						<key>id</key>
+						<string>3D5QUAXZH3</string>
+						<key>name</key>
+						<string>EarthId Technology OU</string>
+					</dict>
+					<key>versionNumber</key>
+					<string>0.11.0</string>
+				</dict>
+			</array>
+			<key>entitlements</key>
+			<dict>
+				<key>application-identifier</key>
+				<string>3D5QUAXZH3.com.earthid</string>
+				<key>com.apple.developer.team-identifier</key>
+				<string>3D5QUAXZH3</string>
+				<key>get-task-allow</key>
+				<true/>
+			</dict>
+			<key>name</key>
+			<string>EarthId.app</string>
+			<key>profile</key>
+			<dict>
+				<key>UUID</key>
+				<string>16da336a-8c4a-4632-8198-dfc822f18f9a</string>
+				<key>dateExpires</key>
+				<string>25/08/23</string>
+				<key>name</key>
+				<string>iOS Team Provisioning Profile: com.earthid</string>
+			</dict>
+			<key>team</key>
+			<dict>
+				<key>id</key>
+				<string>3D5QUAXZH3</string>
+				<key>name</key>
+				<string>EarthId Technology OU</string>
+			</dict>
+			<key>versionNumber</key>
+			<string>2.7</string>
+		</dict>
+	</array>
+</dict>
+</plist>

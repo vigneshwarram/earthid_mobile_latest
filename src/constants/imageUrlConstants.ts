@@ -58,6 +58,8 @@ export const LocalImages = {
   documentpic: require("../../resources/images/documentpic.png"),
   faceidpic: require("../../resources/images/faceidpic.png"),
   touchidpic: require("../../resources/images/touchidpic.png"),
+  nexticon: require("../../resources/images/nexticon.png"),
+  backicon: require("../../resources/images/backicon.png"),
 
   //categories
   CATEGORIES: {
