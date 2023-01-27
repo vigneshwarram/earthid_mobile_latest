@@ -72,7 +72,7 @@ export const SCREENS = {
       {
         TITLE: "insurance",
         URI: LocalImages.CATEGORIES.insuranceImage,
-        COLOR: "#C5BDF6",
+        COLOR: "#A5F7B0",
       },
       {
         TITLE: "education",
@@ -238,7 +238,7 @@ export const SCREENS = {
     categories: [
       {
         title: "ID",
-        color: "#D7EFFB",
+        // color: "#D7EFFB",
       },
       {
         title: "Education",
