@@ -215,34 +215,34 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
 
   //Veriff Session
 
-  // const generateSessionKey = () => {
+  const generateSessionKey = () => {
  
 
-  //   dispatch(getVeriffSession(timeStamp));
-  //   console.log(
-  //     "$$$$,",
-  //     veriffSession?.responseData?.verification?.sessionToken
-  //   );
-  // };
+    dispatch(getVeriffSession(timeStamp));
+    console.log(
+      "$$$$,",
+      veriffSession?.responseData?.verification?.sessionToken
+    );
+  };
 
-  // const btnPress = async () => {
-  //   var result = await VeriffSdk.launchVeriff({ sessionUrl: SESSION_URL });
-  //   console.log(result, "===>res");
-  //   switch (result.status) {
-  //     case VeriffSdk.statusDone:
-  //       console.log();
-  //       // user submitted the images and completed the flow
-  //       // note that this does not mean a final decision yet
-  //       break;
-  //     case VeriffSdk.statusCanceled:
-  //       // user canceled the flow before completing
-  //       break;
-  //     case VeriffSdk.statusError:
-  //       // the flow could not be completed due to an error
-  //       console.log("Veriff verification failed with error=" + result.error);
-  //       break;
-  //   }
-  // };
+  const btnPress = async () => {
+    var result = await VeriffSdk.launchVeriff({ sessionUrl: SESSION_URL });
+    console.log(result, "===>res");
+    switch (result.status) {
+      case VeriffSdk.statusDone:
+        console.log();
+        // user submitted the images and completed the flow
+        // note that this does not mean a final decision yet
+        break;
+      case VeriffSdk.statusCanceled:
+        // user canceled the flow before completing
+        break;
+      case VeriffSdk.statusError:
+        // the flow could not be completed due to an error
+        console.log("Veriff verification failed with error=" + result.error);
+        break;
+    }
+  };
 
   const _keyExtractor = ({ id }: any) => id.toString();
   return (
@@ -272,11 +272,11 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
         </GenericText>
     {/* Veriff Session  */}
         
-        {/* <Button
+        <Button
           title="Generate Session key"
           onPress={() => generateSessionKey()}
         />
-        <Button title="Verify Document" onPress={() => btnPress()} /> */}
+        <Button title="Verify Document" onPress={() => btnPress()} />
 
         <FlatList<any>
           showsHorizontalScrollIndicator={false}
