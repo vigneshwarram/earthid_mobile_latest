@@ -161,7 +161,7 @@ const UploadQr = (props: any) => {
         <GenericText
           style={{ textAlign: "center", paddingVertical: 5, color: "#fff" }}
         >
-          {"OR"}
+          {"or"}
         </GenericText>
 
         <Button
