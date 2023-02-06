@@ -74,7 +74,7 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
       changeLanguagePreference(storedUserLanguagePref, "SplashScreen");
     }
   };
-  
+
   const selectLanguage = async (item: any) => {
     il8n.changeLanguage(item.value);
     await AsyncStorage.setItem("setLanguage", item.value);
@@ -114,11 +114,9 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
           },
         });
       });
-    } catch (err) {
-      console.log("data==>", err);
-    }
+    } catch (err) {}
   };
-  
+
   const _handleBarCodeRead = (barCodeData: any) => {
     console.log("barcodedata", barCodeData);
   };

@@ -138,7 +138,7 @@ const CameraScreen = (props: any) => {
       serviceProviderResponse?.values?.length > 0
     ) {
       setisDocumentModalkyc(false);
-   
+
       if (barCodeDataDetails?.requestType === "login") {
         setTimeout(() => {
           setissuerLogin(true);
@@ -240,7 +240,6 @@ const CameraScreen = (props: any) => {
         : [];
 
       DocumentList.push(documentDetails);
-      console.log("documentsDetailsList", documentsDetailsList);
       dispatch(saveDocuments(DocumentList));
 
       setIsCamerVisible(true);
@@ -322,7 +321,7 @@ const CameraScreen = (props: any) => {
     let trap = false;
     if (
       documentsDetailsList?.responseData?.length === 0 ||
-      documentsDetailsList?.responseData ===undefined 
+      documentsDetailsList?.responseData === undefined
     ) {
       trap = true;
     }
@@ -563,69 +562,75 @@ const CameraScreen = (props: any) => {
               contentContainerStyle={{ flexGrow: 1 }}
             >
               <View>
-                {getDropDownList() && getDropDownList().length>0 && getDropDownList()?.map(
-                  (
-                    item: {
-                      id: any;
-                      name:
-                        | boolean
-                        | React.ReactChild
-                        | React.ReactFragment
-                        | React.ReactPortal
-                        | null
-                        | undefined;
-                    },
-                    index: any
-                  ) => {
-                    return (
-                      <View
-                        style={{ flexDirection: "row", marginVertical: 10 }}
-                      >
-                        <CheckBox
-                          disabled={false}
-                          onValueChange={(value) => {
-                            const selectedCheckBoxs = selectedCheckBox?.map(
-                              (
-                                itemLocal: {
-                                  id: any;
-                                  selectedForCheckBox: boolean;
-                                },
-                                index: any
-                              ) => {
-                                if (itemLocal?.id === item?.id) {
-                                  itemLocal.selectedForCheckBox =
-                                    !itemLocal.selectedForCheckBox;
-                                }
-
-                                return itemLocal;
-                              }
-                            );
-                            setselectedCheckBox([...selectedCheckBoxs]);
-                          }}
-                          value={selectedCheckBox && selectedCheckBox.length>0 ? selectedCheckBox[index]?.selectedForCheckBox:false}
-                        />
+                {getDropDownList() &&
+                  getDropDownList().length > 0 &&
+                  getDropDownList()?.map(
+                    (
+                      item: {
+                        id: any;
+                        name:
+                          | boolean
+                          | React.ReactChild
+                          | React.ReactFragment
+                          | React.ReactPortal
+                          | null
+                          | undefined;
+                      },
+                      index: any
+                    ) => {
+                      return (
                         <View
-                          style={{
-                            justifyContent: "center",
-                            alignItems: "center",
-                          }}
+                          style={{ flexDirection: "row", marginVertical: 10 }}
                         >
-                          <GenericText
+                          <CheckBox
+                            disabled={false}
+                            onValueChange={(value) => {
+                              const selectedCheckBoxs = selectedCheckBox?.map(
+                                (
+                                  itemLocal: {
+                                    id: any;
+                                    selectedForCheckBox: boolean;
+                                  },
+                                  index: any
+                                ) => {
+                                  if (itemLocal?.id === item?.id) {
+                                    itemLocal.selectedForCheckBox =
+                                      !itemLocal.selectedForCheckBox;
+                                  }
+
+                                  return itemLocal;
+                                }
+                              );
+                              setselectedCheckBox([...selectedCheckBoxs]);
+                            }}
+                            value={
+                              selectedCheckBox && selectedCheckBox.length > 0
+                                ? selectedCheckBox[index]?.selectedForCheckBox
+                                : false
+                            }
+                          />
+                          <View
                             style={{
-                              textAlign: "center",
-                              padding: 5,
-                              color: "#000",
-                              fontSize: 14,
-                              fontWeight: "300",
+                              justifyContent: "center",
+                              alignItems: "center",
                             }}
                           >
-                            {item.name}
-                          </GenericText>
+                            <GenericText
+                              style={{
+                                textAlign: "center",
+                                padding: 5,
+                                color: "#000",
+                                fontSize: 14,
+                                fontWeight: "300",
+                              }}
+                            >
+                              {item.name}
+                            </GenericText>
+                          </View>
                         </View>
-                      </View>
-                    );
-                  }
-                )}
+                      );
+                    }
+                  )}
               </View>
             </ScrollView>
 

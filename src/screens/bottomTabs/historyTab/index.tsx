@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -6,7 +6,7 @@ import {
   ScrollView,
   Alert,
   Text,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import { json } from "stream/consumers";
 
@@ -20,6 +20,7 @@ import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
 import { getHistory } from "../../../redux/actions/authenticationAction";
 import { Screens } from "../../../themes";
 import Avatar from "../../../components/Avatar";
+import { getColor } from "../../../utils/CommonFuntion";
 
 interface IDocumentScreenProps {
   navigation?: any;
@@ -45,35 +46,32 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
   if (getHistoryReducer?.isSuccess) {
     getHistoryReducer.isSuccess = false;
   }
-  useEffect(() => {
-    const PayLoad = {
-      userId: userDetails?.responseData?.Id,
-      publicKey: userDetails?.responseData?.publicKey,
-    };
-
-    dispatch(getHistory(PayLoad));
-  }, []);
 
   console.log("----+++,", data);
 
   //open document
   const _rightIconOnPress = (selecteArrayItem: any) => {
-    console.log(',,,,selecteArrayItem',selecteArrayItem)
-       setselectedItem(selecteArrayItem);
-       setisBottomSheetForSideOptionVisible(true);
-     };
+    console.log(",,,,selecteArrayItem", selecteArrayItem);
+    setselectedItem(selecteArrayItem);
+    setisBottomSheetForSideOptionVisible(true);
+  };
 
-     const getCategoryImages =(item: {
-      categoryType: any; name: any; 
-  })=>{
-    const getItems =  SCREENS.HOMESCREEN.categoryList.filter((itemFiltered,index)=>{
-        return itemFiltered.TITLE.toLowerCase()===item?.categoryType?.toLowerCase();
-      })
-     
-     return getItems[0];
-  
-    }
+  const getCategoryImages = (item: { categoryType: any; name: any }) => {
+    const getItems = SCREENS.HOMESCREEN.categoryList.filter(
+      (itemFiltered, index) => {
+        return (
+          itemFiltered.TITLE.toLowerCase() === item?.categoryType?.toLowerCase()
+        );
+      }
+    );
 
+    return getItems[0];
+  };
+  const getImagesColor = (item: any) => {
+    let colors = item?.name;
+    let iteName = colors.trim()?.split("(")[0]?.trim();
+    return getColor(iteName);
+  };
   const _renderItem = ({ item }: any) => {
     return (
       // <Card
@@ -114,75 +112,89 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
       //   }}
       // />
       <TouchableOpacity
-      style={{marginBottom:20}}
+        style={{ marginBottom: 20 }}
         onPress={() =>
           navigation.navigate("ViewCredential", { documentDetails: item })
         }
       >
-        <View style={{flexDirection:"row",marginTop:5}}>
-        <View style={{justifyContent:'center',alignItems:'center'}}>
-        <Avatar   
-        isCategory={true}
-        isUploaded={false}
-        iconSource={getCategoryImages(item)?.URI}
-        style={{
-          container: [styles.avatarContainer, { backgroundColor: getCategoryImages(item)?.COLOR ,flexDirection:'row'}],
-          imgContainer: styles.avatarImageContainer,
-          text: styles.avatarTextContainer,
-        }}
-      />
-      </View>
-      <View style={{justifyContent:'center',alignItems:'center',marginTop:-20}}>
-      <GenericText style={[ { fontSize: 15,fontWeight:'bold',marginHorizontal:9 }]}>
-             {item?.categoryType}
+        <View style={{ flexDirection: "row", marginTop: 5 }}>
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <Avatar
+              isCategory={true}
+              isUploaded={false}
+              iconSource={getCategoryImages(item)?.URI}
+              style={{
+                container: [
+                  styles.avatarContainer,
+                  {
+                    backgroundColor: getCategoryImages(item)?.COLOR,
+                    flexDirection: "row",
+                  },
+                ],
+                imgContainer: styles.avatarImageContainer,
+                text: styles.avatarTextContainer,
+              }}
+            />
+          </View>
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: -20,
+            }}
+          >
+            <GenericText
+              style={[
+                { fontSize: 15, fontWeight: "bold", marginHorizontal: 9 },
+              ]}
+            >
+              {item?.categoryType}
             </GenericText>
-      </View>
-     
+          </View>
         </View>
-      
-<View style={{marginTop:-20}}>
-        <Card
-          titleIcon={item?.isVc ? LocalImages.vcImage : null}
-          leftAvatar={LocalImages.documentsImage}
-          absoluteCircleInnerImage={LocalImages.upImage}
-          // rightIconSrc={LocalImages.menuImage}
-          rightIconOnPress={() => _rightIconOnPress(item)}
-          title={item.name}
-          subtitle={`      Uploaded  : ${item.date}`}
-          style={{
-            ...styles.cardContainer,
-            ...{
-              avatarContainer: {
-                backgroundColor: "rgba(245, 188, 232, 1)",
-                width: 60,
-                height: 60,
-                borderRadius: 20,
-                marginTop: 25,
-                marginLeft: 10,
-                marginRight: 5,
+
+        <View style={{ marginTop: -20 }}>
+          <Card
+            titleIcon={item?.isVc ? LocalImages.vcImage : null}
+            leftAvatar={LocalImages.documentsImage}
+            absoluteCircleInnerImage={LocalImages.upImage}
+            // rightIconSrc={LocalImages.menuImage}
+            rightIconOnPress={() => _rightIconOnPress(item)}
+            title={item.name}
+            subtitle={`      Uploaded  : ${item.date}`}
+            style={{
+              ...styles.cardContainer,
+              ...{
+                avatarContainer: {
+                  backgroundColor: getImagesColor(item),
+                  width: 60,
+                  height: 60,
+                  borderRadius: 20,
+                  marginTop: 25,
+                  marginLeft: 10,
+                  marginRight: 5,
+                },
+                uploadImageStyle: {
+                  backgroundColor: getImagesColor(item),
+                  borderRadius: 25,
+                  borderWidth: 3,
+                  bordercolor: "#fff",
+                  borderWidthRadius: 25,
+                },
               },
-              uploadImageStyle: {
-                backgroundColor: "rgba(245, 188, 232, 1)",
-                borderRadius:25,
-                borderWidth:3,
-                bordercolor:'#fff',
-                borderWidthRadius:25
-               },
-            },
-            title: {
-              fontSize: 18,
-              marginTop: -10,
-              fontWeight: "bold",
-            },
-            subtitle: {
-              fontSize: 14,
-              marginTop: 5,
-            },
-          }}
-        />
+              title: {
+                fontSize: 18,
+                marginTop: -10,
+                fontWeight: "bold",
+              },
+              subtitle: {
+                fontSize: 14,
+                marginTop: 5,
+              },
+            }}
+          />
         </View>
       </TouchableOpacity>
-
     );
   };
 
@@ -327,7 +339,7 @@ const styles = StyleSheet.create({
     width: 15,
     height: 15,
     marginTop: 5,
-    tintColor:'#fff'
+    tintColor: "#fff",
   },
   avatarTextContainer: {
     fontSize: 13,

@@ -1,5 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
-import { View, StyleSheet, Platform, ActivityIndicator, Alert,Text } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Platform,
+  ActivityIndicator,
+  Alert,
+  Text,
+} from "react-native";
 import Header from "../../../components/Header";
 import { SCREENS } from "../../../constants/Labels";
 import { Screens } from "../../../themes";
@@ -26,6 +33,7 @@ import { isArray } from "lodash";
 import { useFetch } from "../../../hooks/use-fetch";
 import { superAdminApi } from "../../../utils/earthid_account";
 import { isEarthId } from "../../../utils/PlatFormUtils";
+import Spinner from "react-native-loading-spinner-overlay/lib";
 interface IRegister {
   navigation: any;
 }
@@ -39,6 +47,7 @@ const Register = ({ navigation }: IRegister) => {
     fetch: getSuperAdminApiCall,
   } = useFetch();
   const [mobileNumber, setmobileNumber] = useState<string>("");
+  const [loginLoading, setLoginLoading] = useState(false);
   const userDetails = useAppSelector((state) => state.account);
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const keys = useAppSelector((state) => state.user);
@@ -75,15 +84,15 @@ const Register = ({ navigation }: IRegister) => {
     inputBlurHandler: emailBlurHandler,
   } = useFormInput("", false, emailValidator);
 
-  
   useEffect(() => {
     getSuperAdminApiCall(superAdminApi, {}, "GET");
   }, []);
 
   const _navigateAction = () => {
     setKeyboardVisible(false);
-    mobileNumber==''? setMobileEmpty(true) :null
+    mobileNumber == "" ? setMobileEmpty(true) : null;
     if (isValid()) {
+      setLoginLoading(true);
       dispatch(GeneratedKeysAction());
     } else {
       console.log("its coming");
@@ -97,8 +106,8 @@ const Register = ({ navigation }: IRegister) => {
     if (
       !nameValidator(firstName, true).hasError &&
       !emailValidator(email, true).hasError &&
-      mobileNumber !== "" && !isValidMobileNumber 
-      
+      mobileNumber !== "" &&
+      !isValidMobileNumber
     ) {
       return true;
     }
@@ -122,10 +131,11 @@ const Register = ({ navigation }: IRegister) => {
         deviceOS: Platform.OS === "android" ? "android" : "ios",
       };
 
-      dispatch(createAccount(payLoad));
-
-      
+      dispatch(createAccount(payLoad)).then(() => {
+        setLoginLoading(false);
+      });
     } else {
+      setLoginLoading(false);
       SnackBar({
         indicationMessage: "Registered Id is not generated ,please try again",
         doRetry: getSuperAdminApiCall(superAdminApi, {}, "GET"),
@@ -153,12 +163,12 @@ const Register = ({ navigation }: IRegister) => {
   if (userDetails && userDetails?.isAccountCreatedFailure) {
     userDetails.isAccountCreatedFailure = false;
     if (userDetails?.errorMesssage && isArray(userDetails?.errorMesssage)) {
-      
       SnackBar({
         indicationMessage: userDetails?.errorMesssage[0],
       });
     } else {
-      const errorMsg =userDetails?.errorMesssage ==='Internal server error'? 'Mobile Number already exists':userDetails?.errorMesssage
+      console.log("userDetails?.errorMesssage", userDetails?.errorMesssage);
+      const errorMsg = "Internal server error,Please Try again Later";
       SnackBar({
         indicationMessage: errorMsg,
       });
@@ -306,21 +316,19 @@ const Register = ({ navigation }: IRegister) => {
                 container: styles.textContainer,
               }}
             />
-     
+
             <PhoneInput
-             
               textInputProps={{
                 onFocus: onMobileNumberFocus,
                 onBlur: onMobileNumberBlur,
                 allowFontScaling: false,
+                maxLength: 10,
               }}
-             
               onChangeCountry={(code) => {
                 const { callingCode } = code;
                 setcallingCode(callingCode[0]);
                 console.log("code==>", callingCode[0]);
               }}
-          
               autoFocus={false}
               placeholder="Mobile number"
               ref={phoneInput}
@@ -328,19 +336,21 @@ const Register = ({ navigation }: IRegister) => {
               layout="first"
               onChangeText={(text: any) => {
                 //var format = text.replace(/[^0-9]/g, "");
-                let validate = containsSpecialChars(text)
-                console.log('==>format',validate)
-                setValidMobileNumber(validate)
+                let validate = containsSpecialChars(text);
+                console.log("==>format", validate);
+                setValidMobileNumber(validate);
                 setmobileNumber(text);
-                setMobileEmpty(false)
+                setMobileEmpty(false);
               }}
               containerStyle={{
-               borderColor: isValidMobileNumber || isMobileEmpty? Screens.red :Screens.darkGray,
-                borderWidth:isValidMobileNumber? 1:2.2,
+                borderColor:
+                  isValidMobileNumber || isMobileEmpty
+                    ? Screens.red
+                    : Screens.darkGray,
+                borderWidth: isValidMobileNumber ? 1 : 2.2,
                 borderRadius: 10,
                 height: 60,
                 marginHorizontal: 10,
-                
               }}
               flagButtonStyle={{
                 backgroundColor: Screens.thickGray,
@@ -357,14 +367,14 @@ const Register = ({ navigation }: IRegister) => {
                 borderTopRightRadius: 9,
                 backgroundColor: "#fff",
               }}
-              filterProps={{placeholder:"Search country"}}
-              
+              filterProps={{ placeholder: "Search country" }}
             />
-              {isValidMobileNumber || isMobileEmpty && (
-      <Text allowFontScaling={false} style={styles.errorText}>
-        {'Please enter valid mobile number'}
-      </Text>
-    )}
+            {isValidMobileNumber ||
+              (isMobileEmpty && (
+                <Text allowFontScaling={false} style={styles.errorText}>
+                  {"Please enter valid mobile number"}
+                </Text>
+              ))}
             <Info
               title={"email"}
               style={{
@@ -397,10 +407,12 @@ const Register = ({ navigation }: IRegister) => {
             Status="status"
             isLoaderVisible={successResponse}
           ></Loader>
-          {userDetails?.isLoading && (
-            <View style={styles.loading}>
-              <ActivityIndicator color={Screens.colors.primary} size="large" />
-            </View>
+          {loginLoading && (
+            <Spinner
+              visible={loginLoading}
+              textContent={"Loading..."}
+              textStyle={styles.spinnerTextStyle}
+            />
           )}
         </View>
         <DatePicker
@@ -450,6 +462,9 @@ const styles = StyleSheet.create({
   textContainer: {
     justifyContent: "flex-start",
     alignItems: "flex-start",
+  },
+  spinnerTextStyle: {
+    color: "#fff",
   },
   linearStyle: {
     height: 400,

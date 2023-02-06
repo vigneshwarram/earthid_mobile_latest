@@ -26,6 +26,7 @@ import { SCREENS } from "../../../constants/Labels";
 import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
 import { saveDocuments } from "../../../redux/actions/authenticationAction";
 import { Screens } from "../../../themes";
+import { getColor } from "../../../utils/CommonFuntion";
 
 interface IDocumentScreenProps {
   navigation?: any;
@@ -35,22 +36,23 @@ interface IDocumentScreenProps {
 const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const _toggleDrawer = () => {
     navigation.openDrawer();
-  }
+  };
   const isFoused = useIsFocused();
   let documentsDetailsListData = useAppSelector((state) => state.Documents);
-  const [documentsDetailsList, setdocumentsDetailsList] = useState(documentsDetailsListData);
-  const [selectedDocuments,setselectedDocuments]=useState()
+  const [documentsDetailsList, setdocumentsDetailsList] = useState(
+    documentsDetailsListData
+  );
+  const [selectedDocuments, setselectedDocuments] = useState();
 
-  
   let categoryTypes = "";
 
   if (route?.params && route?.params?.category) {
     categoryTypes = route?.params?.category;
   }
   const dispatch = useAppDispatch();
-  const [selectedItem, setselectedItem] = useState()
+  const [selectedItem, setselectedItem] = useState();
   const [multiSelectionEnabled, setMultiSelectionEnabled] = useState(false);
-  const [clearMultiselection,setClearMultiSelection] = useState(false)
+  const [clearMultiselection, setClearMultiSelection] = useState(false);
   const [
     isBottomSheetForSideOptionVisible,
     setisBottomSheetForSideOptionVisible,
@@ -62,19 +64,20 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
 
   const [searchText, setsearchText] = useState("");
   const [isCheckBoxEnable, setCheckBoxEnable] = useState(false);
-  const [isClear,setIsClear] = useState(false)
-  useEffect(() => {
-    console.log("DOCUMENTS=====>>>>>>>>>>>", route?.params?.category);
-    const chek = route?.params?.category;
-    chek === undefined ? console.log("All posts") : console.log("filtrd");
-  }, [route?.params?.category]);
+  const [isClear, setIsClear] = useState(false);
+  // useEffect(() => {
+  //   console.log("DOCUMENTS=====>>>>>>>>>>>", route?.params?.category);
+  //   const chek = route?.params?.category;
+  //   chek === undefined ? console.log("All posts") : console.log("filtrd");
+  // }, [route?.params?.category]);
 
   const [isBottomSheetForFilterVisible, setisBottomSheetForFilterVisible] =
     useState<boolean>(false);
-const [isBottomSheetForShare,setIsBottomSheetForShare]= useState<boolean>(false);
+  const [isBottomSheetForShare, setIsBottomSheetForShare] =
+    useState<boolean>(false);
   const _rightIconOnPress = (selecteArrayItem: any) => {
     console.log(",,,,selecteArrayItem", selecteArrayItem);
-    setselectedDocuments(selecteArrayItem)   
+    setselectedDocuments(selecteArrayItem);
     setselectedItem(selecteArrayItem);
     setisBottomSheetForSideOptionVisible(true);
   };
@@ -95,25 +98,26 @@ const [isBottomSheetForShare,setIsBottomSheetForShare]= useState<boolean>(false)
 
     return getItems[0];
   };
-
-  useEffect(()=>{
-    if(documentsDetailsListData){
-      setdocumentsDetailsList(documentsDetailsListData)
+  const getImagesColor = (item: any) => {
+    let colors = item?.name;
+    let iteName = colors.trim()?.split("(")[0]?.trim();
+    return getColor(iteName);
+  };
+  useEffect(() => {
+    if (documentsDetailsListData) {
+      setdocumentsDetailsList(documentsDetailsListData);
     }
-
-  },[documentsDetailsListData])
-
+  }, [documentsDetailsListData]);
 
   const multiSelect = (item) => {
     // console.log(item?.base64, "@@@@@@@@@");
     // setMultipleDucuments(item);
     setCheckBoxEnable(!isCheckBoxEnable);
-  
   };
   const _selectTigger = (item: any) => {
     item.isSelected = !item.isSelected;
-    setselectedDocuments(item)   
-   setdocumentsDetailsList({ ...documentsDetailsList });
+    setselectedDocuments(item);
+    setdocumentsDetailsList({ ...documentsDetailsList });
   };
 
   const _renderItem = ({ item, index }: any) => {
@@ -176,18 +180,22 @@ const [isBottomSheetForShare,setIsBottomSheetForShare]= useState<boolean>(false)
             rightIconSrc={LocalImages.menuImage}
             rightIconOnPress={() => _rightIconOnPress(item)}
             title={item.name}
-            subtitle={item.isVc?`      Received  : ${item.date}`:`      Uploaded  : ${item.date}`}
+            subtitle={
+              item.isVc
+                ? `      Received  : ${item.date}`
+                : `      Uploaded  : ${item.date}`
+            }
             isCheckBoxEnable={isCheckBoxEnable}
             onCheckBoxValueChange={(value: any) => {
-             // item.isSelected = value;
+              // item.isSelected = value;
               //setdocumentsDetailsList({ ...documentsDetailsList });
             }}
-            checkBoxValue={ item.isSelected}
+            checkBoxValue={item.isSelected}
             style={{
               ...styles.cardContainer,
               ...{
                 avatarContainer: {
-                  backgroundColor: "rgba(245, 188, 232, 1)",
+                  backgroundColor: getImagesColor(item),
                   width: 60,
                   height: 60,
                   borderRadius: 20,
@@ -196,7 +204,7 @@ const [isBottomSheetForShare,setIsBottomSheetForShare]= useState<boolean>(false)
                   marginRight: 5,
                 },
                 uploadImageStyle: {
-                  backgroundColor: "rgba(245, 188, 232, 1)",
+                  backgroundColor: getImagesColor(item),
                   borderRadius: 25,
                   borderWidth: 3,
                   bordercolor: "#fff",
@@ -264,13 +272,12 @@ const [isBottomSheetForShare,setIsBottomSheetForShare]= useState<boolean>(false)
   };
 
   const shareItem = async () => {
-    if(selectedDocuments?.isVc){
+    if (selectedDocuments?.isVc) {
       await Share.open({
         message: selectedItem?.vc,
-        title:'Token'
+        title: "Token",
       });
-      }
-    else{
+    } else {
       console.log("selectedItem?.base64===>", selectedItem?.base64);
       if (selectedItem?.docType === "jpg") {
         await Share.open({
@@ -282,44 +289,53 @@ const [isBottomSheetForShare,setIsBottomSheetForShare]= useState<boolean>(false)
         });
       }
     }
-
   };
 
-  
   const shareMultipleItem = async () => {
-    let temp = []
-    temp = documentsDetailsList?.responseData.filter((el)=>{
+    let temp = [];
+    temp = documentsDetailsList?.responseData.filter((el) => {
       // console.log(i[0].isSelected,'IIII')
-     return el.isSelected == true          
-      
-    })
-    console.log(temp,'IIII')
-    let ShareBase64Array: string[] = []
+      return el.isSelected == true;
+    });
+    console.log(temp, "IIII");
+    let ShareBase64Array: string[] = [];
     temp.map(async (item: any, index: number) => {
       if (item?.docType === "jpg") {
-        ShareBase64Array.push(`data:image/jpg;base64,${item?.base64}`)
+        ShareBase64Array.push(`data:image/jpg;base64,${item?.base64}`);
       } else {
-        ShareBase64Array.push(`data:application/pdf;base64,${item?.base64}`)
+        ShareBase64Array.push(`data:application/pdf;base64,${item?.base64}`);
       }
-    })
-    setTimeout (async ()=>{
-      await Share.open({
-       urls: ShareBase64Array,
-     });
-   },1000)
-   
-  
-  };
-  const deleteItem = () => {
-    setisBottomSheetForSideOptionVisible(false);
-
-    const newData = documentsDetailsList?.responseData.filter(function (item: {
-      name: any;
-    }) {
-      return item.name !== selectedItem?.name;
     });
+    setTimeout(async () => {
+      await Share.open({
+        urls: ShareBase64Array,
+      });
+    }, 1000);
+  };
 
-    dispatch(saveDocuments(newData));
+  const deleteItem = () => {
+    Alert.alert(
+      "Confirmation! ",
+      "Are you sure you want to delete this document ?",
+      [
+        { text: "Cancel", onPress: () => console.log("Cancel Pressed!") },
+        {
+          text: "OK",
+          onPress: () => {
+            setisBottomSheetForSideOptionVisible(false);
+
+            const newData = documentsDetailsList?.responseData.filter(
+              function (item: { name: any }) {
+                return item.name !== selectedItem?.name;
+              }
+            );
+
+            dispatch(saveDocuments(newData));
+          },
+        },
+      ],
+      { cancelable: false }
+    );
   };
   const onPressNavigateTo = () => {
     navigation.navigate("uploadDocumentsScreen");
@@ -329,15 +345,17 @@ const [isBottomSheetForShare,setIsBottomSheetForShare]= useState<boolean>(false)
   const getFilteredData = () => {
     let data = documentsDetailsList?.responseData;
 
-    console.log( "DaTa==>",data);
     if (categoryTypes !== "") {
-      data = data?.filter((item: { categoryType: string }) => {
-        return (
-          item?.categoryType?.toLowerCase() === categoryTypes?.toLowerCase()
-        );
-      });
+      var alter = function (item: any) {
+        let splittedValue = item?.categoryType
+          ?.trim()
+          .split("(")[0]
+          ?.toLowerCase();
 
-      return data;
+        return splittedValue?.trim() === categoryTypes?.trim()?.toLowerCase(); //use the argument here.
+      };
+      var filter = documentsDetailsList?.responseData?.filter(alter);
+      return filter;
     }
 
     if (searchedData.length > 0) {
@@ -351,9 +369,7 @@ const [isBottomSheetForShare,setIsBottomSheetForShare]= useState<boolean>(false)
     console.log("searchedData====>{{}}}}}", data);
     return data;
   };
-  const clearData = ()=>{
-
-  }
+  const clearData = () => {};
 
   return (
     <View style={styles.sectionContainer}>
@@ -386,7 +402,7 @@ const [isBottomSheetForShare,setIsBottomSheetForShare]= useState<boolean>(false)
             value={searchText}
             onChangeText={onChangeHandler}
           />
-          { isCheckBoxEnable &&  (
+          {isCheckBoxEnable && (
             <View
               style={{ alignItems: "flex-end", marginTop: 20, marginRight: 25 }}
             >
@@ -398,17 +414,23 @@ const [isBottomSheetForShare,setIsBottomSheetForShare]= useState<boolean>(false)
                   alignItems: "center",
                 }}
               >
-                <TouchableOpacity onPress={()=>shareMultipleItem() }>
-                <Image
-                  source={LocalImages.shareImage}
-                  style={{ height: 18, width:18,marginRight:15,tintColor:'#293fee' }}
-                />
+                <TouchableOpacity onPress={() => shareMultipleItem()}>
+                  <Image
+                    source={LocalImages.shareImage}
+                    style={{
+                      height: 18,
+                      width: 18,
+                      marginRight: 15,
+                      tintColor: "#293fee",
+                    }}
+                  />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={()=>
-                {
-                  setCheckBoxEnable(false)
-                  setIsClear(true)
-                }}   >
+                <TouchableOpacity
+                  onPress={() => {
+                    setCheckBoxEnable(false);
+                    setIsClear(true);
+                  }}
+                >
                   <Text style={{ color: "tomato", fontWeight: "500" }}>
                     CLEAR
                   </Text>

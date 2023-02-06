@@ -24,7 +24,6 @@ const CustomizeQr = ({ navigation }: IDocumentScreenProps) => {
   const qrListData = useAppSelector((state) => state.saveData);
   const userDetails = useAppSelector((state) => state.account);
   var ctList = SCREENS.HOMESCREEN.CategoryCustomiseList;
-  console.log("documentsDetailsList", qrListData);
   if (qrListData && qrListData?.qrListData && qrListData?.qrListData) {
     ctList = qrListData?.qrListData;
   }

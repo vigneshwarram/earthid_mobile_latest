@@ -53,6 +53,7 @@ export const SCREENS = {
         COLOR: "#FFDD9B",
       },
     ],
+
     categoryList: [
       {
         TITLE: "id",
@@ -79,8 +80,6 @@ export const SCREENS = {
         URI: LocalImages.CATEGORIES.educationImage,
         COLOR: "#FFDD9B",
       },
-  
-    
     ],
     CategoryCustomiseList: [
       {
@@ -225,7 +224,7 @@ export const SCREENS = {
   },
 
   BACKUPIDENTYSCREEN: {
-    instructionEarthID:"backupscreeninstructionEarthID",
+    instructionEarthID: "backupscreeninstructionEarthID",
     instruction: "backupscreeninstruction",
     instructions: "backupscreeninstructions",
   },
