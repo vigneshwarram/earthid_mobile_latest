@@ -74,8 +74,9 @@ const CustomDrawer = (props: any) => {
       //    "https://www.myearth.id/privacy":"https://globalidiq.com/terms-of-use-3/"
       // );
       Linking.openURL(
-      
-         "https://globalidiq.com/terms-of-use-3/"
+        isEarthId()
+          ? "https://www.myearth.id/privacy"
+          : "https://globalidiq.com/terms-of-use-3/"
       );
     } else {
       props.navigation.navigate(item.route, { type: item.route });

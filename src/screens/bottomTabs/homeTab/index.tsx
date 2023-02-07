@@ -1,33 +1,27 @@
 import { values } from "lodash";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   StyleSheet,
-  Text,
   FlatList,
   ScrollView,
   Image,
   AsyncStorage,
   TouchableOpacity,
 } from "react-native";
-import CircularProgress from "react-native-circular-progress-indicator";
 import { EventRegister } from "react-native-event-listeners";
 
 import Avatar from "../../../components/Avatar";
 import Card from "../../../components/Card";
 import Header from "../../../components/Header";
-import AnimatedLoader from "../../../components/Loader/AnimatedLoader";
 import GenericText from "../../../components/Text";
 import { LocalImages } from "../../../constants/imageUrlConstants";
 import { SCREENS } from "../../../constants/Labels";
 import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
-import {
-  byPassUserDetailsRedux,
-  getHistory,
-} from "../../../redux/actions/authenticationAction";
+import { getHistory } from "../../../redux/actions/authenticationAction";
 import { savingProfilePictures } from "../../../redux/actions/LocalSavingActions";
 import { Screens } from "../../../themes";
-import { alertBox } from "../../../utils/earthid_account";
+import { getColor } from "../../../utils/CommonFuntion";
 
 interface IHomeScreenProps {
   navigation?: any;
@@ -41,14 +35,13 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
   const securityReducer: any = useAppSelector((state) => state.security);
   const disPatch = useAppDispatch();
 
-  let flatListRef:any = useRef();
+  let flatListRef: any = useRef();
 
-
- //recent activity
- let documentsDetailsList = useAppSelector((state) => state.Documents);
+  //recent activity
+  let documentsDetailsList = useAppSelector((state) => state.Documents);
   let recentData = documentsDetailsList?.responseData;
 
-  console.log("securityReducer====>rrr", securityReducer?.securityData?.length);
+  const [recentDataOfDocument, setrecentData] = useState([]);
   const dispatch = useAppDispatch();
   const _toggleDrawer = () => {
     navigation.openDrawer();
@@ -58,11 +51,30 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
     let newsec: String = securityReducer?.securityData?.length;
     if (newsec == "1" || newsec !== "1") {
       console.log("security===>", newsec);
-      await AsyncStorage.setItem("securityLength", newsec.toString());
+      await AsyncStorage.setItem("securityLength", newsec?.toString());
     }
-    const seurityData = await AsyncStorage.getItem("securityLength");
-    console.log("securityLengthss===>", seurityData);
   };
+
+  useEffect(() => {
+    setValueSecurity();
+  }, []);
+
+  useEffect(() => {
+    if (documentsDetailsList) {
+      let recentDataFillerWithColor: any = recentData?.map(
+        (item: any, index: any) => {
+          let colors = item?.name;
+          let iteName = colors.trim()?.split("(")[0].trim();
+          console.log("recentDataFillerWithColor====>", iteName);
+          item.color = getColor(iteName);
+          return item;
+        }
+      );
+      if (recentDataFillerWithColor?.length > 0) {
+        setrecentData(recentDataFillerWithColor);
+      }
+    }
+  }, [documentsDetailsList]);
 
   const categoryList = values(SCREENS.HOMESCREEN.categoryList).map(
     ({ TITLE: title, URI: uri, COLOR: color }: any) => ({
@@ -82,7 +94,9 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
   const _renderItem = ({ item }: any) => {
     return (
       <Avatar
-      avatarClick={()=>navigation.navigate('Documents',{category:item.title})}
+        avatarClick={() =>
+          navigation.navigate("Documents", { category: item.title })
+        }
         isCategory={true}
         isUploaded={false}
         text={item.title}
@@ -131,78 +145,71 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
   const setMetrics = async () => {
     await AsyncStorage.setItem("pageName", "Home");
   };
+  // useEffect(() => {
+  //   const PayLoad = {
+  //     userId: userDetails?.responseData?.Id,
+  //     publicKey: userDetails?.responseData?.publicKey,
+  //   };
+  //   dispatch(getHistory(PayLoad));
+  //   setValueSecurity();
+  //   console.log("items==>", userDetails);
+  // }, []);
+
   useEffect(() => {
-    const PayLoad = {
-      userId: userDetails?.responseData?.Id,
-      publicKey: userDetails?.responseData?.publicKey,
-    };
-    dispatch(getHistory(PayLoad));
-    setValueSecurity();
-    console.log("items==>", userDetails);
+    getImage();
   }, []);
 
-  
-  useEffect(()=>{
-    getImage()
-  },[])
-
-
-  const getImage= async()=>{
-    const profilePic = await AsyncStorage.getItem("profilePic")
-    disPatch(savingProfilePictures(profilePic))
-    console.log('GetImage=>',profilePic)
-  }
-
+  const getImage = async () => {
+    const profilePic = await AsyncStorage.getItem("profilePic");
+    disPatch(savingProfilePictures(profilePic));
+  };
 
   const _renderItemHistory = ({ item }: any) => {
-    console.log("itemsnews==>", item);
-
     return (
-
       <TouchableOpacity
-      onPress={() =>
-        navigation.navigate("ViewCredential", { documentDetails: item })
-      }
+        onPress={() =>
+          navigation.navigate("ViewCredential", { documentDetails: item })
+        }
       >
-        <Card
-           leftAvatar={LocalImages.documentsImage}
-           absoluteCircleInnerImage={LocalImages.upImage}
-           // rightIconSrc={LocalImages.menuImage}
-           title={item?.name}
-           subtitle={`      Uploaded  : ${item.date}`}
-           style={{
-             ...styles.cardContainers,
-             ...{
-               avatarContainer: {
-                backgroundColor: "rgba(245, 188, 232, 1)",
-                width: 60,
-                height: 60,
-                borderRadius: 20,
-                marginTop: 25,
-                marginLeft: 10,
-                marginRight: 5,
-               },
-              uploadImageStyle: {
-                backgroundColor: "rgba(245, 188, 232, 1)",
-                borderRadius:25,
-                borderWidth:3,
-                bordercolor:'#fff',
-                borderWidthRadius:25
-               },
-             },
-            title: {
-              fontSize: 18,
-              marginTop: -10,
-              fontWeight: "bold",
-            },
-            subtitle: {
-              fontSize: 14,
-              marginTop: 5,
-              
-  
-            },
-           }}
-        />
+        {item?.name && item?.name !== undefined && (
+          <Card
+            leftAvatar={LocalImages.documentsImage}
+            absoluteCircleInnerImage={LocalImages.upImage}
+            // rightIconSrc={LocalImages.menuImage}
+            title={item?.name}
+            subtitle={`      Uploaded  : ${item.date}`}
+            style={{
+              ...styles.cardContainers,
+              ...{
+                avatarContainer: {
+                  backgroundColor: item.color,
+                  width: 60,
+                  height: 60,
+                  borderRadius: 20,
+                  marginTop: 25,
+                  marginLeft: 10,
+                  marginRight: 5,
+                },
+                uploadImageStyle: {
+                  backgroundColor: item?.color,
+                  borderRadius: 25,
+                  borderWidth: 3,
+                  bordercolor: "#fff",
+                  borderWidthRadius: 25,
+                },
+              },
+              title: {
+                fontSize: 18,
+                marginTop: -10,
+                fontWeight: "bold",
+              },
+              subtitle: {
+                fontSize: 14,
+                marginTop: 5,
+              },
+            }}
+          />
+        )}
       </TouchableOpacity>
     );
   };
@@ -247,78 +254,68 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
               activeStrokeColor={Screens.colors.primary}
             /> */}
           </View>
-          <View 
-          style={{
-            flexDirection:"row",
-            justifyContent:"space-between",
-            
-          }}>
-
-          <View>
-          <GenericText style={[styles.categoryHeaderText, { fontSize: 13 }]}>
-            {SCREENS.HOMESCREENTITLES.CATEGORIES}
-          </GenericText>
-          </View>
-
-
-
           <View
-          style={{flexDirection:"row"}}
-          >
-          <TouchableOpacity  
-          style={{
-            width:20,
-            height:20,
-            alignSelf:"center",
-            marginRight:40
-          }} 
-
-          onPress={() => flatListRef.scrollToIndex({ index: 0 })}
-          >
-
-          <Image
-            source={LocalImages.backicon}
             style={{
-                width:20,
-                height:20,
-                tintColor:"gray",
-                alignSelf:"center",
-            }}        
-          />
-          </TouchableOpacity>
-
-
-          <TouchableOpacity  
-          style={{
-            width:20,
-            height:20,
-            alignSelf:"center"
-          }} 
-
-          onPress={() => flatListRef.scrollToEnd()}
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
           >
+            <View>
+              <GenericText
+                style={[styles.categoryHeaderText, { fontSize: 13 }]}
+              >
+                {SCREENS.HOMESCREENTITLES.CATEGORIES}
+              </GenericText>
+            </View>
 
-          <Image
-            source={LocalImages.nexticon}
-            style={{
-                width:20,
-                height:20,
-                tintColor:"gray",
-                alignSelf:"center",
-                marginRight:50
-            }}        
-          />
-          </TouchableOpacity>
+            <View style={{ flexDirection: "row" }}>
+              <TouchableOpacity
+                style={{
+                  width: 20,
+                  height: 20,
+                  alignSelf: "center",
+                  marginRight: 40,
+                }}
+                onPress={() => flatListRef.scrollToIndex({ index: 0 })}
+              >
+                <Image
+                  source={LocalImages.backicon}
+                  style={{
+                    width: 20,
+                    height: 20,
+                    tintColor: "gray",
+                    alignSelf: "center",
+                  }}
+                />
+              </TouchableOpacity>
 
-          </View>
-
-          
-
+              <TouchableOpacity
+                style={{
+                  width: 20,
+                  height: 20,
+                  alignSelf: "center",
+                }}
+                onPress={() => flatListRef.scrollToEnd()}
+              >
+                <Image
+                  source={LocalImages.nexticon}
+                  style={{
+                    width: 20,
+                    height: 20,
+                    tintColor: "gray",
+                    alignSelf: "center",
+                    marginRight: 50,
+                  }}
+                />
+              </TouchableOpacity>
+            </View>
           </View>
           <View style={[styles.flatPanel, { height: 130, marginTop: -10 }]}>
             <FlatList<any>
               horizontal
-              ref={(ref) => { flatListRef = ref }}
+              ref={(ref) => {
+                flatListRef = ref;
+              }}
               showsHorizontalScrollIndicator={false}
               data={categoryList}
               renderItem={_renderItem}
@@ -334,7 +331,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
             //     ? getHistoryReducer.responseData
             //     : []
             // }
-            data={recentData}
+            data={recentDataOfDocument}
             inverted
             renderItem={_renderItemHistory}
           />
@@ -342,17 +339,15 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
             isLoaderVisible={getHistoryReducer?.isLoading}
             loadingText="loading"
           /> */}
-          {recentData &&
-         
-          recentData?.length === 0 && (
-              <View style={{ justifyContent: "center", alignItems: "center" }}>
-                <Image
-                  resizeMode="contain"
-                  style={[styles.logoContainer]}
-                  source={LocalImages.recent}
-                ></Image>
-              </View>
-            )}
+          {recentDataOfDocument && recentDataOfDocument?.length === 0 && (
+            <View style={{ justifyContent: "center", alignItems: "center" }}>
+              <Image
+                resizeMode="contain"
+                style={[styles.logoContainer]}
+                source={LocalImages.recent}
+              ></Image>
+            </View>
+          )}
         </View>
       </ScrollView>
     </View>

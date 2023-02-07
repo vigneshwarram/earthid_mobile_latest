@@ -50,37 +50,34 @@ const DocumentPreviewScreen = (props: any) => {
   };
   const resourceType = "base64";
   const shareItem = async () => {
-    console.log('selectedItem?.base64===>',selectedItem?.base64)
-    if(selectedItem?.docType==='jpg'){
+    console.log("selectedItem?.base64===>", selectedItem?.base64);
+    if (selectedItem?.docType === "jpg") {
       await Share.open({
-        url : selectedItem?.base64
+        url: selectedItem?.base64,
+      });
+    } else {
+      await Share.open({
+        url: `data:image/jpeg;base64,${selectedItem?.base64}`,
       });
     }
-    else {
-      await Share.open({
-        url :`data:image/jpeg;base64,${selectedItem?.base64}`
-      });
-    } 
   };
 
-
-  function deleteAlert(){
+  function deleteAlert() {
     Alert.alert(
-      'Confirmation!',
-      'Are you sure to delete this document?',
+      "Confirmation!",
+      "Are you sure to delete this document?",
       [
-        
         {
-          text: 'Cancel',
-          onPress: () => console.log('Cancel Pressed'),
-          style: 'cancel',
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
         },
         {
-          text: 'OK', 
-          onPress: () => deleteItem()
+          text: "OK",
+          onPress: () => deleteItem(),
         },
       ],
-      {cancelable: false},
+      { cancelable: false }
     );
   }
 
@@ -93,7 +90,7 @@ const DocumentPreviewScreen = (props: any) => {
     });
 
     dispatch(saveDocuments(newData));
-    props.navigation.navigate("Documents")
+    props.navigation.navigate("Documents");
   };
   const RowOption = ({ icon, title, rowAction }: any) => (
     <TouchableOpacity onPress={rowAction}>
@@ -125,16 +122,22 @@ const DocumentPreviewScreen = (props: any) => {
     </TouchableOpacity>
   );
 
-useEffect(()=>{
-  
-  console.log("userDetails==>",documentDetails)
-  console.log("documentsDetailsList==>",documentsDetailsList)
-},[])
-
   return (
     <View style={styles.sectionContainer}>
-      <View style={{flex:1,position: "absolute",top: 20,zIndex: 100,flexDirection:'row',alignItems:'center'}}>
-        <TouchableOpacity style={{flex:0.1,left:20}} onPress={() => props.navigation.goBack()}>   
+      <View
+        style={{
+          flex: 1,
+          position: "absolute",
+          top: 20,
+          zIndex: 100,
+          flexDirection: "row",
+          alignItems: "center",
+        }}
+      >
+        <TouchableOpacity
+          style={{ flex: 0.1, left: 20 }}
+          onPress={() => props.navigation.goBack()}
+        >
           <Image
             resizeMode="contain"
             style={[styles.logoContainer]}
@@ -142,7 +145,10 @@ useEffect(()=>{
           ></Image>
         </TouchableOpacity>
         <GenericText style={styles.text}>Details</GenericText>
-        <TouchableOpacity style={{flex:0.1}}  onPress={() => setisBottomSheetForSideOptionVisible(true)}>   
+        <TouchableOpacity
+          style={{ flex: 0.1 }}
+          onPress={() => setisBottomSheetForSideOptionVisible(true)}
+        >
           <Image
             resizeMode="contain"
             style={[styles.logoContainer]}
@@ -151,23 +157,23 @@ useEffect(()=>{
         </TouchableOpacity>
       </View>
       <BottomSheet
-            onClose={() => setisBottomSheetForSideOptionVisible(false)}
-            height={150}
-            isVisible={isBottomSheetForSideOptionVisible}
-          >
-            <View style={{ height: 100, width: "100%", paddingHorizontal: 30}}>
-              <RowOption
-                rowAction={() => shareItem()}
-                title={"Share"}
-                icon={LocalImages.shareImage}
-              />
-              <RowOption
-                rowAction={() => deleteAlert()}
-                title={"Delete"}
-                icon={LocalImages.deleteImage}
-              />
-            </View>
-          </BottomSheet>
+        onClose={() => setisBottomSheetForSideOptionVisible(false)}
+        height={150}
+        isVisible={isBottomSheetForSideOptionVisible}
+      >
+        <View style={{ height: 100, width: "100%", paddingHorizontal: 30 }}>
+          <RowOption
+            rowAction={() => shareItem()}
+            title={"Share"}
+            icon={LocalImages.shareImage}
+          />
+          <RowOption
+            rowAction={() => deleteAlert()}
+            title={"Delete"}
+            icon={LocalImages.deleteImage}
+          />
+        </View>
+      </BottomSheet>
       {/* <View style={{ position: "absolute", top: 20, right: 20, zIndex: 100 }}>
         
         <TouchableOpacity onPress={() => props.navigation.goBack()}>   
@@ -203,9 +209,7 @@ useEffect(()=>{
         )}
       </View>
 
-     
-
-          {/* <Image
+      {/* <Image
             resizeMode={"contain"}
             style={{
               flex: 1,
@@ -213,14 +217,19 @@ useEffect(()=>{
             source={{ uri: documentDetails.base64 }}
           ></Image> */}
 
-          <GenericText style={{ color: "#fff",fontSize:18,alignSelf:"center" }}>
-           {documentDetails.name}
-          </GenericText>
-          <GenericText style={{ color: "#fff",fontSize:18,alignSelf:"center",marginTop:5 }}>
-           {`Uploaded on ${documentDetails.date} at ${documentDetails.time}`}
-          </GenericText>
-  
-
+      <GenericText style={{ color: "#fff", fontSize: 18, alignSelf: "center" }}>
+        {documentDetails.name}
+      </GenericText>
+      <GenericText
+        style={{
+          color: "#fff",
+          fontSize: 18,
+          alignSelf: "center",
+          marginTop: 5,
+        }}
+      >
+        {`Uploaded on ${documentDetails.date} at ${documentDetails.time}`}
+      </GenericText>
 
       <View
         style={{
@@ -247,12 +256,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Screens.black,
   },
-  text:{
-    flex:0.8,
+  text: {
+    flex: 0.8,
     fontWeight: "bold",
-    textAlign: "center", 
-    fontSize: 20, 
-    color: Screens.pureWhite
+    textAlign: "center",
+    fontSize: 20,
+    color: Screens.pureWhite,
   },
   loading: {
     position: "absolute",
@@ -278,7 +287,7 @@ const styles = StyleSheet.create({
     height: 15,
     tintColor: "#fff",
   },
-  bottomLogo:{
+  bottomLogo: {
     width: 25,
     height: 25,
   },
