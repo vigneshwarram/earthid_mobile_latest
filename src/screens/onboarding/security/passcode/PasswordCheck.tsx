@@ -24,15 +24,13 @@ const PasswordCheck = ({ navigation, route }: IHomeScreenProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [code, setCode] = useState();
   const [isError, setisError] = useState(false);
-  const savedCode = route.params?.setCode;
   const onPinCodeChange = (code: any) => {
     setisError(false);
-    var format = code.replace(/[^0-9]/g, "");
+    var format = code?.replace(/[^0-9]/g, "");
     setCode(format);
   };
 
   const _navigateAction = async () => {
-    console.log("savedCode", savedCode);
     const getItem = await AsyncStorage.getItem("passcode");
     if (getItem === code?.toString()) {
       setIsLoading(true);

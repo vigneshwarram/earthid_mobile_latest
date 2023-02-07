@@ -32,6 +32,7 @@ import com.facebook.soloader.SoLoader;
 import com.myearthid.newarchitecture.MainApplicationReactNativeHost;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import com.meedan.ShareMenuPackage; 
 import com.microsoft.codepush.react.CodePush;
 
 public class MainApplication extends Application implements ReactApplication {
@@ -48,6 +49,7 @@ public class MainApplication extends Application implements ReactApplication {
           @SuppressWarnings("UnnecessaryLocalVariable")
           List<ReactPackage> packages = new PackageList(this).getPackages();
             new SplashScreenReactPackage();
+            new ShareMenuPackage() ;
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
            new CodePush("00844653-ea43-466d-adc9-5ac0a4eabbeb", MainApplication.this, BuildConfig.DEBUG);
