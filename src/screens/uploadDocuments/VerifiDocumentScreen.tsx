@@ -40,6 +40,7 @@ export interface IDocumentProps {
   base64: any;
   pdf?: boolean;
   categoryType?:any
+  color?:string
 }
 const VerifiDocumentScreen = (props: any) => {
   const { uploadedDocuments, } = props.route.params;

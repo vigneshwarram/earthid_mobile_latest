@@ -13,7 +13,7 @@
 #import <React/RCTSurfacePresenter.h>
 #import <React/RCTSurfacePresenterBridgeAdapter.h>
 #import <ReactCommon/RCTTurboModuleManager.h>
-
+#import <RNShareMenu/ShareMenuManager.h>
 #import <react/config/ReactNativeConfig.h>
 
 @interface AppDelegate () <RCTCxxBridgeDelegate, RCTTurboModuleManagerDelegate> {
@@ -103,7 +103,13 @@
 {
   return RCTAppSetupDefaultModuleFromClass(moduleClass);
 }
-
+@implementation AppDelegate
+- (BOOL)application:(UIApplication *)app
+          openURL:(NSURL *)url
+          options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
+  {
+    return [ShareMenuManager application:app openURL:url options:options];
+  }
 #endif
 
 @end

@@ -545,6 +545,8 @@ PODS:
     - React-RCTImage
   - RNShare (7.9.1):
     - React-Core
+  - RNShareMenu (6.0.0):
+    - React
   - RNSnackbar (2.4.0):
     - React-Core
   - RNSVG (12.4.4):
@@ -647,6 +649,7 @@ DEPENDENCIES:
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNShare (from `../node_modules/react-native-share`)
+  - RNShareMenu (from `../node_modules/react-native-share-menu`)
   - RNSnackbar (from `../node_modules/react-native-snackbar`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - TouchID (from `../node_modules/react-native-touch-id`)
@@ -814,6 +817,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-screens"
   RNShare:
     :path: "../node_modules/react-native-share"
+  RNShareMenu:
+    :path: "../node_modules/react-native-share-menu"
   RNSnackbar:
     :path: "../node_modules/react-native-snackbar"
   RNSVG:
@@ -835,7 +840,7 @@ SPEC CHECKSUMS:
   BVLinearGradient: 34a999fda29036898a09c6a6b728b0b4189e1a44
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   CodePush: ef496b6fd053012e985e3d4a0ab9f9dbf2739eac
-  DoubleConversion: 831926d9b8bf8166fd87886c4abab286c2422662
+  DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
   FBLazyVector: 8a28262f61fbe40c04ce8677b8d835d97c18f1b3
   FBReactNativeSpec: b475991eb2d8da6a4ec32d09a8df31b0247fa87d
   Flipper: 26fc4b7382499f1281eb8cb921e5c3ad6de91fe0
@@ -848,7 +853,7 @@ SPEC CHECKSUMS:
   Flipper-RSocket: d9d9ade67cbecf6ac10730304bf5607266dd2541
   FlipperKit: cbdee19bdd4e7f05472a66ce290f1b729ba3cb86
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
-  glog: 476ee3e89abb49e07f822b48323c51c57124b572
+  glog: 04b94705f318337d7ead9e6d17c019bd9b1f6b1b
   GoogleDataTransport: 1c8145da7117bd68bbbed00cf304edb6a24de00f
   GoogleMLKit: 0017a6a8372e1a182139b9def4d89be5d87ca5a7
   GoogleToolboxForMac: 8bef7c7c5cf7291c687cf5354f39f9db6399ad34
@@ -917,6 +922,7 @@ SPEC CHECKSUMS:
   RNReanimated: 2a91e85fcd343f8af3c58d3425b99fdd285590a5
   RNScreens: 34cc502acf1b916c582c60003dc3089fa01dc66d
   RNShare: a5dc3b9c53ddc73e155b8cd9a94c70c91913c43c
+  RNShareMenu: cb9dac548c8bf147d06f0bf07296ad51ea9f5fc3
   RNSnackbar: be3333a21a453ccc272f41a8add5a71f7d44dfcd
   RNSVG: ecd661f380a07ba690c9c5929c475a44f432d674
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
@@ -926,6 +932,6 @@ SPEC CHECKSUMS:
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 9d31c5f602010a8ba40add1a99614fa18e287127
+PODFILE CHECKSUM: 336c6b752e92e7a057c3c23819c1fee592e05d9e
 
 COCOAPODS: 1.11.3

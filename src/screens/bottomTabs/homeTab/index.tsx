@@ -1,5 +1,5 @@
 import { values } from "lodash";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { EventRegister } from "react-native-event-listeners";
-
+import RNFS from "react-native-fs";
 import Avatar from "../../../components/Avatar";
 import Card from "../../../components/Card";
 import Header from "../../../components/Header";
@@ -18,15 +18,26 @@ import GenericText from "../../../components/Text";
 import { LocalImages } from "../../../constants/imageUrlConstants";
 import { SCREENS } from "../../../constants/Labels";
 import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
-import { getHistory } from "../../../redux/actions/authenticationAction";
+import {
+  getHistory,
+  saveDocuments,
+} from "../../../redux/actions/authenticationAction";
 import { savingProfilePictures } from "../../../redux/actions/LocalSavingActions";
 import { Screens } from "../../../themes";
 import { getColor } from "../../../utils/CommonFuntion";
-
+import ShareMenu, { ShareMenuReactView } from "react-native-share-menu";
+import { dateTime } from "../../../utils/encryption";
+import RNFetchBlob from "rn-fetch-blob";
+import { IDocumentProps } from "../../uploadDocuments/VerifiDocumentScreen";
 interface IHomeScreenProps {
   navigation?: any;
   route?: any;
 }
+type SharedItem = {
+  mimeType: string;
+  data: string;
+  extraData: any;
+};
 
 const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
   const userDetails = useAppSelector((state) => state.account);
@@ -47,18 +58,104 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
     navigation.openDrawer();
   };
 
-  const setValueSecurity = async () => {
-    let newsec: String = securityReducer?.securityData?.length;
-    if (newsec == "1" || newsec !== "1") {
-      console.log("security===>", newsec);
-      await AsyncStorage.setItem("securityLength", newsec?.toString());
-    }
-  };
+  async function convertToBase64(path: string) {
+    const result = await RNFS.readFile(path, "base64");
+    return `data:image/png;base64,${result}`;
+  }
 
   useEffect(() => {
-    setValueSecurity();
+    ShareMenu.getInitialShare(handleShare);
   }, []);
 
+  useEffect(() => {
+    const listener = ShareMenu.addNewShareListener(handleShare);
+
+    return () => {
+      listener.remove();
+    };
+  }, []);
+
+  const handleShare = useCallback(async (item: SharedItem | null) => {
+    if (!item) {
+      return;
+    }
+
+    const { mimeType, data, extraData } = item;
+    console.log("data", mimeType);
+    if (mimeType === "image/jpeg") {
+      const imagePath = data;
+      const base64 = await convertToBase64(imagePath);
+
+      validateImages(base64);
+    } else {
+      const imagePath = data;
+      const base64 = await convertToBase64(imagePath);
+      uploadPdf(base64);
+    }
+  }, []);
+  const uploadPdf = (base64: string) => {
+    var date = dateTime();
+
+    const filePath = RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
+    var documentDetails: IDocumentProps = {
+      name: "Id",
+      path: filePath,
+      date: date?.date,
+      time: date?.time,
+      txId: "e4343434343434443",
+      docType: "pdf",
+      docExt: ".jpg",
+      processedDoc: "",
+      base64: base64,
+      categoryType: "insurance",
+      pdf: true,
+      id: "",
+      vc: undefined,
+      isVc: false,
+    };
+    var DocumentList = documentsDetailsList?.responseData
+      ? documentsDetailsList?.responseData
+      : [];
+    DocumentList.push(documentDetails);
+    dispatch(saveDocuments(DocumentList));
+
+    setTimeout(() => {
+      navigation.navigate("Documents");
+    }, 2000);
+  };
+  const validateImages = (base64: string) => {
+    // AddDocumehtfetch(CreateHistory, payLoad, "POST");
+    setTimeout(() => {
+      var date = dateTime();
+      const filePath = RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
+      var documentDetails: IDocumentProps = {
+        id: `ID_VERIFICATION`,
+        name: "Id",
+        path: filePath,
+        date: date?.date,
+        time: date?.time,
+        txId: "",
+        docType: "jpg",
+        docExt: ".jpg",
+        processedDoc: "",
+        base64: base64,
+        categoryType: "insurance",
+        vc: undefined,
+        isVc: false,
+        color: "rgba(191, 245, 206, 1)",
+      };
+
+      var DocumentList = documentsDetailsList?.responseData
+        ? documentsDetailsList?.responseData
+        : [];
+      DocumentList.push(documentDetails);
+      dispatch(saveDocuments(DocumentList));
+      getHistoryReducer.isSuccess = false;
+      setTimeout(() => {
+        navigation.navigate("Documents");
+      }, 2000);
+    }, 200);
+  };
   useEffect(() => {
     if (documentsDetailsList) {
       let recentDataFillerWithColor: any = recentData?.map(
