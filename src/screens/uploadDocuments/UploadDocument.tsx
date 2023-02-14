@@ -1,5 +1,5 @@
 import { useTheme } from "@react-navigation/native";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef ,useState} from "react";
 import {
   View,
   StyleSheet,
@@ -17,12 +17,16 @@ import DocumentMask from "../uploadDocuments/DocumentMask";
 import RNFS from "react-native-fs";
 import GenericText from "../../components/Text";
 import { useFormData } from "../../hooks/use-form-fetch";
+import * as ImagePicker from "react-native-image-picker";
+
 
 const UploadDocument = (props: any) => {
   const _handleBarCodeRead = (barCodeData: any) => {};
   const { colors } = useTheme();
   const { type } =props.route.params
   const camRef: any = useRef();
+  const [imageResponse, setImageResponse] = useState<any>('');
+
   const { loading, data, error, fetch } = useFormData();
   const _takePicture = async () => {
     const options = { quality: 0.1, base64: true };
@@ -52,14 +56,45 @@ const UploadDocument = (props: any) => {
       await requestPermission();
     }
     try {
-      const resp: any = await DocumentPicker.pick({
-        type: [DocumentPicker.types.images, DocumentPicker.types.pdf],
-        readContent: true,
-      });
+      // const resp: any = await DocumentPicker.pick({
+      //   type: [DocumentPicker.types.images, DocumentPicker.types.pdf],
+      //   readContent: true,
+      // });
+      
+
+      ImagePicker.launchImageLibrary(
+        ImagePicker.ImageLibraryOptions,
+        setImageResponse
+      )
+
     } catch (err) {
       console.log("data==>", err);
     }
   };
+
+  useEffect(() => {
+    if(imageResponse != ''){
+    console.log('==>result',imageResponse?.assets[0]?.uri)
+    let fileUri = imageResponse?.assets[0]?.uri;
+    // disPatch(savingProfilePictures(fileUri));
+    RNFS.readFile(fileUri, "base64").then((res) => {
+      console.log("res", res);
+      props.navigation.navigate("DocumentPreviewScreen", {
+        fileUri: {
+        //  uri: `data:image/png;base64,${res}`,
+          uri: fileUri,
+          base64: res,
+          file: res[0],
+          filename :imageResponse?.assets[0]?.fileName,
+          type :imageResponse?.assets[0]?.type,
+          imgres:imageResponse
+        },
+        type:"regDoc"
+      });
+      console.log("respic", fileUri); 
+       });
+    }
+  }, [imageResponse]);
 
 
   useEffect(()=>{

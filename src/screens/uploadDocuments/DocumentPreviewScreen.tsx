@@ -14,6 +14,7 @@ import PDFView from "react-native-view-pdf";
 const DocumentPreviewScreen = (props: any) => {
   const { fileUri } = props.route.params;
   const { type } = props.route.params;
+  const { newdata } = props.route.params;
   const userDetails = useAppSelector((state) => state.account);
   const { loading, data, error, fetch: uploadRegDoc } = useFetch();
   const [successResponse, setsuccessResponse] = useState(false);
@@ -113,24 +114,28 @@ const DocumentPreviewScreen = (props: any) => {
     if(type=="regDoc"){
 
       let data={
-        image: fileUri?.uri
+        image: fileUri.uri,
+        name:fileUri.filename,
+        type:fileUri.type
       }
       try{
-        var response = uploadRegDoc(uploadRegisterDocument,data.image,"FORM-DATA")
+        var response = uploadRegDoc(uploadRegisterDocument,data,"FORM-DATA")
         console.log("DocumentDetails:::::",response)
        // props.navigation.navigate("DrawerNavigator", { response });
       }catch(e){
         console.log("DocumentError:::::",e)
         console.log("DocumentError:::::","ERROR")
       }
-     
+
     }
   }
 
-
   useEffect(()=>{
     console.log("RegisterType",type)
-    console.log("RegisterType","praveen",fileUri?.base64)
+    console.log("RegisterType",fileUri?.imgres)
+    console.log("RegisterType","praveen",fileUri?.uri)
+    console.log("RegisterType","praveen",fileUri?.filename)
+
    // console.log("RegisterType",fileUri)
   },[])
 
