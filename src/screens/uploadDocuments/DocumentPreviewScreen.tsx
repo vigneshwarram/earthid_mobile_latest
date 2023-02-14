@@ -7,15 +7,15 @@ import AnimatedLoader from "../../components/Loader/AnimatedLoader";
 import { LocalImages } from "../../constants/imageUrlConstants";
 import { useFetch } from "../../hooks/use-fetch";
 import { Screens } from "../../themes/index";
-import { BASE_URL, uploadDocument } from "../../utils/earthid_account";
+import { BASE_URL, uploadDocument, uploadRegisterDocument } from "../../utils/earthid_account";
 import { useAppSelector } from "../../hooks/hooks";
 import PDFView from "react-native-view-pdf";
 
 const DocumentPreviewScreen = (props: any) => {
   const { fileUri } = props.route.params;
-  const { value } = props.route.params;
+  const { type } = props.route.params;
   const userDetails = useAppSelector((state) => state.account);
-  const { loading, data, error, fetch: postFormfetch } = useFetch();
+  const { loading, data, error, fetch: uploadRegDoc } = useFetch();
   const [successResponse, setsuccessResponse] = useState(false);
   const [message, Setmessage] = useState("ooo");
   const [datas, SetData] = useState(null);
@@ -47,12 +47,25 @@ const DocumentPreviewScreen = (props: any) => {
         
         {
           text: 'Yes',
-          onPress: () => uploadDoc(),
+          onPress: () =>{ 
+            if(type=="regDoc"){
+              uploadDocumentImage()
+            }else{
+              uploadDoc()
+            }
+           
+          },
           style: 'cancel',
         },
         {
           text: 'No', 
-          onPress: () => uploadDoc()
+          onPress: () =>{
+            if(type=="regDoc"){
+              uploadDocumentImage()
+            }else{
+              uploadDoc()
+            }
+          }
         },
       ],
       {cancelable: false},
@@ -69,7 +82,6 @@ const DocumentPreviewScreen = (props: any) => {
         props.navigation.navigate("DrawerNavigator", { fileUri });
       }
     } else {
-      
         props.navigation.navigate("categoryScreen", { fileUri });
         console.log("success==>", "Success");
       
@@ -92,6 +104,35 @@ const DocumentPreviewScreen = (props: any) => {
   //   }
   //   console.log("filename==>", fileUri?.file?.type);
   // }, [data]);
+
+
+  function uploadDocumentImage(){
+
+    console.log("DocumentImage:::::",fileUri)
+
+    if(type=="regDoc"){
+
+      let data={
+        image: fileUri?.uri
+      }
+      try{
+        var response = uploadRegDoc(uploadRegisterDocument,data.image,"FORM-DATA")
+        console.log("DocumentDetails:::::",response)
+       // props.navigation.navigate("DrawerNavigator", { response });
+      }catch(e){
+        console.log("DocumentError:::::",e)
+        console.log("DocumentError:::::","ERROR")
+      }
+     
+    }
+  }
+
+
+  useEffect(()=>{
+    console.log("RegisterType",type)
+    console.log("RegisterType","praveen",fileUri?.base64)
+   // console.log("RegisterType",fileUri)
+  },[])
 
   return (
     <View style={styles.sectionContainer}>

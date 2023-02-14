@@ -1,5 +1,5 @@
 import { useTheme } from "@react-navigation/native";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import {
   View,
   StyleSheet,
@@ -21,13 +21,14 @@ import { useFormData } from "../../hooks/use-form-fetch";
 const UploadDocument = (props: any) => {
   const _handleBarCodeRead = (barCodeData: any) => {};
   const { colors } = useTheme();
+  const { type } =props.route.params
   const camRef: any = useRef();
   const { loading, data, error, fetch } = useFormData();
   const _takePicture = async () => {
     const options = { quality: 0.1, base64: true };
     const data = await camRef.current.takePictureAsync(options);
     if (data) {
-      props.navigation.navigate("DocumentPreviewScreen", { fileUri: data });
+      props.navigation.navigate("DocumentPreviewScreen", { fileUri: data ,type:"regDoc"});
     }
   };
   const requestPermission = async () => {
@@ -59,6 +60,11 @@ const UploadDocument = (props: any) => {
       console.log("data==>", err);
     }
   };
+
+
+  useEffect(()=>{
+    console.log("RegisterDoc",type.data)
+  },[])
 
   return (
     <View style={styles.sectionContainer}>
