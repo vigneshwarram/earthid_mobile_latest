@@ -5,23 +5,41 @@ import { ssiApiKey } from "./earthid_account";
  * @param requestURI - string uri of the request
  * @param payload - Form data to be posted as a property with key/value pairs, like {key1: value1, key2: value2}
  */
-export const postFormData = async (requestURI: string, payload: any) => {
+// export const postFormData = async (requestURI: string, payload: any) => {
 
+//   const formData = new FormData();
+//   console.log("payload", payload);
+//   formData.append("image", payload);
+//   formData.append("image", {uri: "", name: 'image.jpg', type: 'image/jpeg'}), 
+//   console.log("FormData==>", "FormData");
+//   console.log("request==>::::::::::::", JSON.stringify(payload));
+
+//   return await fetch(requestURI, {
+//     method: "POST",
+//     headers: {
+//     "Content-Type": "multipart/form-data",
+//     },
+//     body: formData,
+//   });
+// };
+
+
+export const postFormData = async (requestURI: string, payload: any) => {
   const formData = new FormData();
-  console.log("payload", payload);
-  formData.append("image", payload);
-  formData.append("image", {uri: "", name: 'image.jpg', type: 'image/jpeg'}), 
+  formData.append('image', {uri: payload?.uri, name: payload?.name, type: payload?.type}), 
   console.log("FormData==>", "FormData");
   console.log("request==>::::::::::::", JSON.stringify(payload));
 
   return await fetch(requestURI, {
     method: "POST",
     headers: {
+    "Accept": "application/json",
     "Content-Type": "multipart/form-data",
     },
     body: formData,
   });
 };
+
 
 /**
  * @function postCall - function to call the backend with the request and fetches response

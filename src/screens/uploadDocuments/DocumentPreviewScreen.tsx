@@ -10,6 +10,8 @@ import { Screens } from "../../themes/index";
 import { BASE_URL, uploadDocument, uploadRegisterDocument } from "../../utils/earthid_account";
 import { useAppSelector } from "../../hooks/hooks";
 import PDFView from "react-native-view-pdf";
+import Spinner from "react-native-loading-spinner-overlay/lib";
+import Loader from "../../components/Loader/AnimatedLoader";
 
 const DocumentPreviewScreen = (props: any) => {
   const { fileUri } = props.route.params;
@@ -113,13 +115,13 @@ const DocumentPreviewScreen = (props: any) => {
 
     if(type=="regDoc"){
 
-      let data={
-        image: fileUri.uri,
+      let image={
+        uri: fileUri.uri,
         name:fileUri.filename,
         type:fileUri.type
       }
       try{
-        var response = uploadRegDoc(uploadRegisterDocument,data,"FORM-DATA")
+        var response = uploadRegDoc(uploadRegisterDocument,image,"FORM-DATA")
         console.log("DocumentDetails:::::",response)
        // props.navigation.navigate("DrawerNavigator", { response });
       }catch(e){
@@ -212,6 +214,14 @@ const DocumentPreviewScreen = (props: any) => {
           title={"uploads"}
         ></Button>
       </View>
+
+          {loading && (
+            <Spinner
+              visible={loading}
+              textContent={"Loading..."}
+              textStyle={styles.spinnerTextStyle}
+            />
+          )}
   
      
     </View>
@@ -222,6 +232,9 @@ const styles = StyleSheet.create({
   sectionContainer: {
     flex: 1,
     backgroundColor: Screens.black,
+  },
+  spinnerTextStyle: {
+    color: "#fff",
   },
   loading: {
     position: "absolute",

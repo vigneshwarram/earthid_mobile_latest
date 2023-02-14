@@ -82,7 +82,7 @@ const UploadDocument = (props: any) => {
       props.navigation.navigate("DocumentPreviewScreen", {
         fileUri: {
         //  uri: `data:image/png;base64,${res}`,
-          uri: fileUri,
+          uri:  imageResponse?.assets[0]?.uri,
           base64: res,
           file: res[0],
           filename :imageResponse?.assets[0]?.fileName,
