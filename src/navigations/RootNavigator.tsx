@@ -25,6 +25,8 @@ import categoryScreen from "../screens/uploadDocuments/categoryScreen";
 import UploadQr from "../screens/UploadQr";
 import UploadDocumentPreviewScreen from "../screens/UploadQr/UploadDocumentPreviewScreen";
 import FaceCheck from "../screens/FaceRegister/FaceCheck";
+import LivenessCameraScreen from "../screens/uploadDocuments/LivenessCameraScreen";
+import VerifiDocumentScreen from "../screens/uploadDocuments/VerifiDocumentScreen";
 
 // Before rendering any navigation stack
 const animations: any = SlidAnimation;
@@ -50,6 +52,9 @@ export default function RootNavigator() {
     categoryScreen: categoryScreen,
     UploadQr: UploadQr,
     UploadDocumentPreviewScreen: UploadDocumentPreviewScreen,
+    LivenessCameraScreen: LivenessCameraScreen,
+    VerifiDocumentScreen: VerifiDocumentScreen,
+  
   };
 
   function AuthStack() {

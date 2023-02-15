@@ -38,7 +38,7 @@ interface IDocumentScreenProps {
 }
 
 const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
-  const { fileUri } = route.params;
+  const fileUri = route?.params?.fileUri;
   const [isPrceedForLivenessTest, setIsPrceedForLivenessTest] = useState(false);
   const [categoryList, setCategoryList] = useState([]);
   const [selectedDocument, setselectedDocument] = useState();
@@ -56,7 +56,6 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const _toggleDrawer = () => {
     navigation.openDrawer();
   };
-  console.log('fileUri==>',fileUri?.file)
 
   const onSubmitAction=()=>{
     if(fileUri?.type==='application/pdf'){

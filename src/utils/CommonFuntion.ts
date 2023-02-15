@@ -2,7 +2,7 @@ export const getColor = (item: string): string => {
   console.log("color+++++===>", item);
   let color = "";
   switch (item) {
-    case "id":
+    case "ID":
       // code block
       color = "#D7EFFB";
       break;

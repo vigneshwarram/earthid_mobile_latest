@@ -95,12 +95,16 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
         );
       }
     );
-
+  console.log('colors',getItems)
+  if(getItems[0]==undefined){
+    return '#D7EFFB'
+  }
     return getItems[0];
   };
   const getImagesColor = (item: any) => {
     let colors = item?.name;
     let iteName = colors.trim()?.split("(")[0]?.trim();
+    console.log('iteName==>',iteName)
     return getColor(iteName);
   };
   useEffect(() => {

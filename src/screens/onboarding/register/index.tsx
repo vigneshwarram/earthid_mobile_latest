@@ -6,6 +6,7 @@ import {
   ActivityIndicator,
   Alert,
   Text,
+  AsyncStorage,
 } from "react-native";
 import Header from "../../../components/Header";
 import { SCREENS } from "../../../constants/Labels";
@@ -88,6 +89,18 @@ const Register = ({ navigation }: IRegister) => {
     getSuperAdminApiCall(superAdminApi, {}, "GET");
   }, []);
 
+  useEffect(()=>{
+  getItem()
+  },[])
+
+  const getItem=async()=>{
+    const item =await  AsyncStorage.getItem("flow");
+    if(item=='documentflow'){
+      const name =await  AsyncStorage.getItem("userDetails");
+      firstNameChangeHandler(name)
+    }
+  }
+
   const _navigateAction = () => {
     setKeyboardVisible(false);
     mobileNumber == "" ? setMobileEmpty(true) : null;
@@ -131,7 +144,8 @@ const Register = ({ navigation }: IRegister) => {
         deviceOS: Platform.OS === "android" ? "android" : "ios",
       };
 
-      dispatch(createAccount(payLoad)).then(() => {
+      dispatch(createAccount(payLoad)).then(async() => {
+        await  AsyncStorage.setItem("flow","loginflow");
         setLoginLoading(false);
       });
     } else {
@@ -156,6 +170,7 @@ const Register = ({ navigation }: IRegister) => {
     if (userDetails?.responseData) {
       setTimeout(() => {
         setsuccessResponse(false);
+       
         navigation.navigate("BackupIdentity");
       }, 3000);
     }
@@ -168,10 +183,7 @@ const Register = ({ navigation }: IRegister) => {
       });
     } else {
       console.log("userDetails?.errorMesssage", userDetails?.errorMesssage);
-      const errorMsg = "Internal server error,Please Try again Later";
-      SnackBar({
-        indicationMessage: errorMsg,
-      });
+     Alert.alert("Warning","Already earthid has been registered with us, please change with new email/username/mobilenumber")
     }
   }
   const Footer = () => (

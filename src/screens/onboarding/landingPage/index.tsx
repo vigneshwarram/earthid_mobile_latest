@@ -92,6 +92,7 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
   };
 
   useEffect(() => {
+    
     initializeUserPreferences();
   }, []);
 

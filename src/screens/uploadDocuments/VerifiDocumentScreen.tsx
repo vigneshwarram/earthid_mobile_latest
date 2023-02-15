@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Image, TouchableOpacity, Text } from "react-native";
+import { View, StyleSheet, Image, TouchableOpacity, Text, AsyncStorage } from "react-native";
 
 import RNFetchBlob from "rn-fetch-blob";
 
@@ -96,9 +96,15 @@ const VerifiDocumentScreen = (props: any) => {
     dispatch(saveDocuments(DocumentList));
     setsuccessResponse(true);
     getHistoryReducer.isSuccess = false;
-    setTimeout(() => {
+    setTimeout(async() => {
       setsuccessResponse(false);
-      props.navigation.navigate("Documents");
+   const item =   await  AsyncStorage.getItem("flow");
+      if(item==='documentflow'){
+        props.navigation.navigate("RegisterScreen");
+      }else{
+        props.navigation.navigate("Documents");
+      }
+    
     }, 2000);
    }, 200);
    setLoad(false);

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Image, TouchableOpacity, Platform, Alert } from "react-native";
+import { View, StyleSheet, Image, TouchableOpacity, Platform, Alert, AsyncStorage } from "react-native";
 
 import Button from "../../components/Button";
 import SuccessPopUp from "../../components/Loader";
@@ -20,17 +20,12 @@ import { isArray } from "lodash";
 import { isEarthId } from "../../utils/PlatFormUtils";
 
 const DocumentPreviewScreen = (props: any) => {
-  const { fileUri } = props.route.params;
+  const { fileUri } = props?.route?.params;
   const { type } = props.route.params;
-  const dispatch = useAppDispatch();
   const { newdata } = props.route.params;
-  const keys = useAppSelector((state) => state.user);
-  const userDetails = useAppSelector((state) => state.account);
   const { loading, data, error, fetch: uploadRegDoc } = useFetch();
   const [documentResponseData,setDocumentResponse]=useState(undefined);
   const {
-    loading: superAdminLoading,
-    data: superAdminResponse,
     fetch: getSuperAdminApiCall,
   } = useFetch();
   const [loginLoading, setLoginLoading] = useState(false);
@@ -39,13 +34,7 @@ const DocumentPreviewScreen = (props: any) => {
   const [datas, SetData] = useState(null);
   const [source, setSource] = useState({});
   const [filePath, setFilePath] = useState();
-  const {
-    loading: getUserLoading,
-    data: getUserResponse,
-    error: getUserError,
-    fetch: getUser,
-  } = useFetch();
-  console.log('fileUri===>',fileUri?.type)
+
   const resources = {
     file:
       Platform.OS === "ios"
@@ -165,84 +154,22 @@ useEffect(()=>{
   if(data){
     if(data?.data){
       setDocumentResponse(data?.data)
-      dispatch(GeneratedKeysAction());
+      createPayLoadFromDocumentData(data?.data);
+     
      }
   }
  },[data])
 
-  const createPayLoadFromDocumentData=(documentResponseData:any)=>{
+  const createPayLoadFromDocumentData=async(documentResponseData:any)=>{
     console.log('slsls',documentResponseData?.ProcessedDocuments[0].ExtractedFields?.filter((item:any)=>item.Name==='FullName')[0])
     const username =documentResponseData?.ProcessedDocuments[0].ExtractedFields?.filter((item:any)=>item.Name==='FullName')[0]?.Value;
     const trimmedEmail =documentResponseData?.ProcessedDocuments[0].ExtractedFields?.filter((item:any)=>item.Name==='FullName')[0]?.Value+"ex"+Math.random()+"@gmail.com";
-    let email = trimmedEmail.trim().replace(/\s+/g, ' ');
-    let phone = Math.floor(Math.random() * Math.pow(10, 10)).toString().padStart(10, '0');
- return {
-  username,
-  email,
-  phone
- }
-  }
-  const _registerAction = async ({ publicKey }: any) => {
-    if(documentResponseData){
-      const token = await getDeviceId();
-      const deviceName = await getDeviceName();
-      const payLoadCreation =createPayLoadFromDocumentData(documentResponseData);
-      if (superAdminResponse && superAdminResponse[0]?.Id) {
-        const payLoad: IUserAccountRequest = {
-          username: payLoadCreation.username,
-          deviceID: token + Math.random(),
-          deviceIMEI: token,
-          deviceName: deviceName,
-          email: payLoadCreation.email,
-          orgId: superAdminResponse[0]?.Id,
-          phone: payLoadCreation.phone,
-          countryCode: "+" + 91,
-          publicKey,
-          deviceOS: Platform.OS === "android" ? "android" : "ios",
-        };
-  
-        dispatch(createAccount(payLoad)).then(() => {
-          setLoginLoading(false);
-        });
-      } else {
-        setLoginLoading(false);
-        SnackBar({
-          indicationMessage: "Registered Id is not generated ,please try again",
-          doRetry: getSuperAdminApiCall(superAdminApi, {}, "GET"),
-        });
-      }
-    }
-   
-  };
-  if (keys && keys?.isGeneratedKeySuccess) {
-    keys.isGeneratedKeySuccess = false;
+    await  AsyncStorage.setItem("userDetails",username.toString());
+    await  AsyncStorage.setItem("flow","documentflow");
+    props.navigation.navigate("categoryScreen", { fileUri });
 
-    _registerAction(keys?.responseData?.result);
   }
-
-  if (userDetails && userDetails?.isAccountCreatedSuccess) {
-    setsuccessResponse(true);
-    userDetails.isAccountCreatedSuccess = false;
-
-    if (userDetails?.responseData) {
-      setTimeout(() => {
-        setsuccessResponse(false);
-        props.navigation.navigate("BackupIdentity");
-      }, 3000);
-    }
-  }
-  if (userDetails && userDetails?.isAccountCreatedFailure) {
-    userDetails.isAccountCreatedFailure = false;
-    if (userDetails?.errorMesssage && isArray(userDetails?.errorMesssage)) {
-      SnackBar({
-        indicationMessage: userDetails?.errorMesssage[0],
-      });
-    } else {
-      console.log("userDetails?.errorMesssage", userDetails?.errorMesssage);
-    Alert.alert("Alert","User Already Exist,please upload another document")
-    }
-  }
-
+ 
   useEffect(()=>{
     console.log("RegisterType",type)
     console.log("RegisterType",fileUri?.imgres)
@@ -333,7 +260,7 @@ useEffect(()=>{
             isLoaderVisible={successResponse}
           ></Loader>
       <Spinner
-              visible={loading || loginLoading ||superAdminLoading}
+              visible={loading}
               textContent={"Loading..."}
               textStyle={styles.spinnerTextStyle}
             />

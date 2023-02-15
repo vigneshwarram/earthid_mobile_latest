@@ -25,7 +25,7 @@ import {
 import { savingProfilePictures } from "../../../redux/actions/LocalSavingActions";
 import { Screens } from "../../../themes";
 import { getColor } from "../../../utils/CommonFuntion";
-import ShareMenu, { ShareMenuReactView } from "react-native-share-menu";
+
 import { dateTime } from "../../../utils/encryption";
 import RNFetchBlob from "rn-fetch-blob";
 import { IDocumentProps } from "../../uploadDocuments/VerifiDocumentScreen";
@@ -63,17 +63,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
     return `data:image/png;base64,${result}`;
   }
 
-  useEffect(() => {
-    ShareMenu.getInitialShare(handleShare);
-  }, []);
 
-  useEffect(() => {
-    const listener = ShareMenu.addNewShareListener(handleShare);
-
-    return () => {
-      listener.remove();
-    };
-  }, []);
 
   const handleShare = useCallback(async (item: SharedItem | null) => {
     if (!item) {
