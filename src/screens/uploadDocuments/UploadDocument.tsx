@@ -29,11 +29,33 @@ const UploadDocument = (props: any) => {
 
   const { loading, data, error, fetch } = useFormData();
   const _takePicture = async () => {
-    const options = { quality: 0.1, base64: true };
+ 
+    let options = {
+      mediaType: type,
+      maxWidth: 300,
+      maxHeight: 550,
+      quality: 1,
+      videoQuality: "low",
+      durationLimit: 30, //Video max duration in seconds
+      saveToPhotos: true,
+    };
     const data = await camRef.current.takePictureAsync(options);
+    console.log('data===>uri',data)
+    // launchCamera(
+    //   options,
+    //   setCamerResponse
+    // )
     if (data) {
-      props.navigation.navigate("DocumentPreviewScreen", { fileUri: data ,type:"regDoc"});
+      props.navigation.navigate("DocumentPreviewScreen", {   fileUri: {
+        //  uri: `data:image/png;base64,${res}`,
+          uri:  data?.uri,        
+          filename :"image",
+          type :"image/jpeg",
+         
+        },
+        type:"regDoc"});
     }
+ 
   };
   const requestPermission = async () => {
     try {
@@ -73,7 +95,7 @@ const UploadDocument = (props: any) => {
   };
 
   useEffect(() => {
-    if(imageResponse != ''){
+    if(imageResponse != '' && !imageResponse?.didCancel){
     console.log('==>result',imageResponse?.assets[0]?.uri)
     let fileUri = imageResponse?.assets[0]?.uri;
     // disPatch(savingProfilePictures(fileUri));

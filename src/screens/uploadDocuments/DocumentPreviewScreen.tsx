@@ -7,18 +7,33 @@ import AnimatedLoader from "../../components/Loader/AnimatedLoader";
 import { LocalImages } from "../../constants/imageUrlConstants";
 import { useFetch } from "../../hooks/use-fetch";
 import { Screens } from "../../themes/index";
-import { BASE_URL, uploadDocument, uploadRegisterDocument } from "../../utils/earthid_account";
-import { useAppSelector } from "../../hooks/hooks";
+import { BASE_URL, superAdminApi, uploadDocument, uploadRegisterDocument } from "../../utils/earthid_account";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import PDFView from "react-native-view-pdf";
 import Spinner from "react-native-loading-spinner-overlay/lib";
 import Loader from "../../components/Loader/AnimatedLoader";
+import { createAccount, GeneratedKeysAction } from "../../redux/actions/authenticationAction";
+import { getDeviceId, getDeviceName } from "../../utils/encryption";
+import { IUserAccountRequest } from "../../typings/AccountCreation/IUserAccount";
+import { SnackBar } from "../../components/SnackBar";
+import { isArray } from "lodash";
+import { isEarthId } from "../../utils/PlatFormUtils";
 
 const DocumentPreviewScreen = (props: any) => {
   const { fileUri } = props.route.params;
   const { type } = props.route.params;
+  const dispatch = useAppDispatch();
   const { newdata } = props.route.params;
+  const keys = useAppSelector((state) => state.user);
   const userDetails = useAppSelector((state) => state.account);
   const { loading, data, error, fetch: uploadRegDoc } = useFetch();
+  const [documentResponseData,setDocumentResponse]=useState(undefined);
+  const {
+    loading: superAdminLoading,
+    data: superAdminResponse,
+    fetch: getSuperAdminApiCall,
+  } = useFetch();
+  const [loginLoading, setLoginLoading] = useState(false);
   const [successResponse, setsuccessResponse] = useState(false);
   const [message, Setmessage] = useState("ooo");
   const [datas, SetData] = useState(null);
@@ -41,6 +56,14 @@ const DocumentPreviewScreen = (props: any) => {
   };
   const resourceType = "base64";
 
+  console.log('error===>',error)
+useEffect(()=>{
+  if(error){
+    setLoginLoading(false)
+    Alert.alert("Alert","Document not supported")
+  }
+
+},[error])
 
   function alertUploadDoc(){
     Alert.alert(
@@ -121,14 +144,102 @@ const DocumentPreviewScreen = (props: any) => {
         type:fileUri.type
       }
       try{
-        var response = uploadRegDoc(uploadRegisterDocument,image,"FORM-DATA")
-        console.log("DocumentDetails:::::",response)
+        setLoginLoading(true)
+         uploadRegDoc(uploadRegisterDocument,image,"FORM-DATA");
+  
+       
        // props.navigation.navigate("DrawerNavigator", { response });
       }catch(e){
+        setLoginLoading(false)
         console.log("DocumentError:::::",e)
         console.log("DocumentError:::::","ERROR")
       }
 
+    }
+  }
+  useEffect(() => {
+    getSuperAdminApiCall(superAdminApi, {}, "GET");
+  }, []);
+
+ useEffect(()=>{
+  if(data){
+    if(data?.data){
+      setDocumentResponse(data?.data)
+      dispatch(GeneratedKeysAction());
+     }
+  }
+ },[data])
+
+  const createPayLoadFromDocumentData=(documentResponseData:any)=>{
+    console.log('slsls',documentResponseData?.ProcessedDocuments[0].ExtractedFields?.filter((item:any)=>item.Name==='FullName')[0])
+    const username =documentResponseData?.ProcessedDocuments[0].ExtractedFields?.filter((item:any)=>item.Name==='FullName')[0]?.Value;
+    const trimmedEmail =documentResponseData?.ProcessedDocuments[0].ExtractedFields?.filter((item:any)=>item.Name==='FullName')[0]?.Value+"ex"+Math.random()+"@gmail.com";
+    let email = trimmedEmail.trim().replace(/\s+/g, ' ');
+    let phone = Math.floor(Math.random() * Math.pow(10, 10)).toString().padStart(10, '0');
+ return {
+  username,
+  email,
+  phone
+ }
+  }
+  const _registerAction = async ({ publicKey }: any) => {
+    if(documentResponseData){
+      const token = await getDeviceId();
+      const deviceName = await getDeviceName();
+      const payLoadCreation =createPayLoadFromDocumentData(documentResponseData);
+      if (superAdminResponse && superAdminResponse[0]?.Id) {
+        const payLoad: IUserAccountRequest = {
+          username: payLoadCreation.username,
+          deviceID: token + Math.random(),
+          deviceIMEI: token,
+          deviceName: deviceName,
+          email: payLoadCreation.email,
+          orgId: superAdminResponse[0]?.Id,
+          phone: payLoadCreation.phone,
+          countryCode: "+" + 91,
+          publicKey,
+          deviceOS: Platform.OS === "android" ? "android" : "ios",
+        };
+  
+        dispatch(createAccount(payLoad)).then(() => {
+          setLoginLoading(false);
+        });
+      } else {
+        setLoginLoading(false);
+        SnackBar({
+          indicationMessage: "Registered Id is not generated ,please try again",
+          doRetry: getSuperAdminApiCall(superAdminApi, {}, "GET"),
+        });
+      }
+    }
+   
+  };
+  if (keys && keys?.isGeneratedKeySuccess) {
+    keys.isGeneratedKeySuccess = false;
+
+    _registerAction(keys?.responseData?.result);
+  }
+
+  if (userDetails && userDetails?.isAccountCreatedSuccess) {
+    setsuccessResponse(true);
+    userDetails.isAccountCreatedSuccess = false;
+
+    if (userDetails?.responseData) {
+      setTimeout(() => {
+        setsuccessResponse(false);
+        props.navigation.navigate("BackupIdentity");
+      }, 3000);
+    }
+  }
+  if (userDetails && userDetails?.isAccountCreatedFailure) {
+    userDetails.isAccountCreatedFailure = false;
+    if (userDetails?.errorMesssage && isArray(userDetails?.errorMesssage)) {
+      SnackBar({
+        indicationMessage: userDetails?.errorMesssage[0],
+      });
+    } else {
+      console.log("userDetails?.errorMesssage", userDetails?.errorMesssage);
+    Alert.alert("Alert","User Already Exist,please upload another document")
     }
   }
 
@@ -214,14 +325,18 @@ const DocumentPreviewScreen = (props: any) => {
           title={"uploads"}
         ></Button>
       </View>
-
-          {loading && (
-            <Spinner
-              visible={loading}
+      <Loader
+            loadingText={
+              isEarthId() ? "earthidgeneratesuccess" : "globalgeneratesuccess"
+            }
+            Status="status"
+            isLoaderVisible={successResponse}
+          ></Loader>
+      <Spinner
+              visible={loading || loginLoading ||superAdminLoading}
               textContent={"Loading..."}
               textStyle={styles.spinnerTextStyle}
             />
-          )}
   
      
     </View>

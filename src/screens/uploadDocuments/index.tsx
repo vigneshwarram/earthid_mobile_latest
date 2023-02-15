@@ -34,7 +34,7 @@ const UploadScreen = (props: any) => {
   const _takePicture = async () => {
     const options = { quality: 0.1, base64: true };
     const data = await camRef.current.takePictureAsync(options);
-
+    
     if (data) {
       props.navigation.navigate("DocumentPreviewScreen", { fileUri: data });
     }
@@ -175,7 +175,7 @@ const UploadScreen = (props: any) => {
       >
         {"placethedoc"}
       </GenericText>
-      <TouchableOpacity onPress={_takePicture}>
+      <TouchableOpacity onPress={()=>_takePicture()}>
         <View
           style={{
             width: 60,

@@ -588,7 +588,7 @@
 			baseConfigurationReference = 4B45B0CCE6E2AB8A330C128A /* Pods-EarthId-EarthIdTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEVELOPMENT_TEAM = UAHJPQ428K;
+				DEVELOPMENT_TEAM = 3D5QUAXZH3;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -732,11 +732,9 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = EarthId/EarthId.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 3D5QUAXZH3;
+				DEVELOPMENT_TEAM = 3D5QUAXZH3;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = EarthId/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = EarthId;
@@ -754,7 +752,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.earthid;
 				PRODUCT_NAME = EarthId;
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "earthid-dev";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -771,11 +768,9 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = EarthId/EarthId.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 3D5QUAXZH3;
+				DEVELOPMENT_TEAM = 3D5QUAXZH3;
 				INFOPLIST_FILE = EarthId/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = EarthId;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.business";
@@ -792,7 +787,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.earthid;
 				PRODUCT_NAME = EarthId;
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "earthid-dev";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
