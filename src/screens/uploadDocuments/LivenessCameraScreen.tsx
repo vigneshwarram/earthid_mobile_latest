@@ -20,6 +20,8 @@ const LivenessCameraScreen = (props: any) => {
   const [maskedColor, setmaskedColor] = useState("#fff");
   const [data, setData] = useState();
 
+  console.log("picLOG",fileUri)
+
   useEffect(() => {
     if (data) {
       handlingFacialData();
@@ -118,6 +120,7 @@ const LivenessCameraScreen = (props: any) => {
         uploadedDocuments: fileUri,
         faceImageData: data,
         selectedDocument,
+        pic:fileUri
       });
     }
     if (Platform.OS === "ios") {
@@ -131,6 +134,7 @@ const LivenessCameraScreen = (props: any) => {
           uploadedDocuments: fileUri,
           faceImageData: data,
           selectedDocument,
+          pic:fileUri
         });
       }
     }

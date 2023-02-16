@@ -44,6 +44,7 @@ export interface IDocumentProps {
 }
 const VerifiDocumentScreen = (props: any) => {
   const { uploadedDocuments, } = props.route.params;
+  const { pic, } = props.route.params;
   const { faceImageData, selectedDocument } = props.route.params;
   const { loading, data, error, fetch } = useFetch();
   const userDetails = useAppSelector((state) => state.account);
@@ -55,6 +56,7 @@ const VerifiDocumentScreen = (props: any) => {
     error: documentAddedError,
     fetch: AddDocumehtfetch,
   } = useFetch();
+  console.log("picLOG",pic)
 
   const [load, setLoad] = useState(false);
   const dispatch = useAppDispatch();
@@ -169,7 +171,7 @@ const VerifiDocumentScreen = (props: any) => {
             width: 330,
             height: "100%",
           }}
-          source={{ uri: uploadedDocumentsBase64 }}
+          source={{ uri:pic.filename =="image" ? pic.uri: uploadedDocumentsBase64 }}
         ></Image>
       </View>
 

@@ -46,6 +46,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const documentsDetailsList = useAppSelector((state) => state.Documents);
   const [successResponse, setsuccessResponse] = useState(false);
   const dispatch =useAppDispatch()
+  console.log("pic",fileUri)
   const {
     loading: isCategoryLoading,
     data: getCategoryData,
@@ -174,6 +175,7 @@ setIsPrceedForLivenessTest(true)
 
   useEffect(() => {
     getCategories(getCategoriesApi, {}, "GET");
+   
   }, []);
 
   useEffect(() => {
