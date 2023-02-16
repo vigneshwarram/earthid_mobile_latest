@@ -8,12 +8,14 @@ import {
   Image,
   AsyncStorage,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { EventRegister } from "react-native-event-listeners";
 import RNFS from "react-native-fs";
 import Avatar from "../../../components/Avatar";
 import Card from "../../../components/Card";
 import Header from "../../../components/Header";
+import ShareMenu, { ShareMenuReactView } from "react-native-share-menu";
 import GenericText from "../../../components/Text";
 import { LocalImages } from "../../../constants/imageUrlConstants";
 import { SCREENS } from "../../../constants/Labels";
@@ -63,55 +65,54 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
     return `data:image/png;base64,${result}`;
   }
 
+  useEffect(() => {
+    ShareMenu.getInitialShare(handleShare);
+  }, []);
 
 
+  
   const handleShare = useCallback(async (item: SharedItem | null) => {
+  
     if (!item) {
       return;
     }
 
     const { mimeType, data, extraData } = item;
-    console.log("data", mimeType);
-    if (mimeType === "image/jpeg") {
+    console.log("datamimeType", mimeType);
+    if (mimeType === "image/*" || mimeType === "image/jpeg") {
+    
       const imagePath = data;
       const base64 = await convertToBase64(imagePath);
-
-      validateImages(base64);
+      const fileUri ={
+        base64 :base64,
+        type:mimeType,
+        uri:base64,
+        flow:"deeplink",
+        file:{
+          uri:base64
+        }
+        
+      }
+      navigation.navigate("DocumentPreviewScreen", { fileUri: fileUri });
     } else {
       const imagePath = data;
-      const base64 = await convertToBase64(imagePath);
-      uploadPdf(base64);
+      const base64 = await RNFS.readFile(imagePath, "base64");
+      console.log("data====>",base64)
+      const fileUri ={
+        base64 :base64,
+        type:mimeType,
+        uri:base64,
+        flow:"deeplink",
+        file:{
+          uri:base64
+        }
+        
+      }
+      navigation.navigate("DocumentPreviewScreen", { fileUri: fileUri });
     }
   }, []);
   const uploadPdf = (base64: string) => {
-    var date = dateTime();
 
-    const filePath = RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
-    var documentDetails: IDocumentProps = {
-      name: "Id",
-      path: filePath,
-      date: date?.date,
-      time: date?.time,
-      txId: "e4343434343434443",
-      docType: "pdf",
-      docExt: ".jpg",
-      processedDoc: "",
-      base64: base64,
-      categoryType: "insurance",
-      pdf: true,
-      id: "",
-      vc: undefined,
-      isVc: false,
-    };
-    var DocumentList = documentsDetailsList?.responseData
-      ? documentsDetailsList?.responseData
-      : [];
-    DocumentList.push(documentDetails);
-    dispatch(saveDocuments(DocumentList));
-
-    setTimeout(() => {
-      navigation.navigate("Documents");
-    }, 2000);
   };
   const validateImages = (base64: string) => {
     // AddDocumehtfetch(CreateHistory, payLoad, "POST");
@@ -151,7 +152,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
       let recentDataFillerWithColor: any = recentData?.map(
         (item: any, index: any) => {
           let colors = item?.name;
-          let iteName = colors.trim()?.split("(")[0].trim();
+          let iteName = colors?.trim()?.split("(")[0].trim();
           console.log("recentDataFillerWithColor====>", iteName);
           item.color = getColor(iteName);
           return item;

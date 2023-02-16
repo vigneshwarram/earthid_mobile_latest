@@ -4,6 +4,18 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
+	<key>CFBundleURLTypes</key>
+<array>
+    <dict>
+        <key>CFBundleTypeRole</key>
+        <string>Editor</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+            <string>mycustomscheme</string>
+            <!-- This url scheme doesn't contain :// at the end - E.G. "mycustomscheme"-->
+        </array>
+    </dict>
+</array>
 	<key>CFBundleDisplayName</key>
 	<string>EarthId</string>
 	<key>CFBundleExecutable</key>
@@ -20,19 +32,7 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLName</key>
-			<string>com.earthid</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>EarthId</string>
-			</array>
-		</dict>
-	</array>
+	
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>

@@ -103,7 +103,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
   };
   const getImagesColor = (item: any) => {
     let colors = item?.name;
-    let iteName = colors.trim()?.split("(")[0]?.trim();
+    let iteName = colors?.trim()?.split("(")[0]?.trim();
     console.log('iteName==>',iteName)
     return getColor(iteName);
   };

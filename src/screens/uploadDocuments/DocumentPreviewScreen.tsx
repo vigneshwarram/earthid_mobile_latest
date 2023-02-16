@@ -97,6 +97,7 @@ useEffect(()=>{
         props.navigation.navigate("DrawerNavigator", { fileUri });
       }
     } else {
+      console.log('fileUri==>',fileUri)
         props.navigation.navigate("categoryScreen", { fileUri });
         console.log("success==>", "Success");
       
@@ -171,10 +172,7 @@ useEffect(()=>{
   }
  
   useEffect(()=>{
-    console.log("RegisterType",type)
-    console.log("RegisterType",fileUri?.imgres)
-    console.log("RegisterType","praveen",fileUri?.uri)
-    console.log("RegisterType","praveen",fileUri?.filename)
+
 
    // console.log("RegisterType",fileUri)
   },[])

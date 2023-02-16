@@ -58,41 +58,117 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
   };
 
   const onSubmitAction=()=>{
-    if(fileUri?.type==='application/pdf'){
+
+if(fileUri?.flow==='deeplink'){
+  if(fileUri?.type==='application/pdf'){
+    var date = dateTime();    
+    const filePath =
+      RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
+      const document: any[0] = categoryList[selectedParentIndex]?.value?.filter((data:any)=>data.isSelected)
+    var documentDetails: IDocumentProps = {
+      id:`ID_VERIFICATION${Math.random()}${selectedDocument}${Math.random()}`,
+      name: `${categoryList[selectedParentIndex].key} (${document[0]?.title})`,
+      path: filePath,
+      date: date?.date,
+      time: date?.time,
+      txId:'e4343434343434443',
+      docType: "pdf",
+      docExt: ".jpg",
+      processedDoc: "",
+      base64: fileUri?.base64,
+      categoryType:categoryList[selectedParentIndex].key,
+      pdf: true,
+    };
+    var DocumentList = documentsDetailsList?.responseData
+      ? documentsDetailsList?.responseData
+      : [];
+    DocumentList.push(documentDetails);
+    dispatch(saveDocuments(DocumentList));
+    setsuccessResponse(true);
+    setTimeout(() => {
+      setsuccessResponse(false);
+      navigation.navigate("Documents");
+    }, 2000);
+  }else{
+    var date = dateTime();
+    const document: any[0] = categoryList[selectedParentIndex]?.value?.filter((data:any)=>data.isSelected)
+    const filePath =
+      RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
+    var documentDetails: IDocumentProps = {
+      id:`ID_VERIFICATION${Math.random()}${selectedDocument}${Math.random()}`,
+      name: `${categoryList[selectedParentIndex].key} (${document[0]?.title})`,
+      path: filePath,
+      date: date?.date,
+      time: date?.time,
+      txId:'e4343434343434443',
+      docType: "jpg",
+      docExt: ".jpg",
+      processedDoc: "",
+      base64: fileUri?.base64,
+      categoryType:categoryList[selectedParentIndex].key,
+  
+    };
+    var DocumentList = documentsDetailsList?.responseData
+      ? documentsDetailsList?.responseData
+      : [];
+    DocumentList.push(documentDetails);
+    dispatch(saveDocuments(DocumentList));
+    setsuccessResponse(true);
+    setTimeout(() => {
+      setsuccessResponse(false);
+      navigation.navigate("Documents");
+    }, 2000);
+  }
+
+}else{
+  if(fileUri?.type==='application/pdf'){
       
-                var date = dateTime();
-       
-                const filePath =
-                  RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
-                var documentDetails: IDocumentProps = {
-                  name: fileUri?.file?.name,
-                  path: filePath,
-                  date: date?.date,
-                  time: date?.time,
-                  txId:'e4343434343434443',
-                  docType: "pdf",
-                  docExt: ".jpg",
-                  processedDoc: "",
-                  base64: fileUri?.base64,
-                  categoryType:categoryList[selectedParentIndex].key,
-                  pdf: true,
-                };
-                var DocumentList = documentsDetailsList?.responseData
-                  ? documentsDetailsList?.responseData
-                  : [];
-                DocumentList.push(documentDetails);
-                dispatch(saveDocuments(DocumentList));
-                setsuccessResponse(true);
-                setTimeout(() => {
-                  setsuccessResponse(false);
-                  navigation.navigate("Documents");
-                }, 2000);
-               
-            
-    }
-    else{
-      setIsPrceedForLivenessTest(true)
-    }
+    var date = dateTime();
+
+    const filePath =
+      RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
+    var documentDetails: IDocumentProps = {
+      name: fileUri?.file?.name,
+      path: filePath,
+      date: date?.date,
+      time: date?.time,
+      txId:'e4343434343434443',
+      docType: "pdf",
+      docExt: ".jpg",
+      processedDoc: "",
+      base64: fileUri?.base64,
+      categoryType:categoryList[selectedParentIndex].key,
+      pdf: true,
+    };
+    var DocumentList = documentsDetailsList?.responseData
+      ? documentsDetailsList?.responseData
+      : [];
+    DocumentList.push(documentDetails);
+    dispatch(saveDocuments(DocumentList));
+    setsuccessResponse(true);
+    setTimeout(() => {
+      setsuccessResponse(false);
+      navigation.navigate("Documents");
+    }, 2000);
+   
+
+}
+else{
+setIsPrceedForLivenessTest(true)
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+  
 
   }
 
@@ -378,7 +454,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
         />
            <SuccessPopUp
         isLoaderVisible={successResponse}
-        loadingText={"Pdf uploaded successfully"}
+        loadingText={"Document uploaded successfully"}
       />
       </ScrollView>
     </View>
