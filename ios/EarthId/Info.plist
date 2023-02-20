@@ -16,6 +16,35 @@
         </array>
     </dict>
 </array>
+<key>CFBundleDocumentTypes</key>
+<array>
+	<dict>
+		<key>CFBundleTypeName</key>
+		<string>PDF document</string>
+		<key>LSHandlerRank</key>
+		<string>Alternate</string>
+		<key>LSItemContentTypes</key>
+		<array>
+			<string>com.adobe.pdf</string>
+			<string>com.adobe.postscript</string>
+			<string>com.adobe.encapsulated-postscript</string>
+			<string>org.gnu.gnu-zip-archive</string>
+			<string>com.pkware.zip-archive</string>
+		</array>
+	</dict>
+	 <dict>
+        <key>CFBundleTypeIconFile</key>
+        <string>MyImageIcon.png</string>
+        <key>CFBundleTypeName</key>
+        <string>My Image</string>
+        <key>LSHandlerRank</key>
+        <string>Owner</string>
+        <key>LSItemContentTypes</key>
+        <array>
+            <string>public.image</string>
+        </array>
+    </dict>
+</array>
 	<key>CFBundleDisplayName</key>
 	<string>EarthId</string>
 	<key>CFBundleExecutable</key>
@@ -45,6 +74,8 @@
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
 				<true/>
+				 <key>NSAllowsLocalNetworking</key>
+        <true/>
 			</dict>
 		</dict>
 	</dict>

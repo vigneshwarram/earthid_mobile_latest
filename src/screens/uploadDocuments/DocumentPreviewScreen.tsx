@@ -176,7 +176,7 @@ useEffect(()=>{
 
    // console.log("RegisterType",fileUri)
   },[])
-
+  console.log("Document preview screen",fileUri.uri)
   return (
     <View style={styles.sectionContainer}>
       <View style={{ position: "absolute", top: 20, right: 20, zIndex: 100 }}>
