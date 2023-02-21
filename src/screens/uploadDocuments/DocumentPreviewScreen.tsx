@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Image, TouchableOpacity, Platform, Alert, AsyncStorage } from "react-native";
+import { View, StyleSheet, Image, TouchableOpacity, Platform, Alert, AsyncStorage ,CameraRoll} from "react-native";
 
 import Button from "../../components/Button";
 import SuccessPopUp from "../../components/Loader";
@@ -55,36 +55,41 @@ useEffect(()=>{
 },[error])
 
   function alertUploadDoc(){
-    Alert.alert(
-      'Confirmation!',
-      'Please confirm that this is a self-attested document',
-      [
-        
-        {
-          text: 'Yes',
-          onPress: () =>{ 
-            if(type=="regDoc"){
-              uploadDocumentImage()
-            }else{
-              uploadDoc()
-            }
-           
+    if(type=="regDoc"){
+      uploadDocumentImage()
+    }else{
+      Alert.alert(
+        'Confirmation!',
+        'Please confirm that this is a self-attested document',
+        [
+          
+          {
+            text: 'Yes',
+            onPress: () =>{ 
+              if(type=="regDoc"){
+                uploadDocumentImage()
+              }else{
+                uploadDoc()
+              }
+             
+            },
+            style: 'cancel',
           },
-          style: 'cancel',
-        },
-        {
-          text: 'No', 
-          onPress: () =>{
-            if(type=="regDoc"){
-              uploadDocumentImage()
-            }else{
-              uploadDoc()
+          {
+            text: 'No', 
+            onPress: () =>{
+              if(type=="regDoc"){
+                uploadDocumentImage()
+              }else{
+                uploadDoc()
+              }
             }
-          }
-        },
-      ],
-      {cancelable: false},
-    );
+          },
+        ],
+        {cancelable: false},
+      );
+    }
+ 
   }
 
   const uploadDoc = async () => {
@@ -134,6 +139,7 @@ useEffect(()=>{
         type:fileUri.type
       }
       try{
+        console.log('image req=====',image)
         setLoginLoading(true)
          uploadRegDoc(uploadRegisterDocument,image,"FORM-DATA");
   

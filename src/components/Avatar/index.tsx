@@ -40,6 +40,7 @@ const Avatar = ({
           uploadImageStyle: style.uploadImageStyle,
         }}
       />
+      
       {text !== "" && (
         <View
           style={{
@@ -173,6 +174,7 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
     alignContent: "center",
+    
   },
   row: {
     flexDirection: "row",
@@ -191,7 +193,7 @@ const styles = StyleSheet.create({
   avatar: {
     width: 70,
     height: 70,
-    borderRadius: 50,
+    borderRadius: 35,
     marginTop: -25,
     zIndex:100,
  

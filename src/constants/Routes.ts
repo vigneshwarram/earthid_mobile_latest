@@ -69,13 +69,13 @@ export const ABOUT_ROUTES = {
     SCREEN: "delete",
     COLOR: "#C5BDF6",
   },
-  LOGOUT: {
-    URI: LocalImages.logoutImage,
-    CARD: "AcceptableUsePolicy",
-    TITLE: SCREENS.DRAWERMENUTITLES.LOGOUT,
-    SCREEN: "Logout",
-    COLOR: "#F6BDE9",
-  },
+  // LOGOUT: {
+  //   URI: LocalImages.logoutImage,
+  //   CARD: "AcceptableUsePolicy",
+  //   TITLE: SCREENS.DRAWERMENUTITLES.LOGOUT,
+  //   SCREEN: "Logout",
+  //   COLOR: "#F6BDE9",
+  // },
 };
 
 export const SETTING_LIST = [

@@ -36,11 +36,14 @@ const Icon = ({
       </View>
     )}
     <TouchableOpacity onPress={onPress}>
-      <Image
+    
+     <Image
         source={src}
         style={[styles.image, style.image]}
-        resizeMode="contain"
+        resizeMode='stretch'
       />
+    
+     
     </TouchableOpacity>
   </View>
 );
@@ -49,8 +52,9 @@ export default Icon;
 
 const styles = StyleSheet.create({
   image: {
-    height: 20,
-    width: 20,
+    height: 70,
+    width: 70,
+    borderRadius:10
   
   },
   container: {
