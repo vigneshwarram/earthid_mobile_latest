@@ -46,7 +46,7 @@
     </dict>
 </array>
 	<key>CFBundleDisplayName</key>
-	<string>EarthId</string>
+	<string>EarthID</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>

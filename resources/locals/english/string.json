@@ -40,14 +40,14 @@
   "status": "Success !",
   "loading": "Loading...",
   "important": "Important",
-  "backupscreeninstructionEarthID":"We strongly recommend to save this QR code at a secure location, at it will be needed to recover or port your Earth ID in future.",
+  "backupscreeninstructionEarthID":"We strongly recommend to save this QR code at a secure location, at it will be needed to recover or port your EarthID in future.",
   "backupscreeninstruction": "We strongly recommend to save this QR code at a secure location, at it will be needed to recover or port your Global ID in future.",
   "backupscreeninstructions": "Save it like, millions of dollar it may one day may worth.",
   "downlaodqr": "DOWNLOAD QR CODE",
   "downlaodqrsuccess": "DOWNLOAD QR CODE",
   "addsecurity": "Add Security",
   "securityscreeninstruction": "Locking this app is required for added security",
-  "securityscreeninstructions": "To keep your data secure, we store your  personal data on your device, not on the  centralised servers.",
+  "securityscreeninstructions": "To keep your data secure, we store your  personal data on your device, not on the  centralized servers.",
 
   "confirminstruction": "Please confirm your 6- digit passcode to proceed further",
   "usetouchid": "USE TOUCH ID",
@@ -74,7 +74,7 @@
   "verify": "verify",
   "customizeqrcode": "Customize QR Code",
   "pleaseenableinfo": "please Enable the information to share with other user by simply scanning QR Code",
-  "website": "website",
+  "website": "Website",
   "faceid": "Face ID",
   "passcode": "Passcode",
   "touchid": "Touch ID",
@@ -150,10 +150,10 @@
   "globalidwanttoaccessKyc": "GlobalId wants to access your KYC token",
 
   "alreadyhaveearthid": "I already have my EarthID",
-  "landscreensetupearthId": "Set Up Your EarthiD",
-  "earthidgeneratesuccess": "Your EarthId is generated successfully.",
+  "landscreensetupearthId": "Set Up Your EarthID",
+  "earthidgeneratesuccess": "Your EarthID is generated successfully.",
   "generateeathid": "GENERATE EARTH ID",
-  "passcodeinstructionEarthid": "Secure your EarthiD with a memorable 6-digit code",
-  "earthidwanttoaccess": "EarthiD wants to access your following information",
-  "earthidwanttoaccessKyc": "EarthiD wants to access your KYC token"
+  "passcodeinstructionEarthid": "Secure your EarthID with a memorable 6-digit code",
+  "earthidwanttoaccess": "EarthID wants to access your following information",
+  "earthidwanttoaccessKyc": "EarthID wants to access your KYC token"
 }

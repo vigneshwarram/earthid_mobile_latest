@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -21,7 +21,7 @@ interface IDocumentScreenProps {
 }
 
 const CustomizeQr = ({ navigation }: IDocumentScreenProps) => {
-  const qrListData = useAppSelector((state) => state.saveData);
+  const qrListData = useAppSelector((state :any) => state.saveData);
   const userDetails = useAppSelector((state) => state.account);
   var ctList = SCREENS.HOMESCREEN.CategoryCustomiseList;
   if (qrListData && qrListData?.qrListData && qrListData?.qrListData) {
@@ -29,6 +29,11 @@ const CustomizeQr = ({ navigation }: IDocumentScreenProps) => {
   }
 
   const dispatch = useAppDispatch();
+
+
+  useEffect(()=>{
+    console.log("Details==>", userDetails);
+  },[])
 
   const _toggleDrawer = () => {
     navigation.openDrawer();

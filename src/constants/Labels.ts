@@ -4,7 +4,7 @@ import { LocalImages } from "./imageUrlConstants";
 export const SCREENS = {
   HOMESCREEN: {
     avatarName: "Robert Downey",
-    appName: isEarthId() ? "EarthId" : "GlobaliD",
+    appName: isEarthId() ? "EarthID" : "GlobaliD",
     category: "CATEGORIES",
     documentLabel: "useddocument",
     upload: "uploaddoc",
@@ -16,29 +16,29 @@ export const SCREENS = {
         DOMAIN: "https://yourdomain.com",
       },
       {
-        TITLE: "facebook",
+        TITLE: "Facebook",
         URI: LocalImages.SOCIAL_MEDIA_.facebookImage,
-        DOMAIN: "https://yourdomain.com",
+        DOMAIN: "https://facebook.com/username",
       },
       {
-        TITLE: "twitter",
+        TITLE: "Twitter",
         URI: LocalImages.SOCIAL_MEDIA_.twitterImage,
-        DOMAIN: "https://yourdomain.com",
+        DOMAIN: "https://twitter.com/username",
       },
       {
-        TITLE: "instagram",
+        TITLE: "Instagram",
         URI: LocalImages.SOCIAL_MEDIA_.instagramImage,
-        DOMAIN: "https://yourdomain.com",
+        DOMAIN: "https://instagram.com/username",
       },
       {
         TITLE: "LinkedIn",
         URI: LocalImages.SOCIAL_MEDIA_.linkdInImage,
-        DOMAIN: "https://yourdomain.com",
+        DOMAIN: "https://linkedin.com/username",
       },
       {
-        TITLE: "telegram",
+        TITLE: "Telegram",
         URI: LocalImages.SOCIAL_MEDIA_.telegramImage,
-        DOMAIN: "https://yourdomain.com",
+        DOMAIN: "https://telegram.com/username",
       },
     ],
     DocumentList: [
@@ -154,7 +154,7 @@ export const SCREENS = {
         CHECKED: true,
       },
       {
-        TITLE: "twitter",
+        TITLE: "Twitter",
         URI: LocalImages.SOCIAL_MEDIA_.twitterImage,
         VALUE: "https://yourdomain.com",
         DOMAIN: "https://twitter.com/yourdoamin",

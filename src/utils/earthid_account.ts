@@ -895,12 +895,12 @@ export const errorStrings = [
   "Email and Mobile both are already verified!",
   "Invalid OTP type!",
   "You are not authorized, please use owner account!",
-  "EarthId does not exists with this wallet!",
+  "EarthID does not exists with this wallet!",
   "You are not authorized!",
   "Account already exists with this wallet!",
-  "EarthId already exists with this email!",
-  "EarthId already exists with this mobile number!",
-  "EarthId already exists with this deviceId!",
+  "EarthID already exists with this email!",
+  "EarthID already exists with this mobile number!",
+  "EarthID already exists with this deviceId!",
 ];
 
 export const decryptQRCode = (
