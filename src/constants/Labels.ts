@@ -154,7 +154,7 @@ export const SCREENS = {
         CHECKED: true,
       },
       {
-        TITLE: "twitter",
+        TITLE: "Twitter",
         URI: LocalImages.SOCIAL_MEDIA_.twitterImage,
         VALUE: "https://yourdomain.com",
         DOMAIN: "https://twitter.com/yourdoamin",

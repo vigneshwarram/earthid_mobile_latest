@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -29,6 +29,11 @@ const CustomizeQr = ({ navigation }: IDocumentScreenProps) => {
   }
 
   const dispatch = useAppDispatch();
+
+
+  useEffect(()=>{
+    console.log("Details==>", userDetails);
+  },[])
 
   const _toggleDrawer = () => {
     navigation.openDrawer();

@@ -32,6 +32,7 @@ import {
 } from "../../../redux/actions/authenticationAction";
 import { LocalImages } from "../../../constants/imageUrlConstants";
 import { useFetch } from "../../../hooks/use-fetch";
+import { isEarthId } from "../../../utils/PlatFormUtils";
 
 interface IHomeScreenProps {
   navigation?: any;
@@ -193,7 +194,9 @@ const Register = ({ navigation,route }: IHomeScreenProps) => {
                 },
               ]}
             >
-              {SCREENS.BACKUPIDENTYSCREEN.instruction}
+              {isEarthId()
+                ? SCREENS.BACKUPIDENTYSCREEN.instructionEarthID
+                : SCREENS.BACKUPIDENTYSCREEN.instruction}
             </GenericText>
           </View>
           <View style={{ justifyContent: "center", alignItems: "center" }}>
