@@ -74,7 +74,7 @@
   "verify": "verify",
   "customizeqrcode": "Customize QR Code",
   "pleaseenableinfo": "please Enable the information to share with other user by simply scanning QR Code",
-  "website": "website",
+  "website": "Website",
   "faceid": "Face ID",
   "passcode": "Passcode",
   "touchid": "Touch ID",
@@ -150,10 +150,10 @@
   "globalidwanttoaccessKyc": "GlobalId wants to access your KYC token",
 
   "alreadyhaveearthid": "I already have my EarthID",
-  "landscreensetupearthId": "Set Up Your EarthiD",
-  "earthidgeneratesuccess": "Your EarthId is generated successfully.",
+  "landscreensetupearthId": "Set Up Your EarthID",
+  "earthidgeneratesuccess": "Your EarthID is generated successfully.",
   "generateeathid": "GENERATE EARTH ID",
-  "passcodeinstructionEarthid": "Secure your EarthiD with a memorable 6-digit code",
-  "earthidwanttoaccess": "EarthiD wants to access your following information",
-  "earthidwanttoaccessKyc": "EarthiD wants to access your KYC token"
+  "passcodeinstructionEarthid": "Secure your EarthID with a memorable 6-digit code",
+  "earthidwanttoaccess": "EarthID wants to access your following information",
+  "earthidwanttoaccessKyc": "EarthID wants to access your KYC token"
 }

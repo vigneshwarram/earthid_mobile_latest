@@ -148,10 +148,10 @@
   "globalidwanttoaccessKyc": "GlobalId quer acessar seu token KYC",
 
   "alreadyhaveearthid": "Já tenho meu EarthID",
-  "landscreensetupearthId": "Configure seu EarthiD",
-  "earthidgeneratesuccess": "Seu EarthId foi gerado com sucesso.",
+  "landscreensetupearthId": "Configure seu EarthID",
+  "earthidgeneratesuccess": "Seu EarthID foi gerado com sucesso.",
   "generateeathid": "GERAR ID DE TERRA",
-  "passcodeinstructionEarthid": "Proteja seu EarthId com um código de 6 dígitos memorável",
-  "earthidwanttoaccess": "EarthId deseja acessar suas seguintes informações",
-  "earthidwanttoaccessKyc": "EarthId quer acessar seu token KYC"
+  "passcodeinstructionEarthid": "Proteja seu EarthID com um código de 6 dígitos memorável",
+  "earthidwanttoaccess": "EarthID deseja acessar suas seguintes informações",
+  "earthidwanttoaccessKyc": "EarthID quer acessar seu token KYC"
 }

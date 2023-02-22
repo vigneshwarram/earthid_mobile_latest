@@ -21,7 +21,7 @@ interface IDocumentScreenProps {
 }
 
 const CustomizeQr = ({ navigation }: IDocumentScreenProps) => {
-  const qrListData = useAppSelector((state) => state.saveData);
+  const qrListData = useAppSelector((state :any) => state.saveData);
   const userDetails = useAppSelector((state) => state.account);
   var ctList = SCREENS.HOMESCREEN.CategoryCustomiseList;
   if (qrListData && qrListData?.qrListData && qrListData?.qrListData) {

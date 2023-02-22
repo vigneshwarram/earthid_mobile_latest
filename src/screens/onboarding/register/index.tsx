@@ -183,7 +183,7 @@ const Register = ({ navigation }: IRegister) => {
       });
     } else {
       console.log("userDetails?.errorMesssage", userDetails?.errorMesssage);
-     Alert.alert("Warning","Already earthid has been registered with us, please change with new email/username/mobilenumber")
+     Alert.alert("Warning","Your EarthID already exists. Please recover it using your QR code generated during the registration process. If you have lost your QR code, please create a new EarthID using different username, email and phone number.")
     }
   }
   const Footer = () => (
