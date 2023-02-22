@@ -8,8 +8,8 @@
  * @format
  */
 
-import React from "react";
-import { SafeAreaView, StyleSheet, Text, TextInput } from "react-native";
+import React, {  } from "react";
+import { SafeAreaView, StyleSheet, View } from "react-native";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/lib/integration/react";
 //@ts-ignore
@@ -18,10 +18,14 @@ import RootNavigator from "./src/navigations/RootNavigator";
 import { persistor, store } from "./src/redux/store";
 import { Buffer } from "buffer";
 import { isEarthId } from "./src/utils/PlatFormUtils";
-import { Screen } from "react-native-screens";
 import { Screens } from "./src/themes";
-import codePush from "react-native-code-push";
 global.Buffer = Buffer;
+type SharedItem = {
+  mimeType: string;
+  data: string;
+  extraData: any;
+};
+
 
 const App = () => {
   return (
@@ -45,4 +49,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default codePush(App);
+export default App;

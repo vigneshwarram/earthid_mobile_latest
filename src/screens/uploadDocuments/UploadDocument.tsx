@@ -1,5 +1,5 @@
 import { useTheme } from "@react-navigation/native";
-import React, { useEffect, useRef ,useState} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -7,10 +7,14 @@ import {
   TouchableOpacity,
   PermissionsAndroid,
   Platform,
+  AsyncStorage,
+  Alert,
 } from "react-native";
 import { RNCamera } from "react-native-camera";
 import DocumentPicker from "react-native-document-picker";
 import Button from "../../components/Button";
+import ImageResizer from "react-native-image-resizer";
+import Spinner from "react-native-loading-spinner-overlay/lib";
 import { LocalImages } from "../../constants/imageUrlConstants";
 import { Screens } from "../../themes/index";
 import DocumentMask from "../uploadDocuments/DocumentMask";
@@ -18,18 +22,26 @@ import RNFS from "react-native-fs";
 import GenericText from "../../components/Text";
 import { useFormData } from "../../hooks/use-form-fetch";
 import * as ImagePicker from "react-native-image-picker";
-
+import { useFetch } from "../../hooks/use-fetch";
+import { uploadRegisterDocument } from "../../utils/earthid_account";
 
 const UploadDocument = (props: any) => {
   const _handleBarCodeRead = (barCodeData: any) => {};
   const { colors } = useTheme();
-  const { type } =props.route.params
+  const { type } = props.route.params;
   const camRef: any = useRef();
-  const [imageResponse, setImageResponse] = useState<any>('');
-
+  const {
+    loading: imageLoading,
+    data: imageData,
+    error: imageError,
+    fetch: uploadRegDoc,
+  } = useFetch();
+  const [imageResponse, setImageResponse] = useState<any>("");
+  const [documentResponseData, setDocumentResponse] = useState(undefined);
+  const { fetch: getSuperAdminApiCall } = useFetch();
+  const [loginLoading, setLoginLoading] = useState(false);
   const { loading, data, error, fetch } = useFormData();
   const _takePicture = async () => {
- 
     let options = {
       mediaType: type,
       maxWidth: 300,
@@ -40,22 +52,98 @@ const UploadDocument = (props: any) => {
       saveToPhotos: true,
     };
     const data = await camRef.current.takePictureAsync(options);
-    console.log('data===>uri',data)
-    // launchCamera(
-    //   options,
-    //   setCamerResponse
-    // )
     if (data) {
-      props.navigation.navigate("DocumentPreviewScreen", {   fileUri: {
-        //  uri: `data:image/png;base64,${res}`,
-          uri:  data?.uri,        
-          filename :"image",
-          type :"image/jpeg",
-         
-        },
-        type:"regDoc"});
+      const fileUri = { uri: data?.uri, filename: "image", type: "image/jpeg" };
+      if (Platform.OS === "ios") {
+        uploadDocumentImage(fileUri);
+      } else {
+        props.navigation.navigate("DocumentPreviewScreen", {
+          fileUri: {
+            //  uri: `data:image/png;base64,${res}`,
+            uri: data?.uri,
+            filename: "image",
+            type: "image/jpeg",
+          },
+          type: "regDoc",
+        });
+      }
     }
- 
+  };
+  useEffect(() => {
+    if (imageError) {
+      setLoginLoading(false);
+      Alert.alert("Alert", "Document not supported");
+    }
+  }, [imageError]);
+
+  function uploadDocumentImage(fileUri: {
+    uri: any;
+    filename: any;
+    type: any;
+  }) {
+    if (Platform.OS === "ios") {
+      ImageResizer.createResizedImage(fileUri.uri, 500, 500, "JPEG", 100, 0, "")
+        .then((response) => {
+          let image = {
+            uri: response.uri,
+            name: response.name,
+            type: fileUri.type,
+          };
+          try {
+            console.log("image req=====", image);
+            // setLoginLoading(true)
+            props.navigation.navigate("DocumentPreviewScreen", {
+              fileUri: {
+                uri: response.uri,
+                filename: response.name,
+                type: "image/jpeg",
+              },
+              type: "regDoc",
+            });
+          } catch (e) {
+            setLoginLoading(false);
+            console.log("DocumentError:::::", e);
+            console.log("DocumentError:::::", "ERROR");
+          }
+        })
+        .catch((err) => {
+          console.log("errorrr===>", err);
+          // Oops, something went wrong. Check that the filename is correct and
+          // inspect err to get more details.
+        });
+    } else {
+    }
+  }
+  useEffect(() => {
+    if (imageData) {
+      if (imageData?.data) {
+        setDocumentResponse(data?.data);
+        createPayLoadFromDocumentData(data?.data);
+      }
+    }
+  }, [data]);
+
+  const createPayLoadFromDocumentData = async (documentResponseData: any) => {
+    console.log(
+      "slsls",
+      documentResponseData?.ProcessedDocuments[0].ExtractedFields?.filter(
+        (item: any) => item.Name === "FullName"
+      )[0]
+    );
+    const username =
+      documentResponseData?.ProcessedDocuments[0].ExtractedFields?.filter(
+        (item: any) => item.Name === "FullName"
+      )[0]?.Value;
+    const trimmedEmail =
+      documentResponseData?.ProcessedDocuments[0].ExtractedFields?.filter(
+        (item: any) => item.Name === "FullName"
+      )[0]?.Value +
+      "ex" +
+      Math.random() +
+      "@gmail.com";
+    await AsyncStorage.setItem("userDetails", username.toString());
+    await AsyncStorage.setItem("flow", "documentflow");
+    props.navigation.navigate("categoryScreen", { fileUri });
   };
   const requestPermission = async () => {
     try {
@@ -82,46 +170,43 @@ const UploadDocument = (props: any) => {
       //   type: [DocumentPicker.types.images, DocumentPicker.types.pdf],
       //   readContent: true,
       // });
-      
 
       ImagePicker.launchImageLibrary(
         ImagePicker.ImageLibraryOptions,
         setImageResponse
-      )
-
+      );
     } catch (err) {
       console.log("data==>", err);
     }
   };
 
   useEffect(() => {
-    if(imageResponse != '' && !imageResponse?.didCancel){
-    console.log('==>result',imageResponse?.assets[0]?.uri)
-    let fileUri = imageResponse?.assets[0]?.uri;
-    // disPatch(savingProfilePictures(fileUri));
-    RNFS.readFile(fileUri, "base64").then((res) => {
-      console.log("res", res);
-      props.navigation.navigate("DocumentPreviewScreen", {
-        fileUri: {
-        //  uri: `data:image/png;base64,${res}`,
-          uri:  imageResponse?.assets[0]?.uri,
-          base64: res,
-          file: res[0],
-          filename :imageResponse?.assets[0]?.fileName,
-          type :imageResponse?.assets[0]?.type,
-          imgres:imageResponse
-        },
-        type:"regDoc"
+    if (imageResponse != "" && !imageResponse?.didCancel) {
+      console.log("==>result", imageResponse?.assets[0]?.uri);
+      let fileUri = imageResponse?.assets[0]?.uri;
+      // disPatch(savingProfilePictures(fileUri));
+      RNFS.readFile(fileUri, "base64").then((res) => {
+        console.log("res", res);
+        props.navigation.navigate("DocumentPreviewScreen", {
+          fileUri: {
+            //  uri: `data:image/png;base64,${res}`,
+            uri: imageResponse?.assets[0]?.uri,
+            base64: res,
+            file: res[0],
+            filename: imageResponse?.assets[0]?.fileName,
+            type: imageResponse?.assets[0]?.type,
+            imgres: imageResponse,
+          },
+          type: "regDoc",
+        });
+        console.log("respic", fileUri);
       });
-      console.log("respic", fileUri); 
-       });
     }
   }, [imageResponse]);
 
-
-  useEffect(()=>{
-    console.log("RegisterDoc",type.data)
-  },[])
+  useEffect(() => {
+    console.log("RegisterDoc", type.data);
+  }, []);
 
   return (
     <View style={styles.sectionContainer}>
@@ -141,7 +226,6 @@ const UploadDocument = (props: any) => {
         androidCameraPermissionOptions={null}
         type={RNCamera.Constants.Type.back}
         captureAudio={false}
-        onBarCodeRead={(data) => _handleBarCodeRead(data)}
       >
         <DocumentMask />
       </RNCamera>
@@ -212,6 +296,11 @@ const UploadDocument = (props: any) => {
         }}
         title={"uploadgallery"}
       ></Button>
+      <Spinner
+        visible={loading || imageLoading}
+        textContent={"Loading..."}
+        textStyle={styles.spinnerTextStyle}
+      />
     </View>
   );
 };
@@ -223,13 +312,16 @@ const styles = StyleSheet.create({
   },
   preview: {
     flex: 1,
-    justifyContent: "flex-end",
-    alignItems: "center",
+    // justifyContent: "flex-end",
+    // alignItems: "center",
   },
   logoContainer: {
     width: 15,
     height: 15,
     tintColor: "#fff",
+  },
+  spinnerTextStyle: {
+    color: "#fff",
   },
 });
 

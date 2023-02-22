@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Image, TouchableOpacity, Text, AsyncStorage } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Text,
+  AsyncStorage,
+} from "react-native";
 
 import RNFetchBlob from "rn-fetch-blob";
 
@@ -26,7 +33,7 @@ import { dateTime } from "../../utils/encryption";
 import GenericText from "../../components/Text";
 
 export interface IDocumentProps {
-  id:string;
+  id: string;
   name: string;
   path: string;
   date: string;
@@ -39,12 +46,12 @@ export interface IDocumentProps {
   isVc: boolean;
   base64: any;
   pdf?: boolean;
-  categoryType?:any
-  color?:string
+  categoryType?: any;
+  color?: string;
 }
 const VerifiDocumentScreen = (props: any) => {
-  const { uploadedDocuments, } = props.route.params;
-  const { pic, } = props.route.params;
+  const { uploadedDocuments } = props.route.params;
+  const { pic } = props.route.params;
   const { faceImageData, selectedDocument } = props.route.params;
   const { loading, data, error, fetch } = useFetch();
   const userDetails = useAppSelector((state) => state.account);
@@ -56,7 +63,7 @@ const VerifiDocumentScreen = (props: any) => {
     error: documentAddedError,
     fetch: AddDocumehtfetch,
   } = useFetch();
-  console.log("picLOG",pic)
+  console.log("picLOG", pic);
 
   const [load, setLoad] = useState(false);
   const dispatch = useAppDispatch();
@@ -73,46 +80,43 @@ const VerifiDocumentScreen = (props: any) => {
       userId: userDetails?.responseData?.Id,
       publicKey: userDetails?.responseData?.publicKey,
     };
-   // AddDocumehtfetch(CreateHistory, payLoad, "POST");
-   setTimeout(() => {
-    var date = dateTime();
-    const filePath = RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
-    var documentDetails: IDocumentProps = {
-      id:`ID_VERIFICATION${Math.random()}${selectedDocument}${Math.random()}`,
-      name: selectedDocument,
-      path: filePath,
-      date: date?.date,
-      time: date?.time,
-      txId: data?.result,
-      docType: "jpg",
-      docExt: ".jpg",
-      processedDoc: "",
-      base64: uploadedDocumentsBase64,
-      categoryType:selectedDocument
-    };
+    // AddDocumehtfetch(CreateHistory, payLoad, "POST");
+    setTimeout(() => {
+      var date = dateTime();
+      const filePath = RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
+      var documentDetails: IDocumentProps = {
+        id: `ID_VERIFICATION${Math.random()}${selectedDocument}${Math.random()}`,
+        name: selectedDocument,
+        path: filePath,
+        date: date?.date,
+        time: date?.time,
+        txId: data?.result,
+        docType: "jpg",
+        docExt: ".jpg",
+        processedDoc: "",
+        base64: uploadedDocumentsBase64,
+        categoryType: selectedDocument,
+      };
 
-    var DocumentList = documentsDetailsList?.responseData
-      ? documentsDetailsList?.responseData
-      : [];
-    DocumentList.push(documentDetails);
-    dispatch(saveDocuments(DocumentList));
-    setsuccessResponse(true);
-    getHistoryReducer.isSuccess = false;
-    setTimeout(async() => {
-      setsuccessResponse(false);
-   const item =   await  AsyncStorage.getItem("flow");
-      if(item==='documentflow'){
-        props.navigation.navigate("RegisterScreen");
-      }else{
-        props.navigation.navigate("Documents");
-      }
-    
-    }, 2000);
-   }, 200);
-   setLoad(false);
+      var DocumentList = documentsDetailsList?.responseData
+        ? documentsDetailsList?.responseData
+        : [];
+      DocumentList.push(documentDetails);
+      dispatch(saveDocuments(DocumentList));
+      setsuccessResponse(true);
+      getHistoryReducer.isSuccess = false;
+      setTimeout(async () => {
+        setsuccessResponse(false);
+        const item = await AsyncStorage.getItem("flow");
+        if (item === "documentflow") {
+          props.navigation.navigate("RegisterScreen");
+        } else {
+          props.navigation.navigate("Documents");
+        }
+      }, 2000);
+    }, 200);
+    setLoad(false);
   };
-
- 
 
   if (getHistoryReducer?.isSuccess) {
     setsuccessResponse(true);
@@ -171,7 +175,9 @@ const VerifiDocumentScreen = (props: any) => {
             width: 330,
             height: "100%",
           }}
-          source={{ uri:pic.filename =="image" ? pic.uri: uploadedDocumentsBase64 }}
+          source={{
+            uri: pic.filename == "image" ? pic.uri : uploadedDocumentsBase64,
+          }}
         ></Image>
       </View>
 
