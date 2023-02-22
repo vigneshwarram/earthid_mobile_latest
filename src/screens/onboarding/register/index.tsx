@@ -183,7 +183,7 @@ const Register = ({ navigation }: IRegister) => {
       });
     } else {
       console.log("userDetails?.errorMesssage", userDetails?.errorMesssage);
-     Alert.alert("Warning","Already earthid has been registered with us, please change with new email/username/mobilenumber")
+     Alert.alert("Warning","Already EarthID has been registered with us, please change with new email/username/mobilenumber")
     }
   }
   const Footer = () => (

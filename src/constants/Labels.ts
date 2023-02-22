@@ -4,7 +4,7 @@ import { LocalImages } from "./imageUrlConstants";
 export const SCREENS = {
   HOMESCREEN: {
     avatarName: "Robert Downey",
-    appName: isEarthId() ? "EarthId" : "GlobaliD",
+    appName: isEarthId() ? "EarthID" : "GlobaliD",
     category: "CATEGORIES",
     documentLabel: "useddocument",
     upload: "uploaddoc",
@@ -154,7 +154,7 @@ export const SCREENS = {
         CHECKED: true,
       },
       {
-        TITLE: "twitter",
+        TITLE: "Twitter",
         URI: LocalImages.SOCIAL_MEDIA_.twitterImage,
         VALUE: "https://yourdomain.com",
         DOMAIN: "https://twitter.com/yourdoamin",
