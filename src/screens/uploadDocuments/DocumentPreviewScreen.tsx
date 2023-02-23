@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Image, TouchableOpacity, Platform, Alert, AsyncStorage ,CameraRoll} from "react-native";
+import {
+  View,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Platform,
+  Alert,
+  AsyncStorage,
+  CameraRoll,
+} from "react-native";
 
 import Button from "../../components/Button";
 import SuccessPopUp from "../../components/Loader";
@@ -7,12 +16,20 @@ import AnimatedLoader from "../../components/Loader/AnimatedLoader";
 import { LocalImages } from "../../constants/imageUrlConstants";
 import { useFetch } from "../../hooks/use-fetch";
 import { Screens } from "../../themes/index";
-import { BASE_URL, superAdminApi, uploadDocument, uploadRegisterDocument } from "../../utils/earthid_account";
+import {
+  BASE_URL,
+  superAdminApi,
+  uploadDocument,
+  uploadRegisterDocument,
+} from "../../utils/earthid_account";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import PDFView from "react-native-view-pdf";
 import Spinner from "react-native-loading-spinner-overlay/lib";
 import Loader from "../../components/Loader/AnimatedLoader";
-import { createAccount, GeneratedKeysAction } from "../../redux/actions/authenticationAction";
+import {
+  createAccount,
+  GeneratedKeysAction,
+} from "../../redux/actions/authenticationAction";
 import { getDeviceId, getDeviceName } from "../../utils/encryption";
 import { IUserAccountRequest } from "../../typings/AccountCreation/IUserAccount";
 import { SnackBar } from "../../components/SnackBar";
@@ -24,10 +41,8 @@ const DocumentPreviewScreen = (props: any) => {
   const { type } = props.route.params;
   const { newdata } = props.route.params;
   const { loading, data, error, fetch: uploadRegDoc } = useFetch();
-  const [documentResponseData,setDocumentResponse]=useState(undefined);
-  const {
-    fetch: getSuperAdminApiCall,
-  } = useFetch();
+  const [documentResponseData, setDocumentResponse] = useState(undefined);
+  const { fetch: getSuperAdminApiCall } = useFetch();
   const [loginLoading, setLoginLoading] = useState(false);
   const [successResponse, setsuccessResponse] = useState(false);
   const [message, Setmessage] = useState("ooo");
@@ -45,51 +60,47 @@ const DocumentPreviewScreen = (props: any) => {
   };
   const resourceType = "base64";
 
-  console.log('error===>',error)
-useEffect(()=>{
-  if(error){
-    setLoginLoading(false)
-    Alert.alert("Alert","Document not supported")
-  }
+  console.log("error===>", error);
+  useEffect(() => {
+    if (error) {
+      setLoginLoading(false);
+      Alert.alert("Alert", "Document not supported");
+    }
+  }, [error]);
 
-},[error])
-
-  function alertUploadDoc(){
-    if(type=="regDoc"){
-      uploadDocumentImage()
-    }else{
+  function alertUploadDoc() {
+    if (type == "regDoc") {
+      uploadDocumentImage();
+    } else {
       Alert.alert(
-        'Confirmation!',
-        'Please confirm that this is a self-attested document',
+        "Confirmation!",
+        "Please confirm that this is a self-attested document",
         [
-          
           {
-            text: 'Yes',
-            onPress: () =>{ 
-              if(type=="regDoc"){
-                uploadDocumentImage()
-              }else{
-                uploadDoc()
+            text: "Yes",
+            onPress: () => {
+              if (type == "regDoc") {
+                uploadDocumentImage();
+              } else {
+                uploadDoc();
               }
-             
             },
-            style: 'cancel',
+            style: "cancel",
           },
           {
-            text: 'No', 
-            onPress: () =>{
-              if(type=="regDoc"){
-                uploadDocumentImage()
-              }else{
-                uploadDoc()
+            text: "No",
+            onPress: () => {
+              if (type == "regDoc") {
+                uploadDocumentImage();
+              } else {
+                uploadDoc();
               }
-            }
+            },
           },
         ],
-        {cancelable: false},
+        { cancelable: false }
       );
     }
- 
   }
 
   const uploadDoc = async () => {
@@ -102,10 +113,9 @@ useEffect(()=>{
         props.navigation.navigate("DrawerNavigator", { fileUri });
       }
     } else {
-      console.log('fileUri==>',fileUri)
-        props.navigation.navigate("categoryScreen", { fileUri });
-        console.log("success==>", "Success");
-      
+      console.log("fileUri==>", fileUri);
+      props.navigation.navigate("categoryScreen", { fileUri });
+      console.log("success==>", "Success");
     }
   };
 
@@ -126,63 +136,68 @@ useEffect(()=>{
   //   console.log("filename==>", fileUri?.file?.type);
   // }, [data]);
 
+  function uploadDocumentImage() {
+    console.log("DocumentImage:::::", fileUri);
 
-  function uploadDocumentImage(){
-
-    console.log("DocumentImage:::::",fileUri)
-
-    if(type=="regDoc"){
-
-      let image={
+    if (type == "regDoc") {
+      let image = {
         uri: fileUri.uri,
-        name:fileUri.filename,
-        type:fileUri.type
-      }
-      try{
-        console.log('image req=====',image)
-        setLoginLoading(true)
-         uploadRegDoc(uploadRegisterDocument,image,"FORM-DATA");
-  
-       
-       // props.navigation.navigate("DrawerNavigator", { response });
-      }catch(e){
-        setLoginLoading(false)
-        console.log("DocumentError:::::",e)
-        console.log("DocumentError:::::","ERROR")
-      }
+        name: fileUri.filename,
+        type: fileUri.type,
+      };
+      try {
+        console.log("image req=====", image);
+        setLoginLoading(true);
+        uploadRegDoc(uploadRegisterDocument, image, "FORM-DATA");
 
+        // props.navigation.navigate("DrawerNavigator", { response });
+      } catch (e) {
+        setLoginLoading(false);
+        console.log("DocumentError:::::", e);
+        console.log("DocumentError:::::", "ERROR");
+      }
     }
   }
   useEffect(() => {
     getSuperAdminApiCall(superAdminApi, {}, "GET");
   }, []);
 
- useEffect(()=>{
-  if(data){
-    if(data?.data){
-      setDocumentResponse(data?.data)
-      createPayLoadFromDocumentData(data?.data);
-     
-     }
-  }
- },[data])
+  useEffect(() => {
+    if (data) {
+      if (data?.data) {
+        setDocumentResponse(data?.data);
+        createPayLoadFromDocumentData(data?.data);
+      }
+    }
+  }, [data]);
 
-  const createPayLoadFromDocumentData=async(documentResponseData:any)=>{
-    console.log('slsls',documentResponseData?.ProcessedDocuments[0].ExtractedFields?.filter((item:any)=>item.Name==='FullName')[0])
-    const username =documentResponseData?.ProcessedDocuments[0].ExtractedFields?.filter((item:any)=>item.Name==='FullName')[0]?.Value;
-    const trimmedEmail =documentResponseData?.ProcessedDocuments[0].ExtractedFields?.filter((item:any)=>item.Name==='FullName')[0]?.Value+"ex"+Math.random()+"@gmail.com";
-    await  AsyncStorage.setItem("userDetails",username.toString());
-    await  AsyncStorage.setItem("flow","documentflow");
+  const createPayLoadFromDocumentData = async (documentResponseData: any) => {
+    console.log(
+      "slsls",
+      documentResponseData?.ProcessedDocuments[0].ExtractedFields?.filter(
+        (item: any) => item.Name === "FullName"
+      )[0]
+    );
+    const username =
+      documentResponseData?.ProcessedDocuments[0].ExtractedFields?.filter(
+        (item: any) => item.Name === "FullName"
+      )[0]?.Value;
+    const trimmedEmail =
+      documentResponseData?.ProcessedDocuments[0].ExtractedFields?.filter(
+        (item: any) => item.Name === "FullName"
+      )[0]?.Value +
+      "ex" +
+      Math.random() +
+      "@gmail.com";
+    await AsyncStorage.setItem("userDetails", username.toString());
+    await AsyncStorage.setItem("flow", "documentflow");
     props.navigation.navigate("categoryScreen", { fileUri });
+  };
 
-  }
- 
-  useEffect(()=>{
-
-
-   // console.log("RegisterType",fileUri)
-  },[])
-  console.log("Document preview screen",fileUri.uri)
+  useEffect(() => {
+    // console.log("RegisterType",fileUri)
+  }, []);
+  console.log("Document preview screen", fileUri.uri);
   return (
     <View style={styles.sectionContainer}>
       <View style={{ position: "absolute", top: 20, right: 20, zIndex: 100 }}>
@@ -194,25 +209,30 @@ useEffect(()=>{
           ></Image>
         </TouchableOpacity>
       </View>
-    
-        {fileUri?.type ==='application/pdf'?<View style={{flex:1,marginTop:70}}><PDFView
+
+      {fileUri?.type === "application/pdf" ? (
+        <View style={{ flex: 1, marginTop: 70 }}>
+          <PDFView
             fadeInDuration={100.0}
             style={{ flex: 1 }}
             resource={resources[resourceType]}
             resourceType={resourceType}
             onLoad={() => console.log(`PDF rendered from ${resourceType}`)}
             onError={() => console.log("Cannot render PDF", error)}
-          /></View>:<View style={{ flex: 0.8,alignSelf:'center'}}>
-            <Image
-          resizeMode={"contain"}
-          style={{
-            width: 330,
-            height: "100%",
-          }}
-          source={{ uri: fileUri.uri }}
-        ></Image></View>}
-       
-  
+          />
+        </View>
+      ) : (
+        <View style={{ flex: 0.8, alignSelf: "center" }}>
+          <Image
+            resizeMode={"contain"}
+            style={{
+              width: 330,
+              height: "100%",
+            }}
+            source={{ uri: fileUri.uri }}
+          ></Image>
+        </View>
+      )}
 
       <View
         style={{
@@ -257,19 +277,17 @@ useEffect(()=>{
         ></Button>
       </View>
       <Loader
-            loadingText={
-              isEarthId() ? "earthidgeneratesuccess" : "globalgeneratesuccess"
-            }
-            Status="status"
-            isLoaderVisible={successResponse}
-          ></Loader>
+        loadingText={
+          isEarthId() ? "earthidgeneratesuccess" : "globalgeneratesuccess"
+        }
+        Status="status"
+        isLoaderVisible={successResponse}
+      ></Loader>
       <Spinner
-              visible={loading}
-              textContent={"Loading..."}
-              textStyle={styles.spinnerTextStyle}
-            />
-  
-     
+        visible={loading}
+        textContent={"Loading..."}
+        textStyle={styles.spinnerTextStyle}
+      />
     </View>
   );
 };

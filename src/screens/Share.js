@@ -12,6 +12,7 @@ const Share = () => {
       setSharedMimeType(data[0]?.mimeType);
     });
   }, []);
+  console.log("sharedData", sharedData);
   return (
     <View style={{ flex: 1 }}>
       <View style={{ justifyContent: "center", alignItems: "center" }}>

@@ -18,7 +18,7 @@ import Card from "../../../components/Card";
 import Header from "../../../components/Header";
 import ShareMenu, { ShareMenuReactView } from "react-native-share-menu";
 import GenericText from "../../../components/Text";
-import { Linking } from 'react-native';
+import { Linking } from "react-native";
 import { LocalImages } from "../../../constants/imageUrlConstants";
 import { SCREENS } from "../../../constants/Labels";
 import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
@@ -71,93 +71,90 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
     ShareMenu.getInitialShare(handleShare);
   }, []);
 
-
-  
   const handleShare = useCallback(async (item: SharedItem | null) => {
-  
     if (!item) {
       return;
     }
-     if(Platform.OS==='android'){
+    if (Platform.OS === "android") {
       const { mimeType, data, extraData } = item;
       console.log("datamimeType", data);
       console.log("datamimeType", extraData);
-  
-      if (mimeType === "image/*" || mimeType === "image/jpeg" || mimeType === "image/png") {
-       
+
+      if (
+        mimeType === "image/*" ||
+        mimeType === "image/jpeg" ||
+        mimeType === "image/png"
+      ) {
         const imagePath = data;
         const base64 = await convertToBase64(imagePath);
-        const fileUri ={
-          base64 :base64,
-          type:mimeType,
-          uri:base64,
-          flow:"deeplink",
-          file:{
-            uri:base64
-          }
-          
-        }
+        const fileUri = {
+          base64: base64,
+          type: mimeType,
+          uri: base64,
+          flow: "deeplink",
+          file: {
+            uri: base64,
+          },
+        };
         navigation.navigate("DocumentPreviewScreen", { fileUri: fileUri });
       } else {
         const imagePath = data;
         const base64 = await RNFS.readFile(imagePath, "base64");
-        console.log("data====>",base64)
-        const fileUri ={
-          base64 :base64,
-          type:mimeType,
-          uri:base64,
-          flow:"deeplink",
-          file:{
-            uri:base64
-          }
-          
-        }
+        console.log("data====>", base64);
+        const fileUri = {
+          base64: base64,
+          type: mimeType,
+          uri: base64,
+          flow: "deeplink",
+          file: {
+            uri: base64,
+          },
+        };
         navigation.navigate("DocumentPreviewScreen", { fileUri: fileUri });
       }
-     }else{
+    } else {
       const { mimeType, data, extraData } = item;
       console.log("datamimeType", extraData);
-      console.log('extraData?.mimeType',extraData?.mimeType)
-  
-      if (extraData?.mimeType === "image/*" || extraData?.mimeType === "image/jpeg" || extraData?.mimeType === "image/png" || extraData?.mimeType==="text/plain") {
-      
-        const imagePath = extraData?.data?.replaceAll("%20",' ');
+      console.log("extraData?.mimeType", extraData?.mimeType);
+
+      if (
+        extraData?.mimeType === "image/*" ||
+        extraData?.mimeType === "image/jpeg" ||
+        extraData?.mimeType === "image/png" ||
+        extraData?.mimeType === "text/plain"
+      ) {
+        const imagePath = extraData?.data?.replaceAll("%20", " ");
         const base64 = await convertToBase64(imagePath);
-  
-        const fileUri ={
-          base64 :base64,
-          type:extraData?.mimeType,
-          uri:base64,
-          flow:"deeplink",
-          imagePath:imagePath,
-          file:{
-            uri:base64
-          }
-          
-        }
+
+        const fileUri = {
+          base64: imagePath,
+          type: extraData?.mimeType,
+          uri: imagePath,
+          flow: "deeplink",
+          imagePath: imagePath,
+          file: {
+            uri: base64,
+          },
+        };
         navigation.navigate("DocumentPreviewScreen", { fileUri: fileUri });
       } else {
         const imagePath = extraData?.data;
         const base64 = await RNFS.readFile(imagePath, "base64");
-        console.log("data====>",base64)
-        const fileUri ={
-          base64 :base64,
-          type:extraData?.mimeType,
-          uri:base64,
-          flow:"deeplink",
-          file:{
-            uri:base64
-          }
-          
-        }
+        console.log("data====>", base64);
+        const fileUri = {
+          base64: base64,
+          type: extraData?.mimeType,
+          uri: base64,
+          flow: "deeplink",
+          file: {
+            uri: base64,
+          },
+        };
         navigation.navigate("DocumentPreviewScreen", { fileUri: fileUri });
       }
-     }
- 
+    }
   }, []);
-  const uploadPdf = (base64: string) => {
-
-  };
+  const uploadPdf = (base64: string) => {};
   const validateImages = (base64: string) => {
     // AddDocumehtfetch(CreateHistory, payLoad, "POST");
     setTimeout(() => {
