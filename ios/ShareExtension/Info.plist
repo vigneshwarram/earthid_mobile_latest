@@ -11,22 +11,22 @@
 <dict>
     <key>NSExtensionAttributes</key>
     <dict>
-        <key>NSExtensionActivationRule</key>
-        <dict>
-            <!-- For a full list of available options, visit https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/AppExtensionKeys.html#//apple_ref/doc/uid/TP40014212-SW10 -->
-            <key>NSExtensionActivationSupportsImageWithMaxCount</key>
-            <integer>1</integer>
-            <key>NSExtensionActivationSupportsText</key>
-            <true/>
-            <key>NSExtensionActivationSupportsWebURLWithMaxCount</key>
-            <integer>1</integer>
-             <key>UTTypeConformsTo</key>
-        <array>
-            <string>com.adobe.pdf</string>
-            <string>public.pdf</string>
-        </array>
-        </dict>
-        
+    <key>NSExtensionActivationRule</key>
+<string>
+SUBQUERY (
+    extensionItems,
+    $extensionItem,
+        SUBQUERY (
+            $extensionItem.attachments,
+            $attachment,
+            ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "com.adobe.pdf"
+            || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.file-url"
+            || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.url"
+            || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.jpeg"
+            || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.png"
+        ).@count == $extensionItem.attachments.@count
+).@count >= 1
+</string> 
     </dict>
     <key>NSExtensionMainStoryboard</key>
     <string>MainInterface</string>

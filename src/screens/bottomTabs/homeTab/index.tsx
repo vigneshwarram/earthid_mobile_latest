@@ -138,7 +138,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
         };
         navigation.navigate("DocumentPreviewScreen", { fileUri: fileUri });
       } else {
-        const imagePath = extraData?.data;
+        const imagePath = extraData?.data?.replaceAll("%20", " ");
         const base64 = await RNFS.readFile(imagePath, "base64");
         console.log("data====>", base64);
         const fileUri = {

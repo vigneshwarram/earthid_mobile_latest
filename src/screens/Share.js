@@ -7,19 +7,25 @@ const Share = () => {
 
   useEffect(() => {
     ShareMenuReactView.data().then(async ({ mimeType, data }) => {
-      console.log("data[0]?.data", data[0]?.mimeType);
       setSharedData(data[0]?.data);
       setSharedMimeType(data[0]?.mimeType);
     });
   }, []);
-  console.log("sharedData", sharedData);
+
   return (
     <View style={{ flex: 1 }}>
       <View style={{ justifyContent: "center", alignItems: "center" }}>
-        <Image
-          style={{ width: 400, height: 600, resizeMode: "contain" }}
-          source={{ uri: sharedData }}
-        />
+        {sharedMimeType === "application/pdf" ? (
+          <Image
+            style={{ width: 300, height: 600, resizeMode: "contain" }}
+            source={require("../../resources/images/pdf.svg.png")}
+          />
+        ) : (
+          <Image
+            style={{ width: 400, height: 600, resizeMode: "contain" }}
+            source={{ uri: sharedData }}
+          />
+        )}
       </View>
       {sharedData !== "" && (
         <TouchableOpacity
