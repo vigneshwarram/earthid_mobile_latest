@@ -4,50 +4,37 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
-	<key>CFBundleURLTypes</key>
-<array>
-    <dict>
-        <key>CFBundleTypeRole</key>
-        <string>Editor</string>
-        <key>CFBundleURLSchemes</key>
-        <array>
-            <string>mycustomscheme</string>
-            <!-- This url scheme doesn't contain :// at the end - E.G. "mycustomscheme"-->
-        </array>
-    </dict>
-</array>
-
-<key>CFBundleDocumentTypes</key>
-<array>
-	<dict>
-		<key>CFBundleTypeName</key>
-		<string>PDF document</string>
-		<key>LSHandlerRank</key>
-		<string>Alternate</string>
-		<key>LSItemContentTypes</key>
-		<array>
-			<string>com.adobe.pdf</string>
-			<string>com.adobe.postscript</string>
-			<string>com.adobe.encapsulated-postscript</string>
-			<string>org.gnu.gnu-zip-archive</string>
-			<string>com.pkware.zip-archive</string>
-		</array>
-	</dict>
-	 <dict>
-        <key>CFBundleTypeIconFile</key>
-        <string>MyImageIcon.png</string>
-        <key>CFBundleTypeName</key>
-        <string>My Image</string>
-        <key>LSHandlerRank</key>
-        <string>Owner</string>
-        <key>LSItemContentTypes</key>
-        <array>
-            <string>public.image</string>
-        </array>
-    </dict>
-</array>
 	<key>CFBundleDisplayName</key>
-	<string>EarthID</string>
+	<string>GlobalID</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>PDF document</string>
+			<key>LSHandlerRank</key>
+			<string>Alternate</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.adobe.pdf</string>
+				<string>com.adobe.postscript</string>
+				<string>com.adobe.encapsulated-postscript</string>
+				<string>org.gnu.gnu-zip-archive</string>
+				<string>com.pkware.zip-archive</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeIconFile</key>
+			<string>MyImageIcon.png</string>
+			<key>CFBundleTypeName</key>
+			<string>My Image</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>public.image</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -62,7 +49,17 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
-	
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>mycustomscheme</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -73,10 +70,10 @@
 		<dict>
 			<key>localhost</key>
 			<dict>
+				<key>NSAllowsLocalNetworking</key>
+				<true/>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
 				<true/>
-				 <key>NSAllowsLocalNetworking</key>
-        <true/>
 			</dict>
 		</dict>
 	</dict>
@@ -90,8 +87,6 @@
 	<string>$(PRODUCT_NAME) uses photos</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen.storyboard</string>
-	<key>UISupportsDocumentBrowser</key>
-    <true/>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
@@ -100,6 +95,8 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>UISupportsDocumentBrowser</key>
+	<true/>
 	<key>UIUserInterfaceStyle</key>
 	<string>Light</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
