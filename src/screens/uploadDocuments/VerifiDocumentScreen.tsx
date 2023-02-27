@@ -73,6 +73,7 @@ const VerifiDocumentScreen = (props: any) => {
   let documentsDetailsList = useAppSelector((state) => state.Documents);
   var base64Icon = `data:image/png;base64,${faceImageData?.base64}`;
   var uploadedDocumentsBase64 = `data:image/png;base64,${uploadedDocuments?.base64}`;
+  var name:any=""
 
   const validateImages = () => {
 
@@ -139,6 +140,18 @@ const VerifiDocumentScreen = (props: any) => {
   useEffect(()=>{
     console.log("picLOG", pic);
   })
+
+  // useEffect(()=>{
+  //   getItem()
+  //   },[])
+  
+  //   const getItem=async()=>{
+  //     const item =await  AsyncStorage.getItem("editDoc");
+  //     if(item=='editDoc'){
+  //       name =await  AsyncStorage.getItem("userDetails");
+      
+  //     }
+  //   }
 
   return (
     <View style={styles.sectionContainer}>

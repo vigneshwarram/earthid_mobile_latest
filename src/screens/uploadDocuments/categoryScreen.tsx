@@ -242,6 +242,12 @@ setIsPrceedForLivenessTest(true)
    // setIsPrceedForLivenessTest(true);
   };
 
+  useEffect(()=>{
+
+  
+
+  },[])
+
   const _renderItem = ({ item, index }: any) => {
     return (
 
