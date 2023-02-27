@@ -52,6 +52,8 @@ export interface IDocumentProps {
 const VerifiDocumentScreen = (props: any) => {
   const { uploadedDocuments } = props.route.params;
   const { pic } = props.route.params;
+  const { editDoc } = props.route.params;
+  const { itemData } = props.route.params;
   const { faceImageData, selectedDocument } = props.route.params;
   const { loading, data, error, fetch } = useFetch();
   const userDetails = useAppSelector((state) => state.account);
@@ -73,6 +75,8 @@ const VerifiDocumentScreen = (props: any) => {
   var uploadedDocumentsBase64 = `data:image/png;base64,${uploadedDocuments?.base64}`;
 
   const validateImages = () => {
+
+
     setLoad(true);
     const payLoad = {
       eventValue: selectedDocument,
@@ -132,6 +136,10 @@ const VerifiDocumentScreen = (props: any) => {
     setLoad(false);
   };
 
+  useEffect(()=>{
+    console.log("picLOG", pic);
+  })
+
   return (
     <View style={styles.sectionContainer}>
       <Header
@@ -176,7 +184,7 @@ const VerifiDocumentScreen = (props: any) => {
             height: "100%",
           }}
           source={{
-            uri: pic.filename == "image" ? pic.uri : uploadedDocumentsBase64,
+            uri: pic ? pic.uri : uploadedDocumentsBase64 
           }}
         ></Image>
       </View>

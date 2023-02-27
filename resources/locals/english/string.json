@@ -155,5 +155,8 @@
   "generateeathid": "GENERATE EARTH ID",
   "passcodeinstructionEarthid": "Secure your EarthID with a memorable 6-digit code",
   "earthidwanttoaccess": "EarthID wants to access your following information",
-  "earthidwanttoaccessKyc": "EarthID wants to access your KYC token"
+  "earthidwanttoaccessKyc": "EarthID wants to access your KYC token",
+  "share":"Share",
+  "delete":"Delete",
+  "edit":"Edit"
 }

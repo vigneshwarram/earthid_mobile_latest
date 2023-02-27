@@ -51,6 +51,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
   }
   const dispatch = useAppDispatch();
   const [selectedItem, setselectedItem] = useState();
+  const [edit, setEdit] = useState();
   const [multiSelectionEnabled, setMultiSelectionEnabled] = useState(false);
   const [clearMultiselection, setClearMultiSelection] = useState(false);
   const [
@@ -126,10 +127,14 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
 
   const _renderItem = ({ item, index }: any) => {
     AsyncStorage.setItem("day", item.date);
-
+  
     return (
       <TouchableOpacity
-        onLongPress={() => multiSelect(item)}
+        onLongPress={() =>{
+           multiSelect(item)
+          
+          }
+        }
         style={{
           marginBottom: 20,
         }}
@@ -182,7 +187,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
             leftAvatar={LocalImages.documentsImage}
             absoluteCircleInnerImage={LocalImages.upImage}
             rightIconSrc={LocalImages.menuImage}
-            rightIconOnPress={() => _rightIconOnPress(item)}
+            rightIconOnPress={() => _rightIconOnPress(item) }
             title={item.name}
             subtitle={
               item.isVc
@@ -341,6 +346,14 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
       { cancelable: false }
     );
   };
+
+
+function editItem(){
+   navigation.navigate("DocumentPreviewScreen", { fileUri: selectedItem , editDoc : "editDoc", itemData:edit})
+  console.log('iteName==>',edit)
+}
+
+
   const onPressNavigateTo = () => {
     navigation.navigate("uploadDocumentsScreen");
   };
@@ -450,20 +463,26 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
 
           <BottomSheet
             onClose={() => setisBottomSheetForSideOptionVisible(false)}
-            height={150}
+            height={200}
             isVisible={isBottomSheetForSideOptionVisible}
           >
-            <View style={{ height: 100, width: "100%", paddingHorizontal: 30 }}>
+            <View style={{ height: 150, width: "100%", paddingHorizontal: 30 }}>
+            <RowOption
+                rowAction={() => editItem()}
+                title={"edit"}
+                icon={LocalImages.editIcon}
+              />
               <RowOption
                 rowAction={() => shareItem()}
-                title={"Share"}
+                title={"share"}
                 icon={LocalImages.shareImage}
               />
               <RowOption
                 rowAction={() => deleteItem()}
-                title={"Delete"}
+                title={"delete"}
                 icon={LocalImages.deleteImage}
               />
+              
             </View>
           </BottomSheet>
           <BottomSheet
@@ -580,6 +599,7 @@ const styles = StyleSheet.create({
   logoContainer: {
     width: 25,
     height: 25,
+    tintColor:"black"
   },
   avatarContainer: {
     width: 30,

@@ -38,7 +38,9 @@ import { isEarthId } from "../../utils/PlatFormUtils";
 
 const DocumentPreviewScreen = (props: any) => {
   const { fileUri } = props?.route?.params;
+  const  itemData  = props?.route?.params;
   const { type } = props.route.params;
+  const  {editDoc} = props.route.params
   const { newdata } = props.route.params;
   const { loading, data, error, fetch: uploadRegDoc } = useFetch();
   const [documentResponseData, setDocumentResponse] = useState(undefined);
@@ -60,7 +62,7 @@ const DocumentPreviewScreen = (props: any) => {
   };
   const resourceType = "base64";
 
-  console.log("error===>", error);
+  console.log("error===>", fileUri);
   useEffect(() => {
     if (error) {
       setLoginLoading(false);
@@ -114,7 +116,7 @@ const DocumentPreviewScreen = (props: any) => {
       }
     } else {
       console.log("fileUri==>", fileUri);
-      props.navigation.navigate("categoryScreen", { fileUri });
+      props.navigation.navigate("categoryScreen", { fileUri ,editDoc});
       console.log("success==>", "Success");
     }
   };
@@ -196,8 +198,10 @@ const DocumentPreviewScreen = (props: any) => {
 
   useEffect(() => {
     // console.log("RegisterType",fileUri)
+    console.log("Document preview screen", editDoc);
   }, []);
   console.log("Document preview screen", fileUri.uri);
+  
   return (
     <View style={styles.sectionContainer}>
       <View style={{ position: "absolute", top: 20, right: 20, zIndex: 100 }}>
@@ -229,7 +233,7 @@ const DocumentPreviewScreen = (props: any) => {
               width: 330,
               height: "100%",
             }}
-            source={{ uri: fileUri.uri }}
+            source={{ uri: editDoc=="editDoc" ? fileUri.base64 : fileUri.uri }}
           ></Image>
         </View>
       )}

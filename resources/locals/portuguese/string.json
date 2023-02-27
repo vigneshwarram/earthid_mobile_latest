@@ -153,5 +153,8 @@
   "generateeathid": "GERAR ID DE TERRA",
   "passcodeinstructionEarthid": "Proteja seu EarthId com um código de 6 dígitos memorável",
   "earthidwanttoaccess": "EarthId deseja acessar suas seguintes informações",
-  "earthidwanttoaccessKyc": "EarthId quer acessar seu token KYC"
+  "earthidwanttoaccessKyc": "EarthId quer acessar seu token KYC",
+  "share":"Compartilhar",
+  "delete":"Excluir",
+  "edit":"Editar"
 }

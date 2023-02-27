@@ -39,6 +39,10 @@ interface IDocumentScreenProps {
 
 const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const fileUri = route?.params?.fileUri;
+  const pic = route?.params?.fileUri;
+  const itemData = route?.params?.itemData;
+  const { editDoc } =route.params;
+  
   const [isPrceedForLivenessTest, setIsPrceedForLivenessTest] = useState(false);
   const [categoryList, setCategoryList] = useState([]);
   const [selectedDocument, setselectedDocument] = useState();
@@ -175,7 +179,7 @@ setIsPrceedForLivenessTest(true)
 
   useEffect(() => {
     getCategories(getCategoriesApi, {}, "GET");
-   
+    console.log("itemData",itemData)
   }, []);
 
   useEffect(() => {
@@ -240,39 +244,42 @@ setIsPrceedForLivenessTest(true)
 
   const _renderItem = ({ item, index }: any) => {
     return (
-      <TouchableOpacity onPress={() => selectCategory(item, index)}>
-        <View
-          style={[
-            styles.cardContainer,
-            {
-              backgroundColor: item.isSelected
-                ? "rgba(184, 191, 241, 1)"
-                : Screens.pureWhite,
-            },
-          ]}
-        >
-          <View style={{ flexDirection: "row" ,}}>
-            <View
-              style={{
-                width: 12,
-                height: 12,
-                backgroundColor: item.isSelected ? "green" : item.color,
-                alignSelf: "center",
-                marginHorizontal: 10,
-                borderRadius:2
-              }}
-            >
-              {item.isSelected && <Image
-                 style={{tintColor:'#fff',width:8,height:10, alignSelf: "center",}}
-                 source={LocalImages.tikImage}
-              ></Image> }
-              
-              {item?.isSelected && <View></View>}
-            </View>
-            <Text style={{ fontWeight: "bold" }}>{item.key}</Text>
-          </View>
-        </View>
-      </TouchableOpacity>
+
+
+                <TouchableOpacity onPress={() => selectCategory(item, index)}>
+                <View
+                  style={[
+                    styles.cardContainer,
+                    {
+                      backgroundColor: item.isSelected
+                        ? "rgba(184, 191, 241, 1)"
+                        : Screens.pureWhite,
+                    },
+                  ]}
+                >
+                  <View style={{ flexDirection: "row" ,}}>
+                    <View
+                      style={{
+                        width: 12,
+                        height: 12,
+                        backgroundColor: item.isSelected ? "green" : item.color,
+                        alignSelf: "center",
+                        marginHorizontal: 10,
+                        borderRadius:2
+                      }}
+                    >
+                      {item.isSelected && <Image
+                         style={{tintColor:'#fff',width:8,height:10, alignSelf: "center",}}
+                         source={LocalImages.tikImage}
+                      ></Image> }
+                      
+                      {item?.isSelected && <View></View>}
+                    </View>
+                    <Text style={{ fontWeight: "bold" }}>{item.key}</Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+
     );
   };
 
@@ -430,6 +437,10 @@ setIsPrceedForLivenessTest(true)
                    navigation.navigate("LivenessCameraScreen", {
                      fileUri,
                      selectedDocument:`${categoryList[selectedParentIndex].key} (${document[0]?.title})`,
+                     pic,
+                     itemData,
+                     editDoc
+                     
                  });
                 }, 100);
               }}
