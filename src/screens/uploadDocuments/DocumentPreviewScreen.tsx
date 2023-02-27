@@ -39,8 +39,8 @@ import { isEarthId } from "../../utils/PlatFormUtils";
 const DocumentPreviewScreen = (props: any) => {
   const { fileUri } = props?.route?.params;
   const  itemData  = props?.route?.params;
-  const { type } = props.route.params;
-  const  {editDoc} = props.route.params
+  const { type } = props?.route?.params;
+  const  {editDoc} = props?.route?.params
   const { newdata } = props.route.params;
   const { loading, data, error, fetch: uploadRegDoc } = useFetch();
   const [documentResponseData, setDocumentResponse] = useState(undefined);
@@ -125,18 +125,6 @@ const DocumentPreviewScreen = (props: any) => {
     props.navigation.goBack();
   };
 
-  //Qr Code Reader From the image
-
-  // useEffect(() => {
-  //   if (data) {
-  //     setsuccessResponse(true);
-  //     setTimeout(() => {
-  //       setsuccessResponse(false);
-  //       props.navigation.navigate("categoryScreen", { fileUri });
-  //     }, 3000);
-  //   }
-  //   console.log("filename==>", fileUri?.file?.type);
-  // }, [data]);
 
   function uploadDocumentImage() {
     console.log("DocumentImage:::::", fileUri);

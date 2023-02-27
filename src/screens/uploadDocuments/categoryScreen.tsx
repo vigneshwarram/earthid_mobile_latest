@@ -41,7 +41,8 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const fileUri = route?.params?.fileUri;
   const pic = route?.params?.fileUri;
   const itemData = route?.params?.itemData;
-  const { editDoc } =route.params;
+  const { editDoc,selectedItem } =route?.params;
+  console.log('selectedItem',selectedItem?.name)
   
   const [isPrceedForLivenessTest, setIsPrceedForLivenessTest] = useState(false);
   const [categoryList, setCategoryList] = useState([]);
@@ -61,6 +62,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const _toggleDrawer = () => {
     navigation.openDrawer();
   };
+
 
   const onSubmitAction=()=>{
 
@@ -189,6 +191,8 @@ setIsPrceedForLivenessTest(true)
       Object.keys(getCategoryData).map((itemKey, indexOfKey) => {
         var InternalArray: { title: any }[] = [];
         getCategoryData[itemKey].map((item: any) => {
+          const selItem=selectedItem?.name?.split('(')[0];
+
           InternalArray.push({ title: item });
         });
 
@@ -196,9 +200,10 @@ setIsPrceedForLivenessTest(true)
           key: itemKey,
           value: InternalArray,
           color: SCREENS.CATEGORYSCREEN.categories[indexOfKey]?.color,
-          isSelected: false,
+          isSelected:selectedItem?.name?.startsWith(itemKey)?true: false,
         });
       });
+      
       setCategoryList(localCategories);
     }
   }, [getCategoryData]);
@@ -251,7 +256,6 @@ setIsPrceedForLivenessTest(true)
   const _renderItem = ({ item, index }: any) => {
     return (
 
-
                 <TouchableOpacity onPress={() => selectCategory(item, index)}>
                 <View
                   style={[
@@ -290,12 +294,12 @@ setIsPrceedForLivenessTest(true)
   };
 
   const _renderItemDocuments = ({ item, index }: any) => {
-    console.log("values",item)
+  
     return (
       <TouchableOpacity onPress={() => selectCategoryChildren(item, index)}>
         <View style={styles.documentContainer}>
           <Card
-            rightIconSrc={item?.isSelected && LocalImages.successTikImage}
+            rightIconSrc={item?.isSelected  && LocalImages.successTikImage}
             leftIconSrc={LocalImages.documentsImage}
             title={item?.title == 'DL'?'Driving License':item?.title}
             style={[

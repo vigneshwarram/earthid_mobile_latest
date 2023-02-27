@@ -350,7 +350,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
 
 function editItem(){
  
-  navigation.navigate("DocumentPreviewScreen", { fileUri: selectedItem , editDoc : "editDoc", itemData:edit})
+  navigation.navigate("categoryScreen", { selectedItem: selectedItem , editDoc : "editDoc", itemData:edit})
   // var data : any =selectedItem
   // await AsyncStorage.setItem("userDetails", data);
   // await AsyncStorage.setItem("editDoc", "editDoc");
