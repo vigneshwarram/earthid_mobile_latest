@@ -196,12 +196,12 @@ setIsPrceedForLivenessTest(true)
       var localCategories: any = [];
 
       Object.keys(getCategoryData).map((itemKey, indexOfKey) => {
-        var InternalArray: { title: any }[] = [];
+        var InternalArray: { title: any,isSelected:boolean }[] = [];
         getCategoryData[itemKey].map((item: any) => {
-          const selItem=selectedItem?.name?.split('(')[0];
-          InternalArray.push({ title: item });
+          console.log('item==>*****))))',item)
+          InternalArray.push({ title: item,isSelected:typeItem===item?true:item?.isSelected });
         });
-
+      
         // localCategories = categoryList.map((item: any, index: number) => {
         //   item.value.map((itemChildren: any, childrenIndex: number) => {
         //     if (childrenIndex === index && index === selectedParentIndex) {
@@ -323,10 +323,7 @@ setIsPrceedForLivenessTest(true)
     );
   };
 
-  const _renderItemDocuments = ({ item, index }: any) => {
-
-    console.log("itemsssss",item)
-    setTitle(item.title)
+  const _renderItemDocuments = ({ item, index }: any) => { 
 
   
     return (
