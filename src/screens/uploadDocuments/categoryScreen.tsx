@@ -43,10 +43,14 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const itemData = route?.params?.itemData;
   const { editDoc,selectedItem } =route?.params;
   console.log('selectedItem',selectedItem?.name)
+  const typeItem=selectedItem?.name?.split('(')[1].split(')')[0];
+
+  console.log('selectedItemType',typeItem)
   
   const [isPrceedForLivenessTest, setIsPrceedForLivenessTest] = useState(false);
   const [categoryList, setCategoryList] = useState([]);
   const [selectedDocument, setselectedDocument] = useState();
+  const [title, setTitle] = useState();
   const [selectedParentIndex, setSelectedParentIndex] = useState(0);
   const documentsDetailsList = useAppSelector((state) => state.Documents);
   const [successResponse, setsuccessResponse] = useState(false);
@@ -185,6 +189,9 @@ setIsPrceedForLivenessTest(true)
   }, []);
 
   useEffect(() => {
+
+    console.log("datra",getCategoryData)
+     
     if (getCategoryData) {
       var localCategories: any = [];
 
@@ -192,9 +199,22 @@ setIsPrceedForLivenessTest(true)
         var InternalArray: { title: any }[] = [];
         getCategoryData[itemKey].map((item: any) => {
           const selItem=selectedItem?.name?.split('(')[0];
-
           InternalArray.push({ title: item });
         });
+
+        // localCategories = categoryList.map((item: any, index: number) => {
+        //   item.value.map((itemChildren: any, childrenIndex: number) => {
+        //     if (childrenIndex === index && index === selectedParentIndex) {
+        //       console.log("item selected children====>", itemChildren.title);
+        //       setselectedDocument(itemChildren.title);
+        //       itemChildren.isSelected = true;
+        //     } else {
+        //       itemChildren.isSelected = false;
+        //     }
+        //     return itemChildren;
+        //   });
+        //   return item;
+        // });
 
         localCategories.push({
           key: itemKey,
@@ -205,8 +225,18 @@ setIsPrceedForLivenessTest(true)
       });
       
       setCategoryList(localCategories);
+     // setCategoryList([...localCategories])
     }
   }, [getCategoryData]);
+
+
+
+
+
+
+
+
+
 
   const selectCategory = (selectedItem: string, selectedIndex: number) => {
     var localCategories = [];
@@ -294,6 +324,10 @@ setIsPrceedForLivenessTest(true)
   };
 
   const _renderItemDocuments = ({ item, index }: any) => {
+
+    console.log("itemsssss",item)
+    setTitle(item.title)
+
   
     return (
       <TouchableOpacity onPress={() => selectCategoryChildren(item, index)}>

@@ -26,7 +26,7 @@ const DocumentPreviewScreen = (props: any) => {
   const dispatch = useAppDispatch();
   const { fileUri, type } = props.route.params;
   const { documentDetails } = props.route.params;
-  console.log("documentDetails", documentDetails.base64);
+  console.log("documentDetails", documentDetails);
   let documentsDetailsList = useAppSelector((state) => state.Documents);
   const { loading, data, error, fetch: postFormfetch } = useFetch();
   const [successResponse, setsuccessResponse] = useState(false);
