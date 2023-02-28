@@ -201,21 +201,10 @@ setIsPrceedForLivenessTest(true)
           console.log('item==>*****))))',item)
           InternalArray.push({ title: item,isSelected:typeItem===item?true:item?.isSelected });
         });
+        if(selectedItem?.name?.startsWith(itemKey)){
+          setSelectedParentIndex(indexOfKey);
+        }
       
-        // localCategories = categoryList.map((item: any, index: number) => {
-        //   item.value.map((itemChildren: any, childrenIndex: number) => {
-        //     if (childrenIndex === index && index === selectedParentIndex) {
-        //       console.log("item selected children====>", itemChildren.title);
-        //       setselectedDocument(itemChildren.title);
-        //       itemChildren.isSelected = true;
-        //     } else {
-        //       itemChildren.isSelected = false;
-        //     }
-        //     return itemChildren;
-        //   });
-        //   return item;
-        // });
-
         localCategories.push({
           key: itemKey,
           value: InternalArray,
