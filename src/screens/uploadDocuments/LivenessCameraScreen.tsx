@@ -18,12 +18,13 @@ import DocumentMask from "../uploadDocuments/DocumentMask";
 const LivenessCameraScreen = (props: any) => {
   const { fileUri, selectedDocument } = props.route.params;
   const { pic } = props.route.params;
-  const { editDoc } = props.route.params;
+  const { editDoc,selectedItem } = props.route.params;
   const [maskedColor, setmaskedColor] = useState("#fff");
   const [data, setData] = useState();
   const itemData = props?.route.params?.itemData;
 
   console.log("picLOG",fileUri)
+  console.log("picLOG",selectedItem)
 
   useEffect(() => {
     if (data) {
@@ -126,7 +127,8 @@ const LivenessCameraScreen = (props: any) => {
         pic:fileUri,
         image:pic,
         itemData:itemData,
-        editDoc
+        editDoc,
+        selectedItem
       });
     }
     if (Platform.OS === "ios") {

@@ -469,7 +469,8 @@ setIsPrceedForLivenessTest(true)
                      selectedDocument:`${categoryList[selectedParentIndex].key} (${document[0]?.title})`,
                      pic,
                      itemData,
-                     editDoc
+                     editDoc,
+                     selectedItem
                      
                  });
                 }, 100);
