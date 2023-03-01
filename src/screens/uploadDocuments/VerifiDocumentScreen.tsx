@@ -52,8 +52,7 @@ export interface IDocumentProps {
 const VerifiDocumentScreen = (props: any) => {
   const { uploadedDocuments } = props.route.params;
   const { pic } = props.route.params;
-  const { editDoc } = props.route.params;
-  const { itemData } = props.route.params;
+  const { editDoc ,selectedItem} = props.route.params;
   const { faceImageData, selectedDocument } = props.route.params;
   const { loading, data, error, fetch } = useFetch();
   const userDetails = useAppSelector((state) => state.account);
@@ -65,7 +64,8 @@ const VerifiDocumentScreen = (props: any) => {
     error: documentAddedError,
     fetch: AddDocumehtfetch,
   } = useFetch();
-  console.log("picLOG", pic);
+  console.log("picLOG", editDoc);
+  console.log("EDITPIC====>", selectedItem);
 
   const [load, setLoad] = useState(false);
   const dispatch = useAppDispatch();
@@ -190,7 +190,26 @@ const VerifiDocumentScreen = (props: any) => {
       </GenericText>
 
       <View style={styles.dashedLine}>
-        <Image
+
+        {
+          selectedItem.base64 ? (
+
+          <Image
+          resizeMode={"contain"}
+          style={{
+            width: 330,
+            height: "100%",
+            
+          }}
+          source={{
+            uri: selectedItem.base64 
+          }}
+        ></Image>
+        )
+
+        :
+
+      ( <Image
           resizeMode={"contain"}
           style={{
             width: 330,
@@ -199,7 +218,9 @@ const VerifiDocumentScreen = (props: any) => {
           source={{
             uri: pic ? pic.uri : uploadedDocumentsBase64 
           }}
-        ></Image>
+        ></Image>)
+        }
+
       </View>
 
       <View style={styles.dashedLine}>

@@ -127,6 +127,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
 
   const _renderItem = ({ item, index }: any) => {
     AsyncStorage.setItem("day", item.date);
+    setEdit(item)
   
     return (
       <TouchableOpacity
@@ -350,12 +351,12 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
 
 function editItem(){
  
-  navigation.navigate("categoryScreen", { selectedItem: selectedItem , editDoc : "editDoc", itemData:edit})
+   navigation.navigate("categoryScreen", { selectedItem: selectedItem , editDoc : "editDoc", itemData:edit})
   // var data : any =selectedItem
   // await AsyncStorage.setItem("userDetails", data);
   // await AsyncStorage.setItem("editDoc", "editDoc");
 
-  console.log('iteName==>',selectedItem +"nnnnnn")
+  console.log('iteName==>',selectedItem)
 }
 
 
