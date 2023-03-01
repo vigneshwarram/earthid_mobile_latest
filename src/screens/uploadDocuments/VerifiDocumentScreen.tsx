@@ -192,7 +192,7 @@ const VerifiDocumentScreen = (props: any) => {
       <View style={styles.dashedLine}>
 
         {
-          selectedItem.base64 ? (
+          selectedItem?.base64 ? (
 
           <Image
           resizeMode={"contain"}
@@ -202,7 +202,7 @@ const VerifiDocumentScreen = (props: any) => {
             
           }}
           source={{
-            uri: selectedItem.base64 
+            uri: selectedItem?.base64 
           }}
         ></Image>
         )
