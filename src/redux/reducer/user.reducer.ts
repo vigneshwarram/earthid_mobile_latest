@@ -185,6 +185,8 @@ export const documentListReducer = (state = {}, { type, payload }: any) => {
   switch (type) {
     case ACTION_TYPES.SAVE_DOCUMENTS:
       return { ...state, ...payload };
+      case ACTION_TYPES.UPDATE_DOCUMENTS:
+        return { ...state, ...payload };
     default:
       return state;
   }

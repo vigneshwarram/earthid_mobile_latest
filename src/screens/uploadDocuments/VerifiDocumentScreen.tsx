@@ -21,6 +21,7 @@ import { useFetch } from "../../hooks/use-fetch";
 import {
   getHistory,
   saveDocuments,
+  updateDocuments
 } from "../../redux/actions/authenticationAction";
 import { Screens } from "../../themes/index";
 import {
@@ -65,7 +66,7 @@ const VerifiDocumentScreen = (props: any) => {
     fetch: AddDocumehtfetch,
   } = useFetch();
   console.log("picLOG", editDoc);
-  console.log("EDITPIC====>", selectedItem);
+
 
   const [load, setLoad] = useState(false);
   const dispatch = useAppDispatch();
@@ -75,8 +76,8 @@ const VerifiDocumentScreen = (props: any) => {
   var uploadedDocumentsBase64 = `data:image/png;base64,${uploadedDocuments?.base64}`;
   var name:any=""
 
+  
   const validateImages = () => {
-
 
     setLoad(true);
     const payLoad = {
@@ -87,38 +88,62 @@ const VerifiDocumentScreen = (props: any) => {
     };
     // AddDocumehtfetch(CreateHistory, payLoad, "POST");
     setTimeout(() => {
-      var date = dateTime();
-      const filePath = RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
-      var documentDetails: IDocumentProps = {
-        id: `ID_VERIFICATION${Math.random()}${selectedDocument}${Math.random()}`,
-        name: selectedDocument,
-        path: filePath,
-        date: date?.date,
-        time: date?.time,
-        txId: data?.result,
-        docType: "jpg",
-        docExt: ".jpg",
-        processedDoc: "",
-        base64: uploadedDocumentsBase64,
-        categoryType: selectedDocument,
-      };
+      const index = documentsDetailsList?.responseData?.findIndex(obj => obj?.id === selectedItem?.id);
+      console.log('index',index)
+if (selectedItem ) {
+  setsuccessResponse(true);
 
-      var DocumentList = documentsDetailsList?.responseData
-        ? documentsDetailsList?.responseData
-        : [];
-      DocumentList.push(documentDetails);
-      dispatch(saveDocuments(DocumentList));
-      setsuccessResponse(true);
-      getHistoryReducer.isSuccess = false;
-      setTimeout(async () => {
-        setsuccessResponse(false);
-        const item = await AsyncStorage.getItem("flow");
-        if (item === "documentflow") {
-          props.navigation.navigate("RegisterScreen");
-        } else {
-          props.navigation.navigate("Documents");
-        }
-      }, 2000);
+  const obj = documentsDetailsList?.responseData[index];
+  obj.name = selectedDocument
+  obj.categoryType =selectedDocument;
+  console.log('index===>',obj)
+  dispatch(updateDocuments(documentsDetailsList?.responseData,index,obj));
+   setTimeout(async () => {
+    setsuccessResponse(false);
+    const item = await AsyncStorage.getItem("flow");
+    if (item === "documentflow") {
+      props.navigation.navigate("RegisterScreen");
+    } else {
+      props.navigation.navigate("Documents");
+    }
+  }, 2000);
+
+}else{
+  var date = dateTime();
+  const filePath = RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
+  var documentDetails: IDocumentProps = {
+    id: `ID_VERIFICATION${Math.random()}${selectedDocument}${Math.random()}`,
+    name: selectedDocument,
+    path: filePath,
+    date: date?.date,
+    time: date?.time,
+    txId: data?.result,
+    docType: "jpg",
+    docExt: ".jpg",
+    processedDoc: "",
+    base64: uploadedDocumentsBase64,
+    categoryType: selectedDocument,
+  };
+
+  var DocumentList = documentsDetailsList?.responseData
+    ? documentsDetailsList?.responseData
+    : [];
+  DocumentList.push(documentDetails);
+  dispatch(saveDocuments(DocumentList));
+  setsuccessResponse(true);
+  getHistoryReducer.isSuccess = false;
+  setTimeout(async () => {
+    setsuccessResponse(false);
+    const item = await AsyncStorage.getItem("flow");
+    if (item === "documentflow") {
+      props.navigation.navigate("RegisterScreen");
+    } else {
+      props.navigation.navigate("Documents");
+    }
+  }, 2000);
+}
+
+     
     }, 200);
     setLoad(false);
   };

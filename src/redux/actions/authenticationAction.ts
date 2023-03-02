@@ -222,6 +222,19 @@ export const saveDocuments =
     });
   };
 
+  export const updateDocuments =
+  (originalArrayOfDocuments:any,index: number,updatedObject:any) =>
+  async (dispatch: any): Promise<any> => {
+    originalArrayOfDocuments?.splice(index,1,updatedObject)
+    dispatch({
+      type: ACTION_TYPES.UPDATE_DOCUMENTS,
+      payload: {
+        isLoading: false,
+        responseData: originalArrayOfDocuments,
+      },
+    });
+  };
+
 export const FlushData =
   () =>
   async (dispatch: any): Promise<any> => {

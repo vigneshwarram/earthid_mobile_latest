@@ -168,19 +168,7 @@ else{
 setIsPrceedForLivenessTest(true)
 }
 }
-
-
-
-
-
-
-
-
-
-
-
   
-
   }
 
   useEffect(() => {
