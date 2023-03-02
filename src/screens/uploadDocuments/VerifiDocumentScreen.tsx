@@ -53,7 +53,7 @@ export interface IDocumentProps {
 const VerifiDocumentScreen = (props: any) => {
   const { uploadedDocuments } = props.route.params;
   const { pic } = props.route.params;
-  const { editDoc ,selectedItem} = props.route.params;
+  const { editDoc ,selectedItem} = props?.route?.params;
   const { faceImageData, selectedDocument } = props.route.params;
   const { loading, data, error, fetch } = useFetch();
   const userDetails = useAppSelector((state) => state.account);
@@ -177,7 +177,7 @@ if (selectedItem ) {
       
   //     }
   //   }
-
+console.log('selectedItem?.base64 ',selectedItem )
   return (
     <View style={styles.sectionContainer}>
       <Header
@@ -217,7 +217,7 @@ if (selectedItem ) {
       <View style={styles.dashedLine}>
 
         {
-          selectedItem?.base64 ? (
+        selectedItem &&  selectedItem?.base64 ? (
 
           <Image
           resizeMode={"contain"}

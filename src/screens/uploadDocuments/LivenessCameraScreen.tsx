@@ -119,30 +119,34 @@ const LivenessCameraScreen = (props: any) => {
   const camRef: any = useRef();
 
   const handlingFacialData = async () => {
-    if (data) {
-      props.navigation.navigate("VerifiDocumentScreen", {
-        uploadedDocuments: fileUri,
-        faceImageData: data,
-        selectedDocument,
-        pic:fileUri,
-        image:pic,
-        itemData:itemData,
-        editDoc,
-        selectedItem
-      });
-    }
+  
     if (Platform.OS === "ios") {
       const options = {
         quality: 0.5,
         base64: true,
       };
       const datas = await camRef.current.takePictureAsync(options);
-      if (datas) {
+      if (datas || data) {
         props.navigation.navigate("VerifiDocumentScreen", {
           uploadedDocuments: fileUri,
           faceImageData: data,
           selectedDocument,
-          pic:fileUri
+          pic:fileUri,
+          selectedItem,
+          editDoc,
+        });
+      }
+    }else{
+      if (data) {
+        props.navigation.navigate("VerifiDocumentScreen", {
+          uploadedDocuments: fileUri,
+          faceImageData: data,
+          selectedDocument,
+          pic:fileUri,
+          image:pic,
+          itemData:itemData,
+          editDoc,
+          selectedItem
         });
       }
     }
