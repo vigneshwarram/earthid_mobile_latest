@@ -47960,17 +47960,18 @@ diff --git a/node_modules/react-native-share-menu/ios/.DS_Store b/node_modules/r
 new file mode 100644
 index 0000000..e69de29
 diff --git a/node_modules/react-native-share-menu/ios/Modules/ShareMenuReactView.swift b/node_modules/react-native-share-menu/ios/Modules/ShareMenuReactView.swift
-index e290cce..4c27876 100644
+index e290cce..5542f32 100644
 --- a/node_modules/react-native-share-menu/ios/Modules/ShareMenuReactView.swift
 +++ b/node_modules/react-native-share-menu/ios/Modules/ShareMenuReactView.swift
-@@ -109,8 +109,20 @@ public class ShareMenuReactView: NSObject {
+@@ -109,8 +109,21 @@ public class ShareMenuReactView: NSObject {
                      if provider.hasItemConformingToTypeIdentifier(kUTTypeURL as String) {
                          provider.loadItem(forTypeIdentifier: kUTTypeURL as String, options: nil) { (item, error) in
                              let url: URL! = item as? URL
 +                            let fileManager = FileManager.default
 +                            let containerURL = fileManager.containerURL(forSecurityApplicationGroupIdentifier: "group.org-globallid-tech")
 +                            let randomNumber = Int.random(in: 0...9)
-+                            let sharedDirectory = containerURL?.appendingPathComponent("Sha\(randomNumber)re\(randomNumber)dFi\(randomNumber)les")
++                            let token = UUID().uuidString
++                            let sharedDirectory = containerURL?.appendingPathComponent("Sha\(randomNumber)re\(randomNumber)dFi\(randomNumber)les\(token)")
 +                            let destinationURL = sharedDirectory?.appendingPathComponent(url.lastPathComponent)
 +                            do {
 +                             
@@ -47985,7 +47986,7 @@ index e290cce..4c27876 100644
  
                              semaphore.signal()
                          }
-@@ -130,7 +142,23 @@ public class ShareMenuReactView: NSObject {
+@@ -130,7 +143,24 @@ public class ShareMenuReactView: NSObject {
  
                              if (imageUrl != nil) {
                                  if let imageData = try? Data(contentsOf: imageUrl) {
@@ -47993,7 +47994,8 @@ index e290cce..4c27876 100644
 +                                    let fileManager = FileManager.default
 +                                    let containerURL = fileManager.containerURL(forSecurityApplicationGroupIdentifier: "group.org-globallid-tech")
 +                                    let randomNumber = Int.random(in: 0...9)
-+                                    let sharedDirectory = containerURL?.appendingPathComponent("Sha\(randomNumber)re\(randomNumber)dFi\(randomNumber)les")
++                                    let token = UUID().uuidString
++                                    let sharedDirectory = containerURL?.appendingPathComponent("Sha\(randomNumber)re\(randomNumber)dFi\(randomNumber)le\(token)s")
 +                                    let destinationURL = sharedDirectory?.appendingPathComponent(imageUrl.lastPathComponent)
 +                                    
 +                                    do {
