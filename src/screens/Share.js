@@ -6,10 +6,12 @@ const Share = () => {
   const [sharedMimeType, setSharedMimeType] = useState("");
 
   useEffect(() => {
+    console.log('ist closing',ShareMenuReactView)
     ShareMenuReactView.data().then(async ({ mimeType, data }) => {
       setSharedData(data[0]?.data);
       setSharedMimeType(data[0]?.mimeType);
     });
+ 
   }, []);
 
   return (
@@ -30,10 +32,14 @@ const Share = () => {
       {sharedData !== "" && (
         <TouchableOpacity
           onPress={() => {
+            setTimeout(() => {
+              ShareMenuReactView.dismissExtension();
+            }, 500);
             ShareMenuReactView.continueInApp({
               data: sharedData.toString(),
               mimeType: sharedMimeType,
             });
+          
           }}
           style={{
             flex: 0.2,

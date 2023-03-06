@@ -1,7 +1,6 @@
 diff --git a/node_modules/react-native-share-menu/.DS_Store b/node_modules/react-native-share-menu/.DS_Store
 new file mode 100644
-index 0000000..a56b6b6
-Binary files /dev/null and b/node_modules/react-native-share-menu/.DS_Store differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-share-menu/android/build.gradle b/node_modules/react-native-share-menu/android/build.gradle
 index 9557fdb..fa1e3c4 100644
 --- a/node_modules/react-native-share-menu/android/build.gradle
@@ -43,6 +42,17 @@ index 0000000..0d259dd
 diff --git a/node_modules/react-native-share-menu/android/build/.transforms/718b4971667403759f65b510c052fbe1/transformed/classes/classes.dex b/node_modules/react-native-share-menu/android/build/.transforms/718b4971667403759f65b510c052fbe1/transformed/classes/classes.dex
 new file mode 100644
 index 0000000..e69de29
+diff --git a/node_modules/react-native-share-menu/android/build/.transforms/71913433dcdb499337e0d2393634ba2e/results.bin b/node_modules/react-native-share-menu/android/build/.transforms/71913433dcdb499337e0d2393634ba2e/results.bin
+new file mode 100644
+index 0000000..0d259dd
+--- /dev/null
++++ b/node_modules/react-native-share-menu/android/build/.transforms/71913433dcdb499337e0d2393634ba2e/results.bin
+@@ -0,0 +1 @@
++o/classes
+diff --git a/node_modules/react-native-share-menu/android/build/.transforms/71913433dcdb499337e0d2393634ba2e/transformed/classes/classes.dex b/node_modules/react-native-share-menu/android/build/.transforms/71913433dcdb499337e0d2393634ba2e/transformed/classes/classes.dex
+new file mode 100644
+index 0000000..a0ee5f1
+Binary files /dev/null and b/node_modules/react-native-share-menu/android/build/.transforms/71913433dcdb499337e0d2393634ba2e/transformed/classes/classes.dex differ
 diff --git a/node_modules/react-native-share-menu/android/build/.transforms/90e53ebe7df6dfa3581135d07cff821f/results.bin b/node_modules/react-native-share-menu/android/build/.transforms/90e53ebe7df6dfa3581135d07cff821f/results.bin
 new file mode 100644
 index 0000000..6e09b8c
@@ -2072,7 +2082,7 @@ index 0000000..a1bd37b
 +}
 diff --git a/node_modules/react-native-share-menu/android/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/AndroidManifest.xml b/node_modules/react-native-share-menu/android/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/AndroidManifest.xml
 new file mode 100644
-index 0000000..a512f30
+index 0000000..24f40fe
 --- /dev/null
 +++ b/node_modules/react-native-share-menu/android/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/AndroidManifest.xml
 @@ -0,0 +1,9 @@
@@ -2081,8 +2091,8 @@ index 0000000..a512f30
 +    package="com.meedan" >
 +
 +    <uses-sdk
-+        android:minSdkVersion="16"
-+        android:targetSdkVersion="29" />
++        android:minSdkVersion="21"
++        android:targetSdkVersion="31" />
 +
 +</manifest>
 \ No newline at end of file
@@ -2196,19 +2206,21 @@ new file mode 100644
 index 0000000..e69de29
 diff --git a/node_modules/react-native-share-menu/android/build/intermediates/compile_library_classes_jar/debug/classes.jar b/node_modules/react-native-share-menu/android/build/intermediates/compile_library_classes_jar/debug/classes.jar
 new file mode 100644
-index 0000000..e69de29
+index 0000000..5bb2322
+Binary files /dev/null and b/node_modules/react-native-share-menu/android/build/intermediates/compile_library_classes_jar/debug/classes.jar differ
 diff --git a/node_modules/react-native-share-menu/android/build/intermediates/compile_library_classes_jar/release/classes.jar b/node_modules/react-native-share-menu/android/build/intermediates/compile_library_classes_jar/release/classes.jar
 new file mode 100644
 index 0000000..e69de29
 diff --git a/node_modules/react-native-share-menu/android/build/intermediates/compile_r_class_jar/debug/R.jar b/node_modules/react-native-share-menu/android/build/intermediates/compile_r_class_jar/debug/R.jar
 new file mode 100644
-index 0000000..e69de29
+index 0000000..6c8df35
+Binary files /dev/null and b/node_modules/react-native-share-menu/android/build/intermediates/compile_r_class_jar/debug/R.jar differ
 diff --git a/node_modules/react-native-share-menu/android/build/intermediates/compile_r_class_jar/release/R.jar b/node_modules/react-native-share-menu/android/build/intermediates/compile_r_class_jar/release/R.jar
 new file mode 100644
 index 0000000..e69de29
 diff --git a/node_modules/react-native-share-menu/android/build/intermediates/compile_symbol_list/debug/R.txt b/node_modules/react-native-share-menu/android/build/intermediates/compile_symbol_list/debug/R.txt
 new file mode 100644
-index 0000000..321fb8c
+index 0000000..7c9d30e
 --- /dev/null
 +++ b/node_modules/react-native-share-menu/android/build/intermediates/compile_symbol_list/debug/R.txt
 @@ -0,0 +1,1953 @@
@@ -3862,7 +3874,7 @@ index 0000000..321fb8c
 +int styleable CheckedTextView_checkMarkCompat 1
 +int styleable CheckedTextView_checkMarkTint 2
 +int styleable CheckedTextView_checkMarkTintMode 3
-+int[] styleable ColorStateListItem { 0x0, 0x101031f, 0x10101a5, 0x0, 0x0 }
++int[] styleable ColorStateListItem { 0x0, 0x101031f, 0x10101a5, 0x1010647, 0x0 }
 +int styleable ColorStateListItem_alpha 0
 +int styleable ColorStateListItem_android_alpha 1
 +int styleable ColorStateListItem_android_color 2
@@ -6129,37 +6141,37 @@ new file mode 100644
 index 0000000..e69de29
 diff --git a/node_modules/react-native-share-menu/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties b/node_modules/react-native-share-menu/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties
 new file mode 100644
-index 0000000..645a0b1
+index 0000000..1a7e1d9
 --- /dev/null
 +++ b/node_modules/react-native-share-menu/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties
 @@ -0,0 +1 @@
-+#Thu Feb 16 14:46:11 IST 2023
++#Thu Mar 02 16:10:09 IST 2023
 diff --git a/node_modules/react-native-share-menu/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml b/node_modules/react-native-share-menu/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml
 new file mode 100644
-index 0000000..fdb844f
+index 0000000..720e7f9
 --- /dev/null
 +++ b/node_modules/react-native-share-menu/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml
 @@ -0,0 +1,2 @@
 +<?xml version="1.0" encoding="utf-8"?>
-+<merger version="3"><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/ramlvign/celstream/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/res"/><source path="/Users/ramlvign/celstream/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/build/generated/res/rs/debug"/><source path="/Users/ramlvign/celstream/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/build/generated/res/resValues/debug"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main" generated-set="main$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/ramlvign/celstream/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/res"/><source path="/Users/ramlvign/celstream/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/build/generated/res/rs/debug"/><source path="/Users/ramlvign/celstream/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/build/generated/res/resValues/debug"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/ramlvign/celstream/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/debug/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug" generated-set="debug$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/ramlvign/celstream/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/debug/res"/></dataSet><mergedItems/></merger>
++<merger version="3"><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/vigneshwar/projects/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/res"/><source path="/Users/vigneshwar/projects/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/build/generated/res/rs/debug"/><source path="/Users/vigneshwar/projects/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/build/generated/res/resValues/debug"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main" generated-set="main$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/vigneshwar/projects/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/res"/><source path="/Users/vigneshwar/projects/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/build/generated/res/rs/debug"/><source path="/Users/vigneshwar/projects/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/build/generated/res/resValues/debug"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/vigneshwar/projects/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/debug/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug" generated-set="debug$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/vigneshwar/projects/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/debug/res"/></dataSet><mergedItems/></merger>
 \ No newline at end of file
 diff --git a/node_modules/react-native-share-menu/android/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml b/node_modules/react-native-share-menu/android/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml
 new file mode 100644
-index 0000000..145a237
+index 0000000..ebf6e6c
 --- /dev/null
 +++ b/node_modules/react-native-share-menu/android/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml
 @@ -0,0 +1,2 @@
 +<?xml version="1.0" encoding="utf-8"?>
-+<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/ramlvign/celstream/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/jniLibs"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/ramlvign/celstream/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/debug/jniLibs"/></dataSet></merger>
++<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/vigneshwar/projects/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/jniLibs"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/vigneshwar/projects/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/debug/jniLibs"/></dataSet></merger>
 \ No newline at end of file
 diff --git a/node_modules/react-native-share-menu/android/build/intermediates/incremental/mergeDebugShaders/merger.xml b/node_modules/react-native-share-menu/android/build/intermediates/incremental/mergeDebugShaders/merger.xml
 new file mode 100644
-index 0000000..813ded6
+index 0000000..91d21d5
 --- /dev/null
 +++ b/node_modules/react-native-share-menu/android/build/intermediates/incremental/mergeDebugShaders/merger.xml
 @@ -0,0 +1,2 @@
 +<?xml version="1.0" encoding="utf-8"?>
-+<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/ramlvign/celstream/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/shaders"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/ramlvign/celstream/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/debug/shaders"/></dataSet></merger>
++<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/vigneshwar/projects/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/shaders"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/vigneshwar/projects/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/debug/shaders"/></dataSet></merger>
 \ No newline at end of file
 diff --git a/node_modules/react-native-share-menu/android/build/intermediates/incremental/mergeReleaseJniLibFolders/merger.xml b/node_modules/react-native-share-menu/android/build/intermediates/incremental/mergeReleaseJniLibFolders/merger.xml
 new file mode 100644
@@ -6181,12 +6193,12 @@ index 0000000..aff16e9
 \ No newline at end of file
 diff --git a/node_modules/react-native-share-menu/android/build/intermediates/incremental/packageDebugAssets/merger.xml b/node_modules/react-native-share-menu/android/build/intermediates/incremental/packageDebugAssets/merger.xml
 new file mode 100644
-index 0000000..c69fdc4
+index 0000000..1eee95f
 --- /dev/null
 +++ b/node_modules/react-native-share-menu/android/build/intermediates/incremental/packageDebugAssets/merger.xml
 @@ -0,0 +1,2 @@
 +<?xml version="1.0" encoding="utf-8"?>
-+<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/ramlvign/celstream/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/assets"/><source path="/Users/ramlvign/celstream/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/build/intermediates/shader_assets/debug/out"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/ramlvign/celstream/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/debug/assets"/></dataSet></merger>
++<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/vigneshwar/projects/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/assets"/><source path="/Users/vigneshwar/projects/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/build/intermediates/shader_assets/debug/out"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/vigneshwar/projects/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/debug/assets"/></dataSet></merger>
 \ No newline at end of file
 diff --git a/node_modules/react-native-share-menu/android/build/intermediates/incremental/packageReleaseAssets/merger.xml b/node_modules/react-native-share-menu/android/build/intermediates/incremental/packageReleaseAssets/merger.xml
 new file mode 100644
@@ -18613,13 +18625,16 @@ index 0000000..e59321d
 \ No newline at end of file
 diff --git a/node_modules/react-native-share-menu/android/build/intermediates/javac/debug/classes/com/meedan/BuildConfig.class b/node_modules/react-native-share-menu/android/build/intermediates/javac/debug/classes/com/meedan/BuildConfig.class
 new file mode 100644
-index 0000000..e69de29
+index 0000000..d4d9d48
+Binary files /dev/null and b/node_modules/react-native-share-menu/android/build/intermediates/javac/debug/classes/com/meedan/BuildConfig.class differ
 diff --git a/node_modules/react-native-share-menu/android/build/intermediates/javac/debug/classes/com/meedan/ShareMenuModule.class b/node_modules/react-native-share-menu/android/build/intermediates/javac/debug/classes/com/meedan/ShareMenuModule.class
 new file mode 100644
-index 0000000..e69de29
+index 0000000..6735dc2
+Binary files /dev/null and b/node_modules/react-native-share-menu/android/build/intermediates/javac/debug/classes/com/meedan/ShareMenuModule.class differ
 diff --git a/node_modules/react-native-share-menu/android/build/intermediates/javac/debug/classes/com/meedan/ShareMenuPackage.class b/node_modules/react-native-share-menu/android/build/intermediates/javac/debug/classes/com/meedan/ShareMenuPackage.class
 new file mode 100644
-index 0000000..e69de29
+index 0000000..d648816
+Binary files /dev/null and b/node_modules/react-native-share-menu/android/build/intermediates/javac/debug/classes/com/meedan/ShareMenuPackage.class differ
 diff --git a/node_modules/react-native-share-menu/android/build/intermediates/javac/release/classes/com/meedan/BuildConfig.class b/node_modules/react-native-share-menu/android/build/intermediates/javac/release/classes/com/meedan/BuildConfig.class
 new file mode 100644
 index 0000000..e69de29
@@ -18659,7 +18674,7 @@ index 0000000..78ac5b8
 +local
 diff --git a/node_modules/react-native-share-menu/android/build/intermediates/manifest_merge_blame_file/debug/manifest-merger-blame-debug-report.txt b/node_modules/react-native-share-menu/android/build/intermediates/manifest_merge_blame_file/debug/manifest-merger-blame-debug-report.txt
 new file mode 100644
-index 0000000..02b40c9
+index 0000000..b835ab1
 --- /dev/null
 +++ b/node_modules/react-native-share-menu/android/build/intermediates/manifest_merge_blame_file/debug/manifest-merger-blame-debug-report.txt
 @@ -0,0 +1,11 @@
@@ -18668,10 +18683,10 @@ index 0000000..02b40c9
 +3    package="com.meedan" >
 +4
 +5    <uses-sdk
-+6        android:minSdkVersion="16"
-+6-->/Users/ramlvign/celstream/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/AndroidManifest.xml
-+7        android:targetSdkVersion="29" />
-+7-->/Users/ramlvign/celstream/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/AndroidManifest.xml
++6        android:minSdkVersion="21"
++6-->/Users/vigneshwar/projects/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/AndroidManifest.xml
++7        android:targetSdkVersion="31" />
++7-->/Users/vigneshwar/projects/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/AndroidManifest.xml
 +8
 +9</manifest>
 diff --git a/node_modules/react-native-share-menu/android/build/intermediates/manifest_merge_blame_file/release/manifest-merger-blame-release-report.txt b/node_modules/react-native-share-menu/android/build/intermediates/manifest_merge_blame_file/release/manifest-merger-blame-release-report.txt
@@ -18696,7 +18711,7 @@ new file mode 100644
 index 0000000..e69de29
 diff --git a/node_modules/react-native-share-menu/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml b/node_modules/react-native-share-menu/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml
 new file mode 100644
-index 0000000..a512f30
+index 0000000..24f40fe
 --- /dev/null
 +++ b/node_modules/react-native-share-menu/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml
 @@ -0,0 +1,9 @@
@@ -18705,8 +18720,8 @@ index 0000000..a512f30
 +    package="com.meedan" >
 +
 +    <uses-sdk
-+        android:minSdkVersion="16"
-+        android:targetSdkVersion="29" />
++        android:minSdkVersion="21"
++        android:targetSdkVersion="31" />
 +
 +</manifest>
 \ No newline at end of file
@@ -43544,7 +43559,8 @@ index 0000000..537a78c
 \ No newline at end of file
 diff --git a/node_modules/react-native-share-menu/android/build/intermediates/runtime_library_classes_jar/debug/classes.jar b/node_modules/react-native-share-menu/android/build/intermediates/runtime_library_classes_jar/debug/classes.jar
 new file mode 100644
-index 0000000..e69de29
+index 0000000..7c895ff
+Binary files /dev/null and b/node_modules/react-native-share-menu/android/build/intermediates/runtime_library_classes_jar/debug/classes.jar differ
 diff --git a/node_modules/react-native-share-menu/android/build/intermediates/runtime_library_classes_jar/release/classes.jar b/node_modules/react-native-share-menu/android/build/intermediates/runtime_library_classes_jar/release/classes.jar
 new file mode 100644
 index 0000000..e69de29
@@ -47873,35 +47889,35 @@ new file mode 100644
 index 0000000..e69de29
 diff --git a/node_modules/react-native-share-menu/android/build/outputs/logs/manifest-merger-debug-report.txt b/node_modules/react-native-share-menu/android/build/outputs/logs/manifest-merger-debug-report.txt
 new file mode 100644
-index 0000000..9c1443a
+index 0000000..c12b6a6
 --- /dev/null
 +++ b/node_modules/react-native-share-menu/android/build/outputs/logs/manifest-merger-debug-report.txt
 @@ -0,0 +1,25 @@
 +-- Merging decision tree log ---
 +manifest
-+ADDED from /Users/ramlvign/celstream/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/AndroidManifest.xml:1:1-4:12
-+INJECTED from /Users/ramlvign/celstream/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/AndroidManifest.xml:1:1-4:12
-+INJECTED from /Users/ramlvign/celstream/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/AndroidManifest.xml:1:1-4:12
++ADDED from /Users/vigneshwar/projects/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/AndroidManifest.xml:1:1-4:12
++INJECTED from /Users/vigneshwar/projects/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/AndroidManifest.xml:1:1-4:12
++INJECTED from /Users/vigneshwar/projects/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/AndroidManifest.xml:1:1-4:12
 +	package
-+		ADDED from /Users/ramlvign/celstream/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/AndroidManifest.xml:2:11-31
-+		INJECTED from /Users/ramlvign/celstream/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/AndroidManifest.xml
-+		INJECTED from /Users/ramlvign/celstream/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/AndroidManifest.xml
++		ADDED from /Users/vigneshwar/projects/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/AndroidManifest.xml:2:11-31
++		INJECTED from /Users/vigneshwar/projects/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/AndroidManifest.xml
++		INJECTED from /Users/vigneshwar/projects/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/AndroidManifest.xml
 +	xmlns:android
-+		ADDED from /Users/ramlvign/celstream/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/AndroidManifest.xml:1:11-69
++		ADDED from /Users/vigneshwar/projects/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/AndroidManifest.xml:1:11-69
 +uses-sdk
-+INJECTED from /Users/ramlvign/celstream/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/AndroidManifest.xml reason: use-sdk injection requested
-+INJECTED from /Users/ramlvign/celstream/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/AndroidManifest.xml
-+INJECTED from /Users/ramlvign/celstream/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/AndroidManifest.xml
-+INJECTED from /Users/ramlvign/celstream/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/AndroidManifest.xml
-+INJECTED from /Users/ramlvign/celstream/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/AndroidManifest.xml
++INJECTED from /Users/vigneshwar/projects/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/AndroidManifest.xml reason: use-sdk injection requested
++INJECTED from /Users/vigneshwar/projects/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/AndroidManifest.xml
++INJECTED from /Users/vigneshwar/projects/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/AndroidManifest.xml
++INJECTED from /Users/vigneshwar/projects/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/AndroidManifest.xml
++INJECTED from /Users/vigneshwar/projects/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/AndroidManifest.xml
 +	android:targetSdkVersion
-+		INJECTED from /Users/ramlvign/celstream/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/AndroidManifest.xml
-+		ADDED from /Users/ramlvign/celstream/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/AndroidManifest.xml
-+		INJECTED from /Users/ramlvign/celstream/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/AndroidManifest.xml
++		INJECTED from /Users/vigneshwar/projects/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/AndroidManifest.xml
++		ADDED from /Users/vigneshwar/projects/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/AndroidManifest.xml
++		INJECTED from /Users/vigneshwar/projects/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/AndroidManifest.xml
 +	android:minSdkVersion
-+		INJECTED from /Users/ramlvign/celstream/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/AndroidManifest.xml
-+		ADDED from /Users/ramlvign/celstream/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/AndroidManifest.xml
-+		INJECTED from /Users/ramlvign/celstream/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/AndroidManifest.xml
++		INJECTED from /Users/vigneshwar/projects/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/AndroidManifest.xml
++		ADDED from /Users/vigneshwar/projects/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/AndroidManifest.xml
++		INJECTED from /Users/vigneshwar/projects/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/AndroidManifest.xml
 diff --git a/node_modules/react-native-share-menu/android/build/outputs/logs/manifest-merger-release-report.txt b/node_modules/react-native-share-menu/android/build/outputs/logs/manifest-merger-release-report.txt
 new file mode 100644
 index 0000000..9c1443a
@@ -47935,25 +47951,26 @@ index 0000000..9c1443a
 +		INJECTED from /Users/ramlvign/celstream/earthid_2.0_mobile_app/node_modules/react-native-share-menu/android/src/main/AndroidManifest.xml
 diff --git a/node_modules/react-native-share-menu/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin b/node_modules/react-native-share-menu/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin
 new file mode 100644
-index 0000000..e69de29
+index 0000000..561d8af
+Binary files /dev/null and b/node_modules/react-native-share-menu/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin differ
 diff --git a/node_modules/react-native-share-menu/android/build/tmp/compileReleaseJavaWithJavac/previous-compilation-data.bin b/node_modules/react-native-share-menu/android/build/tmp/compileReleaseJavaWithJavac/previous-compilation-data.bin
 new file mode 100644
 index 0000000..e69de29
 diff --git a/node_modules/react-native-share-menu/ios/.DS_Store b/node_modules/react-native-share-menu/ios/.DS_Store
 new file mode 100644
-index 0000000..94673fd
-Binary files /dev/null and b/node_modules/react-native-share-menu/ios/.DS_Store differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-share-menu/ios/Modules/ShareMenuReactView.swift b/node_modules/react-native-share-menu/ios/Modules/ShareMenuReactView.swift
-index e290cce..b0880e4 100644
+index e290cce..4c27876 100644
 --- a/node_modules/react-native-share-menu/ios/Modules/ShareMenuReactView.swift
 +++ b/node_modules/react-native-share-menu/ios/Modules/ShareMenuReactView.swift
-@@ -109,8 +109,19 @@ public class ShareMenuReactView: NSObject {
+@@ -109,8 +109,20 @@ public class ShareMenuReactView: NSObject {
                      if provider.hasItemConformingToTypeIdentifier(kUTTypeURL as String) {
                          provider.loadItem(forTypeIdentifier: kUTTypeURL as String, options: nil) { (item, error) in
                              let url: URL! = item as? URL
 +                            let fileManager = FileManager.default
-+                            let containerURL = fileManager.containerURL(forSecurityApplicationGroupIdentifier: "group.com.earthid")
-+                            let sharedDirectory = containerURL?.appendingPathComponent("SharedFiles")
++                            let containerURL = fileManager.containerURL(forSecurityApplicationGroupIdentifier: "group.org-globallid-tech")
++                            let randomNumber = Int.random(in: 0...9)
++                            let sharedDirectory = containerURL?.appendingPathComponent("Sha\(randomNumber)re\(randomNumber)dFi\(randomNumber)les")
 +                            let destinationURL = sharedDirectory?.appendingPathComponent(url.lastPathComponent)
 +                            do {
 +                             
@@ -47963,19 +47980,20 @@ index e290cce..b0880e4 100644
 +                            } catch {
 +                                callback(nil, NSException(name: NSExceptionName(rawValue: "Error"), reason:"Can't load image", userInfo:nil))
 +                            }
-                           
+ 
 -                            results.append([DATA_KEY: url.absoluteString, MIME_TYPE_KEY: "text/plain"])
  
                              semaphore.signal()
                          }
-@@ -130,7 +141,22 @@ public class ShareMenuReactView: NSObject {
+@@ -130,7 +142,23 @@ public class ShareMenuReactView: NSObject {
  
                              if (imageUrl != nil) {
                                  if let imageData = try? Data(contentsOf: imageUrl) {
 -                                    results.append([DATA_KEY: imageUrl.absoluteString, MIME_TYPE_KEY: self.extractMimeType(from: imageUrl)])
 +                                    let fileManager = FileManager.default
-+                                    let containerURL = fileManager.containerURL(forSecurityApplicationGroupIdentifier: "group.com.earthid")
-+                                    let sharedDirectory = containerURL?.appendingPathComponent("SharedFiles")
++                                    let containerURL = fileManager.containerURL(forSecurityApplicationGroupIdentifier: "group.org-globallid-tech")
++                                    let randomNumber = Int.random(in: 0...9)
++                                    let sharedDirectory = containerURL?.appendingPathComponent("Sha\(randomNumber)re\(randomNumber)dFi\(randomNumber)les")
 +                                    let destinationURL = sharedDirectory?.appendingPathComponent(imageUrl.lastPathComponent)
 +                                    
 +                                    do {
@@ -48006,26 +48024,24 @@ index f42bce6..ee36062 100644
      return Bundle.main.url(forResource: "main", withExtension: "jsbundle")
  #endif
 diff --git a/node_modules/react-native-share-menu/ios/ShareViewController.swift b/node_modules/react-native-share-menu/ios/ShareViewController.swift
-index 12d8c92..31748c0 100644
+index 12d8c92..c078450 100644
 --- a/node_modules/react-native-share-menu/ios/ShareViewController.swift
 +++ b/node_modules/react-native-share-menu/ios/ShareViewController.swift
-@@ -233,16 +233,16 @@ class ShareViewController: SLComposeServiceViewController {
-       responder = responder!.next
-     }
-     
--    completeRequest()
-+   // completeRequest()
+@@ -212,7 +212,7 @@ class ShareViewController: SLComposeServiceViewController {
+   }
+   
+   func exit(withError error: String) {
+-    print("Error: \(error)")
++    print("Error--vicky: \(error)")
+     cancelRequest()
+   }
+   
+@@ -237,7 +237,7 @@ class ShareViewController: SLComposeServiceViewController {
    }
    
    func completeRequest() {
-     // Inform the host that we're done, so it un-blocks its UI. Note: Alternatively you could call super's -didSelectPost, which will similarly complete the extension context.
--    extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
-+  //  extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
+-    // Inform the host that we're done, so it un-blocks its UI. Note: Alternatively you could call super's -didSelectPost, which will similarly complete the extension context.
++//     Inform the host that we're done, so it un-blocks its UI. Note: Alternatively you could call super's -didSelectPost, which will similarly complete the extension context.
+     extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
    }
    
-   func cancelRequest() {
--    extensionContext!.cancelRequest(withError: NSError())
-+   // extensionContext!.cancelRequest(withError: NSError())
-   }
- 
- }
