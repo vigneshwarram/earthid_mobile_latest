@@ -192,7 +192,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
     if (documentsDetailsList) {
       let recentDataFillerWithColor: any = recentData?.map(
         (item: any, index: any) => {
-          let colors = item?.name;
+          let colors = item?.documentName;
           let iteName = colors?.trim()?.split("(")[0].trim();
           console.log("recentDataFillerWithColor====>", iteName);
           item.color = getColor(iteName);
@@ -300,12 +300,12 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
           navigation.navigate("ViewCredential", { documentDetails: item })
         }
       >
-        {item?.name && item?.name !== undefined && (
+        {item?.documentName && item?.documentName !== undefined && (
           <Card
             leftAvatar={LocalImages.documentsImage}
             absoluteCircleInnerImage={LocalImages.upImage}
             // rightIconSrc={LocalImages.menuImage}
-            title={item?.name}
+            title={item?.documentName}
             subtitle={`      Uploaded  : ${item.date}`}
             style={{
               ...styles.cardContainers,

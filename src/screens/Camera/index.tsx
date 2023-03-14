@@ -224,6 +224,7 @@ const CameraScreen = (props: any) => {
         isVc: true,
         vc: JSON.stringify({
           name: "VC - KYC Token",
+          documentName: "VC - KYC Token",
           path: "filePath",
           date: date?.date,
           time: date?.time,
@@ -256,6 +257,7 @@ const CameraScreen = (props: any) => {
       var documentDetails: IDocumentProps = {
         id: `ID_VERIFICATION${Math.random()}${"selectedDocument"}${Math.random()}`,
         name: "Membership Credientials",
+        documentName: "Membership Credientials",
         path: "filePath",
         date: date?.date,
         time: date?.time,
@@ -266,6 +268,7 @@ const CameraScreen = (props: any) => {
         isVc: true,
         vc: JSON.stringify({
           name: "Membership Credientials",
+          documentName: "Membership Credientials",
           path: "filePath",
           date: date?.date,
           time: date?.time,

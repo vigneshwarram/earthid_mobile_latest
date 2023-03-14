@@ -103,7 +103,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
     return getItems[0];
   };
   const getImagesColor = (item: any) => {
-    let colors = item?.name;
+    let colors = item?.documentName;
     let iteName = colors?.trim()?.split("(")[0]?.trim();
     console.log('iteName==>',iteName)
     return getColor(iteName);
@@ -189,7 +189,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
             absoluteCircleInnerImage={LocalImages.upImage}
             rightIconSrc={LocalImages.menuImage}
             rightIconOnPress={() => _rightIconOnPress(item) }
-            title={item.name}
+            title={item?.documentName}
             subtitle={
               item.isVc
                 ? `      Received  : ${item.date}`
@@ -268,9 +268,9 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
 
   const onChangeHandler = (text: any) => {
     const newData = documentsDetailsList?.responseData.filter(function (item: {
-      name: string;
+      documentName: string;
     }) {
-      const itemData = item.name ? item?.name.toUpperCase() : "".toUpperCase();
+      const itemData = item.documentName ? item?.documentName.toUpperCase() : "".toUpperCase();
 
       const textData = text?.toUpperCase();
 
@@ -335,8 +335,8 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
             setisBottomSheetForSideOptionVisible(false);
 
             const newData = documentsDetailsList?.responseData.filter(
-              function (item: { name: any }) {
-                return item.name !== selectedItem?.name;
+              function (item: { documentName: any }) {
+                return item.documentName !== selectedItem?.documentName;
               }
             );
 

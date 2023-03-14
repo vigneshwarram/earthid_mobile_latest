@@ -40,6 +40,8 @@ export interface IDocumentProps {
   date: string;
   time: string;
   txId: string;
+  documentName:string;
+  docName:string;
   docType: string;
   docExt: string;
   processedDoc: string;
@@ -49,11 +51,12 @@ export interface IDocumentProps {
   pdf?: boolean;
   categoryType?: any;
   color?: string;
+ 
 }
 const VerifiDocumentScreen = (props: any) => {
   const { uploadedDocuments } = props.route.params;
   const { pic } = props.route.params;
-  const { editDoc ,selectedItem} = props?.route?.params;
+  const { editDoc ,selectedItem,docname} = props?.route?.params;
   const { faceImageData, selectedDocument } = props.route.params;
   const { loading, data, error, fetch } = useFetch();
   const userDetails = useAppSelector((state) => state.account);
@@ -66,6 +69,7 @@ const VerifiDocumentScreen = (props: any) => {
     fetch: AddDocumehtfetch,
   } = useFetch();
   console.log("picLOG", editDoc);
+  console.log("picLOG", docname);
 
 
   const [load, setLoad] = useState(false);
@@ -94,7 +98,7 @@ if (selectedItem ) {
   setsuccessResponse(true);
 
   const obj = documentsDetailsList?.responseData[index];
-  obj.name = selectedDocument
+  obj.documentName = selectedDocument
   obj.categoryType =selectedDocument;
   console.log('index===>',obj)
   dispatch(updateDocuments(documentsDetailsList?.responseData,index,obj));
@@ -113,7 +117,8 @@ if (selectedItem ) {
   const filePath = RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
   var documentDetails: IDocumentProps = {
     id: `ID_VERIFICATION${Math.random()}${selectedDocument}${Math.random()}`,
-    name: selectedDocument,
+   // name: selectedDocument,
+    documentName: selectedDocument,
     path: filePath,
     date: date?.date,
     time: date?.time,
@@ -123,6 +128,7 @@ if (selectedItem ) {
     processedDoc: "",
     base64: uploadedDocumentsBase64,
     categoryType: selectedDocument,
+    docName:docname
   };
 
   var DocumentList = documentsDetailsList?.responseData
@@ -163,7 +169,7 @@ if (selectedItem ) {
   };
 
   useEffect(()=>{
-    console.log("picLOG", pic);
+    console.log("picLOG", docname);
   })
 
   // useEffect(()=>{

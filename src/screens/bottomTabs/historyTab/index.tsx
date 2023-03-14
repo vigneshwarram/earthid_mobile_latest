@@ -68,7 +68,7 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
     return getItems[0];
   };
   const getImagesColor = (item: any) => {
-    let colors = item?.name;
+    let colors = item?.documentName;
     let iteName = colors.trim()?.split("(")[0]?.trim();
     return getColor(iteName);
   };
@@ -160,7 +160,7 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
             absoluteCircleInnerImage={LocalImages.upImage}
             // rightIconSrc={LocalImages.menuImage}
             rightIconOnPress={() => _rightIconOnPress(item)}
-            title={item.name}
+            title={item.documentName}
             subtitle={`      Uploaded  : ${item.date}`}
             style={{
               ...styles.cardContainer,
