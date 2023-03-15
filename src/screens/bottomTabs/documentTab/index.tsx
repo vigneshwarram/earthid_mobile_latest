@@ -189,7 +189,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
             absoluteCircleInnerImage={LocalImages.upImage}
             rightIconSrc={LocalImages.menuImage}
             rightIconOnPress={() => _rightIconOnPress(item) }
-            title={item?.documentName}
+            title={item?.docName}
             subtitle={
               item.isVc
                 ? `      Received  : ${item.date}`

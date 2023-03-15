@@ -411,7 +411,7 @@ setIsPrceedForLivenessTest(true)
               </GenericText> 
 
               <GenericText
-                style={{alignSelf:"center",color:"red",marginLeft:-2}}
+                style={{alignSelf:"center",color:"red",marginLeft:-2,fontSize:20}}
               >
                 {"*"}
               </GenericText> 
@@ -431,7 +431,8 @@ setIsPrceedForLivenessTest(true)
                   borderColor: Screens.grayShadeColor,
                   margin:16,
                   borderRadius: 8,
-                  paddingLeft:15
+                  paddingLeft:15,
+                  height:40
                 }}
               />
 
