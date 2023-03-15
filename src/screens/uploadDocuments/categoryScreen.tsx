@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   Alert
 } from "react-native";
+import { TextInput } from "react-native-gesture-handler";
 import RNFetchBlob from "rn-fetch-blob";
 
 import Button from "../../components/Button";
@@ -43,14 +44,15 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const itemData = route?.params?.itemData;
   const { editDoc,selectedItem } =route?.params;
   console.log('selectedItem',selectedItem?.name)
-  const typeItem=selectedItem?.name?.split('(')[1].split(')')[0];
+ // const typeItem=selectedItem?.name?.split('(')[1].split(')')[0];
+ const typeItem=selectedItem?.documentName?.split('(')[1].split(')')[0];
 
   console.log('selectedItemType',typeItem)
   
   const [isPrceedForLivenessTest, setIsPrceedForLivenessTest] = useState(false);
   const [categoryList, setCategoryList] = useState([]);
   const [selectedDocument, setselectedDocument] = useState();
-  const [title, setTitle] = useState();
+  const [docname, setDocname] = useState("");
   const [selectedParentIndex, setSelectedParentIndex] = useState(0);
   const documentsDetailsList = useAppSelector((state) => state.Documents);
   const [successResponse, setsuccessResponse] = useState(false);
@@ -70,6 +72,11 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
 
   const onSubmitAction=()=>{
 
+    if (!docname.trim()) {
+      Alert.alert('Please Enter Document Name');
+       return;
+     }
+
 if(fileUri?.flow==='deeplink'){
   if(fileUri?.type==='application/pdf'){
     var date = dateTime();    
@@ -78,7 +85,8 @@ if(fileUri?.flow==='deeplink'){
       const document: any[0] = categoryList[selectedParentIndex]?.value?.filter((data:any)=>data.isSelected)
     var documentDetails: IDocumentProps = {
       id:`ID_VERIFICATION${Math.random()}${selectedDocument}${Math.random()}`,
-      name: `${categoryList[selectedParentIndex].key} (${document[0]?.title})`,
+      documentName: `${categoryList[selectedParentIndex].key} (${document[0]?.title})`,
+    //  name: `${categoryList[selectedParentIndex].key} (${document[0]?.title})`,
       path: filePath,
       date: date?.date,
       time: date?.time,
@@ -89,6 +97,7 @@ if(fileUri?.flow==='deeplink'){
       base64: fileUri?.base64,
       categoryType:categoryList[selectedParentIndex].key,
       pdf: true,
+      docName:docname
     };
     var DocumentList = documentsDetailsList?.responseData
       ? documentsDetailsList?.responseData
@@ -107,7 +116,8 @@ if(fileUri?.flow==='deeplink'){
       RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
     var documentDetails: IDocumentProps = {
       id:`ID_VERIFICATION${Math.random()}${selectedDocument}${Math.random()}`,
-      name: `${categoryList[selectedParentIndex].key} (${document[0]?.title})`,
+      documentName: `${categoryList[selectedParentIndex].key} (${document[0]?.title})`,
+    //  name: `${categoryList[selectedParentIndex].key} (${document[0]?.title})`,
       path: filePath,
       date: date?.date,
       time: date?.time,
@@ -117,6 +127,7 @@ if(fileUri?.flow==='deeplink'){
       processedDoc: "",
       base64: fileUri?.base64,
       categoryType:categoryList[selectedParentIndex].key,
+      docName:docname
   
     };
     var DocumentList = documentsDetailsList?.responseData
@@ -139,7 +150,8 @@ if(fileUri?.flow==='deeplink'){
     const filePath =
       RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
     var documentDetails: IDocumentProps = {
-      name: fileUri?.file?.name,
+  //    name: fileUri?.file?.name,
+      documentName: fileUri?.file?.name,
       path: filePath,
       date: date?.date,
       time: date?.time,
@@ -150,6 +162,8 @@ if(fileUri?.flow==='deeplink'){
       base64: fileUri?.base64,
       categoryType:categoryList[selectedParentIndex].key,
       pdf: true,
+      docName:docname
+
     };
     var DocumentList = documentsDetailsList?.responseData
       ? documentsDetailsList?.responseData
@@ -174,6 +188,7 @@ setIsPrceedForLivenessTest(true)
   useEffect(() => {
     getCategories(getCategoriesApi, {}, "GET");
     console.log("itemData",itemData)
+    console.log("doc",docname)
   }, []);
 
   useEffect(() => {
@@ -189,7 +204,7 @@ setIsPrceedForLivenessTest(true)
           console.log('item==>*****))))',item)
           InternalArray.push({ title: item,isSelected:typeItem===item?true:item?.isSelected });
         });
-        if(selectedItem?.name?.startsWith(itemKey)){
+        if(selectedItem?.documentName?.startsWith(itemKey)){
           setSelectedParentIndex(indexOfKey);
         }
       
@@ -197,7 +212,7 @@ setIsPrceedForLivenessTest(true)
           key: itemKey,
           value: InternalArray,
           color: SCREENS.CATEGORYSCREEN.categories[indexOfKey]?.color,
-          isSelected:selectedItem?.name?.startsWith(itemKey)?true: false,
+          isSelected:selectedItem?.documentName?.startsWith(itemKey)?true: false,
         });
       });
       
@@ -325,6 +340,10 @@ setIsPrceedForLivenessTest(true)
     );
   };
 
+  function docnameitem(value:any){
+      console.log("datavalue",value)
+      setDocname(value)
+  }
 
 
   return (
@@ -378,14 +397,54 @@ setIsPrceedForLivenessTest(true)
                   <ScrollView>
                     {
               categoryList.length !== 0 ?
-              (<GenericText
+
+               <View>
+                <View style={{flexDirection:"row"}}>
+               
+                <GenericText
+                style={[
+                  styles.categoryHeaderText,
+                  { fontSize: 14, fontWeight: "700" },
+                ]}
+              >
+                {"DOCUMENT NAME"}
+              </GenericText> 
+
+              <GenericText
+                style={{alignSelf:"center",color:"red",marginLeft:-2}}
+              >
+                {"*"}
+              </GenericText> 
+
+                </View>
+
+          
+
+
+              <TextInput
+                placeholder="Enter Document Name"
+                onChangeText={docnameitem}
+                value={docname}
+                style={{
+                  flex:1,
+                  borderWidth:1,
+                  borderColor: Screens.grayShadeColor,
+                  margin:16,
+                  borderRadius: 8,
+                  paddingLeft:15
+                }}
+              />
+
+              
+              <GenericText
                 style={[
                   styles.categoryHeaderText,
                   { fontSize: 14, fontWeight: "700" },
                 ]}
               >
                 {"selectDoc"}
-              </GenericText>) 
+              </GenericText> 
+               </View>       
               :
              <></>
             }
@@ -458,7 +517,8 @@ setIsPrceedForLivenessTest(true)
                      pic,
                      itemData,
                      editDoc,
-                     selectedItem
+                     selectedItem,
+                     docname
                      
                  });
                 }, 100);
