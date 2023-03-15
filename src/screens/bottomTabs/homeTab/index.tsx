@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   Alert,
   Platform,
+  AppState,
 } from "react-native";
 import { EventRegister } from "react-native-event-listeners";
 import RNFS from "react-native-fs";
@@ -55,7 +56,22 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
   //recent activity
   let documentsDetailsList = useAppSelector((state) => state.Documents);
   let recentData = documentsDetailsList?.responseData;
-
+  const [aState, setAppState] = useState(AppState.currentState);
+  useEffect(() => {
+    const appStateListener = AppState.addEventListener(
+      'change',
+      nextAppState => {
+        console.log('Next AppState is: ', nextAppState);
+        if(nextAppState==='active'){
+          ShareMenu.getInitialShare(handleShare);
+        }
+        setAppState(nextAppState);
+      },
+    );
+    return () => {
+      appStateListener?.remove();
+    };
+  }, []);
   const [recentDataOfDocument, setrecentData] = useState([]);
   const dispatch = useAppDispatch();
   const _toggleDrawer = () => {
@@ -219,6 +235,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
       color,
     })
   );
+
 
   const _renderItem = ({ item }: any) => {
     return (
