@@ -82,7 +82,7 @@
   "forbestresults": "Para obtener los mejores resultados, mantenga el dispositivo a una distancia de 20 cm a 50 cm de su cara en un entorno que no sea demasiado brillante ni demasiado oscuro.",
   "Passcodeauth": "Autenticación de contraseña",
   "plsenterpass": "Por favor ingrese su código de acceso",
-  "plsentervalid": "Por favor Ingrese un código válido",
+  "plsentervalid": "Sua senha não corresponde",
   "submitt": "Enviar",
   "setpass": "Configurar la clave",
   "Passcode": "Contraseña",
@@ -146,14 +146,16 @@
   "globalidwanttoaccess": "GlobalId quiere acceder a su siguiente información",
   "globalidwanttoaccessKyc": "GlobalId quiere acceder a su token KYC",
 
-  "alreadyhaveearthid": "Ya tengo mi EarthID",
-  "landscreensetupearthId": "Configure su EarthID",
-  "earthidgeneratesuccess": "Su EarthID se genera con éxito.",
+  "alreadyhaveearthid": "Ya tengo mi Earth ID",
+  "landscreensetupearthId": "Configure su Earth ID",
+  "earthidgeneratesuccess": "Su Earth ID se genera con éxito.",
   "generateeathid": "GENERAR ID DE TIERRA",
-  "passcodeinstructionEarthid": "Asegure su EarthID con un código memorable de 6 dígitos",
+  "passcodeinstructionEarthid": "Asegure su Earth ID con un código memorable de 6 dígitos",
   "earthidwanttoaccess": "EarthID quiere acceder a su siguiente información",
-  "earthidwanttoaccessKyc": "EarthID quiere acceder a su token KYC",
+  "earthidwanttoaccessKyc": "Earth ID quiere acceder a su token KYC",
   "share":"Compartir",
   "delete":"Borrar",
-  "edit":"Editar"
+  "edit":"Editar",
+  "healthcare":"Cuidado de la salud",
+  "docavailable":"No hay documentos disponibles"
 }

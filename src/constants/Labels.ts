@@ -61,7 +61,7 @@ export const SCREENS = {
         COLOR: "#D7EFFB",
       },
       {
-        TITLE: "Healthcare",
+        TITLE: "healthcare",
         URI: LocalImages.CATEGORIES.insuranceImage,
         COLOR: "#C5BDF6",
       },

@@ -83,7 +83,7 @@
   "forbestresults": "Para obter melhores resultados, mantenha o dispositivo de 20 cm a 50 cm do seu rosto em um ambiente que não seja muito claro ou muito escuro.",
   "Passcodeauth": "Autenticação de senha",
   "plsenterpass": "Por favor, digite sua senha",
-  "plsentervalid": "Por favor, insira um código válido",
+  "plsentervalid": "Su contraseña no coincide",
   "submitt": "Enviar",
   "setpass": "Definir código de acesso",
   "Passcode": "Senha",
@@ -147,14 +147,16 @@
   "globalidwanttoaccess": "GlobalId deseja acessar suas seguintes informações",
   "globalidwanttoaccessKyc": "GlobalId quer acessar seu token KYC",
 
-  "alreadyhaveearthid": "Já tenho meu EarthID",
-  "landscreensetupearthId": "Configure seu EarthID",
+  "alreadyhaveearthid": "Já tenho meu Earth ID",
+  "landscreensetupearthId": "Configure seu Earth ID",
   "earthidgeneratesuccess": "Seu EarthID foi gerado com sucesso.",
   "generateeathid": "GERAR ID DE TERRA",
-  "passcodeinstructionEarthid": "Proteja seu EarthId com um código de 6 dígitos memorável",
+  "passcodeinstructionEarthid": "Proteja seu Earth ID com um código de 6 dígitos memorável",
   "earthidwanttoaccess": "EarthId deseja acessar suas seguintes informações",
   "earthidwanttoaccessKyc": "EarthId quer acessar seu token KYC",
   "share":"Compartilhar",
   "delete":"Excluir",
-  "edit":"Editar"
+  "edit":"Editar",
+  "healthcare":"Assistência médica",
+  "docavailable":"Nenhum documento disponível"
 }

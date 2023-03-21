@@ -7,4 +7,5 @@ export interface IInfoProps {
   subTitlePress?: any;
   tailIcon?:any;
   tailIconPress?:any
+  tailIcondisabled?:any
 }

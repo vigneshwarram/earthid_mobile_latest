@@ -92,11 +92,13 @@ const DocumentPreviewScreen = (props: any) => {
           {
             text: "No",
             onPress: () => {
-              if (type == "regDoc") {
-                uploadDocumentImage();
-              } else {
-                uploadDoc();
-              }
+              // if (type == "regDoc") {
+              //   uploadDocumentImage();
+              // } else {
+              //   uploadDoc();
+              // }
+                console.log("Cancel")
+
             },
           },
         ],

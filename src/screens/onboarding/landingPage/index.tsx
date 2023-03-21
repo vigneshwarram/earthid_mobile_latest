@@ -250,8 +250,8 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
                       Linking.openURL("https://globalidiq.com/terms-of-use-3/")
                     }
                   >
-                    {" "}
-                    {t("termpolicy")}
+                    {"Terms & Conditions and Privacy Policy "}
+                   
                   </Text>
                 </Text>
               </View>

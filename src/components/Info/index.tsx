@@ -11,6 +11,7 @@ import { IInfoProps } from "./IInfoProps";
  * @description This is a base component for the implementation of Info.
  */
 
+
 const Info = ({
   title,
   subtitle,
@@ -20,6 +21,7 @@ const Info = ({
   subTitlePress,
   tailIcon,
   tailIconPress,
+  tailIcondisabled
 }: IInfoProps) => (
   <View style={[styles.container, style.container]}>
     {title && (
@@ -63,7 +65,11 @@ const Info = ({
               </View>
 
               {tailIcon && (
+
+               
+                
                 <TouchableOpacity
+                  activeOpacity={tailIcondisabled}
                   onPress={tailIconPress}
                   style={{ position: "absolute", right: 0 }}
                 >

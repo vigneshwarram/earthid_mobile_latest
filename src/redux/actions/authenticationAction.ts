@@ -129,7 +129,7 @@ export const createSchema =
     }
   };
 
-export const approveOTP =
+export const  approveOTP =
   (requestPayload: any, type: string) =>
   async (dispatch: any): Promise<any> => {
     console.log("type", type);
@@ -156,12 +156,15 @@ export const approveOTP =
         },
       });
     } catch (error) {
-      console.log("error", error);
+      console.log("error==>", error);
       dispatch({
         type: ACTION_TYPES.APPROVEOTP_ERROR,
         payload: {
           errorMesssage: error,
         },
+      });
+      SnackBar({
+        indicationMessage: "please enter a correct OTP",
       });
     }
   };

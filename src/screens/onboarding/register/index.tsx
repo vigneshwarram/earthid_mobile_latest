@@ -298,6 +298,8 @@ const Register = ({ navigation }: IRegister) => {
             >
               {SCREENS.LANDINGSCREEN.setUpId}
             </GenericText>
+
+            <View style={{flexDirection:"row"}}>
             <Info
               title={"username"}
               style={{
@@ -306,6 +308,13 @@ const Register = ({ navigation }: IRegister) => {
                 container: styles.textContainer,
               }}
             />
+
+            <GenericText 
+            style={{color:"red",position:"absolute",alignSelf:"center",left:75}}
+            >
+              {"*"}
+            </GenericText>
+            </View>
             <TextInput
               style={{
                 container: styles.textInputContainer,
@@ -320,6 +329,7 @@ const Register = ({ navigation }: IRegister) => {
               value={firstName}
               onChangeText={firstNameChangeHandler}
             />
+            <View style={{flexDirection:"row"}}>
             <Info
               title={"mobileno"}
               style={{
@@ -328,6 +338,13 @@ const Register = ({ navigation }: IRegister) => {
                 container: styles.textContainer,
               }}
             />
+
+            <GenericText 
+            style={{color:"red",position:"absolute",alignSelf:"center",left:105}}
+            >
+              {"*"}
+            </GenericText>
+            </View>
 
             <PhoneInput
               textInputProps={{
@@ -387,6 +404,7 @@ const Register = ({ navigation }: IRegister) => {
                   {"Please enter valid mobile number"}
                 </Text>
               ))}
+            <View style={{flexDirection:"row"}}>
             <Info
               title={"email"}
               style={{
@@ -395,6 +413,13 @@ const Register = ({ navigation }: IRegister) => {
                 container: styles.textContainer,
               }}
             />
+
+            <GenericText 
+            style={{color:"red",position:"absolute",alignSelf:"center",left:48}}
+            >
+              {"*"}
+            </GenericText>
+            </View>
             <TextInput
               style={{
                 container: styles.textInputContainer,

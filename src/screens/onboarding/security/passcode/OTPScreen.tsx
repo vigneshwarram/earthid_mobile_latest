@@ -61,6 +61,7 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
   };
 
   const sendPhoneOtp = () => {
+
     var postPhoneData = {
       phone: userDetails?.responseData?.phone,
       earthId: userDetails?.responseData?.earthId,
@@ -68,7 +69,18 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
       countryCode: `${userDetails?.responseData?.countryCode}`,
     };
     sendPhoneOtpAPI(phoneOtp, postPhoneData, "POST");
+
   };
+
+  const reSendData=()=>{
+
+    if(type=="phone"){
+      sendPhoneOtp()
+    }else{
+      sendOtp()
+    }
+   
+  }
 
   useEffect(() => {
     console.log("data", emailResponse);
@@ -184,7 +196,7 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
               value={code}
               onTextChange={onPinCodeChange}
             />
-              <TouchableOpacity onPress={() => sendPhoneOtp()}>
+              <TouchableOpacity onPress={() => reSendData()}>
           <GenericText
             style={[
               {

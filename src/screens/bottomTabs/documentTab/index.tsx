@@ -44,6 +44,8 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
   );
   const [selectedDocuments, setselectedDocuments] = useState();
 
+  console.log("selecteArraylisttt", documentsDetailsList?.responseData);
+
   let categoryTypes = "";
 
   if (route?.params && route?.params?.category) {
@@ -52,6 +54,8 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const dispatch = useAppDispatch();
   const [selectedItem, setselectedItem] = useState();
   const [edit, setEdit] = useState();
+  const [itemdata, setitemdata] = useState([]);
+  const [data, setData] = useState(documentsDetailsList?.responseData);
   const [multiSelectionEnabled, setMultiSelectionEnabled] = useState(false);
   const [clearMultiselection, setClearMultiSelection] = useState(false);
   const [
@@ -62,7 +66,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
     isSelected: false,
   });
   const [searchedData, setSearchedData] = useState([]);
-
+  const [masterDataSource, setMasterDataSource] = useState([]);
   const [searchText, setsearchText] = useState("");
   const [isCheckBoxEnable, setCheckBoxEnable] = useState(false);
   const [isClear, setIsClear] = useState(false);
@@ -114,6 +118,12 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
     }
   }, [documentsDetailsListData]);
 
+
+  useEffect(()=>{
+    console.log("dattaaa",data);
+
+  })
+
   const multiSelect = (item) => {
     // console.log(item?.base64, "@@@@@@@@@");
     // setMultipleDucuments(item);
@@ -128,6 +138,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const _renderItem = ({ item, index }: any) => {
     AsyncStorage.setItem("day", item.date);
     setEdit(item)
+    setitemdata(item)
   
     return (
       <TouchableOpacity
@@ -267,18 +278,52 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
   );
 
   const onChangeHandler = (text: any) => {
-    const newData = documentsDetailsList?.responseData.filter(function (item: {
-      documentName: string;
-    }) {
-      const itemData = item.documentName ? item?.documentName.toUpperCase() : "".toUpperCase();
 
-      const textData = text?.toUpperCase();
+  
+      const newData = documentsDetailsList?.responseData.filter(function (item: {
+        documentName: string;
+      }) {
+        const itemData = item.documentName ? item?.documentName.toUpperCase() : "".toUpperCase();
+  
+        const textData = text?.toUpperCase();
+  
+        return itemData.indexOf(textData) > -1;
+      });
+      setsearchText(text);
+  
+      setSearchedData(newData);
+    
+   
 
-      return itemData.indexOf(textData) > -1;
-    });
-    setsearchText(text);
+    // if (text) {
+    //   // Inserted text is not blank
+    //   // Filter the masterDataSource
+    //   // Update FilteredDataSource
+    //   if(documentsDetailsList?.responseData==undefined){
 
-    setSearchedData(newData);
+    //     setSearchedData(data);
+    //     setsearchText(text);
+    //   }else{
+
+    //     const newData = documentsDetailsList?.responseData.filter(
+    //       function (item:any) {
+    //         const itemData = item.documentName ? item?.documentName.toUpperCase() : "".toUpperCase();
+    //         const textData = text.toUpperCase();
+    //         return itemData.indexOf(textData) > -1;
+    //     });
+    //     setsearchText(text);
+    
+    //     setSearchedData(newData);
+    //   }
+    // } else {
+    //   // Inserted text is blank
+    //   // Update FilteredDataSource with masterDataSource
+    //   setSearchedData(itemdata);
+    //   setsearchText(text);
+
+    // }
+
+
   };
 
   const shareItem = async () => {
@@ -461,11 +506,29 @@ function editItem(){
               </View>
             </View>
           )}
+
+          {
+
+            data.length > 0 &&  data.length != undefined ?
           <FlatList<any>
             data={getFilteredData()}
             renderItem={_renderItem}
             keyExtractor={_keyExtractor}
           />
+
+            :
+
+            <GenericText
+            style={{
+              color:"black",
+              alignSelf:"center",
+              marginTop:25
+              
+            }}
+            >{"docavailable"}</GenericText>
+
+          }        
+
 
           <BottomSheet
             onClose={() => setisBottomSheetForSideOptionVisible(false)}

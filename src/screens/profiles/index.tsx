@@ -311,7 +311,8 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
             />
 
             <Info
-              tailIconPress={_navigateEditMobile}
+           //   tailIcondisabled={userDetails?.responseData?.mobileApproved ? 0.2 : 0.9}
+              tailIconPress={ _navigateEditMobile}
               tailIcon={LocalImages.editIcon}
               subTitlePress={
                 userDetails?.responseData?.mobileApproved
@@ -344,7 +345,8 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
               }}
             />
             <Info
-              tailIconPress={_navigateEditEmail}
+              tailIcondisabled={userDetails?.responseData?.emailApproved ? 0.2 : 0.9}
+              tailIconPress={userDetails?.responseData?.emailApproved ? _navigateEditEmail : null}
               tailIcon={LocalImages.editIcon}
               subTitlePress={
                 userDetails?.responseData?.emailApproved

@@ -90,8 +90,8 @@ const PasswordCheck = ({ navigation, route }: IHomeScreenProps) => {
           <View style={{ alignSelf: "center" }}>
             <SmoothPinCodeInput
               cellStyle={{
-                borderWidth: isError ? 1.5 : 0.5,
-                borderColor: isError ? "red" : Screens.grayShadeColor,
+                  borderWidth: isError ? 1.5 : 0.5,
+                  borderColor: isError ? "red" : Screens.grayShadeColor,
                 borderRadius: 5,
               }}
               cellStyleFocused={{
