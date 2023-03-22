@@ -508,8 +508,7 @@ function editItem(){
           )}
 
           {
-
-            data.length > 0 &&  data.length != undefined ?
+             data != undefined ?
           <FlatList<any>
             data={getFilteredData()}
             renderItem={_renderItem}
