@@ -43,7 +43,7 @@ const useFetch = (): IResponse => {
         throw new Error(JsonResponse?.message);
       }
     } catch (error: any) {
-      console.log("error==============>:::-->", error);
+      console.log("error==============>:::", error);
       SnackBar({
         indicationMessage: error?.message,
       });

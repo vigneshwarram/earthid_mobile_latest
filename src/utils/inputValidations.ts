@@ -6,8 +6,9 @@ const REGEX = {
   ADDRESS_LINE: /^[\\\\0-9a-zA-Z\\/, ]*$/,
   BUSINESS_NAME: /^[0-9a-zA-Z ]*$/,
   PINCODE: /(^\d{6}$)/,
-  USERNAME:/^[a-zA-Z\\s[0-9]*$/,
-  //USERNAMENUMERIC:/^[0-9\b]+$/,
+ // USERNAME:/^[a-zA-Z\\s[0-9]*$/,
+  USERNAME:/^[a-zA-Z\\s]*$/,
+ // USERNAMENUMERIC:/^[0-9a-zA-Z]+$/,
   EMAIL:
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
 };
@@ -25,7 +26,7 @@ export const nameValidator = (
  else if(!REGEX.USERNAME.test(value)){
   return {
     hasError: true,
-    errorMessage: "Special characters are not allowed",
+    errorMessage: "Special or Numeric characters are not allowed",
   };
  }
 //  else if(!REGEX.USERNAMENUMERIC.test(value)){

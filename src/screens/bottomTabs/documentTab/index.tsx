@@ -281,9 +281,9 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
 
         const newDataItem=  documentsDetailsList?.responseData || []
         const newData =newDataItem.filter(function (item: {
-          documentName: string;
+          docName: string;
         }) {
-          const itemData = item.documentName ? item?.documentName.toUpperCase() : "".toUpperCase();
+          const itemData = item.docName ? item?.docName.toUpperCase() : "".toUpperCase();
     
           const textData = text?.toUpperCase();
     
@@ -510,13 +510,13 @@ function editItem(){
           )}
 
           {
-             data != undefined ?
+             data!=undefined? 
           <FlatList<any>
             data={getFilteredData()}
             renderItem={_renderItem}
             keyExtractor={_keyExtractor}
           />
-
+          
             :
 
             <GenericText
