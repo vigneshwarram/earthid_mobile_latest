@@ -279,19 +279,21 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
 
   const onChangeHandler = (text: any) => {
 
-  
-      const newData = documentsDetailsList?.responseData.filter(function (item: {
-        documentName: string;
-      }) {
-        const itemData = item.documentName ? item?.documentName.toUpperCase() : "".toUpperCase();
-  
-        const textData = text?.toUpperCase();
-  
-        return itemData.indexOf(textData) > -1;
-      });
-      setsearchText(text);
-  
-      setSearchedData(newData);
+        const newDataItem=  documentsDetailsList?.responseData || []
+        const newData =newDataItem.filter(function (item: {
+          documentName: string;
+        }) {
+          const itemData = item.documentName ? item?.documentName.toUpperCase() : "".toUpperCase();
+    
+          const textData = text?.toUpperCase();
+    
+          return itemData.indexOf(textData) > -1;
+        });
+        setsearchText(text);
+    
+        setSearchedData(newData);
+      
+     
     
    
 
