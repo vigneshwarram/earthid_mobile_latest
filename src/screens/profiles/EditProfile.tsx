@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   Image,
   Alert,
+  AsyncStorage,
 } from "react-native";
 import Avatar from "../../components/Avatar";
 import BottomSheet from "../../components/Bottomsheet";
@@ -357,9 +358,10 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
               }}
             >
               <ColoumnOption
-                avatarClick={() => {
+                avatarClick={async() => {
                   setisCameraOptionVisible(false);
                   disPatch(savingProfilePictures(undefined));
+                  await AsyncStorage.removeItem("profilePic")
                 }}
                 title={"removephone"}
                 icon={LocalImages.deleteImage}

@@ -397,9 +397,10 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
               }}
             >
               <ColoumnOption
-                avatarClick={() => {
+                avatarClick={async() => {
                   setisCameraOptionVisible(false);
                   disPatch(savingProfilePictures(undefined));
+                 await AsyncStorage.removeItem("profilePic")
                 }}
                 title={"removephone"}
                 icon={LocalImages.deleteImage}

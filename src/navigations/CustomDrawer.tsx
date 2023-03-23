@@ -97,8 +97,9 @@ const CustomDrawer = (props: any) => {
       dispatch(FlushData()).then(async () => {
         await AsyncStorage.removeItem("passcode");
         await AsyncStorage.removeItem("fingerprint");
-        await AsyncStorage.removeItem("faceID");
+        await AsyncStorage.removeItem("FaceId");
         await AsyncStorage.removeItem("pageName");
+        await AsyncStorage.removeItem("profilePic");
         props.navigation.dispatch(StackActions.replace("AuthStack"));
       });
     }
