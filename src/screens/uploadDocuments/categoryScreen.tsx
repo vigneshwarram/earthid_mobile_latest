@@ -248,9 +248,11 @@ else{
 
   }else{
     setIsPrceedForLivenessTest(true)
+    return
   }
 
 }
+setIsPrceedForLivenessTest(true)
   }
 }
 }
