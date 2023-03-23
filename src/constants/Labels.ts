@@ -80,6 +80,11 @@ export const SCREENS = {
         URI: LocalImages.CATEGORIES.educationImage,
         COLOR: "#FFDD9B",
       },
+      {
+        TITLE: "employment",
+        URI: LocalImages.CATEGORIES.employment,
+        COLOR: "#FFAFAF",
+      },
     ],
     CategoryCustomiseList: [
       {

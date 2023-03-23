@@ -160,5 +160,6 @@
   "delete":"Delete",
   "edit":"Edit",
   "healthcare":"Healthcare",
-  "docavailable":"No documents available"
+  "docavailable":"No documents available",
+  "employment":"Employment"
 }

@@ -67,6 +67,8 @@ export const LocalImages = {
     educationImage: require("../../resources/images/education.png"),
     insuranceImage: require("../../resources/images/Insurence.png"),
     personalcardImage: require("../../resources/images/personalcard.png"),
+    employment: require("../../resources/images/employment.png"),
+
   },
   SOCIAL_MEDIA_: {
     facebookImage: require("../../resources/images/facebook.png"),

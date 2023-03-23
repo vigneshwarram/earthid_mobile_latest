@@ -141,8 +141,14 @@ export const  approveOTP =
       let response;
       if (type === "phone") {
         response = await postCall(approvePhoneOtp, requestPayload);
+        SnackBar({
+          indicationMessage: "Verify Mobile number should be verified successfully",
+        });
       } else {
         response = await postCall(approveOTPEmail, requestPayload);
+        SnackBar({
+          indicationMessage: "Verify Email id should be verified successfully",
+        });
       }
 
       responseData = await _responseHandler(response);

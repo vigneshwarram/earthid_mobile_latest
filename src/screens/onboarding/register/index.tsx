@@ -383,8 +383,9 @@ if(mobileNumber.length < 10){
               defaultCode="US"
               layout="first"
               onChangeText={(text: any) => {
-                
                 let validate = containsSpecialChars(text);
+                console.log("==>formatcallingCode", text.cca2);
+                AsyncStorage.setItem("callingcode",text.cca2)
                 console.log("==>format", validate);
                 setValidMobileNumber(validate);
                 setmobileNumber(text);

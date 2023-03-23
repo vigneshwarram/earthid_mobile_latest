@@ -1,5 +1,6 @@
 import {
   Alert,
+  AsyncStorage,
   Image,
   StyleSheet,
   Text,
@@ -23,9 +24,12 @@ const EditMobileNumber = (props: any) => {
   const [callingCode, setcallingCode] = useState<string>("1");
   const phoneInput: any = useRef();
   const userDetails = useAppSelector((state) => state.account);
+  const [code, setCode] = useState();
+
   const { loading, data, error, fetch } = useFetch();
   const [phone, setPhone] = useState<string>("");
   const [isValidMobileNumber, setValidMobileNumber] = useState<boolean>(false);
+  var codename:any=""
   const sentOtp = () => {
     var postData = {
       oldPhone: userDetails?.responseData?.phone,
@@ -50,6 +54,9 @@ const EditMobileNumber = (props: any) => {
 
   useEffect(() => {
     console.log("data", data);
+    console.log("userdetails", userDetails.responseData);
+    console.log("userdetails", userDetails.responseData.countryCode);
+
     if (data) {
       props.navigation.navigate("EditMobileNumOtp", {
         newPhone: phone,
@@ -57,6 +64,22 @@ const EditMobileNumber = (props: any) => {
       });
     }
   }, [data]);
+
+  useEffect(()=>{
+    name()
+  })
+
+  async function name() {
+   
+      codename = await AsyncStorage.getItem("callingcode")
+      console.log("codeCountry",codename)
+      console.log("codename",code)
+      var data :any ="\"" + codename + "\"";
+      console.log("codeValue",data)
+      setCode(data)
+
+  }
+
 
   return (
     <KeyboardAvoidingScrollView
@@ -129,7 +152,8 @@ const EditMobileNumber = (props: any) => {
           ref={phoneInput}
           defaultValue={""}
           placeholder="Mobile Number"
-          defaultCode="US"
+         // defaultCode={code}
+         defaultCode="US"
           layout="first"
           onChangeText={(text: any) => {
             var format = text.replace(/[^0-9]/g, "");
@@ -156,6 +180,8 @@ const EditMobileNumber = (props: any) => {
             margin: 0,
           }}
           withShadow
+          value={code}
+          
         />
             {isValidMobileNumber  && (
       <Text allowFontScaling={false} style={styles.errorText}>

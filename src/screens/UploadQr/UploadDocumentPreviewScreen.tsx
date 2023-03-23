@@ -13,6 +13,7 @@ import RNQRGenerator from "rn-qr-generator";
 import RNFS from "react-native-fs";
 import { byPassUserDetailsRedux } from "../../redux/actions/authenticationAction";
 import DocumentPicker from "react-native-document-picker";
+import { SnackBar } from "../../components/SnackBar";
 
 
 
@@ -83,8 +84,14 @@ const UploadDocumentPreviewScreen = (props: any) => {
 
   useEffect(() => {
     if (getUserResponse) {
+
+      SnackBar({
+        indicationMessage: "QR image should be successfully uploaded",
+      });
+      
       dispatch(byPassUserDetailsRedux(getUserResponse)).then(() => {
         props.navigation.navigate("Security");
+       
       });
     }
   }, [getUserResponse]);
