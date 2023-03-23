@@ -103,7 +103,8 @@ const Register = ({ navigation }: IRegister) => {
 
   const _navigateAction = () => {
     setKeyboardVisible(false);
-    mobileNumber == "" ? setMobileEmpty(true) : null;
+    mobileNumber === "" ? setMobileEmpty(true) : null;
+    console.log('isValid()',isValid())
     if (isValid()) {
       setLoginLoading(true);
       dispatch(GeneratedKeysAction());
@@ -119,8 +120,8 @@ const Register = ({ navigation }: IRegister) => {
     if (
       !nameValidator(firstName, true).hasError &&
       !emailValidator(email, true).hasError &&
-      mobileNumber !== "" &&
-      !isValidMobileNumber
+      mobileNumber !== "" && mobileNumber.length === 10 &&
+      isValidMobileNumber
     ) {
       return true;
     }
@@ -255,9 +256,26 @@ const Register = ({ navigation }: IRegister) => {
     setKeyboardVisible(false);
   };
   function containsSpecialChars(str: string) {
-    const specialChars = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~a-zA-Z " "]/;
+
+    const specialChars = /^[0-9]+$/;
     return specialChars.test(str);
   }
+
+  const isMobileNumberValid =()=>{
+    if(isValidMobileNumber || isMobileEmpty ){
+      return false
+    }else if(phoneInput.current.isFocused){
+if(mobileNumber.length < 10){
+  console.log('its coming here')
+  return false
+}
+    }else{
+      return true
+    }
+  }
+
+  console.log('mobileNumber====?',mobileNumber.length)
+  console.log('isValidMobileNumber',isValidMobileNumber)
 
   return (
     <KeyboardAvoidingScrollView
@@ -347,6 +365,7 @@ const Register = ({ navigation }: IRegister) => {
             </View>
 
             <PhoneInput
+            
               textInputProps={{
                 onFocus: onMobileNumberFocus,
                 onBlur: onMobileNumberBlur,
@@ -364,7 +383,7 @@ const Register = ({ navigation }: IRegister) => {
               defaultCode="US"
               layout="first"
               onChangeText={(text: any) => {
-                //var format = text.replace(/[^0-9]/g, "");
+                
                 let validate = containsSpecialChars(text);
                 console.log("==>format", validate);
                 setValidMobileNumber(validate);
@@ -373,10 +392,10 @@ const Register = ({ navigation }: IRegister) => {
               }}
               containerStyle={{
                 borderColor:
-                  isValidMobileNumber || isMobileEmpty
-                    ? Screens.red
-                    : Screens.darkGray,
-                borderWidth: isValidMobileNumber ? 1 : 2.2,
+                isValidMobileNumber && mobileNumber.length === 10  
+                    ?Screens.darkGray 
+                    : mobileNumber.length != 0 ?  Screens.red:Screens.darkGray ,
+                borderWidth: isValidMobileNumber && mobileNumber.length === 10  ? 1 : mobileNumber.length != 0 ?  2.2:2,
                 borderRadius: 10,
                 height: 60,
                 marginHorizontal: 10,
@@ -398,12 +417,12 @@ const Register = ({ navigation }: IRegister) => {
               }}
               filterProps={{ placeholder: "Search country" }}
             />
-            {isValidMobileNumber ||
-              (isMobileEmpty && (
-                <Text allowFontScaling={false} style={styles.errorText}>
+            { isValidMobileNumber && mobileNumber.length === 10  ? null:
+            
+            mobileNumber.length != 0 &&  <Text allowFontScaling={false} style={styles.errorText}>
                   {"Please enter valid mobile number"}
                 </Text>
-              ))}
+              }
             <View style={{flexDirection:"row"}}>
             <Info
               title={"email"}
