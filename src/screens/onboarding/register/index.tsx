@@ -147,17 +147,17 @@ const Register = ({ navigation }: IRegister) => {
 
       dispatch(createAccount(payLoad)).then(async() => {
         await  AsyncStorage.setItem("flow","loginflow");
-        setLoginLoading(false);
+      
       });
     } else {
-      setLoginLoading(false);
+
       SnackBar({
         indicationMessage: "Registered Id is not generated ,please try again",
         doRetry: getSuperAdminApiCall(superAdminApi, {}, "GET"),
       });
     }
   };
-
+console.log('keys',keys)
   if (keys && keys?.isGeneratedKeySuccess) {
     keys.isGeneratedKeySuccess = false;
 
@@ -384,9 +384,9 @@ if(mobileNumber.length < 10){
               layout="first"
               onChangeText={(text: any) => {
                 let validate = containsSpecialChars(text);
-                console.log("==>formatcallingCode", text.cca2);
-                AsyncStorage.setItem("callingcode",text.cca2)
-                console.log("==>format", validate);
+                // console.log("==>formatcallingCode", text.cca2);
+                // AsyncStorage.setItem("callingcode",text.cca2)
+                // console.log("==>format", validate);
                 setValidMobileNumber(validate);
                 setmobileNumber(text);
                 setMobileEmpty(false);
@@ -464,13 +464,13 @@ if(mobileNumber.length < 10){
             Status="status"
             isLoaderVisible={successResponse}
           ></Loader>
-          {loginLoading && (
+        
             <Spinner
-              visible={loginLoading}
+              visible={userDetails?.isLoading|| keys?.isLoading}
               textContent={"Loading..."}
               textStyle={styles.spinnerTextStyle}
             />
-          )}
+          
         </View>
         <DatePicker
           modal

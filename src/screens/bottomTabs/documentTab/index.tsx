@@ -44,7 +44,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
   );
   const [selectedDocuments, setselectedDocuments] = useState();
 
-  console.log("selecteArraylisttt", documentsDetailsList?.responseData);
+
 
   let categoryTypes = "";
 
@@ -81,13 +81,13 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const [isBottomSheetForShare, setIsBottomSheetForShare] =
     useState<boolean>(false);
   const _rightIconOnPress = (selecteArrayItem: any) => {
-    console.log(",,,,selecteArrayItem", selecteArrayItem);
+   
     setselectedDocuments(selecteArrayItem);
     setselectedItem(selecteArrayItem);
     setisBottomSheetForSideOptionVisible(true);
   };
   const _shareIconPress = (selecteArrayItem: any) => {
-    console.log(",,,,selecteArrayItem", selecteArrayItem);
+    
     setselectedItem(selecteArrayItem);
     setisBottomSheetForSideOptionVisible(true);
   };
@@ -100,7 +100,6 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
         );
       }
     );
-  console.log('colors',getItems)
   if(getItems[0]==undefined){
     return '#D7EFFB'
   }
@@ -109,20 +108,12 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const getImagesColor = (item: any) => {
     let colors = item?.documentName;
     let iteName = colors?.trim()?.split("(")[0]?.trim();
-    console.log('iteName==>',iteName)
     return getColor(iteName);
   };
   useEffect(() => {
-    if (documentsDetailsListData) {
-      setdocumentsDetailsList(documentsDetailsListData);
-    }
-  }, [documentsDetailsListData]);
+    setdocumentsDetailsList(documentsDetailsListData);
+  }, [documentsDetailsListData?.responseData]);
 
-
-  useEffect(()=>{
-    console.log("dattaaa",data);
-
-  })
 
   const multiSelect = (item) => {
     // console.log(item?.base64, "@@@@@@@@@");
@@ -371,6 +362,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
   };
 
   const deleteItem = () => {
+    console.log('selectedItem?.id',selectedItem)
     Alert.alert(
       "Confirmation! ",
       "Are you sure you want to delete this document ?",
@@ -380,14 +372,13 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
           text: "OK",
           onPress: () => {
             setisBottomSheetForSideOptionVisible(false);
-
-            const newData = documentsDetailsList?.responseData.filter(
-              function (item: { documentName: any }) {
-                return item.documentName !== selectedItem?.documentName;
-              }
-            );
-
-            dispatch(saveDocuments(newData));
+          
+            const helpArra = [...documentsDetailsList?.responseData]
+            console.log('documentsDetailsList',helpArra);
+            const findIndex = helpArra?.findIndex((item)=>item.id === selectedItem?.id)
+             findIndex >= -1 &&  helpArra?.splice(findIndex,1)
+           // console.log('helpArra',helpArra)
+            dispatch(saveDocuments(helpArra));
           },
         },
       ],
@@ -397,7 +388,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
 
 
 function editItem(){
- 
+  setisBottomSheetForSideOptionVisible(false)
    navigation.navigate("categoryScreen", { selectedItem: selectedItem , editDoc : "editDoc", itemData:edit})
   // var data : any =selectedItem
   // await AsyncStorage.setItem("userDetails", data);
@@ -413,6 +404,7 @@ function editItem(){
   const _keyExtractor = ({ path }: any) => path.toString();
 
   const getFilteredData = () => {
+    console.log('lusukoothi')
     let data = documentsDetailsList?.responseData;
 
     if (categoryTypes !== "") {
@@ -510,11 +502,11 @@ function editItem(){
           )}
 
           {
-             data!=undefined? 
+             documentsDetailsList?.responseData && documentsDetailsList?.responseData?.length>0? 
           <FlatList<any>
             data={getFilteredData()}
             renderItem={_renderItem}
-            keyExtractor={_keyExtractor}
+        
           />
           
             :

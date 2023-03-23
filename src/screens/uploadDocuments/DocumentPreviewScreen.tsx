@@ -74,40 +74,44 @@ const DocumentPreviewScreen = (props: any) => {
     if (type == "regDoc") {
       uploadDocumentImage();
     } else {
-      Alert.alert(
-        "Confirmation!",
-        "Please confirm that this is a self-attested document",
-        [
-          {
-            text: "Yes",
-            onPress: () => {
-              if (type == "regDoc") {
-                uploadDocumentImage();
-              } else {
-                uploadDoc();
-              }
+      if(fileUri?.type === "application/pdf"){
+        uploadDoc('no');
+      }else{
+        Alert.alert(
+          "Confirmation!",
+          "Please confirm that this is a self-attested document",
+          [
+            {
+              text: "Yes",
+              onPress: () => {
+                if (type == "regDoc") {
+                  uploadDocumentImage();
+                } else {
+                  uploadDoc();
+                }
+              },
+              style: "cancel",
             },
-            style: "cancel",
-          },
-          {
-            text: "No",
-            onPress: () => {
-              // if (type == "regDoc") {
-              //   uploadDocumentImage();
-              // } else {
-              //   uploadDoc();
-              // }
-                console.log("Cancel")
-
+            {
+              text: "No",
+              onPress: () => {
+                if (type == "regDoc") {
+                  uploadDocumentImage();
+                } else {
+                  uploadDoc('no');
+                }
+  
+              },
             },
-          },
-        ],
-        { cancelable: false }
-      );
-    }
+          ],
+          { cancelable: false }
+        );
+      }
+      }
+     
   }
 
-  const uploadDoc = async () => {
+  const uploadDoc = async (selfAttested:string) => {
     let type = "qrRreader";
 
     if (!type == fileUri.type) {
@@ -118,7 +122,7 @@ const DocumentPreviewScreen = (props: any) => {
       }
     } else {
       console.log("fileUri==>", fileUri);
-      props.navigation.navigate("categoryScreen", { fileUri ,editDoc});
+      props.navigation.navigate("categoryScreen", { fileUri ,editDoc,selfAttested});
       console.log("success==>", "Success");
     }
   };

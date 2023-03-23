@@ -51,6 +51,7 @@ export interface IDocumentProps {
   pdf?: boolean;
   categoryType?: any;
   color?: string;
+  isVerifyNeeded?:boolean
  
 }
 const VerifiDocumentScreen = (props: any) => {
@@ -128,7 +129,8 @@ if (selectedItem ) {
     processedDoc: "",
     base64: uploadedDocumentsBase64,
     categoryType: selectedDocument,
-    docName:docname
+    docName:docname,
+    isVerifyNeeded:true
   };
 
   var DocumentList = documentsDetailsList?.responseData

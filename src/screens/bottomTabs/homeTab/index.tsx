@@ -192,7 +192,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
         isVc: false,
         color: "rgba(191, 245, 206, 1)",
       };
-
+     console.log('documentsDetailsList?.responseData',documentsDetailsList?.responseData)
       var DocumentList = documentsDetailsList?.responseData
         ? documentsDetailsList?.responseData
         : [];
@@ -200,13 +200,14 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
       dispatch(saveDocuments(DocumentList));
       getHistoryReducer.isSuccess = false;
       setTimeout(() => {
-        navigation.navigate("Documents");
+       
       }, 2000);
     }, 200);
   };
   useEffect(() => {
+    console.log('recentData====>',recentData)
     if (documentsDetailsList) {
-      let recentDataFillerWithColor: any = recentData?.map(
+      let recentDataFillerWithColor: any =recentData &&  recentData?.map(
         (item: any, index: any) => {
           let colors = item?.documentName;
           let iteName = colors?.trim()?.split("(")[0].trim();
@@ -217,6 +218,8 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
       );
       if (recentDataFillerWithColor?.length > 0) {
         setrecentData(recentDataFillerWithColor);
+      }else{
+        setrecentData([]);
       }
     }
   }, [documentsDetailsList]);

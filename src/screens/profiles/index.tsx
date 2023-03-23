@@ -63,11 +63,22 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
   };
 
   const _navigateEditMobile = () => {
-    navigation.navigate("EditMobileNumber");
+    if(userDetails?.responseData?.mobileApproved){
+      navigation.navigate("EditMobileNumber");
+    }else{
+      Alert.alert('Please verify the Mobile Number first !')
+    }
+   
   };
 
   const _navigateEditEmail = () => {
-    navigation.navigate("EditEmailAddress");
+    if(userDetails?.responseData?.emailApproved){
+      navigation.navigate("EditEmailAddress");
+    }else{
+      Alert.alert('Please verify the email first !')
+    }
+  
+   
   };
 
   const socialMedialList = values(SCREENS.HOMESCREEN.SocialMedialList).map(
@@ -346,7 +357,7 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
             />
             <Info
               tailIcondisabled={userDetails?.responseData?.emailApproved ? 0.2 : 0.9}
-              tailIconPress={userDetails?.responseData?.emailApproved ? _navigateEditEmail : null}
+              tailIconPress={ ()=> _navigateEditEmail() }
               tailIcon={LocalImages.editIcon}
               subTitlePress={
                 userDetails?.responseData?.emailApproved

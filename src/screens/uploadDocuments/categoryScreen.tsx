@@ -9,7 +9,8 @@ import {
   Dimensions,
   ScrollView,
   TouchableOpacity,
-  Alert
+  Alert,
+  AsyncStorage
 } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import RNFetchBlob from "rn-fetch-blob";
@@ -26,7 +27,7 @@ import { LocalImages } from "../../constants/imageUrlConstants";
 import { SCREENS } from "../../constants/Labels";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { useFetch } from "../../hooks/use-fetch";
-import { saveDocuments } from "../../redux/actions/authenticationAction";
+import { saveDocuments, updateDocuments } from "../../redux/actions/authenticationAction";
 import { Screens } from "../../themes";
 import { alertBox, getCategoriesApi } from "../../utils/earthid_account";
 import { dateTime } from "../../utils/encryption";
@@ -43,9 +44,9 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const pic = route?.params?.fileUri;
   const itemData = route?.params?.itemData;
   const { editDoc,selectedItem } =route?.params;
-  console.log('selectedItem',selectedItem?.name)
+  console.log('selectedItem',selectedItem?.documentName)
  // const typeItem=selectedItem?.name?.split('(')[1].split(')')[0];
- const typeItem=selectedItem?.documentName?.split('(')[1].split(')')[0];
+ const typeItem=selectedItem?.documentName?.split('(')[1]?.split(')')[0];
 
   console.log('selectedItemType',typeItem)
   
@@ -68,7 +69,9 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const _toggleDrawer = () => {
     navigation.openDrawer();
   };
-
+useEffect(()=>{
+ setIsPrceedForLivenessTest(false);
+},[])
 
   const onSubmitAction=()=>{
 
@@ -143,6 +146,7 @@ if(fileUri?.flow==='deeplink'){
   }
 
 }else{
+  console.log('fileUri?.type===>',fileUri?.type)
   if(fileUri?.type==='application/pdf'){
       
     var date = dateTime();
@@ -152,6 +156,7 @@ if(fileUri?.flow==='deeplink'){
     var documentDetails: IDocumentProps = {
   //    name: fileUri?.file?.name,
       documentName: fileUri?.file?.name,
+      id:`ID_VERIFICATION${Math.random()}${"random"}${Math.random()}`,
       path: filePath,
       date: date?.date,
       time: date?.time,
@@ -162,7 +167,8 @@ if(fileUri?.flow==='deeplink'){
       base64: fileUri?.base64,
       categoryType:categoryList[selectedParentIndex].key,
       pdf: true,
-      docName:docname
+      docName:docname,
+      isVerifyNeeded:false
 
     };
     var DocumentList = documentsDetailsList?.responseData
@@ -179,11 +185,78 @@ if(fileUri?.flow==='deeplink'){
 
 }
 else{
-setIsPrceedForLivenessTest(true)
-}
-}
+  const {selfAttested} = route.params
+  if(selfAttested === 'no'){
+    var date = dateTime();
+    const document: any[0] = categoryList[selectedParentIndex]?.value?.filter((data:any)=>data.isSelected)
+    const filePath =
+      RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
+    var documentDetails: IDocumentProps = {
+      id:`ID_VERIFICATION${Math.random()}${selectedDocument}${Math.random()}`,
+      documentName: `${categoryList[selectedParentIndex].key} (${document[0]?.title})`,
+    //  name: `${categoryList[selectedParentIndex].key} (${document[0]?.title})`,
+      path: filePath,
+      date: date?.date,
+      time: date?.time,
+      txId:'e4343434343434443',
+      docType: "jpg",
+      docExt: ".jpg",
+      processedDoc: "",
+      base64: fileUri?.base64,
+      categoryType:categoryList[selectedParentIndex].key,
+      docName:docname,
+      isVerifyNeeded:false
   
+    };
+    var DocumentList = documentsDetailsList?.responseData
+      ? documentsDetailsList?.responseData
+      : [];
+    DocumentList.push(documentDetails);
+    dispatch(saveDocuments(DocumentList));
+    setsuccessResponse(true);
+    setTimeout(() => {
+      setsuccessResponse(false);
+      navigation.navigate("Documents");
+    }, 2000);
+  }else{
+    if(editDoc){
+      const index = documentsDetailsList?.responseData?.findIndex(obj => obj?.id === selectedItem?.id);
+      if (selectedItem ) {
+        if(selectedItem?.isVerifyNeeded){
+          setIsPrceedForLivenessTest(true)
+        }else{
+          setsuccessResponse(true);
+      
+          const obj = documentsDetailsList?.responseData[index];
+          obj.documentName = selectedDocument
+          obj.categoryType =selectedDocument;
+          console.log('index===>',obj)
+          dispatch(updateDocuments(documentsDetailsList?.responseData,index,obj));
+           setTimeout(async () => {
+            setsuccessResponse(false);
+            const item = await AsyncStorage.getItem("flow");
+            if (item === "documentflow") {
+              navigation.navigate("RegisterScreen");
+            } else {
+              navigation.navigate("Documents");
+            }
+          }, 2000);
+        }
+      
+    
+
+
+  }else{
+    setIsPrceedForLivenessTest(true)
   }
+
+}
+  }
+}
+}
+  }
+
+
 
   useEffect(() => {
     getCategories(getCategoriesApi, {}, "GET");
@@ -482,7 +555,7 @@ setIsPrceedForLivenessTest(true)
            
           </View>
         </View>
-        <ModalView height={250} isModalVisible={isPrceedForLivenessTest}>
+        <ModalView height={250}  isModalVisible={isPrceedForLivenessTest}>
           <View
             style={{
               flex: 1,
