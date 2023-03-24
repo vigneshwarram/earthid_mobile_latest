@@ -356,7 +356,7 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
               }}
             />
             <Info
-              tailIcondisabled={userDetails?.responseData?.emailApproved ? 0.2 : 0.9}
+              // tailIcondisabled={userDetails?.responseData?.emailApproved ? 0.2 : 0.9}
               tailIconPress={ ()=> _navigateEditEmail() }
               tailIcon={LocalImages.editIcon}
               subTitlePress={
