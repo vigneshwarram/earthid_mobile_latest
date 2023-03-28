@@ -34,6 +34,8 @@ import { getColor } from "../../../utils/CommonFuntion";
 import { dateTime } from "../../../utils/encryption";
 import RNFetchBlob from "rn-fetch-blob";
 import { IDocumentProps } from "../../uploadDocuments/VerifiDocumentScreen";
+import NetInfo from '@react-native-community/netinfo';
+
 interface IHomeScreenProps {
   navigation?: any;
   route?: any;
@@ -238,6 +240,27 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
       color,
     })
   );
+
+
+  const isNetworkConnect=()=>{
+  
+    NetInfo.fetch().then((state) => {
+      console.log("isconnect", state.isConnected);
+      if (!state.isConnected) {
+        Alert.alert(
+          'Network not connected',
+          'Please check your internet connection and try again.',
+          [{ text: 'OK' }],
+          { cancelable: false },
+        );
+      }
+    });
+  }
+  
+  
+  useEffect(()=>{
+    isNetworkConnect()
+  },[])
 
 
   const _renderItem = ({ item }: any) => {

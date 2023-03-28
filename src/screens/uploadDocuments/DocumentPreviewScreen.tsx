@@ -8,8 +8,9 @@ import {
   Alert,
   AsyncStorage,
   CameraRoll,
+    
 } from "react-native";
-
+import NetInfo from '@react-native-community/netinfo';
 import Button from "../../components/Button";
 import SuccessPopUp from "../../components/Loader";
 import AnimatedLoader from "../../components/Loader/AnimatedLoader";
@@ -87,7 +88,7 @@ const DocumentPreviewScreen = (props: any) => {
                 if (type == "regDoc") {
                   uploadDocumentImage();
                 } else {
-                  uploadDoc();
+                  isNetworkConnect()               
                 }
               },
               style: "cancel",
@@ -109,6 +110,25 @@ const DocumentPreviewScreen = (props: any) => {
       }
       }
      
+  }
+
+
+  const isNetworkConnect=()=>{
+    
+    NetInfo.fetch().then((state) => {
+      console.log("isconnect", state.isConnected);
+      if (!state.isConnected) {
+        Alert.alert(
+          'Network not connected',
+          'Please check your internet connection and try again.',
+          [{ text: 'OK' }],
+          { cancelable: false },
+        );
+      }else{
+        uploadDoc();
+      }
+    });
+    return 
   }
 
   const uploadDoc = async (selfAttested:string) => {

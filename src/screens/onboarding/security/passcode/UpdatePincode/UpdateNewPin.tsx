@@ -7,6 +7,7 @@ import {
   Image,
   AsyncStorage,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import Header from "../../../../../components/Header";
 import { SCREENS } from "../../../../../constants/Labels";
@@ -29,17 +30,27 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
     setCode(format);
   };
   const _navigateAction = async () => {
-    if (code.length === 6) {
+    let oldPin = await AsyncStorage.getItem("passcode");
+   if(oldPin===code){
+      Alert.alert("Enter current passcode as new passcode")
+    }else if (code.length === 6) {
       navigation.navigate("UpdateConfirmPincode", {
         setCode: code,
         type: "pass",
       });
     }
+
   };
 
   useEffect(() => {
     console.log("savedtype==>", route);
+    getOldPass()
   }, []);
+
+  async function getOldPass(){
+    var oldPass = await AsyncStorage.getItem("passcode")
+    console.log("oldPasscode",oldPass)
+  }
 
   return (
     <View style={styles.sectionContainer}>

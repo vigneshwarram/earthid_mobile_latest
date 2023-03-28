@@ -17,6 +17,8 @@ import SmoothPinCodeInput from "react-native-smooth-pincode-input";
 import { LocalImages } from "../../../../../constants/imageUrlConstants";
 import GenericText from "../../../../../components/Text";
 import { isEarthId } from "../../../../../utils/PlatFormUtils";
+import NetInfo from '@react-native-community/netinfo';
+
 
 interface IHomeScreenProps {
   navigation?: any;
@@ -25,6 +27,7 @@ interface IHomeScreenProps {
 
 const Register = ({ navigation, route }: IHomeScreenProps) => {
   const [code, setCode] = useState();
+  const [count, setCount] = useState(4);
   const onPinCodeChange = (code: any) => {
     var format = code.replace(/[^0-9]/g, "");
     setCode(format);
@@ -34,8 +37,20 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
     if (oldPin) {
       if (oldPin === code) {
         navigation.navigate("UpdateNewPin", { setCode: code, type: "new" });
-      } else {
-        Alert.alert("Invalid Pincode");
+      }
+      else if(count==0){
+        Alert.alert("Oops!  Too many attempts!")
+      }      
+      else {
+        setCount(count-1)
+        Alert.alert('Invalid Code', `You have left ${count} attempt`, [
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+          },
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ]);
       }
     } else {
       navigation.navigate("UpdateNewPin", { setCode: code, type: "new" });
@@ -48,7 +63,25 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
 
   useEffect(() => {
     console.log("route==>", route);
+    isNetworkConnect()
   }, []);
+
+  const isNetworkConnect=()=>{
+    
+    NetInfo.fetch().then((state) => {
+      console.log("isconnect", state.isConnected);
+      if (!state.isConnected) {
+        Alert.alert(
+          'Network not connected',
+          'Please check your internet connection and try again.',
+          [{ text: 'OK' }],
+          { cancelable: false },
+        );
+      }
+    });
+  }
+
+
 
   return (
     <View style={styles.sectionContainer}>
@@ -147,6 +180,7 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
           </View>
 
           <Button
+            //disabled={count== 0 ? true : false}
             onPress={_navigateAction}
             style={{
               buttonContainer: {

@@ -8,8 +8,8 @@
  * @format
  */
 
-import React, {  } from "react";
-import { SafeAreaView, StyleSheet, View } from "react-native";
+import React, { useEffect } from "react";
+import { SafeAreaView, StyleSheet, View ,Alert} from "react-native";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/lib/integration/react";
 //@ts-ignore
