@@ -97,7 +97,8 @@ const DocumentPreviewScreen = (props: any) => {
               text: "No",
               onPress: () => {
                 if (type == "regDoc") {
-                  uploadDocumentImage();
+                //  uploadDocumentImage();
+                console.log("cancel")
                 } else {
                   uploadDoc('no');
                 }
