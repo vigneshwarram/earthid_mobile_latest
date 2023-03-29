@@ -281,7 +281,8 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
           return itemData.indexOf(textData) > -1;
         });
         setsearchText(text);
-    
+       console.log(itemdata,'ITEMDATA')
+       
         setSearchedData(newData);
       
      
@@ -404,7 +405,7 @@ function editItem(){
   const _keyExtractor = ({ path }: any) => path.toString();
 
   const getFilteredData = () => {
-    console.log('lusukoothi')
+    console.log('getFilteredData')
     let data = documentsDetailsList?.responseData;
 
     if (categoryTypes !== "") {
@@ -420,18 +421,26 @@ function editItem(){
       return filter;
     }
 
-    if (searchedData.length > 0) {
+    if (searchedData.length > 0) {getFilteredData
       data = searchedData;
       return data;
     }
 
     if (searchedData.length === 0 && searchText != "") {
-      return [];
+      return [];  // earlier []
     }
     console.log("searchedData====>{{}}}}}", data);
     return data;
   };
   const clearData = () => {};
+
+  const listEmpty =()=>{
+    return(
+      <View style={{flex:1,alignItems:'center',}}>
+       <Text>No Documents found</Text>
+      </View>
+    )
+  }
 
   return (
     <View style={styles.sectionContainer}>
@@ -506,7 +515,7 @@ function editItem(){
           <FlatList<any>
             data={getFilteredData()}
             renderItem={_renderItem}
-        
+           ListEmptyComponent={listEmpty}
           />
           
             :
