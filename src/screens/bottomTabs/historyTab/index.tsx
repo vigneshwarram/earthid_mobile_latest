@@ -7,6 +7,7 @@ import {
   Alert,
   Text,
   TouchableOpacity,
+  Image,
 } from "react-native";
 import { json } from "stream/consumers";
 
@@ -220,23 +221,49 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
           linearStyle={styles.linearStyle}
         ></Header>
         <GenericText
-          style={[styles.categoryHeaderText, { fontSize: 14, marginTop: 10 }]}
+          style={[styles.categoryHeaderText, { fontSize: 14, marginTop: 10,color:"black" }]}
         >
           {SCREENS.HOMESCREEN.History}
         </GenericText>
 
-        <FlatList<any>
-          showsHorizontalScrollIndicator={false}
-          // data={
-          //   getHistoryReducer && getHistoryReducer?.responseData
-          //     ? getHistoryReducer.responseData
-          //     : []
-          // }
-          data={data}
-          extraData={data}
-          renderItem={_renderItem}
-          keyExtractor={(item) => item.id}
-        />
+          {
+
+          documentsDetailsList?.responseData && documentsDetailsList?.responseData?.length> 0 ? 
+
+                  <FlatList<any>
+                    showsHorizontalScrollIndicator={false}
+                    // data={
+                    //   getHistoryReducer && getHistoryReducer?.responseData
+                    //     ? getHistoryReducer.responseData
+                    //     : []
+                    // }
+                    data={data}
+                    extraData={data}
+                    renderItem={_renderItem}
+                    keyExtractor={(item) => item.id}
+                  />
+                  :
+                  //  <GenericText
+                  // style={{
+                  // color:"black",
+                  // alignSelf:"center",
+                  // marginTop:"30%",
+                  // fontSize:18
+                  // }}
+                  // >{"norecentactivity"}
+                  // </GenericText>
+
+                  <View style={{ justifyContent: "center", alignItems: "center",marginTop:"30%" }}>
+                  <Image
+                    resizeMode="contain"
+                    style={[styles.logoContainers]}
+                    source={LocalImages.recent}
+                  ></Image>
+                </View>
+
+        }
+
+       
         <AnimatedLoader
           isLoaderVisible={getHistoryReducer?.isLoading}
           loadingText="loading"
@@ -250,6 +277,11 @@ const styles = StyleSheet.create({
   sectionContainer: {
     flex: 1,
     backgroundColor: Screens.colors.background,
+  },
+  logoContainers: {
+    width: 200,
+    height: 150,
+    resizeMode: "contain",
   },
   linearStyle: {
     height: 120,

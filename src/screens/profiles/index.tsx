@@ -430,6 +430,7 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
                 avatarClick={() => {
                 
                   openFilePicker();
+                  setisCameraOptionVisible(false)
                 }}
                 title={"gallery"}
                 icon={LocalImages.galleryImage}
@@ -480,8 +481,8 @@ const styles = StyleSheet.create({
     color: Screens.grayShadeColor,
   },
   logoContainer: {
-    width: 30,
-    height: 30,
+    width: 15,
+    height: 15,
     tintColor: Screens.colors.primary,
   },
   subtitle: {

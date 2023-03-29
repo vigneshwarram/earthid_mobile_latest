@@ -453,17 +453,26 @@ function editItem(){
             }}
             linearStyle={styles.linearStyle}
           ></Header>
+
+      {
+          documentsDetailsList?.responseData && documentsDetailsList?.responseData?.length> 0 ? 
+
           <TextInput
-            leftIcon={LocalImages.searchImage}
-            style={{
-              container: styles.textInputContainer,
-            }}
-            isError={false}
-            isNumeric={false}
-            placeholder={"Search documents"}
-            value={searchText}
-            onChangeText={onChangeHandler}
+          leftIcon={LocalImages.searchImage}
+          style={{
+            container: styles.textInputContainer,
+          }}
+          isError={false}
+          isNumeric={false}
+          placeholder={"Search documents"}
+          value={searchText}
+          onChangeText={onChangeHandler}
           />
+          :
+          null
+    }
+
+         
           {isCheckBoxEnable && (
             <View
               style={{ alignItems: "flex-end", marginTop: 20, marginRight: 25 }}
@@ -511,14 +520,23 @@ function editItem(){
           
             :
 
-            <GenericText
-            style={{
-              color:"black",
-              alignSelf:"center",
-              marginTop:25
-              
-            }}
-            >{"docavailable"}</GenericText>
+            // <GenericText
+            // style={{
+            //   color:"black",
+            //   alignSelf:"center",
+            //   marginTop:"30%",
+            //   fontSize:18
+            // }}
+            // >{"norecentactivity"}
+            // </GenericText>
+
+            <View style={{ justifyContent: "center", alignItems: "center",marginTop:"30%" }}>
+            <Image
+              resizeMode="contain"
+              style={[styles.logoContainers]}
+              source={LocalImages.recent}
+            ></Image>
+          </View>
 
           }        
 
@@ -678,6 +696,11 @@ const styles = StyleSheet.create({
   avatarTextContainer: {
     fontSize: 13,
     fontWeight: "500",
+  },
+  logoContainers: {
+    width: 200,
+    height: 150,
+    resizeMode: "contain",
   },
 });
 

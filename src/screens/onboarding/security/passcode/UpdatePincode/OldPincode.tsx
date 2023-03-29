@@ -39,7 +39,7 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
         navigation.navigate("UpdateNewPin", { setCode: code, type: "new" });
       }
       else if(count==0){
-        Alert.alert("Oops!  Too many attempts!")
+        Alert.alert("Oops, Too many attempts!")
       }      
       else {
         setCount(count-1)

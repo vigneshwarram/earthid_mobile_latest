@@ -158,5 +158,6 @@
   "edit":"Editar",
   "healthcare":"Cuidado de la salud",
   "docavailable":"No hay documentos disponibles",
-  "employment":"Empleo"
+  "employment":"Empleo",
+  "norecentactivity":"No hay actividad reciente"
 }
