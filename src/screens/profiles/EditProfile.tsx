@@ -116,6 +116,7 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
     const data = await camRef.current.takePictureAsync(options);
     console.log("data", data);
     if (data) {
+      AsyncStorage.setItem("profilePic",data?.uri)
       disPatch(savingProfilePictures(data?.uri));
       setIsCameraVisible(false);
       setcameraDataUri(data?.uri);
@@ -161,18 +162,28 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
     }
   };
   useEffect(() => {
-    if (Response != "") {
-      if(Response?.assets?.length>0){
-        console.log("==>result", Response?.assets[0]?.uri);
-        let fileUri = Response?.assets[0]?.uri;
-        disPatch(savingProfilePictures(fileUri));
-        setIsCameraVisible(false);
-        setcameraDataUri(fileUri);
-        setisCameraOptionVisible(false);
-      }
-   
+    if(Response && Response?.assets){
+      console.log('Response==>sddwsdxsw',Response)
+      saveImage()
     }
   }, [Response]);
+
+
+  const saveImage = async() =>{
+    if(Response?.assets?.length>0){
+      console.log('ImageResult==>',Response?.assets[0]?.uri)
+      let fileUri = Response?.assets[0]?.uri;
+      disPatch(savingProfilePictures(fileUri));
+      setIsCameraVisible(false);
+      setcameraDataUri(fileUri);
+      setisCameraOptionVisible(false);
+      await AsyncStorage.setItem("profilePic",fileUri)
+
+  
+    }
+  }
+
+
   const _renderItem = ({ item, index }: any) => {
     return (
       <View>

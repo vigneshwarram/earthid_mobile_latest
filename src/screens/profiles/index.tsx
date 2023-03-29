@@ -43,7 +43,6 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
   const [pic, setPic] = useState<any>('');
 
   const camRef: any = useRef();
-  console.log("profilePicture", profilePicture);
   const { colors } = useTheme();
   const disPatch = useAppDispatch();
   const [cameraDataUri, setcameraDataUri] = useState();
@@ -52,7 +51,6 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
   if (isDrawerOpen) {
     navigation.closeDrawer();
   }
-  console.log("isDrawerOpen", isDrawerOpen);
   const [isCameraOptionVisible, setisCameraOptionVisible] =
     useState<boolean>(false);
   const _navigateAction = () => {
@@ -130,6 +128,7 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
     const data = await camRef.current.takePictureAsync(options);
     console.log("data", data);
     if (data) {
+      AsyncStorage.setItem("profilePic",data?.uri)
       disPatch(savingProfilePictures(data?.uri));
       setIsCameraVisible(false);
       setcameraDataUri(data?.uri);
@@ -182,26 +181,32 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
 
   const getImage= async ()=>{
     const profilePic = await AsyncStorage.getItem("profilePic")
-    disPatch(savingProfilePictures(profilePic))
-    console.log('GetImage=>',profilePic)
+    console.log('profilePic',profilePic)
+    setcameraDataUri(profilePic);
+    disPatch(savingProfilePictures(profilePic));
   }
 
 
   useEffect(() => {
-    if(Response != ''){
-      if(Response?.assets?.length>0){
-        console.log('ImageResult==>',Response?.assets[0]?.uri)
-        let fileUri = Response?.assets[0]?.uri;
-        disPatch(savingProfilePictures(fileUri));
-        setIsCameraVisible(false);
-        setcameraDataUri(fileUri);
-        console.log('ImageJson==>',JSON.stringify(fileUri))
-        AsyncStorage.setItem("profilePic",fileUri)
-      }
+ 
+    if(Response && Response?.assets){
+      console.log('Response==>sddwsdxsw',Response)
+      saveImage()
     }
   }, [Response]);
 
-
+    const saveImage = async() =>{
+      if(Response?.assets?.length>0){
+        console.log('ImageResult==>',Response?.assets[0]?.uri)
+        let fileUri = Response?.assets[0]?.uri;
+              disPatch(savingProfilePictures(fileUri));
+        setIsCameraVisible(false);
+        setcameraDataUri(fileUri);
+        await AsyncStorage.setItem("profilePic",fileUri)
+  
+    
+      }
+    }
 
 
   const mobileVerifyAction = () => {
