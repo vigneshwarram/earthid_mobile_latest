@@ -100,7 +100,7 @@ const DocumentPreviewScreen = (props: any) => {
                 //  uploadDocumentImage();
                 console.log("cancel")
                 } else {
-                  uploadDoc('no');
+                  NetworkConnect()
                 }
   
               },
@@ -113,6 +113,22 @@ const DocumentPreviewScreen = (props: any) => {
      
   }
 
+  const NetworkConnect=()=>{
+    
+    NetInfo.fetch().then((state) => {
+      console.log("isconnect", state.isConnected);
+      if (!state.isConnected) {
+        Alert.alert(
+          'Network not connected',
+          'Please check your internet connection and try again.',
+          [{ text: 'OK' }],
+          { cancelable: false },
+        );
+      }else{
+        uploadDoc('no');
+      }
+    });
+  }
 
   const isNetworkConnect=()=>{
     
@@ -129,7 +145,6 @@ const DocumentPreviewScreen = (props: any) => {
         uploadDoc();
       }
     });
-    return 
   }
 
   const uploadDoc = async (selfAttested:string) => {
