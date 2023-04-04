@@ -35,6 +35,7 @@ interface IHomeScreenProps {
   navigation?: any;
 }
 
+//praveen
 const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
   const userDetails = useAppSelector((state) => state.account);
   const profilePicture = useAppSelector((state) => state.savedPic);
