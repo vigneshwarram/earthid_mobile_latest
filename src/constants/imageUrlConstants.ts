@@ -60,6 +60,7 @@ export const LocalImages = {
   touchidpic: require("../../resources/images/touchidpic.png"),
   nexticon: require("../../resources/images/nexticon.png"),
   backicon: require("../../resources/images/backicon.png"),
+  iccalogo: require("../../resources/images/iccalogo.png"),
 
   //categories
   CATEGORIES: {

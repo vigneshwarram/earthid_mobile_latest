@@ -116,7 +116,7 @@ const Header = ({
               <Image
                 resizeMode="contain"
                 style={[styles.logoContainer, containerStyle.iconStyle]}
-                source={LocalImages.logoImage}
+                source={LocalImages.iccalogo}
               ></Image>
             </View>
           </View>
@@ -157,7 +157,7 @@ const Header = ({
                   <Image
                     resizeMode="contain"
                     style={[styles.logoContainer]}
-                    source={LocalImages.logoImage}
+                    source={LocalImages.iccalogo}
                   ></Image>
                 </View>
               </TouchableOpacity>
