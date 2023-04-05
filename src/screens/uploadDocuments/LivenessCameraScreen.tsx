@@ -95,9 +95,12 @@ const LivenessCameraScreen = (props: any) => {
         if (!hasMoved && avg > 0.5) {
           console.log("ReadData",avg, min);
           Snackbar.show({
-            text: 'Please look at the camera!',
+            text: 'Please look into the camera',
             duration: Snackbar.LENGTH_SHORT,
+            
+             
           });
+          
           if (min < threshold && faceId === faceArray.faces[0].faceID) {
             setmaskedColor("green");
             SnackBar({
