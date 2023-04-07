@@ -13,7 +13,7 @@ import DocumentPicker from "react-native-document-picker";
 import Button from "../../components/Button";
 import { LocalImages } from "../../constants/imageUrlConstants";
 import { Screens } from "../../themes/index";
-import DocumentMask from "../uploadDocuments/DocumentMask";
+import DocumentMasks from "../uploadDocuments/DocumentMasks";
 import RNFS from "react-native-fs";
 import GenericText from "../../components/Text";
 import { useFetch } from "../../hooks/use-fetch";
@@ -157,7 +157,7 @@ const UploadScreen = (props: any) => {
         captureAudio={false}
         onBarCodeRead={(data) => _handleBarCodeRead(data)}
       >
-        <DocumentMask />
+        <DocumentMasks />
       </RNCamera>
       <GenericText
         style={{

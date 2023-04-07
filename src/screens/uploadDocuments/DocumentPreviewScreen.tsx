@@ -86,22 +86,24 @@ const DocumentPreviewScreen = (props: any) => {
               text: "Yes",
               onPress: () => {
                 if (type == "regDoc") {
-                  uploadDocumentImage();
-                } else {
-                  isNetworkConnect()               
-                }
+                  //  uploadDocumentImage();
+                  console.log("cancel")
+                  } else {
+                    NetworkConnect()
+                  }
               },
               style: "cancel",
             },
             {
               text: "No",
               onPress: () => {
+
                 if (type == "regDoc") {
-                //  uploadDocumentImage();
-                console.log("cancel")
+                  uploadDocumentImage();
                 } else {
-                  NetworkConnect()
+                  isNetworkConnect()               
                 }
+               
   
               },
             },

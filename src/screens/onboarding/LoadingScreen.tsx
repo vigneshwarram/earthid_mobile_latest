@@ -75,6 +75,7 @@ const LoadingScreen = ({ navigation }: ILoadingScreen) => {
 
   useEffect(() => {
     if (userDetails?.responseData) {
+      console.log('userDetails===>',userDetails)
       checkAuth();
     } else {
       navigation.dispatch(StackActions.replace("AuthStack"));
