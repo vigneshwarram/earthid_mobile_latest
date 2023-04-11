@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   Platform,
+  
 } from "react-native";
 import { RNCamera } from "react-native-camera";
 
@@ -14,6 +15,7 @@ import GenericText from "../../components/Text";
 import { LocalImages } from "../../constants/imageUrlConstants";
 import { Screens } from "../../themes/index";
 import DocumentMask from "../uploadDocuments/DocumentMask";
+import Snackbar from "react-native-snackbar";
 
 const LivenessCameraScreen = (props: any) => {
   const { fileUri, selectedDocument } = props.route.params;
@@ -91,7 +93,14 @@ const LivenessCameraScreen = (props: any) => {
           }
         }
         if (!hasMoved && avg > 0.5) {
-          console.log(avg, min);
+          console.log("ReadData",avg, min);
+          Snackbar.show({
+            text: 'Please look into the camera',
+            duration: Snackbar.LENGTH_SHORT,
+            
+             
+          });
+          
           if (min < threshold && faceId === faceArray.faces[0].faceID) {
             setmaskedColor("green");
             SnackBar({

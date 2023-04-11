@@ -570,6 +570,7 @@ const CameraScreen = (props: any) => {
                   getDropDownList()?.map(
                     (
                       item: {
+                        documentName: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null | undefined;
                         id: any;
                         name:
                           | boolean
@@ -581,6 +582,7 @@ const CameraScreen = (props: any) => {
                       },
                       index: any
                     ) => {
+                      console.log('item',item)
                       return (
                         <View
                           style={{ flexDirection: "row", marginVertical: 10 }}
@@ -627,7 +629,7 @@ const CameraScreen = (props: any) => {
                                 fontWeight: "300",
                               }}
                             >
-                              {item.name}
+                              {item.name || item?.documentName}
                             </GenericText>
                           </View>
                         </View>

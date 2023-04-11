@@ -127,10 +127,10 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
   };
 
   const _renderItem = ({ item, index }: any) => {
-    AsyncStorage.setItem("day", item.date);
-    setEdit(item)
-    setitemdata(item)
-  
+    // AsyncStorage.setItem("day", item.date);
+    // setEdit(item)
+    // setitemdata(item)
+  console.log('itemss===>',item)
     return (
       <TouchableOpacity
         onLongPress={() =>{
@@ -179,7 +179,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
                 { fontSize: 15, fontWeight: "bold", marginHorizontal: 9 },
               ]}
             >
-              {item?.categoryType}
+              {item?.isVc?item.name:item?.categoryType}
             </GenericText>
           </View>
         </View>
@@ -191,7 +191,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
             absoluteCircleInnerImage={LocalImages.upImage}
             rightIconSrc={LocalImages.menuImage}
             rightIconOnPress={() => _rightIconOnPress(item) }
-            title={item?.docName}
+            title={item?.isVc ?item.name : item?.docName}
             subtitle={
               item.isVc
                 ? `      Received  : ${item.date}`
@@ -207,7 +207,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
               ...styles.cardContainer,
               ...{
                 avatarContainer: {
-                  backgroundColor: getImagesColor(item),
+                  backgroundColor:item?.isVc?'#D7EFFB': getImagesColor(item),
                   width: 60,
                   height: 60,
                   borderRadius: 20,
@@ -216,7 +216,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
                   marginRight: 5,
                 },
                 uploadImageStyle: {
-                  backgroundColor: getImagesColor(item),
+                  backgroundColor:item?.isVc?'#D7EFFB': getImagesColor(item),
                   borderRadius: 25,
                   borderWidth: 3,
                   bordercolor: "#fff",

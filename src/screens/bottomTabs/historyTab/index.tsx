@@ -70,7 +70,7 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
   };
   const getImagesColor = (item: any) => {
     let colors = item?.documentName;
-    let iteName = colors.trim()?.split("(")[0]?.trim();
+    let iteName = colors?.trim()?.split("(")[0]?.trim();
     return getColor(iteName);
   };
   const _renderItem = ({ item }: any) => {
@@ -149,7 +149,7 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
                 { fontSize: 15, fontWeight: "bold", marginHorizontal: 9 },
               ]}
             >
-              {item?.categoryType}
+              {item?.isVc?item.name:item?.categoryType}
             </GenericText>
           </View>
         </View>
@@ -161,13 +161,13 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
             absoluteCircleInnerImage={LocalImages.upImage}
             // rightIconSrc={LocalImages.menuImage}
             rightIconOnPress={() => _rightIconOnPress(item)}
-            title={item?.docName}
+            title={item?.isVc ?item.name : item?.docName}
             subtitle={`      Uploaded  : ${item.date}`}
             style={{
               ...styles.cardContainer,
               ...{
                 avatarContainer: {
-                  backgroundColor: getImagesColor(item),
+                  backgroundColor:item?.isVc?'#D7EFFB': getImagesColor(item),
                   width: 60,
                   height: 60,
                   borderRadius: 20,
@@ -176,7 +176,7 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
                   marginRight: 5,
                 },
                 uploadImageStyle: {
-                  backgroundColor: getImagesColor(item),
+                  backgroundColor:item?.isVc?'#D7EFFB': getImagesColor(item),
                   borderRadius: 25,
                   borderWidth: 3,
                   bordercolor: "#fff",
