@@ -54,7 +54,7 @@ const LivenessCameraScreen = (props: any) => {
   const _handleBarCodeRead = async (faceArray: any) => {
     if (!faceDetected) {
       // Face Recognition algorithm
-      if (faceArray.faces.length === 1 && faceCount < 15) {
+      if (faceArray.faces.length === 1 && faceCount < 2) {
         var id = faceArray.faces[0].faceID;
         if (faceId === null) {
           faceId = id;

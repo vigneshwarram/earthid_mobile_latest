@@ -200,7 +200,7 @@ const CameraScreen = (props: any) => {
     let datas = [];
     datas = documentsDetailsList?.responseData;
     if (barCodeDataDetails?.requestType === "shareCredentials") {
-      datas = datas?.filter((item) => item.isVc);
+      datas = datas?.filter((item: { isVc: any; }) => item.isVc);
       return datas;
     }
     return datas;
@@ -234,6 +234,9 @@ const CameraScreen = (props: any) => {
           processedDoc: "",
           isVc: true,
         }),
+        documentName: "",
+        docName: "",
+        base64: undefined
       };
 
       var DocumentList = documentsDetailsList?.responseData
@@ -278,6 +281,8 @@ const CameraScreen = (props: any) => {
           processedDoc: "",
           isVc: true,
         }),
+        docName: "",
+        base64: undefined
       };
 
       var DocumentList = documentsDetailsList?.responseData

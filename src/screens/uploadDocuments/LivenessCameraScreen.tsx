@@ -59,7 +59,7 @@ const LivenessCameraScreen = (props: any) => {
   const _handleBarCodeRead = async (faceArray: any) => {
     if (!faceDetected) {
       // Face Recognition algorithm
-      if (faceArray.faces.length === 1 && faceCount < 15) {
+      if (faceArray.faces.length === 1 && faceCount < 2) {
         var id = faceArray.faces[0].faceID;
         if (faceId === null) {
           faceId = id;
@@ -73,7 +73,7 @@ const LivenessCameraScreen = (props: any) => {
       } else {
         var avg = average(rightEyeOpen);
         var min = Math.min(...rightEyeOpen);
-        var threshold = avg / 2;
+        var threshold = avg / 5;
         var hasMoved = false;
         for (let index = 0; index < faceOrigin.length - 1; index++) {
           var displacement = distance(
@@ -101,7 +101,7 @@ const LivenessCameraScreen = (props: any) => {
              
           });
           
-          if (min < threshold && faceId === faceArray.faces[0].faceID) {
+          if (faceId === faceArray.faces[0].faceID) {
             setmaskedColor("green");
             SnackBar({
               indicationMessage: "Thank you",

@@ -15,7 +15,7 @@ export const QrScannerMaskedWidget = ({ color }: IQrScannerProps) => {
       />
       <View style={styles.maskCenter}>
         <View style={[{ width: maskColWidth }, styles.maskFrame]} />
-        <View style={[styles.maskInner, { borderColor: 'green' }]}></View>
+        <View style={[styles.maskInners, { borderColor: 'green' }]}></View>
 
         <View style={[{ width: maskColWidth }, styles.maskFrame]} />
       </View>
@@ -67,8 +67,18 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     position: "relative",
   },
+  maskInners: {
+    width: width - 10,
+    height:300,
+    backgroundColor: "transparent",
+    borderColor: "green",
+    borderStyle: "dotted",
+    borderWidth: 5,
+    borderRadius: 30,
+    position: "relative",
+  },
   maskFrame: {
-    backgroundColor: "rgba(1,1,1,0.1)",
+  
   },
   maskRow: {
     width: "100%",
