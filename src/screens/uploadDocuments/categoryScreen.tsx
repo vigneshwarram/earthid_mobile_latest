@@ -578,7 +578,7 @@ setIsPrceedForLivenessTest(true)
               <Image
                 resizeMode="contain"
                 style={[styles.logoContainer]}
-                source={LocalImages.logoImage}
+                source={LocalImages.iccalogo}
               ></Image>
             </View>
 
