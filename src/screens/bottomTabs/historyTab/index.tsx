@@ -161,7 +161,7 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
             absoluteCircleInnerImage={LocalImages.upImage}
             // rightIconSrc={LocalImages.menuImage}
             rightIconOnPress={() => _rightIconOnPress(item)}
-            title={item?.isVc ?item.name : item?.docName}
+            title={item?.isVc ?item.name : item?.documentName}
             subtitle={`      Uploaded  : ${item.date}`}
             style={{
               ...styles.cardContainer,
