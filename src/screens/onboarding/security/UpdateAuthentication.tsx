@@ -47,7 +47,17 @@ const UpdateAuthentication = (props: any) => {
     // } 
     
     else {
-      props.navigation.navigate(item.card,{type:"pass"});
+      if(item.card=="UpdateFaceId"){
+        console.log("UpdateFaceId==>","UpdateFaceId");
+        props.navigation.navigate("PasswordCheck1",{passingType:"UpdateFaceId"})
+      }else if(item.card=="OldPincode"){
+        console.log("OldPincode==>","OldPincode");
+        props.navigation.navigate("PasswordCheck1",{passingType1:"OldPincode"})
+      }else if(item.card=="UpdateTouchId"){
+        console.log("UpdateTouchId==>","UpdateTouchId");
+        props.navigation.navigate("PasswordCheck1",{passingType2:"UpdateTouchId"})
+      }
+    //  props.navigation.navigate(item.card,{type:"pass"});
     }
   };
   useEffect(() => {

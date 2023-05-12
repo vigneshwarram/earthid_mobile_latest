@@ -343,12 +343,12 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
           navigation.navigate("ViewCredential", { documentDetails: item })
         }
       >
-        {item?.docName && item?.docName !== undefined && (
+        {item?.documentName && item?.documentName !== undefined && (
           <Card
             leftAvatar={LocalImages.documentsImage}
             absoluteCircleInnerImage={LocalImages.upImage}
             // rightIconSrc={LocalImages.menuImage}
-            title={item?.docName}
+            title={item?.documentName}
             subtitle={`      Uploaded  : ${item.date}`}
             style={{
               ...styles.cardContainers,

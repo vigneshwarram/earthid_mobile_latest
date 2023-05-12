@@ -27,6 +27,7 @@ import UploadDocumentPreviewScreen from "../screens/UploadQr/UploadDocumentPrevi
 import FaceCheck from "../screens/FaceRegister/FaceCheck";
 import LivenessCameraScreen from "../screens/uploadDocuments/LivenessCameraScreen";
 import VerifiDocumentScreen from "../screens/uploadDocuments/VerifiDocumentScreen";
+import PasswordCheck1 from "../screens/onboarding/security/passcode/PasswordCheck1";
 
 // Before rendering any navigation stack
 const animations: any = SlidAnimation;
@@ -92,6 +93,14 @@ export default function RootNavigator() {
           }}
           name={"AuthStack"}
           component={AuthStack}
+        />
+        
+        <Stack.Screen
+          options={{
+            ...animations,
+          }}
+          name={"PasswordCheck1"}
+          component={PasswordCheck1}
         />
 
         <Stack.Screen

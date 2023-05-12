@@ -191,7 +191,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
             absoluteCircleInnerImage={LocalImages.upImage}
             rightIconSrc={LocalImages.menuImage}
             rightIconOnPress={() => _rightIconOnPress(item) }
-            title={item?.isVc ?item.name : item?.docName}
+            title={item?.isVc ?item.name : item?.documentName}
             subtitle={
               item.isVc
                 ? `      Received  : ${item.date}`
@@ -270,11 +270,12 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
 
   const onChangeHandler = (text: any) => {
 
+    // docName to documentName
         const newDataItem=  documentsDetailsList?.responseData || []
         const newData =newDataItem.filter(function (item: {
-          docName: string;
+          documentName: string;
         }) {
-          const itemData = item.docName ? item?.docName.toUpperCase() : "".toUpperCase();
+          const itemData = item.documentName ? item?.documentName.toUpperCase() : "".toUpperCase();
     
           const textData = text?.toUpperCase();
     
