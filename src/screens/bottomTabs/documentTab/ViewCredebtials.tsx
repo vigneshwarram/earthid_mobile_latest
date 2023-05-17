@@ -40,6 +40,8 @@ const DocumentPreviewScreen = (props: any) => {
   ] = useState<boolean>(false);
   const [selectedItem, setselectedItem] = useState(documentDetails);
   console.log("documentDetails?.base64", documentDetails?.base64);
+  console.log("documentDetails?.base64", documentDetails?.docName);
+  console.log("documentDetails?.base64", documentDetails?.docType);
   const resources = {
     file:
       Platform.OS === "ios"
@@ -200,7 +202,9 @@ const DocumentPreviewScreen = (props: any) => {
             style={{
               flex: 1,
             }}
-            source={{ uri: documentDetails.base64 }}
+            source={{ uri: documentDetails?.docType == "jpg"? `data:image/jpeg;base64,${documentDetails?.base64}`
+            :  `data:image/png;base64,${documentDetails?.base64}`
+          }}
           ></Image>
         ) : (
           <GenericText style={{ color: "#fff", marginVertical: 50 }}>

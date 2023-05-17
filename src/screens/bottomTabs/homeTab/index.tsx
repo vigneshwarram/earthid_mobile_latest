@@ -348,7 +348,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
             leftAvatar={LocalImages.documentsImage}
             absoluteCircleInnerImage={LocalImages.upImage}
             // rightIconSrc={LocalImages.menuImage}
-            title={item?.documentName}
+            title={item?.documentName.split("(")[1].split(")")[0] == "undefined" ?item?.docName : item?.documentName}
             subtitle={`      Uploaded  : ${item.date}`}
             style={{
               ...styles.cardContainers,

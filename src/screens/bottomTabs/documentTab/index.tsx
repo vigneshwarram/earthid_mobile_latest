@@ -191,7 +191,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
             absoluteCircleInnerImage={LocalImages.upImage}
             rightIconSrc={LocalImages.menuImage}
             rightIconOnPress={() => _rightIconOnPress(item) }
-            title={item?.isVc ?item.name : item?.documentName}
+            title={item?.isVc ?item.name : item?.documentName.split("(")[1].split(")")[0] == "undefined" ?item?.docName : item?.documentName}
             subtitle={
               item.isVc
                 ? `      Received  : ${item.date}`
@@ -331,11 +331,11 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
       console.log("selectedItem?.base64===>", selectedItem?.base64);
       if (selectedItem?.docType === "jpg") {
         await Share.open({
-          url: selectedItem?.base64,
+          url:`data:image/jpeg;base64,${selectedItem?.base64}`,
         });
       } else {
         await Share.open({
-          url: `data:image/jpeg;base64,${selectedItem?.base64}`,
+          url: `data:image/png;base64,${selectedItem?.base64}`,
         });
       }
     }
