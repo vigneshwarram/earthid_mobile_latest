@@ -31,7 +31,7 @@ export default QrScannerMaskedWidget;
 const styles = StyleSheet.create({
   maskOutter: {
     position: "absolute",
-    top: 200,
+    top:55,
     left: 0,
     width: "100%",
     height: "50%",
