@@ -100,6 +100,10 @@ const CameraScreen = (props: any) => {
   const [successMessage, setsuccessMessage] = useState(
     "verification successfully"
   );
+
+
+  
+
   const _handleBarCodeRead = (barCodeData: any) => {
     let serviceData = JSON.parse(barCodeData.data);
     console.log("barcodedata", serviceData);
@@ -349,12 +353,18 @@ const CameraScreen = (props: any) => {
     if (barCodeDataDetails) {
       let data;
       if (barCodeDataDetails?.requestType === "login") {
+        console.log("login", "true");
         data = {
           sessionKey: barCodeDataDetails?.sessionKey,
           encrypted_object: {
             earthId: userDetails?.responseData?.earthId,
             pressed: false,
-          },
+            userName: userDetails?.responseData?.username,
+            userEmail: userDetails?.responseData?.email,
+            userMobileNo: userDetails?.responseData?.phone,
+            publicKey:keys?.responseData?.result?.publicKey,
+            userDid:keys?.responseData?.userDid
+          },         
         };
       } else if (barCodeDataDetails?.requestType === "generateCredentials") {
         data = {
@@ -382,6 +392,8 @@ const CameraScreen = (props: any) => {
             reqNo: barCodeDataDetails?.reqNo,
             kycToken:
               "6hrFDATxrG9w14QY9wwnmVhLE0Wg6LIvwOwUaxz761m1JfRp4rs8Mzozk5xhSkw0_MQz6bpcJnrFUDwp5lPPFC157dHxbkKlDiQ9XY3ZIP8zAGCsS8ruN2uKjIaIargX",
+              publicKey:keys?.responseData?.result?.publicKey,
+              userDid:keys?.responseData?.userDid
           },
         };
       } else if (barCodeDataDetails.requestType === "shareCredentials") {

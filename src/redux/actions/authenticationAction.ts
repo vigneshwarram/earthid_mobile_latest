@@ -43,7 +43,7 @@ export const GeneratedKeysAction =
         "GET",
         responseData?.result?.publicKey
       );
-      responseDataSSI = await _responseHandler(responsedataSSI);
+        responseDataSSI = await _responseHandler(responsedataSSI);
       console.log("responseDatassi==>", responseDataSSI);
       const data = {
         userDid: responseDataSSI.data,
