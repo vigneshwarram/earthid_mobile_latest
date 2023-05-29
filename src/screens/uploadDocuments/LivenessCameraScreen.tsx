@@ -92,7 +92,7 @@ const LivenessCameraScreen = (props: any) => {
             break;
           }
         }
-        if (!hasMoved && avg > 0.5) {
+        if ( avg > 0.5) {
           console.log("ReadData",avg, min);
           Snackbar.show({
             text: 'Please look into the camera',

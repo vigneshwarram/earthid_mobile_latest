@@ -161,7 +161,7 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
             absoluteCircleInnerImage={LocalImages.upImage}
             // rightIconSrc={LocalImages.menuImage}
             rightIconOnPress={() => _rightIconOnPress(item)}
-            title={item?.isVc ?item.name : item?.documentName.split("(")[1].split(")")[0] == "undefined" ?item?.docName : item?.documentName}
+            title={item?.isVc ?item.name : item?.documentName?.split("(")[1]?.split(")")[0] == "undefined" ?item?.docName : item?.documentName}
             subtitle={`      Uploaded  : ${item.date}`}
             style={{
               ...styles.cardContainer,

@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>HostAppBundleIdentifier</key>
-	<string>com.earthid</string>
+	<string>org-globallid-tech</string>
 	<key>HostAppURLScheme</key>
 	<string>mycustomscheme://</string>
 	<key>NSAppTransportSecurity</key>
@@ -38,11 +38,11 @@ SUBQUERY (
         SUBQUERY (
             $extensionItem.attachments,
             $attachment,
-            ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "com.adobe.pdf"
-            || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.file-url"
-            || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.url"
-            || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.jpeg"
-            || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.png"
+            ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;com.adobe.pdf&quot;
+            || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.file-url&quot;
+            || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.url&quot;
+            || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.jpeg&quot;
+            || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.png&quot;
         ).@count == $extensionItem.attachments.@count
 ).@count &gt;= 1
 </string>
