@@ -44,7 +44,8 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const pic = route?.params?.fileUri;
   const itemData = route?.params?.itemData;
   const { editDoc,selectedItem } =route?.params;
-  console.log('selectedItem',selectedItem?.documentName)
+  const imageName = route?.params?.imageName
+  console.log('fileUri=====>',selectedItem)
  // const typeItem=selectedItem?.name?.split('(')[1].split(')')[0];
  const typeItem=selectedItem?.documentName?.split('(')[1]?.split(')')[0];
 
@@ -53,7 +54,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const [isPrceedForLivenessTest, setIsPrceedForLivenessTest] = useState(false);
   const [categoryList, setCategoryList] = useState([]);
   const [selectedDocument, setselectedDocument] = useState();
-  const [docname, setDocname] = useState("");
+  const [docname, setDocname] = useState(imageName);
   const [selectedParentIndex, setSelectedParentIndex] = useState(0);
   const documentsDetailsList = useAppSelector((state) => state.Documents);
   const [successResponse, setsuccessResponse] = useState(false);
@@ -129,6 +130,7 @@ if(fileUri?.flow==='deeplink'){
       docExt: ".jpg",
       processedDoc: "",
       base64: fileUri?.base64,
+      type:'deeplink',
       categoryType:categoryList[selectedParentIndex].key,
       docName:docname
   

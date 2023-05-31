@@ -160,7 +160,8 @@ const DocumentPreviewScreen = (props: any) => {
       }
     } else {
       console.log("fileUri==>", fileUri);
-      props.navigation.navigate("categoryScreen", { fileUri ,editDoc,selfAttested});
+      const imageName = props?.route?.params?.imageName
+      props.navigation.navigate("categoryScreen", { fileUri ,editDoc,selfAttested,imageName:imageName});
       console.log("success==>", "Success");
     }
   };

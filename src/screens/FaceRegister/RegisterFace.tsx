@@ -93,9 +93,9 @@ const LivenessCameraScreen = (props: any) => {
             break;
           }
         }
-        if (!hasMoved && avg > 0.5) {
+        if ( avg > 0.5) {
           console.log(avg, min);
-          if (min < threshold && faceId === faceArray.faces[0].faceID) {
+          if (faceId === faceArray.faces[0].faceID) {
             setmaskedColor("green");
             SnackBar({
               indicationMessage: "Aww, Thank you",

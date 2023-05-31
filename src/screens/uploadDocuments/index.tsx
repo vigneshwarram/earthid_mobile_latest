@@ -56,7 +56,7 @@ const UploadScreen = (props: any) => {
       });
 
       let fileUri = resp[0].uri;
-      console.log("check==>####", resp[0]);
+      console.log("resp[0]?.name==>####", resp[0]?.name);
       fileUri= resp[0]?.uri?.replaceAll('%20',' ')
       RNFS.readFile(fileUri, "base64").then((res) => {
         console.log("res", resp);
@@ -69,18 +69,21 @@ const UploadScreen = (props: any) => {
               base64: res,
               file: resp[0],
               type: "application/pdf",
+              imageName:resp[0]?.name
             },
           });
           
           
           
         } else {
+          console.log("check==>####", resp[0]);
           props.navigation.navigate("DocumentPreviewScreen", {
             fileUri: {
               uri: `data:image/png;base64,${res}`,
               base64: res,
               file: resp[0],
               type: "qrRreader",
+              imageName:resp[0]?.name
             },
           });
         }
@@ -210,7 +213,7 @@ const UploadScreen = (props: any) => {
       >
         {"or"}
       </GenericText>
-      <Button
+      {/* <Button
         onPress={openFilePicker}
         leftIcon={LocalImages.upload}
         style={{
@@ -225,7 +228,7 @@ const UploadScreen = (props: any) => {
           },
         }}
         title={"uploadgallery"}
-      ></Button>
+      ></Button> */}
       {loading ||
         (getHistoryReducer?.isLoading && (
           <View style={styles.loading}>

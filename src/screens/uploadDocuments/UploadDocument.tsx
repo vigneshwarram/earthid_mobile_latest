@@ -182,6 +182,7 @@ const UploadDocument = (props: any) => {
 
   useEffect(() => {
     if (imageResponse != "" && !imageResponse?.didCancel) {
+  
       console.log("==>result", imageResponse?.assets[0]?.uri);
       let fileUri = imageResponse?.assets[0]?.uri;
       // disPatch(savingProfilePictures(fileUri));
