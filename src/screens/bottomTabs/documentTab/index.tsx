@@ -76,6 +76,8 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
   //   chek === undefined ? console.log("All posts") : console.log("filtrd");
   // }, [route?.params?.category]);
 
+  console.log("All posts",selectedItem)
+
   const [isBottomSheetForFilterVisible, setisBottomSheetForFilterVisible] =
     useState<boolean>(false);
   const [isBottomSheetForShare, setIsBottomSheetForShare] =
@@ -329,11 +331,22 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
       });
     } else {
       console.log("selectedItem?.base64===>", selectedItem?.base64);
-      if (selectedItem?.docType === "jpg") {
+      if(selectedItem?.isLivenessImage === 'livenessImage'){
+        await Share.open({
+          url: selectedItem?.base64,
+        });
+
+      }else if(selectedItem?.type === 'deeplink'){
+        await Share.open({
+          url:selectedItem?.base64,
+        });
+      }else if (selectedItem?.docType === "jpg") {
         await Share.open({
           url:`data:image/jpeg;base64,${selectedItem?.base64}`,
         });
-      } else {
+      }
+      
+      else {
         await Share.open({
           url: `data:image/png;base64,${selectedItem?.base64}`,
         });

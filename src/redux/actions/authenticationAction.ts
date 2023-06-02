@@ -10,6 +10,7 @@ import { URI } from "../../constants/URLContstants";
 import { SnackBar } from "../../components/SnackBar";
 import { IUserAccountRequest } from "../../typings/AccountCreation/IUserAccount";
 import { IUserSchemaRequest } from "../../typings/AccountCreation/IUserSchema";
+import { generateIssuerDid } from "../../utils/earthid_account";
 const {
   ACCOUNT: {
     CREATE_ACCOUNT: createAccountUrl,
@@ -27,7 +28,7 @@ let createSchemaUrl = "https://ssi-gbg.myearth.id/api/issuer/createSchema";
 export const GeneratedKeysAction =
   () =>
   async (dispatch: any): Promise<any> => {
-    let responseData, responseDataSSI;
+    let responseData, responseDataSSI, responseIssuerDid
     try {
       dispatch({
         type: ACTION_TYPES.GENERATED_KEYS_LOADING,
@@ -45,8 +46,20 @@ export const GeneratedKeysAction =
       );
         responseDataSSI = await _responseHandler(responsedataSSI);
       console.log("responseDatassi==>", responseDataSSI);
+
+      //IssuerDid
+
+      const issuerDataSSI = await ssiGetCall(
+        generateIssuerDid,
+        "GET",
+        responseData?.result?.publicKey
+      );
+      responseIssuerDid = await _responseHandler(issuerDataSSI);
+      console.log("responseIssuerDid==>", responseIssuerDid);
+
       const data = {
         userDid: responseDataSSI.data,
+        issuerDid:responseIssuerDid.data,
       };
       dispatch({
         type: ACTION_TYPES.GENERATED_KEYS_RESPONSE,

@@ -102,7 +102,7 @@ const CameraScreen = (props: any) => {
   );
 
 
-  
+  console.log("IssuerDid",keys?.responseData?.issuerDid)
 
   const _handleBarCodeRead = (barCodeData: any) => {
     let serviceData = JSON.parse(barCodeData.data);
@@ -372,6 +372,8 @@ const CameraScreen = (props: any) => {
           encrypted_object: {
             earthId: userDetails?.responseData?.earthId,
             pressed: false,
+            publicKey:keys?.responseData?.result?.publicKey,
+            userDid:keys?.responseData?.userDid
           },
         };
       } else if (barCodeDataDetails?.requestType === "document") {

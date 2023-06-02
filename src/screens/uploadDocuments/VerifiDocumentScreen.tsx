@@ -42,6 +42,7 @@ export interface IDocumentProps {
   txId: string;
   documentName:string;
   docName:string;
+  isLivenessImage:string;
   docType: string;
   docExt: string;
   processedDoc: string;
@@ -130,7 +131,8 @@ if (selectedItem ) {
     base64: uploadedDocumentsBase64,
     categoryType: selectedDocument,
     docName:docname,
-    isVerifyNeeded:true
+    isVerifyNeeded:true,
+    isLivenessImage:"livenessImage"
   };
 
   var DocumentList = documentsDetailsList?.responseData

@@ -41,7 +41,7 @@ const DocumentPreviewScreen = (props: any) => {
   const [selectedItem, setselectedItem] = useState(documentDetails);
   console.log("documentDetails?.base64", documentDetails?.base64);
   console.log("documentDetails?.base64", documentDetails?.docName);
-  console.log("documentDetails?.base64", documentDetails?.docType);
+  console.log("documentDetails?.base64", documentDetails?.isLivenessImage);
   const resources = {
     file:
       Platform.OS === "ios"
@@ -50,16 +50,28 @@ const DocumentPreviewScreen = (props: any) => {
     url: documentDetails?.base64,
     base64: documentDetails?.base64,
   };
+
   const resourceType = "base64";
   const shareItem = async () => {
     console.log("selectedItem?.base64===>", selectedItem?.base64);
-    if (selectedItem?.docType === "jpg") {
+    if(selectedItem?.isLivenessImage === 'livenessImage'){
       await Share.open({
         url: selectedItem?.base64,
       });
-    } else {
+
+    }else if(selectedItem?.type === 'deeplink'){
       await Share.open({
-        url: `data:image/jpeg;base64,${selectedItem?.base64}`,
+        url:selectedItem?.base64,
+      });
+    }else if (selectedItem?.docType === "jpg") {
+      await Share.open({
+        url:`data:image/jpeg;base64,${selectedItem?.base64}`,
+      });
+    }
+    
+    else {
+      await Share.open({
+        url: `data:image/png;base64,${selectedItem?.base64}`,
       });
     }
   };
@@ -202,9 +214,17 @@ const DocumentPreviewScreen = (props: any) => {
             style={{
               flex: 1,
             }}
-            source={{ uri:documentDetails?.type === 'deeplink' ? `${documentDetails?.base64}`: documentDetails?.docType == "jpg"? `data:image/jpeg;base64,${documentDetails?.base64}`
-            :  `data:image/png;base64,${documentDetails?.base64}`
+          //   source={{ uri:documentDetails?.type === 'deeplink' ? `${documentDetails?.base64}`: documentDetails?.docType == "jpg"? `data:image/jpeg;base64,${documentDetails?.base64}`
+          //   : documentDetails?.isLivenessImage === 'livenessImage' ? documentDetails?.base64  : `data:image/png;base64,${documentDetails?.base64}` 
+          // }}
+          source={{
+          uri:documentDetails?.type === 'deeplink' ? `${documentDetails?.base64}`:
+          documentDetails?.isLivenessImage === 'livenessImage' ? documentDetails?.base64 : 
+          documentDetails?.docType == "jpg"? `data:image/jpeg;base64,${documentDetails?.base64}` :
+          `data:image/png;base64,${documentDetails?.base64}`
+          
           }}
+          
           ></Image>
         ) : (
           <GenericText style={{ color: "#fff", marginVertical: 50 }}>
