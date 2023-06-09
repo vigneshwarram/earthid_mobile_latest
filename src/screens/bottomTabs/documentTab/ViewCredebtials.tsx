@@ -97,13 +97,20 @@ const DocumentPreviewScreen = (props: any) => {
 
   const deleteItem = () => {
     setisBottomSheetForSideOptionVisible(false);
-    const newData = documentsDetailsList?.responseData.filter(function (item: {
-      name: any;
-    }) {
-      return item.name !== selectedItem?.name;
-    });
+    // const newData = documentsDetailsList?.responseData.filter(function (item: {
+    //   name: any;
+    // }) {
+    //   return item.name !== selectedItem?.name;
+    // });
 
-    dispatch(saveDocuments(newData));
+    // dispatch(saveDocuments(newData));
+
+    const newData = documentsDetailsList?.responseData
+    const findIndex = newData?.findIndex((item)=>item.id === selectedItem?.id)
+    findIndex >= -1 &&  newData?.splice(findIndex,1)
+  // console.log('helpArra',helpArra)
+   dispatch(saveDocuments(newData));
+
     props.navigation.navigate("Documents");
   };
   const RowOption = ({ icon, title, rowAction }: any) => (

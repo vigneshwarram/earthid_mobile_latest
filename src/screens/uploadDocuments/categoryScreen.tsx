@@ -60,6 +60,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const [successResponse, setsuccessResponse] = useState(false);
   const dispatch =useAppDispatch()
   console.log("pic",fileUri)
+  console.log("docname",docname)
   const {
     loading: isCategoryLoading,
     data: getCategoryData,
@@ -72,11 +73,14 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
   };
 useEffect(()=>{
  setIsPrceedForLivenessTest(false);
+
 },[])
 
   const onSubmitAction=()=>{
 
-    if (!docname.trim()) {
+   
+
+    if (docname==undefined) {
       Alert.alert('Please Enter Document Name');
        return;
      }
