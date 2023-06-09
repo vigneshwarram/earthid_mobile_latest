@@ -213,7 +213,7 @@ const UploadScreen = (props: any) => {
       >
         {"or"}
       </GenericText>
-      {/* <Button
+      <Button
         onPress={openFilePicker}
         leftIcon={LocalImages.upload}
         style={{
@@ -228,7 +228,7 @@ const UploadScreen = (props: any) => {
           },
         }}
         title={"uploadgallery"}
-      ></Button> */}
+      ></Button>
       {loading ||
         (getHistoryReducer?.isLoading && (
           <View style={styles.loading}>
