@@ -44,17 +44,20 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const pic = route?.params?.fileUri;
   const itemData = route?.params?.itemData;
   const { editDoc,selectedItem } =route?.params;
-  const imageName = route?.params?.imageName
+  const imageName = fileUri?.imageName
+ // const splitName = imageName.split('.')[0]
   console.log('fileUri=====>',selectedItem)
  // const typeItem=selectedItem?.name?.split('(')[1].split(')')[0];
  const typeItem=selectedItem?.documentName?.split('(')[1]?.split(')')[0];
 
   console.log('selectedItemType',typeItem)
+
+
   
   const [isPrceedForLivenessTest, setIsPrceedForLivenessTest] = useState(false);
   const [categoryList, setCategoryList] = useState([]);
   const [selectedDocument, setselectedDocument] = useState();
-  const [docname, setDocname] = useState(imageName);
+  const [docname, setDocname] = useState(fileUri.route == "gallery" ? imageName.split('.')[0] :null);
   const [selectedParentIndex, setSelectedParentIndex] = useState(0);
   const documentsDetailsList = useAppSelector((state) => state.Documents);
   const [successResponse, setsuccessResponse] = useState(false);
@@ -80,7 +83,7 @@ useEffect(()=>{
 
    
 
-    if (docname==undefined) {
+    if (docname == undefined) {
       Alert.alert('Please Enter Document Name');
        return;
      }

@@ -63,7 +63,7 @@ const DocumentPreviewScreen = (props: any) => {
   };
   const resourceType = "base64";
 
-  console.log("error===>", fileUri);
+  console.log("error===>", fileUri.imageName);
   useEffect(() => {
     if (error) {
       setLoginLoading(false);

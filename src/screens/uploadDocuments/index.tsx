@@ -69,7 +69,8 @@ const UploadScreen = (props: any) => {
               base64: res,
               file: resp[0],
               type: "application/pdf",
-              imageName:resp[0]?.name
+              imageName:resp[0]?.name,
+              route:"gallery"
             },
           });
           
@@ -83,7 +84,8 @@ const UploadScreen = (props: any) => {
               base64: res,
               file: resp[0],
               type: "qrRreader",
-              imageName:resp[0]?.name
+              imageName:resp[0]?.name,
+              route:"gallery"
             },
           });
         }

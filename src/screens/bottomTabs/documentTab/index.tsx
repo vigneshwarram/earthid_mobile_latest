@@ -193,7 +193,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
             absoluteCircleInnerImage={LocalImages.upImage}
             rightIconSrc={LocalImages.menuImage}
             rightIconOnPress={() => _rightIconOnPress(item) }
-            title={item?.isVc ?item.name : item?.docName?.split("(")[1]?.split(")")[0] == "undefined" ?item?.docName : item?.documentName}
+            title={item?.isVc ?item.name : item?.docName?.split("(")[1]?.split(")")[0] == "undefined" ?item?.docName : item?.docName}
             subtitle={
               item.isVc
                 ? `      Received  : ${item.date}`
@@ -275,9 +275,9 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
     // docName to documentName
         const newDataItem=  documentsDetailsList?.responseData || []
         const newData =newDataItem.filter(function (item: {
-          documentName: string;
+          docName: string;
         }) {
-          const itemData = item.documentName ? item?.documentName.toUpperCase() : "".toUpperCase();
+          const itemData = item.docName ? item?.docName.toUpperCase() : "".toUpperCase();
     
           const textData = text?.toUpperCase();
     
