@@ -57,7 +57,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const [isPrceedForLivenessTest, setIsPrceedForLivenessTest] = useState(false);
   const [categoryList, setCategoryList] = useState([]);
   const [selectedDocument, setselectedDocument] = useState();
-  const [docname, setDocname] = useState(fileUri.route == "gallery" ? imageName.split('.')[0] :null);
+  const [docname, setDocname] = useState(fileUri?.route == "gallery" ? imageName.split('.')[0] : editDoc == "editDoc" ? selectedItem?.docName : null);
   const [selectedParentIndex, setSelectedParentIndex] = useState(0);
   const documentsDetailsList = useAppSelector((state) => state.Documents);
   const [successResponse, setsuccessResponse] = useState(false);
