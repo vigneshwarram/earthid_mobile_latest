@@ -65,7 +65,7 @@
   "duration": "Duration",
   "cancel": "Cancel",
 
-  "kyctoken": "KYC Token",
+  "kyctoken": "ACK Token",
   "fullname": "Full Name",
   "removephone": "Remove Photo",
   "camera": "Camera",
@@ -147,7 +147,7 @@
   "generateglobalid": "GENERATE GLOBAL ID",
   "passcodeinstruction": "Secure your GlobaliD with a memorable 6-digit code",
   "globalidwanttoaccess": "GlobalId wants to access your following information",
-  "globalidwanttoaccessKyc": "GlobalId wants to access your KYC token",
+  "globalidwanttoaccessKyc": "GlobalId wants to access your ACK token",
 
   "alreadyhaveearthid": "I already have my Earth ID",
   "landscreensetupearthId": "Set Up Your Earth ID",
