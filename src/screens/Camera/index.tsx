@@ -254,7 +254,8 @@ const CameraScreen = (props: any) => {
       setTimeout(() => {
         setloadingforGentSchemaAPI(false);
         setissuerSchemaDropDown(false);
-        Alert.alert("KYC token Saved successfully");
+    //    Alert.alert("KYC token Saved successfully");
+        Alert.alert("ACK token Saved successfully");
         props.navigation.navigate("Documents");
       }, 3000);
     } else if (barCodeDataDetails.requestType === "shareCredentials") {

@@ -145,7 +145,7 @@
   "generateglobalid": "GERAR ID GLOBAL",
   "passcodeinstruction": "Proteja seu GlobaliD com um código de 6 dígitos memorável",
   "globalidwanttoaccess": "GlobalId deseja acessar suas seguintes informações",
-  "globalidwanttoaccessKyc": "GlobalId quer acessar seu token KYC",
+  "globalidwanttoaccessKyc": "GlobalId quer acessar seu token ACK",
 
   "alreadyhaveearthid": "Já tenho meu Earth ID",
   "landscreensetupearthId": "Configure seu Earth ID",
@@ -153,7 +153,7 @@
   "generateeathid": "GERAR ID DE TERRA",
   "passcodeinstructionEarthid": "Proteja seu Earth ID com um código de 6 dígitos memorável",
   "earthidwanttoaccess": "EarthId deseja acessar suas seguintes informações",
-  "earthidwanttoaccessKyc": "EarthId quer acessar seu token KYC",
+  "earthidwanttoaccessKyc": "EarthId quer acessar seu token ACK",
   "share":"Compartilhar",
   "delete":"Excluir",
   "edit":"Editar",
