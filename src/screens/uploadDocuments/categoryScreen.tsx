@@ -237,8 +237,9 @@ else{
           setsuccessResponse(true);
       
           const obj = documentsDetailsList?.responseData[index];
-          obj.documentName = selectedDocument
+         // obj.documentName = selectedDocument
           obj.categoryType =selectedDocument;
+          obj.docName = docname
           console.log('index===>',obj)
           dispatch(updateDocuments(documentsDetailsList?.responseData,index,obj));
            setTimeout(async () => {
