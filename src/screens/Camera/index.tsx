@@ -30,12 +30,13 @@ import {
   alertBox,
 } from "../../utils/earthid_account";
 import QrScannerMaskedWidget from "../Camera/QrScannerMaskedWidget";
-import { saveDocuments } from "../../redux/actions/authenticationAction";
+import { createUserSignature, saveDocuments } from "../../redux/actions/authenticationAction";
 import { IDocumentProps } from "../uploadDocuments/VerifiDocumentScreen";
 import GenericText from "../../components/Text";
 import Loader from "../../components/Loader";
 import { isEarthId } from "../../utils/PlatFormUtils";
 import { dateTime } from "../../utils/encryption";
+import { ICreateUserSignature } from "../../typings/AccountCreation/ICreateUserSignature";
 
 const data = [
   { label: " 1", value: "1" },
@@ -101,8 +102,19 @@ const CameraScreen = (props: any) => {
     "verification successfully"
   );
 
+  const issurDid = keys?.responseData?.issuerDid
+  const UserDid  = keys?.responseData?.newUserDid  
+  const privateKey = keys?.responseData?.generateKeyPair?.privateKey
 
-  console.log("IssuerDid",keys?.responseData?.issuerDid)
+  console.log("issuerDid",keys?.responseData)
+  console.log("issuerDid",keys?.responseData?.issuerDid)
+  console.log("UserDid",keys?.responseData?.newUserDid)
+  console.log("privatekey",keys?.responseData?.generateKeyPair?.privateKey)
+
+  let url : string  = `https://ssi-test.myearth.id/api/user/sign?issuerDID=${issurDid}`
+  let key = privateKey
+
+  console.log("url===>",url)
 
   const _handleBarCodeRead = (barCodeData: any) => {
     let serviceData = JSON.parse(barCodeData.data);
@@ -210,9 +222,33 @@ const CameraScreen = (props: any) => {
     return datas;
   };
 
+  useEffect(()=>{
+    generateUserSignature()
+  },[])
+
+  const generateUserSignature = async () =>{
+    try {
+      const data = {
+        payload: {
+          credentialSubject: {
+            id:UserDid
+          }
+        }
+      };
+
+      dispatch(createUserSignature(data,url,key));
+    } catch (error: any) {
+      console.log("error", error?.message);
+    }
+  }
+
+  
+
+
   const createVerifiableCredentials = async () => {
     getData();
     setloadingforGentSchemaAPI(true);
+  
     if (barCodeDataDetails?.requestType === "document") {
       var date = dateTime();
       var documentDetails: IDocumentProps = {

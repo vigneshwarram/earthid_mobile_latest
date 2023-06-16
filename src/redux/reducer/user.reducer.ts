@@ -93,6 +93,38 @@ export const schemaReducer = (state = {}, { type, payload }: any) => {
   }
 };
 
+//create signature reducer
+
+export const createSignatureReducer = (state = {}, { type, payload }: any) => {
+  switch (type) {
+    case ACTION_TYPES.CREATEUSERSIGNATURE:
+      return {
+        ...state,
+        isLoading: true,
+        isAccountCreatedSuccess: false,
+        isAccountCreatedFailure: false,
+      };
+    case ACTION_TYPES.CREATED_USERSIGNATURE_RESPONSE:
+      return {
+        ...state,
+        ...payload,
+        isAccountCreatedSuccess: true,
+        isLoading: false,
+        isAccountCreatedFailure: false,
+      };
+    case ACTION_TYPES.CREATED_USERSIGNATURE_ERROR:
+      return {
+        ...state,
+        ...payload,
+        isLoading: false,
+        isAccountCreatedSuccess: false,
+        isAccountCreatedFailure: true,
+      };
+    default:
+      return state;
+  }
+};
+
 export const contractReducer = (state = {}, { type, payload }: any) => {
   switch (type) {
     case ACTION_TYPES.CONTRACT_CALL:

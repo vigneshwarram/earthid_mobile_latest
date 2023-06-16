@@ -9,7 +9,7 @@
  */
 
 import React, { useEffect } from "react";
-import { SafeAreaView, StyleSheet, View ,Alert} from "react-native";
+import { SafeAreaView, StyleSheet, View ,Alert,LogBox} from "react-native";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/lib/integration/react";
 //@ts-ignore
@@ -19,6 +19,11 @@ import { persistor, store } from "./src/redux/store";
 import { Buffer } from "buffer";
 import { isEarthId } from "./src/utils/PlatFormUtils";
 import { Screens } from "./src/themes";
+
+LogBox.ignoreLogs(['Warning: ...']); //Hide warnings
+
+LogBox.ignoreAllLogs();//Hide all warning notifications on front-end
+
 global.Buffer = Buffer;
 type SharedItem = {
   mimeType: string;

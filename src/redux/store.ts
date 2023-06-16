@@ -9,6 +9,7 @@ import {
   documentListReducer,
   schemaReducer,
   getHistoryReducer,
+  createSignatureReducer,
 } from "./reducer/user.reducer";
 import {
   SavedProfilePictures,
@@ -41,6 +42,7 @@ const rootReducer = combineReducers({
   getHistoryReducer: getHistoryReducer,
   savedPic: SavedProfilePictures,
   security: SavedSecurityDatas,
+  createSignature: createSignatureReducer
 });
 
 const appreducer = (state: any, action: any) => {

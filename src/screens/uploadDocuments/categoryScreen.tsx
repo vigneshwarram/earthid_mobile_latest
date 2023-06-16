@@ -57,6 +57,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const [isPrceedForLivenessTest, setIsPrceedForLivenessTest] = useState(false);
   const [categoryList, setCategoryList] = useState([]);
   const [selectedDocument, setselectedDocument] = useState();
+  const [editselectedDocument, EditsetselectedDocument] = useState();
   const [docname, setDocname] = useState(fileUri?.route == "gallery" ? imageName.split('.')[0] : editDoc == "editDoc" ? selectedItem?.docName : null);
   const [selectedParentIndex, setSelectedParentIndex] = useState(0);
   const documentsDetailsList = useAppSelector((state) => state.Documents);
@@ -227,20 +228,22 @@ else{
       setsuccessResponse(false);
       navigation.navigate("Documents");
     }, 2000);
-  }else{
+
+  }
+  else {
     if(editDoc){
       const index = documentsDetailsList?.responseData?.findIndex(obj => obj?.id === selectedItem?.id);
       if (selectedItem ) {
-        if(selectedItem?.isVerifyNeeded){
+        if(selectedItem?.isVerifyNeeded) {
           setIsPrceedForLivenessTest(true)
-        }else{
+        } else {
           setsuccessResponse(true);
-      
+          const document: any[0] = categoryList[selectedParentIndex]?.value?.filter((data:any)=>data.isSelected)
           const obj = documentsDetailsList?.responseData[index];
-         // obj.documentName = selectedDocument
-          obj.categoryType =selectedDocument;
           obj.docName = docname
-          console.log('index===>',obj)
+          obj.documentName = `${categoryList[selectedParentIndex].key} (${document[0]?.title})`
+          obj.categoryType =categoryList[selectedParentIndex].key;
+          console.log('index===>',obj.categoryType)
           dispatch(updateDocuments(documentsDetailsList?.responseData,index,obj));
            setTimeout(async () => {
             setsuccessResponse(false);
@@ -253,6 +256,11 @@ else{
           }, 2000);
         }
       
+      
+    
+
+
+    
     
 
 
@@ -262,7 +270,7 @@ else{
   }
 
 }
-setIsPrceedForLivenessTest(true)
+setIsPrceedForLivenessTest(false)
   }
 }
 }
@@ -361,6 +369,7 @@ setIsPrceedForLivenessTest(true)
   },[])
 
   const _renderItem = ({ item, index }: any) => {
+   
     return (
 
                 <TouchableOpacity onPress={() => selectCategory(item, index)}>

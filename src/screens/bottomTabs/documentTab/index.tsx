@@ -181,7 +181,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
                 { fontSize: 15, fontWeight: "bold", marginHorizontal: 9 },
               ]}
             >
-              {item?.isVc?item.name:item?.categoryType}
+              {item?.isVc ? item.name : item?.categoryType}
             </GenericText>
           </View>
         </View>

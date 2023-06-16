@@ -1,4 +1,4 @@
-import { ssiApiKey } from "./earthid_account";
+import { newssiApiKey, ssiApiKey } from "./earthid_account";
 
 /**
  * @function postFormData - function to call the backend with the request and fetches response.
@@ -118,6 +118,21 @@ export const ssiGetCall = (
   });
 };
 
+export const newssiGetCall = (
+  uri: string,
+  method: string = "GET",
+  key: string
+): any => {
+  return fetch(uri, {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+      "X-API-KEY": newssiApiKey,
+      publicKey: key,
+    },
+  });
+};
+
 export const ssiPostCall = (
   uri: string,
   payload?: any,
@@ -133,6 +148,30 @@ export const ssiPostCall = (
     headers: {
       "Content-Type": "application/json",
       "X-API-KEY": ssiApiKey,
+    },
+    body: JSON.stringify(payload),
+  });
+};
+
+
+export const newssiPostCall = (
+  uri: string,
+  payload?: any,
+  method: string = "POST",
+  key?:any,
+  data: any = {
+    payload,
+  },
+  
+): Promise<any> => {
+  console.log("requests==>", JSON.stringify(payload));
+
+  return fetch(uri, {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+      "X-API-KEY": newssiApiKey,
+      privateKey : key
     },
     body: JSON.stringify(payload),
   });

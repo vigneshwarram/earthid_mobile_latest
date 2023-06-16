@@ -1,6 +1,8 @@
 import {
   getCall,
   getCallWithHeader,
+  newssiGetCall,
+  newssiPostCall,
   postCall,
   ssiGetCall,
   ssiPostCall,
@@ -10,7 +12,8 @@ import { URI } from "../../constants/URLContstants";
 import { SnackBar } from "../../components/SnackBar";
 import { IUserAccountRequest } from "../../typings/AccountCreation/IUserAccount";
 import { IUserSchemaRequest } from "../../typings/AccountCreation/IUserSchema";
-import { generateIssuerDid } from "../../utils/earthid_account";
+import { generateIssuerDid, generateKeyPair, generateUserDid, newUserDid } from "../../utils/earthid_account";
+import { ICreateUserSignature } from "../../typings/AccountCreation/ICreateUserSignature";
 const {
   ACCOUNT: {
     CREATE_ACCOUNT: createAccountUrl,
@@ -25,10 +28,11 @@ const {
 
 let createSchemaUrl = "https://ssi-gbg.myearth.id/api/issuer/createSchema";
 
+
 export const GeneratedKeysAction =
   () =>
   async (dispatch: any): Promise<any> => {
-    let responseData, responseDataSSI, responseIssuerDid
+    let responseData, responseDataSSI, responseIssuerDid, responseGenerateKeyPair , responseNewUserDid
     try {
       dispatch({
         type: ACTION_TYPES.GENERATED_KEYS_LOADING,
@@ -49,7 +53,7 @@ export const GeneratedKeysAction =
 
       //IssuerDid
 
-      const issuerDataSSI = await ssiGetCall(
+      const issuerDataSSI = await newssiGetCall(
         generateIssuerDid,
         "GET",
         responseData?.result?.publicKey
@@ -57,9 +61,31 @@ export const GeneratedKeysAction =
       responseIssuerDid = await _responseHandler(issuerDataSSI);
       console.log("responseIssuerDid==>", responseIssuerDid);
 
+      //GenerateKeyPair
+
+      const getGenerateKeyPair = await newssiGetCall(
+        generateKeyPair,
+        "GET",
+        responseData?.result?.publicKey
+      );
+      responseGenerateKeyPair = await _responseHandler(getGenerateKeyPair);
+      console.log("responseGenerateKeyPair==>", responseGenerateKeyPair);
+
+      //NewUserDid
+
+      const getNewUserDid = await newssiGetCall(
+        generateUserDid,
+        "GET",
+        responseGenerateKeyPair?.data?.publicKey
+      );
+      responseNewUserDid = await _responseHandler(getNewUserDid);
+      console.log("responseNewUserDid==>", responseNewUserDid);
+
       const data = {
         userDid: responseDataSSI.data,
         issuerDid:responseIssuerDid.data,
+        generateKeyPair:responseGenerateKeyPair.data,
+        newUserDid:responseNewUserDid.data
       };
       dispatch({
         type: ACTION_TYPES.GENERATED_KEYS_RESPONSE,
@@ -112,6 +138,8 @@ export const createAccount =
     }
   };
 
+//create schema
+
 export const createSchema =
   (requestPayload: IUserSchemaRequest) =>
   async (dispatch: any): Promise<any> => {
@@ -135,6 +163,40 @@ export const createSchema =
       console.log(" API catch ===>", error);
       dispatch({
         type: ACTION_TYPES.CREATED_SCHEMA_ERROR,
+        payload: {
+          errorMesssage: error,
+        },
+      });
+    }
+  };
+
+
+  //create user signature
+
+
+  export const createUserSignature =
+  (requestPayload: any, url:string , key:any) =>
+  async (dispatch: any): Promise<any> => {
+    let responseData;
+    try {
+      dispatch({
+        type: ACTION_TYPES.CREATEUSERSIGNATURE,
+      });
+      const response = await newssiPostCall(url, requestPayload , key);
+      responseData = await _responseHandler(response);
+      console.log("signatureResponse", responseData);
+      dispatch({
+        type: ACTION_TYPES.CREATED_USERSIGNATURE_RESPONSE,
+        payload: {
+          responseData,
+          isLoading: false,
+          errorMesssage: "",
+        },
+      });
+    } catch (error) {
+      console.log("API catch ===>", error);
+      dispatch({
+        type: ACTION_TYPES.CREATED_USERSIGNATURE_ERROR,
         payload: {
           errorMesssage: error,
         },
