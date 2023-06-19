@@ -100,6 +100,7 @@ const CustomDrawer = (props: any) => {
         await AsyncStorage.removeItem("FaceId");
         await AsyncStorage.removeItem("pageName");
         await AsyncStorage.removeItem("profilePic");
+        await AsyncStorage.removeItem("signatureKey");
         props.navigation.dispatch(StackActions.replace("AuthStack"));
       });
     }
@@ -119,6 +120,7 @@ const CustomDrawer = (props: any) => {
         {
           text: "Yes",
           onPress: async () => {
+            await AsyncStorage.removeItem("signatureKey");
             deleteuserData();
           },
           style: "cancel",
