@@ -117,7 +117,8 @@ const CameraScreen = (props: any) => {
 
   let url : any  = `https://ssi-test.myearth.id/api/user/sign?issuerDID=${issurDid}`
   let key = privateKey
-  var base64Pic = documentsDetailsList?.responseData[0]?.base64
+  var base64Pic = documentsDetailsList?.responseData ? documentsDetailsList?.responseData[0]?.base64 : null
+  console.log("baseee",base64Pic)
 
   console.log("url===>",url)
 
