@@ -117,7 +117,7 @@ const CameraScreen = (props: any) => {
 
   let url : any  = `https://ssi-test.myearth.id/api/user/sign?issuerDID=${issurDid}`
   let key = privateKey
-  var base64Pic = documentsDetailsList.responseData[0].base64
+  var base64Pic = documentsDetailsList?.responseData[0]?.base64
 
   console.log("url===>",url)
 
@@ -164,11 +164,10 @@ const CameraScreen = (props: any) => {
     }
   }
 
-  
 
 const getKey =async()=>{
 let newKey : any = await  AsyncStorage.getItem("signatureKey")
-//console.log("signatureKey",newKey)
+console.log("signatureKey",newKey)
 setCreateSignatureKey(newKey)
 }
 
