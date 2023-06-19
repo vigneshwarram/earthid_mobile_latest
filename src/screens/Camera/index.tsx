@@ -8,6 +8,7 @@ import {
   Dimensions,
   ScrollView,
   Alert,
+  AsyncStorage,
 } from "react-native";
 import { RNCamera } from "react-native-camera";
 import Button from "../../components/Button";
@@ -28,6 +29,7 @@ import {
   generateCredientials,
   ssiApiKey,
   alertBox,
+  newssiApiKey,
 } from "../../utils/earthid_account";
 import QrScannerMaskedWidget from "../Camera/QrScannerMaskedWidget";
 import { createUserSignature, saveDocuments } from "../../redux/actions/authenticationAction";
@@ -83,6 +85,7 @@ const CameraScreen = (props: any) => {
   const [selectedCheckBox, setselectedCheckBox] = useState(
     documentsDetailsList.responseData
   );
+  const [createSignatureKey, setCreateSignatureKey] = useState();
   const [issuerSchemaJSON, setissuerSchemaJSON] = useState();
   const [issuerSchemaName, setissuerSchemaName] = useState([{}]);
   const [issuerSchemaDropDown, setissuerSchemaDropDown] = useState(false);
@@ -110,11 +113,64 @@ const CameraScreen = (props: any) => {
   console.log("issuerDid",keys?.responseData?.issuerDid)
   console.log("UserDid",keys?.responseData?.newUserDid)
   console.log("privatekey",keys?.responseData?.generateKeyPair?.privateKey)
+  console.log("createSignatureKey",createSignatureKey)
 
-  let url : string  = `https://ssi-test.myearth.id/api/user/sign?issuerDID=${issurDid}`
+  let url : any  = `https://ssi-test.myearth.id/api/user/sign?issuerDID=${issurDid}`
   let key = privateKey
+  var base64Pic = documentsDetailsList.responseData[0].base64
 
   console.log("url===>",url)
+
+
+  useEffect(()=>{
+ //   generateUserSignature()
+    getKey()
+    console.log("signatureKey",createSignatureKey)
+
+  },[])
+
+  const generateUserSignature = async () =>{
+    try {
+      const data = {
+        payload: {
+          credentialSubject: {
+            id:UserDid
+          }
+        }
+      };
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          "privateKey":privateKey,
+          "x-api-key": newssiApiKey
+        },
+        body: JSON.stringify(data),
+      })
+        .then(response => response.json())
+        .then(async(responseData) => {
+          // Handle the response data
+          console.log("responseData",responseData);
+          let signatureKey = responseData.Signature
+          await AsyncStorage.setItem("signatureKey",signatureKey)
+        })
+        .catch(error => {
+          // Handle any errors
+          console.error(error);
+        });
+    
+    } catch (error: any) {
+      console.log("error", error?.message);
+    }
+  }
+
+  
+
+const getKey =async()=>{
+let newKey : any = await  AsyncStorage.getItem("signatureKey")
+//console.log("signatureKey",newKey)
+setCreateSignatureKey(newKey)
+}
 
   const _handleBarCodeRead = (barCodeData: any) => {
     let serviceData = JSON.parse(barCodeData.data);
@@ -222,32 +278,12 @@ const CameraScreen = (props: any) => {
     return datas;
   };
 
-  useEffect(()=>{
-    generateUserSignature()
-  },[])
-
-  const generateUserSignature = async () =>{
-    try {
-      const data = {
-        payload: {
-          credentialSubject: {
-            id:UserDid
-          }
-        }
-      };
-
-      dispatch(createUserSignature(data,url,key));
-    } catch (error: any) {
-      console.log("error", error?.message);
-    }
-  }
-
   
-
 
   const createVerifiableCredentials = async () => {
     getData();
     setloadingforGentSchemaAPI(true);
+    generateUserSignature()
   
     if (barCodeDataDetails?.requestType === "document") {
       var date = dateTime();
@@ -276,7 +312,8 @@ const CameraScreen = (props: any) => {
         }),
         documentName: "",
         docName: "",
-        base64: undefined
+       // base64: undefined
+        base64: base64Pic
       };
 
       var DocumentList = documentsDetailsList?.responseData
@@ -323,7 +360,8 @@ const CameraScreen = (props: any) => {
           isVc: true,
         }),
         docName: "",
-        base64: undefined
+     //   base64: undefined
+        base64: base64Pic
       };
 
       var DocumentList = documentsDetailsList?.responseData
@@ -410,7 +448,8 @@ const CameraScreen = (props: any) => {
             earthId: userDetails?.responseData?.earthId,
             pressed: false,
             publicKey:keys?.responseData?.result?.publicKey,
-            userDid:keys?.responseData?.userDid
+            userDid:keys?.responseData?.userDid,
+            signature:createSignatureKey
           },
         };
       } else if (barCodeDataDetails?.requestType === "document") {
@@ -432,7 +471,8 @@ const CameraScreen = (props: any) => {
             kycToken:
               "6hrFDATxrG9w14QY9wwnmVhLE0Wg6LIvwOwUaxz761m1JfRp4rs8Mzozk5xhSkw0_MQz6bpcJnrFUDwp5lPPFC157dHxbkKlDiQ9XY3ZIP8zAGCsS8ruN2uKjIaIargX",
               publicKey:keys?.responseData?.result?.publicKey,
-              userDid:keys?.responseData?.userDid
+              userDid:keys?.responseData?.userDid,
+              signature:createSignatureKey
           },
         };
       } else if (barCodeDataDetails.requestType === "shareCredentials") {
@@ -450,6 +490,7 @@ const CameraScreen = (props: any) => {
             // mobileVerified: userDetails?.responseData?.mobileVerified,
             //documents: documentsDetailsList?.responseData,
             requestType: barCodeDataDetails?.requestType,
+            signature:createSignatureKey,
             reqNo: barCodeDataDetails?.reqNo,
             kycToken:
               "6hrFDATxrG9w14QY9wwnmVhLE0Wg6LIvwOwUaxz761m1JfRp4rs8Mzozk5xhSkw0_MQz6bpcJnrFUDwp5lPPFC157dHxbkKlDiQ9XY3ZIP8zAGCsS8ruN2uKjIaIargX",

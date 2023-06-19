@@ -255,15 +255,7 @@ else{
             }
           }, 2000);
         }
-      
-      
     
-
-
-    
-    
-
-
   }else{
     setIsPrceedForLivenessTest(true)
     return
