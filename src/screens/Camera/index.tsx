@@ -121,11 +121,9 @@ const CameraScreen = (props: any) => {
 
   console.log("url===>",url)
 
-
   useEffect(()=>{
  //   generateUserSignature()
     getKey()
-    console.log("signatureKey",createSignatureKey)
 
   },[])
 
@@ -151,7 +149,7 @@ const CameraScreen = (props: any) => {
         .then(async(responseData) => {
           // Handle the response data
           console.log("responseData",responseData);
-          let signatureKey = responseData.Signature
+          let signatureKey = responseData?.Signature
           await AsyncStorage.setItem("signatureKey",signatureKey)
         })
         .catch(error => {
