@@ -109,7 +109,8 @@ if(fileUri?.flow==='deeplink'){
       base64: fileUri?.base64,
       categoryType:categoryList[selectedParentIndex].key,
       pdf: true,
-      docName:docname
+      docName:docname,
+      typePDF:fileUri?.typePDF
     };
     var DocumentList = documentsDetailsList?.responseData
       ? documentsDetailsList?.responseData
@@ -178,7 +179,8 @@ if(fileUri?.flow==='deeplink'){
       categoryType:categoryList[selectedParentIndex].key,
       pdf: true,
       docName:docname,
-      isVerifyNeeded:false
+      isVerifyNeeded:false,
+      typePDF:fileUri?.typePDF
 
     };
     var DocumentList = documentsDetailsList?.responseData

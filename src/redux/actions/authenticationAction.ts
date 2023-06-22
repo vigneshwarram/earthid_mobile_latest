@@ -41,15 +41,17 @@ export const GeneratedKeysAction =
         "https://api-stage.myearth.id/contract/generateKeys"
       );
       responseData = await _responseHandler(response);
+
+
       console.log("reuesturl===>", getUser_did);
       console.log("reuestparams===>", responseData);
-      const responsedataSSI = await ssiGetCall(
-        getUser_did,
-        "GET",
-        responseData?.result?.publicKey
-      );
-        responseDataSSI = await _responseHandler(responsedataSSI);
-      console.log("responseDatassi==>", responseDataSSI);
+      // const responsedataSSI = await ssiGetCall(
+      //   getUser_did,
+      //   "GET",
+      //   responseData?.result?.publicKey
+      // );
+      // responseDataSSI = await _responseHandler(responsedataSSI);
+      // console.log("responseDatassi==>", responseDataSSI);
 
       //IssuerDid
 
@@ -82,7 +84,7 @@ export const GeneratedKeysAction =
       console.log("responseNewUserDid==>", responseNewUserDid);
 
       const data = {
-        userDid: responseDataSSI.data,
+        //userDid: responseDataSSI.data,
         issuerDid:responseIssuerDid.data,
         generateKeyPair:responseGenerateKeyPair.data,
         newUserDid:responseNewUserDid.data

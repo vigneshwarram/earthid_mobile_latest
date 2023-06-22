@@ -9,6 +9,8 @@ import {
   ScrollView,
   Alert,
   AsyncStorage,
+  ImageEditor,
+  ImageStore,
 } from "react-native";
 import { RNCamera } from "react-native-camera";
 import Button from "../../components/Button";
@@ -39,6 +41,9 @@ import Loader from "../../components/Loader";
 import { isEarthId } from "../../utils/PlatFormUtils";
 import { dateTime } from "../../utils/encryption";
 import { ICreateUserSignature } from "../../typings/AccountCreation/ICreateUserSignature";
+import RNFetchBlob from 'rn-fetch-blob';
+
+
 
 const data = [
   { label: " 1", value: "1" },
@@ -85,7 +90,6 @@ const CameraScreen = (props: any) => {
   const [selectedCheckBox, setselectedCheckBox] = useState(
     documentsDetailsList.responseData
   );
-  const [createSignatureKey, setCreateSignatureKey] = useState();
   const [issuerSchemaJSON, setissuerSchemaJSON] = useState();
   const [issuerSchemaName, setissuerSchemaName] = useState([{}]);
   const [issuerSchemaDropDown, setissuerSchemaDropDown] = useState(false);
@@ -105,6 +109,9 @@ const CameraScreen = (props: any) => {
     "verification successfully"
   );
 
+  const [createSignatureKey, setCreateSignatureKey] = useState();
+
+
   const issurDid = keys?.responseData?.issuerDid
   const UserDid  = keys?.responseData?.newUserDid  
   const privateKey = keys?.responseData?.generateKeyPair?.privateKey
@@ -123,10 +130,12 @@ const CameraScreen = (props: any) => {
   console.log("url===>",url)
 
   useEffect(()=>{
- //   generateUserSignature()
-    getKey()
 
-  },[])
+  // generateUserSignature()
+    getKey()
+    
+
+  },[createSignatureKey])
 
   const generateUserSignature = async () =>{
     try {
@@ -149,8 +158,9 @@ const CameraScreen = (props: any) => {
         .then(response => response.json())
         .then(async(responseData) => {
           // Handle the response data
-          console.log("responseData",responseData);
-          let signatureKey = responseData?.Signature
+          console.log("responseDataSignature",responseData);
+          let signatureKey = await responseData?.Signature
+          setCreateSignatureKey(signatureKey)
           await AsyncStorage.setItem("signatureKey",signatureKey)
         })
         .catch(error => {
@@ -164,10 +174,10 @@ const CameraScreen = (props: any) => {
   }
 
 
-const getKey =async()=>{
-let newKey : any = await  AsyncStorage.getItem("signatureKey")
-console.log("signatureKey",newKey)
-setCreateSignatureKey(newKey)
+const getKey = async ()=>{
+// let newKey : any = await  AsyncStorage.getItem("signatureKey")
+// setCreateSignatureKey(newKey)
+// console.log("signatureKey",newKey)
 }
 
   const _handleBarCodeRead = (barCodeData: any) => {
@@ -279,9 +289,9 @@ setCreateSignatureKey(newKey)
   
 
   const createVerifiableCredentials = async () => {
+    generateUserSignature()
     getData();
     setloadingforGentSchemaAPI(true);
-    generateUserSignature()
   
     if (barCodeDataDetails?.requestType === "document") {
       var date = dateTime();
@@ -310,8 +320,9 @@ setCreateSignatureKey(newKey)
         }),
         documentName: "",
         docName: "",
-       // base64: undefined
-        base64: base64Pic
+        base64: undefined
+      //  base64: base64Pic
+       
       };
 
       var DocumentList = documentsDetailsList?.responseData
@@ -358,8 +369,9 @@ setCreateSignatureKey(newKey)
           isVc: true,
         }),
         docName: "",
-     //   base64: undefined
-        base64: base64Pic
+        base64: undefined
+     //   base64: base64Pic,
+        
       };
 
       var DocumentList = documentsDetailsList?.responseData
@@ -426,7 +438,7 @@ setCreateSignatureKey(newKey)
     if (barCodeDataDetails) {
       let data;
       if (barCodeDataDetails?.requestType === "login") {
-        console.log("login", "true");
+        console.log("type===>","login")
         data = {
           sessionKey: barCodeDataDetails?.sessionKey,
           encrypted_object: {
@@ -436,21 +448,26 @@ setCreateSignatureKey(newKey)
             userEmail: userDetails?.responseData?.email,
             userMobileNo: userDetails?.responseData?.phone,
             publicKey:keys?.responseData?.result?.publicKey,
-            userDid:keys?.responseData?.userDid
+            userDid:keys?.responseData?.newUserDid 
           },         
         };
       } else if (barCodeDataDetails?.requestType === "generateCredentials") {
+        console.log("type===>","generateCredentials")
         data = {
           sessionKey: barCodeDataDetails?.sessionKey,
           encrypted_object: {
             earthId: userDetails?.responseData?.earthId,
             pressed: false,
             publicKey:keys?.responseData?.result?.publicKey,
-            userDid:keys?.responseData?.userDid,
-            signature:createSignatureKey
+            userDid:keys?.responseData?.newUserDid ,
+          //   signature:createSignatureKey,
+          //   base64:base64Pic,
+          //  pdf :documentsDetailsList?.responseData[0]?.typePDF,
+          //  docName :documentsDetailsList?.responseData[0]?.docName,
           },
         };
       } else if (barCodeDataDetails?.requestType === "document") {
+        console.log("type===>","document")
         data = {
           sessionKey: barCodeDataDetails?.sessionKey,
           encrypted_object: {
@@ -469,11 +486,16 @@ setCreateSignatureKey(newKey)
             kycToken:
               "6hrFDATxrG9w14QY9wwnmVhLE0Wg6LIvwOwUaxz761m1JfRp4rs8Mzozk5xhSkw0_MQz6bpcJnrFUDwp5lPPFC157dHxbkKlDiQ9XY3ZIP8zAGCsS8ruN2uKjIaIargX",
               publicKey:keys?.responseData?.result?.publicKey,
-              userDid:keys?.responseData?.userDid,
-              signature:createSignatureKey
+              userDid:keys?.responseData?.newUserDid ,
+            //   pdf :documentsDetailsList?.responseData[0]?.typePDF,
+            //   docName :documentsDetailsList?.responseData[0]?.docName,
+            //  signature:createSignatureKey,
+            //   base64:base64Pic,
+           
           },
         };
       } else if (barCodeDataDetails.requestType === "shareCredentials") {
+        console.log("type===>","shareCredentials")
         data = {
           sessionKey: barCodeDataDetails?.sessionKey,
           encrypted_object: {
@@ -488,13 +510,17 @@ setCreateSignatureKey(newKey)
             // mobileVerified: userDetails?.responseData?.mobileVerified,
             //documents: documentsDetailsList?.responseData,
             requestType: barCodeDataDetails?.requestType,
-            signature:createSignatureKey,
             reqNo: barCodeDataDetails?.reqNo,
+           // signature:createSignatureKey,
+          //   base64:base64Pic,
+          //  pdf :documentsDetailsList?.responseData[0]?.typePDF,
+          //  docName :documentsDetailsList?.responseData[0]?.docName,
             kycToken:
               "6hrFDATxrG9w14QY9wwnmVhLE0Wg6LIvwOwUaxz761m1JfRp4rs8Mzozk5xhSkw0_MQz6bpcJnrFUDwp5lPPFC157dHxbkKlDiQ9XY3ZIP8zAGCsS8ruN2uKjIaIargX",
           },
         };
       }
+      console.log("getSignature",data)
       sendDatatoServiceProvider(QrcodeApis, data, "POST");
     }
   };

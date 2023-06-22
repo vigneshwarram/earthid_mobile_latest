@@ -76,7 +76,8 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
   //   chek === undefined ? console.log("All posts") : console.log("filtrd");
   // }, [route?.params?.category]);
 
-  console.log("All posts",selectedItem)
+
+  console.log("Allposts",documentsDetailsList?.responseData)
 
   const [isBottomSheetForFilterVisible, setisBottomSheetForFilterVisible] =
     useState<boolean>(false);

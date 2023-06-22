@@ -19,6 +19,7 @@ import GenericText from "../../components/Text";
 import { useFetch } from "../../hooks/use-fetch";
 import { useAppSelector } from "../../hooks/hooks";
 import SuccessPopUp from "../../components/Loader";
+import {encodeBase64} from 'react-native-image-base64'
 
 
 const UploadScreen = (props: any) => {
@@ -58,7 +59,10 @@ const UploadScreen = (props: any) => {
       let fileUri = resp[0].uri;
       console.log("resp[0]?.name==>####", resp[0]?.name);
       fileUri= resp[0]?.uri?.replaceAll('%20',' ')
-      RNFS.readFile(fileUri, "base64").then((res) => {
+
+     
+
+      RNFS.readFile(fileUri, "base64").then(async (res) => {
         console.log("res", resp);
         console.log("typePDF", resp[0].uri);
 
@@ -70,7 +74,8 @@ const UploadScreen = (props: any) => {
               file: resp[0],
               type: "application/pdf",
               imageName:resp[0]?.name,
-              route:"gallery"
+              route:"gallery",
+              typePDF:resp[0].uri
             },
           });
           

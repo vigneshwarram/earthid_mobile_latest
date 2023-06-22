@@ -53,6 +53,8 @@ export interface IDocumentProps {
   categoryType?: any;
   color?: string;
   isVerifyNeeded?:boolean
+  signature:any,
+  typePDF:any
  
 }
 const VerifiDocumentScreen = (props: any) => {
