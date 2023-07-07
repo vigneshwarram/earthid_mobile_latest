@@ -11,6 +11,7 @@ import {
   AsyncStorage,
   ImageEditor,
   ImageStore,
+  
 } from "react-native";
 import { RNCamera } from "react-native-camera";
 import Button from "../../components/Button";
@@ -42,6 +43,11 @@ import { isEarthId } from "../../utils/PlatFormUtils";
 import { dateTime } from "../../utils/encryption";
 import { ICreateUserSignature } from "../../typings/AccountCreation/ICreateUserSignature";
 import RNFetchBlob from 'rn-fetch-blob';
+import { newpostCall } from "../../utils/service";
+
+
+
+
 
 
 
@@ -129,16 +135,9 @@ const CameraScreen = (props: any) => {
 
   console.log("url===>",url)
 
-  useEffect(()=>{
 
-  // generateUserSignature()
-    getKey()
-    
 
-  },[createSignatureKey])
-
-  const generateUserSignature = async () =>{
-    try {
+  const generateUserSignature = async() => {
       const data = {
         payload: {
           credentialSubject: {
@@ -146,39 +145,26 @@ const CameraScreen = (props: any) => {
           }
         }
       };
-      fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          "privateKey":privateKey,
-          "x-api-key": newssiApiKey
-        },
-        body: JSON.stringify(data),
-      })
-        .then(response => response.json())
-        .then(async(responseData) => {
-          // Handle the response data
-          console.log("responseDataSignature",responseData);
-          let signatureKey = await responseData?.Signature
-          setCreateSignatureKey(signatureKey)
-          await AsyncStorage.setItem("signatureKey",signatureKey)
-        })
-        .catch(error => {
-          // Handle any errors
-          console.error(error);
-        });
-    
-    } catch (error: any) {
-      console.log("error", error?.message);
-    }
+      const headersToSend = {
+        'Content-Type': 'application/json',
+        "privateKey":privateKey,
+        "x-api-key": newssiApiKey
+      };
+
+  axios.post(url, data, { headers: headersToSend })
+  .then(async (response) => {
+    // Handle the API response
+    console.log('Response==>', response.data);
+    let data = await response.data.Signature
+    setCreateSignatureKey(data)
+  })
+  .catch(error => {
+    // Handle any errors
+    console.error('Error:', error);
+  });
+
   }
 
-
-const getKey = async ()=>{
-// let newKey : any = await  AsyncStorage.getItem("signatureKey")
-// setCreateSignatureKey(newKey)
-// console.log("signatureKey",newKey)
-}
 
   const _handleBarCodeRead = (barCodeData: any) => {
     let serviceData = JSON.parse(barCodeData.data);
@@ -243,6 +229,7 @@ const getKey = async ()=>{
       setisDocumentModalkyc(false);
       if (barCodeDataDetails?.requestType === "login") {
         setIsCamerVisible(true);
+        generateUserSignature()
         Alert.alert("Login Successfully");
       }
       if (barCodeDataDetails?.requestType === "generateCredentials") {
@@ -286,6 +273,14 @@ const getKey = async ()=>{
     return datas;
   };
 
+
+  useEffect(()=>{
+
+    
+  },[])
+
+
+
   
 
   const createVerifiableCredentials = async () => {
@@ -321,7 +316,6 @@ const getKey = async ()=>{
         documentName: "",
         docName: "",
         base64: undefined
-      //  base64: base64Pic
        
       };
 
@@ -343,6 +337,7 @@ const getKey = async ()=>{
     } else if (barCodeDataDetails.requestType === "shareCredentials") {
       // getData();
     } else {
+      console.log("thiss","this is log")
       var date = dateTime();
       var documentDetails: IDocumentProps = {
         id: `ID_VERIFICATION${Math.random()}${"selectedDocument"}${Math.random()}`,
@@ -370,7 +365,6 @@ const getKey = async ()=>{
         }),
         docName: "",
         base64: undefined
-     //   base64: base64Pic,
         
       };
 
@@ -460,10 +454,9 @@ const getKey = async ()=>{
             pressed: false,
             publicKey:keys?.responseData?.result?.publicKey,
             userDid:keys?.responseData?.newUserDid ,
-          //   signature:createSignatureKey,
-          //   base64:base64Pic,
-          //  pdf :documentsDetailsList?.responseData[0]?.typePDF,
-          //  docName :documentsDetailsList?.responseData[0]?.docName,
+            signature:createSignatureKey,
+            base64:base64Pic,
+            docName :documentsDetailsList?.responseData[0]?.docName,
           },
         };
       } else if (barCodeDataDetails?.requestType === "document") {
@@ -487,10 +480,9 @@ const getKey = async ()=>{
               "6hrFDATxrG9w14QY9wwnmVhLE0Wg6LIvwOwUaxz761m1JfRp4rs8Mzozk5xhSkw0_MQz6bpcJnrFUDwp5lPPFC157dHxbkKlDiQ9XY3ZIP8zAGCsS8ruN2uKjIaIargX",
               publicKey:keys?.responseData?.result?.publicKey,
               userDid:keys?.responseData?.newUserDid ,
-            //   pdf :documentsDetailsList?.responseData[0]?.typePDF,
-            //   docName :documentsDetailsList?.responseData[0]?.docName,
-            //  signature:createSignatureKey,
-            //   base64:base64Pic,
+              docName :documentsDetailsList?.responseData[0]?.docName,
+              signature:createSignatureKey,
+              base64:base64Pic,
            
           },
         };
@@ -511,10 +503,9 @@ const getKey = async ()=>{
             //documents: documentsDetailsList?.responseData,
             requestType: barCodeDataDetails?.requestType,
             reqNo: barCodeDataDetails?.reqNo,
-           // signature:createSignatureKey,
-          //   base64:base64Pic,
-          //  pdf :documentsDetailsList?.responseData[0]?.typePDF,
-          //  docName :documentsDetailsList?.responseData[0]?.docName,
+            signature:createSignatureKey,
+            base64:base64Pic,
+            docName :documentsDetailsList?.responseData[0]?.docName,
             kycToken:
               "6hrFDATxrG9w14QY9wwnmVhLE0Wg6LIvwOwUaxz761m1JfRp4rs8Mzozk5xhSkw0_MQz6bpcJnrFUDwp5lPPFC157dHxbkKlDiQ9XY3ZIP8zAGCsS8ruN2uKjIaIargX",
           },
@@ -541,6 +532,9 @@ const getKey = async ()=>{
             source={LocalImages.scanbarImage}
           ></Image>
         </TouchableOpacity>
+
+
+
       </View>
       {isCameraVisible && (
         <RNCamera
@@ -691,7 +685,7 @@ const getKey = async ()=>{
                   getDropDownList()?.map(
                     (
                       item: {
-                        documentName: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null | undefined;
+                        docName: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null | undefined;
                         id: any;
                         name:
                           | boolean
@@ -750,7 +744,7 @@ const getKey = async ()=>{
                                 fontWeight: "300",
                               }}
                             >
-                              {item.name || item?.documentName}
+                              {item?.docName}
                             </GenericText>
                           </View>
                         </View>

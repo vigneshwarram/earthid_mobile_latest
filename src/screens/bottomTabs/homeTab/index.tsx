@@ -90,6 +90,8 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
   }, []);
 
   const handleShare = useCallback(async (item: SharedItem | null) => {
+
+  
     if (!item) {
       return;
     }
@@ -97,6 +99,18 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
       const { mimeType, data, extraData } = item;
       console.log("datamimeType", data);
       console.log("datamimeType", extraData);
+      console.log("datamimeType", extraData);
+      const imageName = data.split("/").pop() + ".jpg";
+      console.log("imageName",imageName)
+
+      const fileStat = await RNFS.stat(data);
+      console.log("imageName",fileStat)
+      const uriimage = fileStat.originalFilepath
+      const uriimage1 :any = uriimage.split("/").pop()
+      const uriimage2 = uriimage1.split(".")[0]
+      console.log("imageName",uriimage2)
+
+
 
       if (
         mimeType === "image/*" ||
@@ -110,6 +124,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
           type: mimeType,
           uri: base64,
           flow: "deeplink",
+          docName:uriimage2,
           file: {
             uri: base64,
           },
@@ -124,6 +139,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
           type: mimeType,
           uri: base64,
           flow: "deeplink",
+          docName:uriimage2,
           file: {
             uri: base64,
           },
@@ -134,6 +150,15 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
       const { mimeType, data, extraData } = item;
       console.log("datamimeType", extraData);
       console.log("extraData?.mimeType", extraData?.mimeType);
+
+
+      const fileStat = await RNFS.stat(data);
+      console.log("imageName",fileStat)
+      const uriimage = fileStat.originalFilepath
+      const uriimage1 :any = uriimage.split("/").pop()
+      const uriimage2 = uriimage1.split(".")[0]
+      console.log("imageName",uriimage2)
+
 
       if (
         extraData?.mimeType === "image/*" ||
@@ -149,6 +174,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
           type: extraData?.mimeType,
           uri: imagePath,
           flow: "deeplink",
+          docName:uriimage2,
           imagePath: imagePath,
           file: {
             uri: base64,
@@ -163,6 +189,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
           base64: base64,
           type: extraData?.mimeType,
           uri: base64,
+          docName:uriimage2,
           flow: "deeplink",
           file: {
             uri: base64,
