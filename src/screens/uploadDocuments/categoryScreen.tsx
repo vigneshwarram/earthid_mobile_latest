@@ -473,7 +473,7 @@ setIsPrceedForLivenessTest(false)
                 style={{ height: 20, width: 20, resizeMode: "contain" }}
               />
             </TouchableOpacity>
-            <View>
+            <View >
               <FlatList<any>
                 numColumns={3}
                 nestedScrollEnabled
@@ -493,29 +493,29 @@ setIsPrceedForLivenessTest(false)
               categoryList.length !== 0 ?
 
                <View>
-                <View style={{flexDirection:"row"}}>
-               
-                <GenericText
-                style={[
-                  styles.categoryHeaderText,
-                  { fontSize: 14, fontWeight: "700" },
-                ]}
-              >
-                {"DOCUMENT NAME"}
-              </GenericText> 
-
-              <GenericText
-                style={{alignSelf:"center",color:"red",marginLeft:-2,fontSize:20}}
-              >
-                {"*"}
-              </GenericText> 
-
-                </View>
-
           
 
+          
+<View style={{marginTop:50}}>
+<View style={{flexDirection:"row"}}>
+               
+               <GenericText
+               style={[
+                 styles.categoryHeaderText,
+                 { fontSize: 14, fontWeight: "700" },
+               ]}
+             >
+               {"DOCUMENT NAME"}
+             </GenericText> 
 
-              <TextInput
+             <GenericText
+               style={{alignSelf:"center",color:"red",marginLeft:-2,fontSize:20}}
+             >
+               {"*"}
+             </GenericText> 
+
+               </View>
+<TextInput
                 placeholder="Enter Document Name"
                 onChangeText={docnameitem}
                 value={docname}
@@ -529,6 +529,9 @@ setIsPrceedForLivenessTest(false)
                   height:40
                 }}
               />
+</View>
+
+             
 
               
               <GenericText
