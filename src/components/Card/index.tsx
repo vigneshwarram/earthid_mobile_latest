@@ -28,6 +28,7 @@ interface ICardProps {
   isCheckBoxEnable?: boolean;
   onCheckBoxValueChange?: any;
   checkBoxValue?: boolean;
+  timeTitle?: any;
 }
 
 const Card = ({
@@ -45,6 +46,7 @@ const Card = ({
   isCheckBoxEnable,
   onCheckBoxValueChange,
   checkBoxValue,
+  timeTitle
 }: ICardProps) => {
   return (
     <View style={[styles.container, style]}>
@@ -82,6 +84,7 @@ const Card = ({
         titleIcon={titleIcon}
         title={title}
         subtitle={subtitle}
+        timeTitle={timeTitle}
         style={{
           title: style.title,
           subtitle: style.subtitle,

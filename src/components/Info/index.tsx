@@ -21,7 +21,8 @@ const Info = ({
   subTitlePress,
   tailIcon,
   tailIconPress,
-  tailIcondisabled
+  tailIcondisabled,
+  timeTitle
 }: IInfoProps) => (
   <View style={[styles.container, style.container]}>
     {title && (
@@ -33,9 +34,14 @@ const Info = ({
               style={{ justifyContent: "space-between", flexDirection: "row" }}
             >
               <View style={styles.titleTextContainer}>
+                <View style={{flexDirection:'column'}}>
                 <GenericText style={[styles.subtitle, style.subtitle]}>
                   {subtitle}
                 </GenericText>
+                <GenericText style={[styles.subtitle, style.subtitle]}>
+                  {timeTitle}
+                </GenericText>
+                </View>
                 {subtitleRowText && (
                   <TouchableOpacity onPress={subTitlePress}>
                     <View style={styles.titleTextContainer}>

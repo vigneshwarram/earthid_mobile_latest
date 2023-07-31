@@ -8,4 +8,5 @@ export interface IInfoProps {
   tailIcon?:any;
   tailIconPress?:any
   tailIcondisabled?:any
+  timeTitle?:any
 }

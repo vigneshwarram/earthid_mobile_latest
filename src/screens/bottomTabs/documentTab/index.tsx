@@ -200,6 +200,11 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
                 ? `      Received  : ${item.date}`
                 : `      Uploaded  : ${item.date}`
             }
+            timeTitle={
+              item.isVc
+              ? `      Time  : ${item.time}`
+              : `      Time  : ${item.time}`
+            }
             isCheckBoxEnable={isCheckBoxEnable}
             onCheckBoxValueChange={(value: any) => {
               // item.isSelected = value;
@@ -442,7 +447,7 @@ function editItem(){
       return [];  // earlier []
     }
     console.log("searchedData====>{{}}}}}", data);
-    return data;
+    return data.reverse();
   };
   const clearData = () => {};
 
