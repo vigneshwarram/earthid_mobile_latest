@@ -68,6 +68,7 @@ export const LocalImages = {
     insuranceImage: require("../../resources/images/Insurence.png"),
     personalcardImage: require("../../resources/images/personalcard.png"),
     employment: require("../../resources/images/employment.png"),
+    finance: require("../../resources/images/hand.png"),
 
   },
   SOCIAL_MEDIA_: {

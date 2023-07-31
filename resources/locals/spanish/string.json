@@ -159,5 +159,6 @@
   "healthcare":"Cuidado de la salud",
   "docavailable":"No hay documentos disponibles",
   "employment":"Empleo",
-  "norecentactivity":"No hay actividad reciente"
+  "norecentactivity":"No hay actividad reciente",
+  "finance":"Finanzas"
 }

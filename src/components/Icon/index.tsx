@@ -40,7 +40,7 @@ const Icon = ({
      <Image
         source={src}
         style={[styles.image, style.image]}
-        resizeMode='stretch'
+        resizeMode='contain'
       />
     
      

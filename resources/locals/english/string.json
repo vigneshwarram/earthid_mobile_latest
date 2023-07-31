@@ -162,5 +162,6 @@
   "healthcare":"Healthcare",
   "docavailable":"No documents available",
   "employment":"Employment",
-  "norecentactivity":"No recent activity"
+  "norecentactivity":"No recent activity",
+  "finance":"Finance"
 }
