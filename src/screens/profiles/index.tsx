@@ -150,7 +150,10 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
       console.log(err);
     }
   };
-
+const setResponseData =(data: any)=>{
+  setResponse(data)
+  setisCameraOptionVisible(false)
+}
   const openFilePicker = async () => {
     if (Platform.OS == "android") {
       await requestPermission();
@@ -158,7 +161,7 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
     try {
       ImagePicker.launchImageLibrary(
         ImagePicker.ImageLibraryOptions,
-        setResponse
+        setResponseData
       )
 
       // const resp: any = await DocumentPicker.pick({
@@ -435,7 +438,7 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
                 avatarClick={() => {
                 
                   openFilePicker();
-                  setisCameraOptionVisible(false)
+                 // setisCameraOptionVisible(false)
                 }}
                 title={"gallery"}
                 icon={LocalImages.galleryImage}
