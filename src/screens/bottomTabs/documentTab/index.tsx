@@ -423,7 +423,7 @@ function editItem(){
 
   const getFilteredData = () => {
     console.log('getFilteredData')
-    let data = documentsDetailsList?.responseData;
+    let data = documentsDetailsList?.responseData.reverse();
 
     if (categoryTypes !== "") {
       var alter = function (item: any) {
@@ -447,7 +447,7 @@ function editItem(){
       return [];  // earlier []
     }
     console.log("searchedData====>{{}}}}}", data);
-    return data.reverse();
+    return data;
   };
   const clearData = () => {};
 
