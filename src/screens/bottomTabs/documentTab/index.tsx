@@ -275,19 +275,16 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
 
     // docName to documentName
         const newDataItem=  documentsDetailsList?.responseData || []
-        const newData =newDataItem.filter(function (item: {
-          docName: string;
-        }) {
-          const itemData = item.docName ? item?.docName.toUpperCase() : "".toUpperCase();
-    
-          const textData = text?.toUpperCase();
-    
-          return itemData.indexOf(textData) > -1;
-        });
+        const filteredData = newDataItem.filter(
+          (          item: { docName: string; documentName: string; categoryType: string; }) =>
+            item.docName.toLowerCase().includes(text.toLowerCase()) ||
+            item.documentName.toLowerCase().includes(text.toLowerCase()) ||
+            item.categoryType.toLowerCase().includes(text.toLowerCase())
+        );
         setsearchText(text);
-       console.log(itemdata,'ITEMDATA')
+  
        
-        setSearchedData(newData);
+        setSearchedData(filteredData);
       
      
     
