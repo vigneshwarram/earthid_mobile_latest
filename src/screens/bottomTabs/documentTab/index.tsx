@@ -446,7 +446,7 @@ function editItem(){
     if (searchedData.length === 0 && searchText != "") {
       return [];  // earlier []
     }
-    console.log("searchedData====>{{}}}}}", data);
+    console.log("searchedData====>{{}}}}}-", data);
     return data.reverse();
   };
   const clearData = () => {};
