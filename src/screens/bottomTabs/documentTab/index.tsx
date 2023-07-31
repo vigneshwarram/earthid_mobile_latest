@@ -202,8 +202,12 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
             }
             timeTitle={
               item.isVc
-              ? `      Time  : ${item.time}`
-              : `      Time  : ${item.time}`
+              ? item.time.substring(0, item.time.length - 3).split(":")[0] >= 12 ?
+              item.time.substring(0, item.time.length - 3)+" PM" :
+              item.time.substring(0, item.time.length - 3)+" AM"
+              : item.time.substring(0, item.time.length - 3).split(":")[0] >= 12 ?
+                 item.time.substring(0, item.time.length - 3)+" PM" :
+                 item.time.substring(0, item.time.length - 3)+" AM"
             }
             isCheckBoxEnable={isCheckBoxEnable}
             onCheckBoxValueChange={(value: any) => {
@@ -423,7 +427,7 @@ function editItem(){
 
   const getFilteredData = () => {
     console.log('getFilteredData')
-    let data = documentsDetailsList?.responseData;
+    let data = documentsDetailsList?.responseData.reverse();
 
     if (categoryTypes !== "") {
       var alter = function (item: any) {
@@ -447,7 +451,7 @@ function editItem(){
       return [];  // earlier []
     }
     console.log("searchedData====>{{}}}}}-", data);
-    return data.reverse();
+    return data;
   };
   const clearData = () => {};
 

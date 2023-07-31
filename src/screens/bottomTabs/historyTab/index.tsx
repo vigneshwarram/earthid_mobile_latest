@@ -163,6 +163,15 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
             rightIconOnPress={() => _rightIconOnPress(item)}
             title={item?.isVc ?item.name : item?.documentName?.split("(")[1]?.split(")")[0] == "undefined" ? item?.docName : item?.docName}
             subtitle={`      Uploaded  : ${item.date}`}
+            timeTitle={
+              item.isVc
+              ? item.time.substring(0, item.time.length - 3).split(":")[0] >= 12 ?
+              item.time.substring(0, item.time.length - 3)+" PM" :
+              item.time.substring(0, item.time.length - 3)+" AM"
+              : item.time.substring(0, item.time.length - 3).split(":")[0] >= 12 ?
+                 item.time.substring(0, item.time.length - 3)+" PM" :
+                 item.time.substring(0, item.time.length - 3)+" AM"
+            }
             style={{
               ...styles.cardContainer,
               ...{
@@ -237,7 +246,7 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
                     //     ? getHistoryReducer.responseData
                     //     : []
                     // }
-                    data={data}
+                    data={data.reverse()}
                     extraData={data}
                     renderItem={_renderItem}
                     keyExtractor={(item) => item.id}

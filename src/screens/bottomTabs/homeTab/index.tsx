@@ -377,6 +377,15 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
             // rightIconSrc={LocalImages.menuImage}
             title={item?.isVc ?item.name : item?.documentName?.split("(")[1]?.split(")")[0] == "undefined" ?item?.docName : item?.docName}
             subtitle={`      Uploaded  : ${item.date}`}
+            timeTitle={
+              item.isVc
+              ? item.time.substring(0, item.time.length - 3).split(":")[0] >= 12 ?
+              item.time.substring(0, item.time.length - 3)+" PM" :
+              item.time.substring(0, item.time.length - 3)+" AM"
+              : item.time.substring(0, item.time.length - 3).split(":")[0] >= 12 ?
+                 item.time.substring(0, item.time.length - 3)+" PM" :
+                 item.time.substring(0, item.time.length - 3)+" AM"
+            }
             style={{
               ...styles.cardContainers,
               ...{
@@ -530,7 +539,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
             //     ? getHistoryReducer.responseData
             //     : []
             // }
-            data={recentDataOfDocument}
+            data={recentDataOfDocument.reverse()}
             inverted
             renderItem={_renderItemHistory}
           />

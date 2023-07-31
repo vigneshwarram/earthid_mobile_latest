@@ -38,7 +38,7 @@ const Info = ({
                 <GenericText style={[styles.subtitle, style.subtitle]}>
                   {subtitle}
                 </GenericText>
-                <GenericText style={[styles.subtitle, style.subtitle]}>
+                <GenericText style={[styles.subtitle, style.subtitle,{position:"absolute",left:170}]}>
                   {timeTitle}
                 </GenericText>
                 </View>
