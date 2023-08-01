@@ -379,10 +379,14 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
             subtitle={`      Uploaded  : ${item.date}`}
             timeTitle={
               item.isVc
-              ? item.time.substring(0, item.time.length - 3).split(":")[0] >= 12 ?
+              ? item.time.substring(0, item.time.length - 3).split(":")[0] >= 24 ?
+              item.time.substring(0, item.time.length - 3)+" AM" :
+              item.time.substring(0, item.time.length - 3).split(":")[0] >= 12 ?
               item.time.substring(0, item.time.length - 3)+" PM" :
               item.time.substring(0, item.time.length - 3)+" AM"
-              : item.time.substring(0, item.time.length - 3).split(":")[0] >= 12 ?
+              : item.time.substring(0, item.time.length - 3).split(":")[0] >= 24 ?
+                 item.time.substring(0, item.time.length - 3)+" AM" :
+                 item.time.substring(0, item.time.length - 3).split(":")[0] >= 12 ?
                  item.time.substring(0, item.time.length - 3)+" PM" :
                  item.time.substring(0, item.time.length - 3)+" AM"
             }
