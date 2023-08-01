@@ -112,7 +112,7 @@ const CustomDrawer = (props: any) => {
   const deleteUser = () => {
     const deletId = isEarthId()
       ? "Are you sure you want to delete your EarthId? Once deleted you won't be able to recover it later."
-      : "Are you sure you want to delete your GlobalId? Once deleted you won't be able to recover it later.";
+      : "Are you sure you want to delete your ICCAiD? Once deleted you won't be able to recover it later.";
     Alert.alert(
       "Delete Identity?",
       deletId,

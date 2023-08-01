@@ -226,7 +226,7 @@ console.log('keys',keys)
               textDecorationLine: "underline",
             }}
           >
-            {isEarthId() ? "EarthID" : "GlobaliD"}
+            {isEarthId() ? "EarthID" : "ICCAiD"}
           </GenericText>
         </View>
       </TouchableOpacity>

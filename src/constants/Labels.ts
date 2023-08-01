@@ -4,7 +4,7 @@ import { LocalImages } from "./imageUrlConstants";
 export const SCREENS = {
   HOMESCREEN: {
     avatarName: "Robert Downey",
-    appName: isEarthId() ? "EarthID" : "GlobaliD",
+    appName: isEarthId() ? "EarthID" : "ICCAiD",
     category: "CATEGORIES",
     documentLabel: "useddocument",
     upload: "uploaddoc",
