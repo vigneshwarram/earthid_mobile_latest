@@ -96,7 +96,7 @@ export const GeneratedKeysAction =
         },
       });
     } catch (error) {
-      console.log("generated key  API catch ===>", error);
+      console.log("generated key logs API catch ===>", error);
       dispatch({
         type: ACTION_TYPES.GENERATED_KEYS_ERROR,
       });

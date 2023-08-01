@@ -294,8 +294,8 @@ if(mobileNumber.length < 10){
           linearStyle={styles.linearStyle}
           containerStyle={{
             iconStyle: {
-              width: 205,
-              height: 72,
+              width: 300,
+              height: 150,
               marginTop: 30,
             },
             iconContainer: styles.alignCenter,

@@ -123,6 +123,7 @@ export const newssiGetCall = (
   method: string = "GET",
   key: string
 ): any => {
+  console.log('uri=====>',uri)
   return fetch(uri, {
     method,
     headers: {
