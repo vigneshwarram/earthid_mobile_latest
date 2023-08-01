@@ -459,15 +459,15 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
               justifyContent: "space-between",
             }}
           >
-            <View>
+            {/* <View>
               <GenericText
                 style={[styles.categoryHeaderText, { fontSize: 13 }]}
               >
                 {SCREENS.HOMESCREENTITLES.CATEGORIES}
               </GenericText>
-            </View>
+            </View> */}
 
-            <View style={{ flexDirection: "row" }}>
+            {/* <View style={{ flexDirection: "row" }}>
               <TouchableOpacity
                 style={{
                   width: 20,
@@ -507,9 +507,9 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
                   }}
                 />
               </TouchableOpacity>
-            </View>
+            </View> */}
           </View>
-          <View style={[styles.flatPanel, { height: 130, marginTop: -10 }]}>
+          {/* <View style={[styles.flatPanel, { height: 130, marginTop: -10 }]}>
             <FlatList<any>
               horizontal
               ref={(ref) => {
@@ -519,7 +519,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
               data={categoryList}
               renderItem={_renderItem}
             />
-          </View>
+          </View> */}
           <GenericText style={[styles.categoryHeaderText, { fontSize: 13 }]}>
             {SCREENS.HOMESCREEN.documentLabel}
           </GenericText>
