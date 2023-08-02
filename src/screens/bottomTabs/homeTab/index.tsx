@@ -11,6 +11,7 @@ import {
   Alert,
   Platform,
   AppState,
+  Text
 } from "react-native";
 import { EventRegister } from "react-native-event-listeners";
 import RNFS from "react-native-fs";
@@ -35,6 +36,11 @@ import { dateTime } from "../../../utils/encryption";
 import RNFetchBlob from "rn-fetch-blob";
 import { IDocumentProps } from "../../uploadDocuments/VerifiDocumentScreen";
 import NetInfo from '@react-native-community/netinfo';
+import { createUserSignaturekey } from "../../../utils/createUserSignaturekey";
+import { newssiApiKey } from "../../../utils/earthid_account";
+import { createVerifiableCred } from "../../../utils/createVerifiableCred";
+import Spinner from "react-native-loading-spinner-overlay/lib";
+
 
 interface IHomeScreenProps {
   navigation?: any;
@@ -51,13 +57,30 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
   const getHistoryReducer = useAppSelector((state) => state.getHistoryReducer);
   const profilePicture = useAppSelector((state) => state.savedPic);
   const securityReducer: any = useAppSelector((state) => state.security);
+  const[createVerifyCondition,setcreateVerifyCondition]=useState(true)
+  const[createVerifyCondition1,setcreateVerifyCondition1]=useState(true)
+  const[signature,setSignature]=useState()
+  const [loading, setLoading] = useState(false);
+  const[createVerify,setCreateVerify]=useState({})
+  const keys = useAppSelector((state) => state.user);
+  const issurDid = keys?.responseData?.issuerDid
+  const UserDid  = keys?.responseData?.newUserDid  
+  const privateKey = keys?.responseData?.generateKeyPair?.privateKey 
+  let url : any  = `https://ssi-test.myearth.id/api/user/sign?issuerDID=${issurDid}`
+  let requesturl : any  = `https://ssi-test.myearth.id/api/issuer/verifiableCredential?isCryptograph=${false}&downloadCryptograph=${false}`    
+
   const disPatch = useAppDispatch();
 
   let flatListRef: any = useRef();
 
+  console.log(signature,"sign");
+  console.log(createVerify,"createVerify");
+  console.log(UserDid,"UserDid");
+  console.log(userDetails?.responseData?.publicKey,"publickey");
+  
   //recent activity
-  let documentsDetailsList = useAppSelector((state) => state.Documents);
-  let recentData = documentsDetailsList?.responseData;
+  const documentsDetailsList = useAppSelector((state) => state.Documents);
+  const recentData = documentsDetailsList?.responseData;
   const [aState, setAppState] = useState(AppState.currentState);
   useEffect(() => {
     const appStateListener = AppState.addEventListener(
@@ -89,8 +112,113 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
     ShareMenu.getInitialShare(handleShare);
   }, []);
 
-  const handleShare = useCallback(async (item: SharedItem | null) => {
+  useEffect(()=>{
+   getSignature()
+   setLoading(true)
+   createVerifiableCredentials()
+ 
+ 
+  },[])
 
+
+  function getSignature(){
+    const params = {
+      payload: {
+        credentialSubject: {
+          id:UserDid
+        }
+      }
+    };
+    const headersToSend = {
+      'Content-Type': 'application/json',
+      "privateKey":privateKey,
+      "x-api-key": newssiApiKey
+    };
+
+    createUserSignaturekey(url,params,headersToSend)
+    .then((res:any)=>setSignature(res.Signature))
+    .catch(e=>console.log(e))
+  }
+
+ 
+   async function createVerifiableCredentials(){
+
+    const hasApiBeenCalled = await AsyncStorage.getItem('apiCalled');
+    console.log("hasApiBeenCalled",hasApiBeenCalled);
+
+    if(!hasApiBeenCalled) {
+   
+      const params = {
+        schemaName: "EarthIdVCSchema:1",
+        isEncrypted: false,
+        dependantVerifiableCredential: [],
+        credentialSubject: {
+        earthId: userDetails?.responseData?.earthId,
+        userName:userDetails?.responseData?.username,
+        userEmail: userDetails?.responseData?.email,
+        userMobileNo: userDetails?.responseData?.phone
+      }
+    };
+  
+      const headersToSend = {
+        'Content-Type': 'application/json',
+        "did":UserDid,
+        "x-api-key": newssiApiKey,
+        "publicKey": userDetails?.responseData?.publicKey,
+        "signature": signature
+      };
+  
+      createVerifiableCred(requesturl,params,headersToSend)
+      .then(async(res:any)=>{
+        if(res.data){
+        setLoading(false)
+        setCreateVerify(res?.data)
+        await AsyncStorage.setItem('apiCalled', 'true');
+        var date = dateTime();
+        var documentDetails: IDocumentProps = {
+          id: res?.data?.verifiableCredential?.id,
+          name: "VC - ACK Token",
+          path: "filePath",
+          date: date?.date,
+          time: date?.time,
+          txId: "data?.result",
+          docType: res?.data?.verifiableCredential?.type[1],
+          docExt: ".jpg",
+          processedDoc: "",
+          isVc: true,
+          vc: JSON.stringify({
+            name: "VC - ACK Token",
+            documentName: "VC - ACK Token",
+            path: "filePath",
+            date: date?.date,
+            time: date?.time,
+            txId: "data?.result",
+            docType: "pdf",
+            docExt: ".jpg",
+            processedDoc: "",
+            isVc: true,
+          }),
+          documentName: "",
+          docName: "",
+          base64: undefined
+        };
+  
+        var DocumentList = documentsDetailsList?.responseData
+          ? documentsDetailsList?.responseData
+          : [];
+        DocumentList.push(documentDetails);
+        dispatch(saveDocuments(DocumentList));
+        }
+      })
+      .catch(e=>console.log(e))
+      
+  }else{
+    setLoading(false)
+    console.log("API hit already","praveen")
+  }
+  }
+
+  const handleShare = useCallback(async (item: SharedItem | null) => {
   
     if (!item) {
       return;
@@ -236,7 +364,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
   useEffect(() => {
     console.log('recentData====>',recentData)
     if (documentsDetailsList) {
-      let recentDataFillerWithColor: any =recentData &&  recentData?.map(
+      let recentDataFillerWithColor: any = recentData &&  recentData?.map(
         (item: any, index: any) => {
           let colors = item?.documentName;
           let iteName = colors?.trim()?.split("(")[0].trim();
@@ -363,6 +491,23 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
     disPatch(savingProfilePictures(profilePic));
   };
 
+  const getCategoryImages = (item: { categoryType: any; name: any }) => {
+    const getItems = SCREENS.HOMESCREEN.categoryList.filter(
+      (itemFiltered, index) => {
+        return (
+          itemFiltered.TITLE.toLowerCase() === item?.categoryType?.toLowerCase()
+        );
+      }
+    );
+
+    return getItems[0];
+  };
+  const getImagesColor = (item: any) => {
+    let colors = item?.documentName;
+    let iteName = colors?.trim()?.split("(")[0]?.trim();
+    return getColor(iteName);
+  };
+
   const _renderItemHistory = ({ item }: any) => {
     return (
       <TouchableOpacity
@@ -424,6 +569,68 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
         )}
       </TouchableOpacity>
     );
+
+
+    // return (
+    //   <TouchableOpacity
+    //   style={{
+    //     height:110,
+    //     borderRadius:25,
+    //     elevation:4,
+    //     marginLeft:20,marginRight:20,
+    //     marginTop:10,
+    //     marginBottom:10,
+    //     backgroundColor:'#fff',
+    //     justifyContent:"center"
+    //   }}
+    //   >
+    //     <View style={{flexDirection:'row'}}>
+    //     <Image
+    //       source={LocalImages.documentsImage}
+    //       style={{alignSelf:"center",height:70,width:60,marginLeft:10}}
+    //     />
+
+    //   <View style={{alignSelf:"center"}}>
+    //     <Text
+    //     style={{
+    //       color: Screens.black,
+    //       fontSize: 16,
+    //       fontWeight: "500",
+    //       paddingVertical: 1.5,
+    //       marginLeft:15
+    //     }}
+    //     >{item?.isVc ?item.name : item?.documentName?.split("(")[1]?.split(")")[0] == "undefined" ? item?.docName : item?.docName}</Text>
+
+    //     <View style={{flexDirection:"row"}}>
+
+    //     <Text style={{color:Screens.grayShadeColor,marginTop:7}}>{`    Uploaded :${item.date}`}</Text>
+    //     <Text
+    //     style={{marginLeft:10,color:Screens.grayShadeColor,marginTop:7}}
+    //     >{
+    //       item.isVc
+    //       ? item.time.substring(0, item.time.length - 3).split(":")[0] >= 24 ?
+    //       item.time.substring(0, item.time.length - 3)+" AM" :
+    //       item.time.substring(0, item.time.length - 3).split(":")[0] >= 12 ?
+    //       item.time.substring(0, item.time.length - 3)+" PM" :
+    //       item.time.substring(0, item.time.length - 3)+" AM"
+    //       : item.time.substring(0, item.time.length - 3).split(":")[0] >= 24 ?
+    //          item.time.substring(0, item.time.length - 3)+" AM" :
+    //          item.time.substring(0, item.time.length - 3).split(":")[0] >= 12 ?
+    //          item.time.substring(0, item.time.length - 3)+" PM" :
+    //          item.time.substring(0, item.time.length - 3)+" AM"
+    //       }</Text>
+
+    //       <Image
+    //       source={item?.isVc ? LocalImages.vcImage : null}
+    //       style={{height:25,width:40,resizeMode:'cover',alignSelf:"center"}}
+    //       />
+    //     </View>
+    //   </View>
+    //     </View>
+    //   </TouchableOpacity>
+    // );
+
+
   };
 
   return (
@@ -543,7 +750,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
             //     ? getHistoryReducer.responseData
             //     : []
             // }
-            data={recentDataOfDocument.reverse()}
+            data={recentData}
             inverted
             renderItem={_renderItemHistory}
           />
@@ -561,6 +768,12 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
             </View>
           )}
         </View>
+
+        <Spinner
+              visible={loading}
+              textContent={"Loading..."}
+              textStyle={styles.spinnerTextStyle}
+            />
       </ScrollView>
     </View>
   );
@@ -570,6 +783,9 @@ const styles = StyleSheet.create({
   sectionContainer: {
     flex: 1,
     backgroundColor: Screens.colors.background,
+  },
+  spinnerTextStyle: {
+    color: "#fff",
   },
   linearStyle: {
     height: 330,

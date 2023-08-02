@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, ScrollView, Image,TouchableOpacity,Alert } from "react-native";
+import { View, StyleSheet, ScrollView, Image,TouchableOpacity,Alert, AsyncStorage } from "react-native";
 import Header from "../../../../components/Header";
 import { SCREENS } from "../../../../constants/Labels";
 import { Screens } from "../../../../themes";
@@ -8,15 +8,19 @@ import SmoothPinCodeInput from "react-native-smooth-pincode-input";
 import { LocalImages } from "../../../../constants/imageUrlConstants";
 import { useFetch } from "../../../../hooks/use-fetch";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/hooks";
-import { alertBox, api, phoneOtp } from "../../../../utils/earthid_account";
+import { alertBox, api, newssiApiKey, phoneOtp } from "../../../../utils/earthid_account";
 import AnimatedLoader from "../../../../components/Loader/AnimatedLoader";
 import SuccessPopUp from "../../../../components/Loader";
 import {
   approveOTP,
   byPassUserDetailsRedux,
+  createUserSignature,
 } from "../../../../redux/actions/authenticationAction";
 import { is } from "immer/dist/internal";
 import GenericText from "../../../../components/Text";
+import { createUserSignaturekey } from "../../../../utils/createUserSignaturekey";
+import { createVerifiableCred } from "../../../../utils/createVerifiableCred";
+import { dateTime } from "../../../../utils/encryption";
 
 interface IHomeScreenProps {
   navigation?: any;
@@ -29,6 +33,18 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
   };
   const dispatch = useAppDispatch();
   const userDetails = useAppSelector((state) => state.account);
+  const documentsDetailsList = useAppSelector((state) => state.Documents);
+
+  const[signature,setSignature]=useState()
+  const [loading, setLoading] = useState(false);
+  const[createVerify,setCreateVerify]=useState({})
+  const keys = useAppSelector((state) => state.user);
+  const issurDid = keys?.responseData?.issuerDid
+  const UserDid  = keys?.responseData?.newUserDid  
+  const privateKey = keys?.responseData?.generateKeyPair?.privateKey 
+  let url : any  = `https://ssi-test.myearth.id/api/user/sign?issuerDID=${issurDid}`
+  let requesturl : any  = `https://ssi-test.myearth.id/api/issuer/verifiableCredential?isCryptograph=${false}&downloadCryptograph=${false}`    
+
 
   const ApproveOtpResponse = useAppSelector((state) => state.ApproveOtp);
 
@@ -100,6 +116,111 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
     }
   }, [phoneResponse]);
 
+
+
+    //createVerifiables
+
+    function getSignature(){
+      const params = {
+        payload: {
+          credentialSubject: {
+            id:UserDid
+          }
+        }
+      };
+      const headersToSend = {
+        'Content-Type': 'application/json',
+        "privateKey":privateKey,
+        "x-api-key": newssiApiKey
+      };
+  
+      createUserSignaturekey(url,params,headersToSend)
+      .then((res:any)=>setSignature(res.Signature))
+      .catch(e=>console.log(e))
+    }
+
+
+
+    async function createVerifiableCredentials(){
+      setLoading(true)
+      const hasApiBeenCalled = await AsyncStorage.getItem('apiCalled');
+      console.log("hasApiBeenCalled",hasApiBeenCalled);
+
+      if(!hasApiBeenCalled) {
+     
+        const params = {
+          schemaName: "EarthIdVCSchema:1",
+          isEncrypted: false,
+          dependantVerifiableCredential: [],
+          credentialSubject: {
+          earthId: userDetails?.responseData?.earthId,
+          userName:userDetails?.responseData?.username,
+          userEmail: userDetails?.responseData?.email,
+          userMobileNo: userDetails?.responseData?.phone
+        }
+      };
+    
+        const headersToSend = {
+          'Content-Type': 'application/json',
+          "did":UserDid,
+          "x-api-key": newssiApiKey,
+          "publicKey": userDetails?.responseData?.publicKey,
+          "signature": signature
+        };
+    
+        createVerifiableCred(requesturl,params,headersToSend)
+        .then(async(res:any)=>{
+          if(res.data){
+          setLoading(false)
+          setCreateVerify(res?.data)
+          await AsyncStorage.setItem('apiCalled', 'true');
+          var date = dateTime();
+          var documentDetails: IDocumentProps = {
+            id: res?.data?.verifiableCredential?.id,
+            name: "VC - ACK Token",
+            path: "filePath",
+            date: date?.date,
+            time: date?.time,
+            txId: "data?.result",
+            docType: res?.data?.verifiableCredential?.type[1],
+            docExt: ".jpg",
+            processedDoc: "",
+            isVc: true,
+            vc: JSON.stringify({
+              name: "VC - ACK Token",
+              documentName: "VC - ACK Token",
+              path: "filePath",
+              date: date?.date,
+              time: date?.time,
+              txId: "data?.result",
+              docType: "pdf",
+              docExt: ".jpg",
+              processedDoc: "",
+              isVc: true,
+            }),
+            documentName: "",
+            docName: "",
+            base64: undefined
+          };
+    
+          var DocumentList = documentsDetailsList?.responseData
+            ? documentsDetailsList?.responseData
+            : [];
+          DocumentList.push(documentDetails);
+          dispatch(saveDocuments(DocumentList));
+          }
+        })
+        .catch(e=>console.log(e))
+        
+    }else{
+      setLoading(false)
+      console.log("API hit already","praveen")
+    }
+    }
+
+
+
+
   console.log("ApproveOtpResponse", ApproveOtpResponse);
   if (ApproveOtpResponse?.isApproveOtpSuccess) {
     ApproveOtpResponse.isApproveOtpSuccess = false;
@@ -123,12 +244,14 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
   }
 
   const approveOtp = () => {
+
+    getSignature()
+    createVerifiableCredentials()
     const request = {
       otp: code,
       earthId: userDetails?.responseData?.earthId,
       publicKey: userDetails?.responseData?.publicKey,
     };
-
     dispatch(approveOTP(request, type));
   };
 
@@ -229,7 +352,7 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
             title={"submt"}
           ></Button>
           <AnimatedLoader
-            isLoaderVisible={ApproveOtpResponse.isApproveLoading}
+            isLoaderVisible={ApproveOtpResponse.isApproveLoading && loading}
             loadingText="Loading..."
           />
           <SuccessPopUp

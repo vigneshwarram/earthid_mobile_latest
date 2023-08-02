@@ -101,6 +101,7 @@ const CustomDrawer = (props: any) => {
         await AsyncStorage.removeItem("pageName");
         await AsyncStorage.removeItem("profilePic");
         await AsyncStorage.removeItem("signatureKey");
+        await AsyncStorage.removeItem("apiCalled");
         props.navigation.dispatch(StackActions.replace("AuthStack"));
       });
     }
