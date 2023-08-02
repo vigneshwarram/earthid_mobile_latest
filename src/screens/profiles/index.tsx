@@ -320,7 +320,7 @@ const setResponseData =(data: any)=>{
           </View>
           <View style={styles.category}>
             <Info
-              title={"username"}
+              title={"Registration Number"}
               subtitle={userDetails?.responseData?.username}
               style={{
                 title: styles.title,

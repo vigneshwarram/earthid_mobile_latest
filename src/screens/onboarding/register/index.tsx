@@ -47,6 +47,7 @@ const Register = ({ navigation }: IRegister) => {
     data: superAdminResponse,
     fetch: getSuperAdminApiCall,
   } = useFetch();
+
   const [mobileNumber, setmobileNumber] = useState<string>("");
   const [loginLoading, setLoginLoading] = useState(false);
   const userDetails = useAppSelector((state) => state.account);
@@ -132,6 +133,7 @@ const Register = ({ navigation }: IRegister) => {
     const token = await getDeviceId();
     const deviceName = await getDeviceName();
     if (superAdminResponse && superAdminResponse[0]?.Id) {
+
       const payLoad: IUserAccountRequest = {
         username: firstName,
         deviceID: token + Math.random(),
@@ -157,7 +159,7 @@ const Register = ({ navigation }: IRegister) => {
       });
     }
   };
-console.log('keys',keys)
+
   if (keys && keys?.isGeneratedKeySuccess) {
     keys.isGeneratedKeySuccess = false;
 
@@ -226,7 +228,7 @@ console.log('keys',keys)
               textDecorationLine: "underline",
             }}
           >
-            {isEarthId() ? "EarthID" : "ICCAiD"}
+            {isEarthId() ? "EarthID" : "GlobaliD"}
           </GenericText>
         </View>
       </TouchableOpacity>
@@ -274,8 +276,7 @@ if(mobileNumber.length < 10){
     }
   }
 
-  console.log('mobileNumber====?',mobileNumber.length)
-  console.log('isValidMobileNumber',isValidMobileNumber)
+
 
   return (
     <KeyboardAvoidingScrollView
@@ -294,8 +295,8 @@ if(mobileNumber.length < 10){
           linearStyle={styles.linearStyle}
           containerStyle={{
             iconStyle: {
-              width: 300,
-              height: 150,
+              width: 205,
+              height: 72,
               marginTop: 30,
             },
             iconContainer: styles.alignCenter,
@@ -319,7 +320,7 @@ if(mobileNumber.length < 10){
 
             <View style={{flexDirection:"row"}}>
             <Info
-              title={"username"}
+              title={"Registration Number"}
               style={{
                 title: styles.title,
                 subtitle: styles.subtitle,
@@ -328,7 +329,7 @@ if(mobileNumber.length < 10){
             />
 
             <GenericText 
-            style={{color:"red",position:"absolute",alignSelf:"center",left:75}}
+            style={{color:"red",position:"absolute",alignSelf:"center",left:135}}
             >
               {"*"}
             </GenericText>

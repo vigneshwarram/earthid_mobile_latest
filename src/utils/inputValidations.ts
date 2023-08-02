@@ -20,15 +20,10 @@ export const nameValidator = (
   if (isEmpty(value) || value===' ' && isRequired) {
     return {
       hasError: true,
-      errorMessage: "Please enter your username",
+      errorMessage: "Please enter your Registration Number",
     };
   }
- else if(!REGEX.USERNAME.test(value)){
-  return {
-    hasError: true,
-    errorMessage: "Special or Numeric characters are not allowed",
-  };
- }
+
 //  else if(!REGEX.USERNAMENUMERIC.test(value)){
 //   return {
 //     hasError: true,
@@ -40,7 +35,7 @@ export const nameValidator = (
     return { hasError: false, errorMessage: "" };
   } else {
     return {
-      hasError: true,
+      hasError: false,
       errorMessage: "Special characters are not allowed",
     };
   }
