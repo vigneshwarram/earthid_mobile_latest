@@ -73,6 +73,37 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
     let iteName = colors?.trim()?.split("(")[0]?.trim();
     return getColor(iteName);
   };
+
+  function convertTimeToAmPmFormat(timeString: { split: (arg0: string) => [any, any]; }) {
+    const [hours, minutes] = timeString.split(':');
+    let formattedTime = '';
+    
+    // Convert the 24-hour format to 12-hour format
+    let hoursIn12HourFormat = parseInt(hours, 10) % 12;
+    if (hoursIn12HourFormat === 0) {
+      hoursIn12HourFormat = 12; // Set 12 for 0 (midnight) in 12-hour format
+    }
+    
+    // Determine AM or PM
+    const amOrPm = parseInt(hours, 10) < 12 ? 'am' : 'pm';
+  
+    // Add leading zero for single-digit minutes
+    const paddedMinutes = minutes.padStart(2, '0');
+    
+    // Construct the formatted time string
+    formattedTime = `${hoursIn12HourFormat}:${paddedMinutes} ${amOrPm}`;
+    
+    return formattedTime;
+  }
+const getTime =(item: { time: any; })=>{
+  return convertTimeToAmPmFormat(item?.time)
+}
+function compareTime(a, b) {
+  const timeA = new Date(`1970-01-01T${a.time}`);
+  const timeB = new Date(`1970-01-01T${b.time}`);
+  return timeA - timeB;
+}
+
   const _renderItem = ({ item }: any) => {
     return (
       // <Card
@@ -163,19 +194,22 @@ const DocumentScreen = ({ navigation }: IDocumentScreenProps) => {
             rightIconOnPress={() => _rightIconOnPress(item)}
             title={item?.isVc ?item.name : item?.documentName?.split("(")[1]?.split(")")[0] == "undefined" ? item?.docName : item?.docName}
             subtitle={`      Uploaded  : ${item.date}`}
-            timeTitle={
-              item.isVc
-              ? item.time.substring(0, item.time.length - 3).split(":")[0] >= 24 ?
-              item.time.substring(0, item.time.length - 3)+" AM" :
-              item.time.substring(0, item.time.length - 3).split(":")[0] >= 12 ?
-              item.time.substring(0, item.time.length - 3)+" PM" :
-              item.time.substring(0, item.time.length - 3)+" AM"
-              : item.time.substring(0, item.time.length - 3).split(":")[0] >= 24 ?
-                 item.time.substring(0, item.time.length - 3)+" AM" :
-                 item.time.substring(0, item.time.length - 3).split(":")[0] >= 12 ?
-                 item.time.substring(0, item.time.length - 3)+" PM" :
-                 item.time.substring(0, item.time.length - 3)+" AM"
-            }
+            // timeTitle={
+            //   item.isVc
+            //   ? item.time.substring(0, item.time.length - 3).split(":")[0] >= 24 ?
+            //   item.time.substring(0, item.time.length - 3)+" AM" :
+            //   item.time.substring(0, item.time.length - 3).split(":")[0] >= 12 ?
+            //   item.time.substring(0, item.time.length - 3)+" PM" :
+            //   item.time.substring(0, item.time.length - 3)+" AM"
+            //   : item.time.substring(0, item.time.length - 3).split(":")[0] >= 24 ?
+            //      item.time.substring(0, item.time.length - 3)+" AM" :
+            //      item.time.substring(0, item.time.length - 3).split(":")[0] >= 12 ?
+            //      item.time.substring(0, item.time.length - 3)+" PM" :
+            //      item.time.substring(0, item.time.length - 3)+" AM"
+            // }
+
+            timeTitle={getTime(item)}
+
             style={{
               ...styles.cardContainer,
               ...{

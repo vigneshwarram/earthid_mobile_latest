@@ -27,6 +27,7 @@ import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
 import { saveDocuments } from "../../../redux/actions/authenticationAction";
 import { Screens } from "../../../themes";
 import { getColor } from "../../../utils/CommonFuntion";
+import { createUserSpecificBucket, generatePreSignedURL, mapCountryCodeToRegion, uploadImageToS3 } from "../../../utils/awsSetup";
 
 interface IDocumentScreenProps {
   navigation?: any;
@@ -70,6 +71,9 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const [searchText, setsearchText] = useState("");
   const [isCheckBoxEnable, setCheckBoxEnable] = useState(false);
   const [isClear, setIsClear] = useState(false);
+  const [base64Image, setBase64Image] = useState('');
+  const userDetails = useAppSelector((state) => state.account);
+
   // useEffect(() => {
   //   console.log("DOCUMENTS=====>>>>>>>>>>>", route?.params?.category);
   //   const chek = route?.params?.category;
@@ -162,6 +166,7 @@ function compareTime(a, b) {
     // AsyncStorage.setItem("day", item.date);
     // setEdit(item)
     // setitemdata(item)
+    setBase64Image(item.base64)
   console.log('itemss===>',item)
     return (
       <TouchableOpacity
@@ -272,6 +277,46 @@ function compareTime(a, b) {
       </TouchableOpacity>
     );
   };
+
+
+  //AWS3 bucket image store 
+
+
+  const handleUploadImage = async () => {
+    const username = userDetails?.responseData?.username;
+    const userBucket = await createUserSpecificBucket(username);
+
+    if (!userBucket) {
+      Alert.alert('Error', 'Failed to create user-specific bucket.');
+      return;
+    }
+
+    //const countryCode = Localize.getCountry();
+    const region = mapCountryCodeToRegion("");
+
+    const sharedFileKey = 'example_file.txt';
+    const preSignedURL = await generatePreSignedURL(userBucket, sharedFileKey);
+
+    if (!preSignedURL) {
+      Alert.alert('Error', 'Failed to generate pre-signed URL.');
+      return;
+    }
+
+    const objectKey = 'example_image.jpg'; // Replace with your desired object key
+    const uploadedKey = await uploadImageToS3(userBucket, base64Image, objectKey,"");
+
+    if (uploadedKey) {
+      Alert.alert('Success', 'Image uploaded to S3 successfully.');
+    } else {
+      Alert.alert('Error', 'Failed to upload image to S3.');
+    }
+  };
+
+
+
+
+
+
   const RowOption = ({ icon, title, rowAction }: any) => (
     <TouchableOpacity onPress={rowAction}>
       <View
