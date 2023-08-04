@@ -58,7 +58,7 @@ export const SCREENS = {
       {
         TITLE: "id",
         URI: LocalImages.CATEGORIES.personalcardImage,
-        COLOR: "#D7EFFB",
+        COLOR: "rgba(246, 189, 233, 1)",
       },
       {
         TITLE: "healthcare",
@@ -88,7 +88,7 @@ export const SCREENS = {
       {
         TITLE: "finance",
         URI: LocalImages.CATEGORIES.finance,
-        COLOR: "#C5BDF6",
+        COLOR: "#D7EFFB",
       },
     ],
     CategoryCustomiseList: [

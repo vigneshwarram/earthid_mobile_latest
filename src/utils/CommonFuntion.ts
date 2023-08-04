@@ -4,7 +4,7 @@ export const getColor = (item: string): string => {
   switch (item) {
     case "ID":
       // code block
-      color = "#D7EFFB";
+      color = "rgba(246, 189, 233, 1)";
       break;
     case "Employment":
       // code block
@@ -21,6 +21,10 @@ export const getColor = (item: string): string => {
     case "Insurance":
       // code block
       color = "#A5F7B0";
+      break;
+    case "Finance":
+      // code block
+      color = "#D7EFFB";
       break;
     default:
     // code block
