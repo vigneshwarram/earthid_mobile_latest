@@ -254,7 +254,7 @@ export const SCREENS = {
     categories: [
       {
         title: "ID",
-        // color: "#D7EFFB",
+        color: "rgba(246, 189, 233, 1)",
       },
       {
         title: "Education",
@@ -276,6 +276,11 @@ export const SCREENS = {
         title: "Travel",
         color: "rgba(246, 189, 233, 1)",
       },
+      {
+        title: "Finance",
+        color: "rgb(215,239,251)",
+      },
+      
     ],
   },
 

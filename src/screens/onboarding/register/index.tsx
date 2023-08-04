@@ -23,18 +23,21 @@ import Loader from "../../../components/Loader";
 import {
   createAccount,
   GeneratedKeysAction,
+  saveDocuments,
 } from "../../../redux/actions/authenticationAction";
 import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
 import { IUserAccountRequest } from "../../../typings/AccountCreation/IUserAccount";
-import { getDeviceId, getDeviceName } from "../../../utils/encryption";
+import { dateTime, getDeviceId, getDeviceName } from "../../../utils/encryption";
 import GenericText from "../../../components/Text";
 import { SnackBar } from "../../../components/SnackBar";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { isArray } from "lodash";
 import { useFetch } from "../../../hooks/use-fetch";
-import { superAdminApi } from "../../../utils/earthid_account";
+import { newssiApiKey, superAdminApi } from "../../../utils/earthid_account";
 import { isEarthId } from "../../../utils/PlatFormUtils";
 import Spinner from "react-native-loading-spinner-overlay/lib";
+import { createUserSignaturekey } from "../../../utils/createUserSignaturekey";
+import { createVerifiableCred } from "../../../utils/createVerifiableCred";
 interface IRegister {
   navigation: any;
 }
@@ -57,6 +60,31 @@ const Register = ({ navigation }: IRegister) => {
   const [callingCode, setcallingCode] = useState<string>("1");
   const [isValidMobileNumber, setValidMobileNumber] = useState<boolean>(false);
   const [isMobileEmpty, setMobileEmpty] = useState<boolean>(false);
+
+
+
+  // createVerifiableCrendital
+
+  const documentsDetailsList = useAppSelector((state) => state.Documents);
+  const[signature,setSignature]=useState()
+  const [loading, setLoading] = useState(false);
+  const[createVerify,setCreateVerify]=useState({})
+  const issurDid = keys?.responseData?.issuerDid
+  const UserDid  = keys?.responseData?.newUserDid  
+  const privateKey = keys?.responseData?.generateKeyPair?.privateKey 
+  let url : any  = `https://ssi-test.myearth.id/api/user/sign?issuerDID=${issurDid}`
+  let requesturl : any  = `https://ssi-test.myearth.id/api/issuer/verifiableCredential?isCryptograph=${false}&downloadCryptograph=${false}`    
+
+  console.log(signature,"sign");
+  console.log(createVerify,"createVerify");
+  console.log(UserDid,"UserDid");
+
+
+ 
+
+
+
+
   const {
     value: firstName,
     isFocused: firstNameFocus,
@@ -108,14 +136,19 @@ const Register = ({ navigation }: IRegister) => {
     if (isValid()) {
       setLoginLoading(true);
       dispatch(GeneratedKeysAction());
+    
     } else {
       console.log("its coming");
       firstNameBlurHandler();
-
       emailBlurHandler();
       dateOfBirthlurHandler();
     }
   };
+
+
+ 
+
+
   const isValid = () => {
     if (
       !nameValidator(firstName, true).hasError &&
@@ -165,16 +198,21 @@ console.log('keys',keys)
   }
 
   if (userDetails && userDetails?.isAccountCreatedSuccess) {
-    setsuccessResponse(true);
+    setsuccessResponse(true); 
     userDetails.isAccountCreatedSuccess = false;
+    createVerifiableCredentials()
+    setLoading(false)
+     
+    navigation.navigate("BackupIdentity");
 
-    if (userDetails?.responseData) {
-      setTimeout(() => {
-        setsuccessResponse(false);
-       
-        navigation.navigate("BackupIdentity");
-      }, 3000);
-    }
+    setsuccessResponse(false);
+    // if (userDetails?.responseData) {
+    //   setTimeout(() => {
+    //     setsuccessResponse(false);
+     
+    // //  navigation.navigate("BackupIdentity");
+    //   }, 7000);
+    // }
   }
   if (userDetails && userDetails?.isAccountCreatedFailure) {
     userDetails.isAccountCreatedFailure = false;
@@ -276,6 +314,114 @@ if(mobileNumber.length < 10){
 
   console.log('mobileNumber====?',mobileNumber.length)
   console.log('isValidMobileNumber',isValidMobileNumber)
+
+  const getSignature = async()=>{
+    const params = {
+      payload: {
+        credentialSubject: {
+          id:UserDid
+        }
+      }
+    };
+    const headersToSend = {
+      'Content-Type': 'application/json',
+      "privateKey":privateKey,
+      "x-api-key": newssiApiKey
+    };
+
+   await createUserSignaturekey(url,params,headersToSend)
+    .then((res:any)=>setSignature(res.Signature))
+    .catch(e=>console.log(e))
+  }
+
+
+  async function createVerifiableCredentials(){
+
+    const hasApiBeenCalled = await AsyncStorage.getItem('apiCalled');
+    console.log("hasApiBeenCalled",hasApiBeenCalled);
+
+    setLoading(true)
+
+    if(!hasApiBeenCalled) {
+      setTimeout(()=>{
+        setLoading(true)
+      },100)
+      getSignature().then(()=>{
+        const params = {
+          schemaName: "EarthIdVCSchema:1",
+          isEncrypted: false,
+          dependantVerifiableCredential: [],
+          credentialSubject: {
+          earthId: userDetails?.responseData?.earthId,
+          userName:userDetails?.responseData?.username,
+          userEmail: userDetails?.responseData?.email,
+          userMobileNo: userDetails?.responseData?.phone
+        }
+      };
+    
+        const headersToSend = {
+          'Content-Type': 'application/json',
+          "did":UserDid,
+          "x-api-key": newssiApiKey,
+          "publicKey": userDetails?.responseData?.publicKey,
+          "signature": signature
+        };
+      
+        createVerifiableCred(requesturl,params,headersToSend)
+        .then(async(res:any)=>{
+          if(res.data){
+          setLoading(false)
+          setCreateVerify(res?.data)
+          await AsyncStorage.setItem('apiCalled', 'true');
+          var date = dateTime();
+          var documentDetails: IDocumentProps = {
+            id: res?.data?.verifiableCredential?.id,
+            name: "VC - ACK Token",
+            path: "filePath",
+            date: date?.date,
+            time: date?.time,
+            txId: "data?.result",
+            docType: res?.data?.verifiableCredential?.type[1],
+            docExt: ".jpg",
+            processedDoc: "",
+            isVc: true,
+            vc: JSON.stringify({
+              name: "VC - ACK Token",
+              documentName: "VC - ACK Token",
+              path: "filePath",
+              date: date?.date,
+              time: date?.time,
+              txId: "data?.result",
+              docType: "pdf",
+              docExt: ".jpg",
+              processedDoc: "",
+              isVc: true,
+            }),
+            documentName: "",
+            docName: "",
+            base64: undefined
+          };
+    
+          var DocumentList = documentsDetailsList?.responseData
+            ? documentsDetailsList?.responseData
+            : [];
+          DocumentList.push(documentDetails);
+          dispatch(saveDocuments(DocumentList));
+          }
+        })
+        .catch(e=>console.log(e))
+      })
+    
+  
+    
+      
+  }else{
+    setLoading(false)
+    console.log("API hit already","praveen")
+  }
+  }
+
+
 
   return (
     <KeyboardAvoidingScrollView
@@ -466,7 +612,7 @@ if(mobileNumber.length < 10){
           ></Loader>
         
             <Spinner
-              visible={userDetails?.isLoading|| keys?.isLoading}
+              visible={userDetails?.isLoading|| keys?.isLoading || loading}
               textContent={"Loading..."}
               textStyle={styles.spinnerTextStyle}
             />
