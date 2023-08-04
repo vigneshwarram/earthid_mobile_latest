@@ -113,15 +113,15 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
   }, []);
 
   useEffect(()=>{
-   getSignature()
-   setLoading(true)
+  
+  
    createVerifiableCredentials()
  
  
   },[])
 
 
-  function getSignature(){
+  const getSignature = async()=>{
     const params = {
       payload: {
         credentialSubject: {
@@ -135,7 +135,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
       "x-api-key": newssiApiKey
     };
 
-    createUserSignaturekey(url,params,headersToSend)
+   await createUserSignaturekey(url,params,headersToSend)
     .then((res:any)=>setSignature(res.Signature))
     .catch(e=>console.log(e))
   }
@@ -147,70 +147,77 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
     console.log("hasApiBeenCalled",hasApiBeenCalled);
 
     if(!hasApiBeenCalled) {
-   
-      const params = {
-        schemaName: "EarthIdVCSchema:1",
-        isEncrypted: false,
-        dependantVerifiableCredential: [],
-        credentialSubject: {
-        earthId: userDetails?.responseData?.earthId,
-        userName:userDetails?.responseData?.username,
-        userEmail: userDetails?.responseData?.email,
-        userMobileNo: userDetails?.responseData?.phone
-      }
-    };
-  
-      const headersToSend = {
-        'Content-Type': 'application/json',
-        "did":UserDid,
-        "x-api-key": newssiApiKey,
-        "publicKey": userDetails?.responseData?.publicKey,
-        "signature": signature
+      setTimeout(()=>{
+        setLoading(true)
+      },100)
+      getSignature().then(()=>{
+        const params = {
+          schemaName: "EarthIdVCSchema:1",
+          isEncrypted: false,
+          dependantVerifiableCredential: [],
+          credentialSubject: {
+          earthId: userDetails?.responseData?.earthId,
+          userName:userDetails?.responseData?.username,
+          userEmail: userDetails?.responseData?.email,
+          userMobileNo: userDetails?.responseData?.phone
+        }
       };
-  
-      createVerifiableCred(requesturl,params,headersToSend)
-      .then(async(res:any)=>{
-        if(res.data){
-        setLoading(false)
-        setCreateVerify(res?.data)
-        await AsyncStorage.setItem('apiCalled', 'true');
-        var date = dateTime();
-        var documentDetails: IDocumentProps = {
-          id: res?.data?.verifiableCredential?.id,
-          name: "VC - ACK Token",
-          path: "filePath",
-          date: date?.date,
-          time: date?.time,
-          txId: "data?.result",
-          docType: res?.data?.verifiableCredential?.type[1],
-          docExt: ".jpg",
-          processedDoc: "",
-          isVc: true,
-          vc: JSON.stringify({
+    
+        const headersToSend = {
+          'Content-Type': 'application/json',
+          "did":UserDid,
+          "x-api-key": newssiApiKey,
+          "publicKey": userDetails?.responseData?.publicKey,
+          "signature": signature
+        };
+      
+        createVerifiableCred(requesturl,params,headersToSend)
+        .then(async(res:any)=>{
+          if(res.data){
+          setLoading(false)
+          setCreateVerify(res?.data)
+          await AsyncStorage.setItem('apiCalled', 'true');
+          var date = dateTime();
+          var documentDetails: IDocumentProps = {
+            id: res?.data?.verifiableCredential?.id,
             name: "VC - ACK Token",
-            documentName: "VC - ACK Token",
             path: "filePath",
             date: date?.date,
             time: date?.time,
             txId: "data?.result",
-            docType: "pdf",
+            docType: res?.data?.verifiableCredential?.type[1],
             docExt: ".jpg",
             processedDoc: "",
             isVc: true,
-          }),
-          documentName: "",
-          docName: "",
-          base64: undefined
-        };
-  
-        var DocumentList = documentsDetailsList?.responseData
-          ? documentsDetailsList?.responseData
-          : [];
-        DocumentList.push(documentDetails);
-        dispatch(saveDocuments(DocumentList));
-        }
+            vc: JSON.stringify({
+              name: "VC - ACK Token",
+              documentName: "VC - ACK Token",
+              path: "filePath",
+              date: date?.date,
+              time: date?.time,
+              txId: "data?.result",
+              docType: "pdf",
+              docExt: ".jpg",
+              processedDoc: "",
+              isVc: true,
+            }),
+            documentName: "",
+            docName: "",
+            base64: undefined
+          };
+    
+          var DocumentList = documentsDetailsList?.responseData
+            ? documentsDetailsList?.responseData
+            : [];
+          DocumentList.push(documentDetails);
+          dispatch(saveDocuments(DocumentList));
+          }
+        })
+        .catch(e=>console.log(e))
       })
-      .catch(e=>console.log(e))
+    
+  
+    
       
   }else{
     setLoading(false)
@@ -490,7 +497,41 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
     const profilePic = await AsyncStorage.getItem("profilePic");
     disPatch(savingProfilePictures(profilePic));
   };
-
+  function convertTimeToAmPmFormat(timeString: { split: (arg0: string) => [any, any]; }) {
+    const [hours, minutes] = timeString.split(':');
+    let formattedTime = '';
+    
+    // Convert the 24-hour format to 12-hour format
+    let hoursIn12HourFormat = parseInt(hours, 10) % 12;
+    if (hoursIn12HourFormat === 0) {
+      hoursIn12HourFormat = 12; // Set 12 for 0 (midnight) in 12-hour format
+    }
+    
+    // Determine AM or PM
+    const amOrPm = parseInt(hours, 10) < 12 ? 'am' : 'pm';
+  
+    // Add leading zero for single-digit minutes
+    const paddedMinutes = minutes.padStart(2, '0');
+    
+    // Construct the formatted time string
+    formattedTime = `${hoursIn12HourFormat}:${paddedMinutes} ${amOrPm}`;
+    
+    return formattedTime;
+  }
+  const getTime =(item: { time: any; })=>{
+    return convertTimeToAmPmFormat(item?.time)
+  }
+  const getData =(datas: any[])=>{
+    let arrayData =  datas?.sort(compareTime)
+    let data =  arrayData?.reverse()
+    return data
+  
+  }
+  function compareTime(a, b) {
+    const timeA = new Date(`1970-01-01T${a.time}`);
+    const timeB = new Date(`1970-01-01T${b.time}`);
+    return timeA - timeB;
+  }
   const getCategoryImages = (item: { categoryType: any; name: any }) => {
     const getItems = SCREENS.HOMESCREEN.categoryList.filter(
       (itemFiltered, index) => {
@@ -522,19 +563,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
             // rightIconSrc={LocalImages.menuImage}
             title={item?.isVc ?item.name : item?.documentName?.split("(")[1]?.split(")")[0] == "undefined" ?item?.docName : item?.docName}
             subtitle={`      Uploaded  : ${item.date}`}
-            timeTitle={
-              item.isVc
-              ? item.time.substring(0, item.time.length - 3).split(":")[0] >= 24 ?
-              item.time.substring(0, item.time.length - 3)+" AM" :
-              item.time.substring(0, item.time.length - 3).split(":")[0] >= 12 ?
-              item.time.substring(0, item.time.length - 3)+" PM" :
-              item.time.substring(0, item.time.length - 3)+" AM"
-              : item.time.substring(0, item.time.length - 3).split(":")[0] >= 24 ?
-                 item.time.substring(0, item.time.length - 3)+" AM" :
-                 item.time.substring(0, item.time.length - 3).split(":")[0] >= 12 ?
-                 item.time.substring(0, item.time.length - 3)+" PM" :
-                 item.time.substring(0, item.time.length - 3)+" AM"
-            }
+            timeTitle={getTime(item) }
             style={{
               ...styles.cardContainers,
               ...{
@@ -750,8 +779,8 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
             //     ? getHistoryReducer.responseData
             //     : []
             // }
-            data={recentData}
-            inverted
+            data={getData(recentData)}
+            
             renderItem={_renderItemHistory}
           />
           {/* <AnimatedLoader

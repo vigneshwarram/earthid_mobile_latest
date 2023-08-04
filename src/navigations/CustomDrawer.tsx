@@ -61,6 +61,7 @@ const CustomDrawer = (props: any) => {
         props.navigation.dispatch(StackActions.replace("AuthStack"));
       });
     } else if (item.route === "delete") {
+      await AsyncStorage.removeItem('apiCalled');
       deleteUser();
     } else if (item.route === "about") {
       Linking.openURL(

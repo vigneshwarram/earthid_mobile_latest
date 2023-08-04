@@ -814,18 +814,18 @@
 				CODE_SIGN_ENTITLEMENTS = EarthId/EarthId.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = UAHJPQ428K;
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				INFOPLIST_FILE = EarthId/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = EarthId;
+				INFOPLIST_KEY_CFBundleDisplayName = GlobalID;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.business";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.1.3;
+				MARKETING_VERSION = 2.8.9;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -851,17 +851,17 @@
 				CODE_SIGN_ENTITLEMENTS = EarthId/EarthId.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = UAHJPQ428K;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				INFOPLIST_FILE = EarthId/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = EarthId;
+				INFOPLIST_KEY_CFBundleDisplayName = GlobalID;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.business";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.1.3;
+				MARKETING_VERSION = 2.8.9;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

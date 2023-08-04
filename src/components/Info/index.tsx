@@ -94,7 +94,13 @@ const Info = ({
             </View>
           )}
           {titleIcon && (
-            <View style={styles.imageContainer}>
+            <View style={{position: "absolute",
+            justifyContent: "center",
+            alignItems: "center",
+            top: -30,
+            bottom: 0,
+            left: 40,
+            right: 0,}}>
               <Image
                 resizeMode="contain"
                 style={styles.logoContainers}

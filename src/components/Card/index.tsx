@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, TouchableOpacity, Image, Alert } from "react-native";
+import { StyleSheet, View, TouchableOpacity, Image, Alert, Pressable } from "react-native";
 import Avatar from "../Avatar";
 import Icon from "../Icon";
 import Info from "../Info";
@@ -72,13 +72,17 @@ const Card = ({
         />
       )}
       {leftIconSrc && (
-        <Icon
+       
+           <Icon
+           onPress={onPress}
           src={leftIconSrc}
           style={{
             container: styles.leftIconContainer,
-            image: style.imageStyle,
+            image:{width:30,height:30},
           }}
         />
+      
+       
       )}
       <Info
         titleIcon={titleIcon}

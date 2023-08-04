@@ -10,7 +10,8 @@ import {
   ScrollView,
   TouchableOpacity,
   Alert,
-  AsyncStorage
+  AsyncStorage,
+  TouchableWithoutFeedback
 } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import RNFetchBlob from "rn-fetch-blob";
@@ -413,7 +414,7 @@ setIsPrceedForLivenessTest(false)
 
   
     return (
-      <TouchableOpacity onPress={() => selectCategoryChildren(item, index)}>
+      <TouchableWithoutFeedback onPress={() => selectCategoryChildren(item, index)}>
         <View style={styles.documentContainer}>
           <Card
             rightIconSrc={item?.isSelected  && LocalImages.successTikImage}
@@ -430,7 +431,7 @@ setIsPrceedForLivenessTest(false)
           />
         </View>
             
-      </TouchableOpacity>
+      </TouchableWithoutFeedback>
     );
   };
 
