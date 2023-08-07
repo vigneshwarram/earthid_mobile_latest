@@ -21,6 +21,7 @@ import { useFetch } from "../hooks/use-fetch";
 import { EARTHID_DEV_BASE } from "../constants/URLContstants";
 import { isEarthId } from "../utils/PlatFormUtils";
 import Header from "../components/Header";
+import { deleteSingleBucket } from "../utils/awsSetup";
 
 const CustomDrawer = (props: any) => {
   const dispatch = useAppDispatch();
@@ -52,6 +53,8 @@ const CustomDrawer = (props: any) => {
 
   const _navigateAction = async (item: any) => {
     if (item.route === "Logout") {
+      const bucketName = `idv-sessions-${userDetails?.username.toLowerCase()}`;
+      deleteSingleBucket(bucketName)
       dispatch(FlushData()).then(async () => {
         await AsyncStorage.removeItem("passcode");
         await AsyncStorage.removeItem("fingerprint");
@@ -87,6 +90,7 @@ const CustomDrawer = (props: any) => {
   const deleteuserData = () => {
     const paramsUrl = `${EARTHID_DEV_BASE}/user/deleteUser?earthId=${userDetails?.responseData?.earthId}&publicKey=${userDetails?.responseData?.publicKey}`;
     console.log("paramsUrl", paramsUrl);
+    
     const requestBoady = {
       publicKey: userDetails?.responseData?.publicKey,
     };
@@ -103,6 +107,8 @@ const CustomDrawer = (props: any) => {
         await AsyncStorage.removeItem("profilePic");
         await AsyncStorage.removeItem("signatureKey");
         await AsyncStorage.removeItem("apiCalled");
+        const bucketName = `idv-sessions-${userDetails?.username?.toLowerCase()}`;
+       await deleteSingleBucket(bucketName)
         props.navigation.dispatch(StackActions.replace("AuthStack"));
       });
     }

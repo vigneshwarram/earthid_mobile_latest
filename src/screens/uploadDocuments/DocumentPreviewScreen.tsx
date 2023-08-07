@@ -7,41 +7,26 @@ import {
   Platform,
   Alert,
   AsyncStorage,
-  CameraRoll,
-    
 } from "react-native";
-import NetInfo from '@react-native-community/netinfo';
+import NetInfo from "@react-native-community/netinfo";
 import Button from "../../components/Button";
-import SuccessPopUp from "../../components/Loader";
-import AnimatedLoader from "../../components/Loader/AnimatedLoader";
 import { LocalImages } from "../../constants/imageUrlConstants";
 import { useFetch } from "../../hooks/use-fetch";
 import { Screens } from "../../themes/index";
 import {
-  BASE_URL,
   superAdminApi,
-  uploadDocument,
   uploadRegisterDocument,
 } from "../../utils/earthid_account";
-import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import PDFView from "react-native-view-pdf";
 import Spinner from "react-native-loading-spinner-overlay/lib";
 import Loader from "../../components/Loader/AnimatedLoader";
-import {
-  createAccount,
-  GeneratedKeysAction,
-} from "../../redux/actions/authenticationAction";
-import { getDeviceId, getDeviceName } from "../../utils/encryption";
-import { IUserAccountRequest } from "../../typings/AccountCreation/IUserAccount";
-import { SnackBar } from "../../components/SnackBar";
-import { isArray } from "lodash";
 import { isEarthId } from "../../utils/PlatFormUtils";
 
 const DocumentPreviewScreen = (props: any) => {
   const { fileUri } = props?.route?.params;
-  const  itemData  = props?.route?.params;
+  const itemData = props?.route?.params;
   const { type } = props?.route?.params;
-  const  {editDoc} = props?.route?.params
+  const { editDoc } = props?.route?.params;
   const { newdata } = props.route.params;
   const { loading, data, error, fetch: uploadRegDoc } = useFetch();
   const [documentResponseData, setDocumentResponse] = useState(undefined);
@@ -75,9 +60,9 @@ const DocumentPreviewScreen = (props: any) => {
     if (type == "regDoc") {
       uploadDocumentImage();
     } else {
-      if(fileUri?.type === "application/pdf"){
-        uploadDoc('no');
-      }else{
+      if (fileUri?.type === "application/pdf") {
+        uploadDoc("no");
+      } else {
         Alert.alert(
           "Confirmation!",
           "Please confirm that this is a self-attested document",
@@ -87,69 +72,63 @@ const DocumentPreviewScreen = (props: any) => {
               onPress: () => {
                 if (type == "regDoc") {
                   //  uploadDocumentImage();
-                  console.log("cancel")
-                  } else {
-                    NetworkConnect()
-                  }
+                  console.log("cancel");
+                } else {
+                  NetworkConnect();
+                }
               },
               style: "cancel",
             },
             {
               text: "No",
               onPress: () => {
-
                 if (type == "regDoc") {
                   uploadDocumentImage();
                 } else {
-                  isNetworkConnect()               
+                  isNetworkConnect();
                 }
-               
-  
               },
             },
           ],
           { cancelable: false }
         );
       }
-      }
-     
+    }
   }
 
-  const NetworkConnect=()=>{
-    
+  const NetworkConnect = () => {
     NetInfo.fetch().then((state) => {
       console.log("isconnect", state.isConnected);
       if (!state.isConnected) {
         Alert.alert(
-          'Network not connected',
-          'Please check your internet connection and try again.',
-          [{ text: 'OK' }],
-          { cancelable: false },
+          "Network not connected",
+          "Please check your internet connection and try again.",
+          [{ text: "OK" }],
+          { cancelable: false }
         );
-      }else{
-        uploadDoc('no');
+      } else {
+        uploadDoc("no");
       }
     });
-  }
+  };
 
-  const isNetworkConnect=()=>{
-    
+  const isNetworkConnect = () => {
     NetInfo.fetch().then((state) => {
       console.log("isconnect", state.isConnected);
       if (!state.isConnected) {
         Alert.alert(
-          'Network not connected',
-          'Please check your internet connection and try again.',
-          [{ text: 'OK' }],
-          { cancelable: false },
+          "Network not connected",
+          "Please check your internet connection and try again.",
+          [{ text: "OK" }],
+          { cancelable: false }
         );
-      }else{
+      } else {
         uploadDoc();
       }
     });
-  }
+  };
 
-  const uploadDoc = async (selfAttested:string) => {
+  const uploadDoc = async (selfAttested: string) => {
     let type = "qrRreader";
 
     if (!type == fileUri.type) {
@@ -160,8 +139,13 @@ const DocumentPreviewScreen = (props: any) => {
       }
     } else {
       console.log("fileUri==>", fileUri);
-      const imageName = props?.route?.params?.imageName
-      props.navigation.navigate("categoryScreen", { fileUri ,editDoc,selfAttested,imageName:imageName});
+      const imageName = props?.route?.params?.imageName;
+      props.navigation.navigate("categoryScreen", {
+        fileUri,
+        editDoc,
+        selfAttested,
+        imageName: imageName,
+      });
       console.log("success==>", "Success");
     }
   };
@@ -169,7 +153,6 @@ const DocumentPreviewScreen = (props: any) => {
   const goBack = () => {
     props.navigation.goBack();
   };
-
 
   function uploadDocumentImage() {
     console.log("DocumentImage:::::", fileUri);
@@ -183,6 +166,7 @@ const DocumentPreviewScreen = (props: any) => {
       try {
         console.log("image req=====", image);
         setLoginLoading(true);
+
         uploadRegDoc(uploadRegisterDocument, image, "FORM-DATA");
 
         // props.navigation.navigate("DrawerNavigator", { response });
@@ -234,7 +218,7 @@ const DocumentPreviewScreen = (props: any) => {
     console.log("Document preview screen", editDoc);
   }, []);
   console.log("Document preview screen", fileUri.uri);
-  
+
   return (
     <View style={styles.sectionContainer}>
       <View style={{ position: "absolute", top: 20, right: 20, zIndex: 100 }}>
@@ -266,7 +250,9 @@ const DocumentPreviewScreen = (props: any) => {
               width: 330,
               height: "100%",
             }}
-            source={{ uri: editDoc=="editDoc" ? fileUri.base64 : fileUri.uri }}
+            source={{
+              uri: editDoc == "editDoc" ? fileUri.base64 : fileUri.uri,
+            }}
           ></Image>
         </View>
       )}

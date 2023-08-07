@@ -36,6 +36,66 @@ export async function createUserSpecificBucket(username:any) {
     }
   }
 
+ export const listBuckets = async () => {
+  const s3 = new AWS.S3();
+    try {
+      const response:any = await s3.listBuckets().promise();
+      const bucketNames = response.Buckets.map((bucket: { Name: any; }) => bucket.Name);
+      return bucketNames
+    } catch (error) {
+      console.log('Error listing buckets:', error);
+    }
+  };
+
+
+  const deleteAllObjectsInBucket = async (bucketName: any) => {
+    const s3 = new AWS.S3();
+    try {
+      const objectsResponse:any = await s3.listObjectsV2({ Bucket: bucketName }).promise();
+      const objectsToDelete = objectsResponse.Contents.map((object: { Key: any; }) => ({ Key: object.Key }));
+  
+      if (objectsToDelete.length > 0) {
+        await s3.deleteObjects({
+          Bucket: bucketName,
+          Delete: { Objects: objectsToDelete },
+        }).promise();
+      }
+      console.log('All objects deleted in bucket:', bucketName);
+    } catch (error) {
+      console.log('Error deleting objects in bucket:', error);
+    }
+  };
+  
+  
+  export const deleteAllBuckets = async () => {
+    const s3 = new AWS.S3();
+    const bucketNames = await listBuckets();
+  
+    if (bucketNames && bucketNames.length > 0) {
+      for (const bucketName of bucketNames) {
+        await deleteAllObjectsInBucket(bucketName);
+        await s3.deleteBucket({ Bucket: bucketName }).promise();
+        console.log('Bucket deleted:', bucketName);
+      }
+    }
+  };
+
+  export const deleteSingleBucket =async (bucketName: string)=>{
+    const s3 = new AWS.S3();
+    try {
+      await deleteAllObjectsInBucket(bucketName);
+      await s3.deleteBucket({ Bucket: bucketName }).promise();
+    }
+    catch (error) {
+      console.log('Error deleting objects in bucket:', error);
+    }
+   
+  }
+  
+  
+  
+  
+
   export function mapCountryCodeToRegion(countryCode:any) {
     const countryToRegionMap : any = {
       'US': 'us-west-2', // Example region mapping for the United States
@@ -68,7 +128,7 @@ export async function createUserSpecificBucket(username:any) {
   export async function uploadImageToS3(bucketName:any, objectKey:any,base64Image:any) {
     try {
       const s3 = new AWS.S3();
-  
+      
       const params = {
         Bucket: bucketName,
         Key: objectKey,

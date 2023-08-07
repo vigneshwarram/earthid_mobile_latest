@@ -12,7 +12,7 @@ import {
   AsyncStorage,
   Alert,
   Button,
-  
+  ActivityIndicator,
 } from "react-native";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import Share from "react-native-share";
@@ -30,12 +30,16 @@ import { Screens } from "../../../themes";
 import Modal from "react-native-modal";
 import QRCode from "react-native-qrcode-image";
 import { getColor } from "../../../utils/CommonFuntion";
-import { createUserSpecificBucket, generatePreSignedURL, mapCountryCodeToRegion, uploadImageToS3 } from "../../../utils/awsSetup";
-import zlib from 'zlib';
+import {
+  createUserSpecificBucket,
+  deleteAllBuckets,
+  generatePreSignedURL,
+  listBuckets,
+  mapCountryCodeToRegion,
+  uploadImageToS3,
+} from "../../../utils/awsSetup";
+import zlib from "zlib";
 import Spinner from "react-native-loading-spinner-overlay/lib";
-
-
-
 
 interface IDocumentScreenProps {
   navigation?: any;
@@ -55,7 +59,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const [isModalVisible, setModalVisible] = useState(false);
   let [qrBase64, setBase64] = useState("");
 
-
+  const [activityLoader, setActivityLoad] = useState(false);
 
   let categoryTypes = "";
 
@@ -77,24 +81,25 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
     isSelected: false,
   });
   const [searchedData, setSearchedData] = useState([]);
+  const [signedUrl, setPreSignedUrl] = useState(undefined);
   const [masterDataSource, setMasterDataSource] = useState([]);
   const [searchText, setsearchText] = useState("");
   const [isCheckBoxEnable, setCheckBoxEnable] = useState(false);
   const [isClear, setIsClear] = useState(false);
   const [loading, setloading] = useState(false);
- 
+
   const userDetails = useAppSelector((state) => state.account);
 
-  console.log("userdetails",userDetails?.responseUserSpecificBucket);
-  
-  const bucketName :any = userDetails?.responseUserSpecificBucket
-  const base64Image : any =  selectedItem?.base64
-  const imageName : any = (selectedItem?.docName+"."+selectedItem?.docType)
+  console.log("userdetails", userDetails?.responseUserSpecificBucket);
 
- 
+  const bucketName: any = userDetails?.responseUserSpecificBucket;
+  const base64Image: any = selectedItem?.base64;
+  const imageName: any = selectedItem?.docName + "." + selectedItem?.docType;
 
-  console.log("docName==>",selectedItem?.docName+"."+selectedItem?.docType +"    " +base64Image);
-
+  console.log(
+    "docName==>",
+    selectedItem?.docName + "." + selectedItem?.docType + "    " + base64Image
+  );
 
   // useEffect(() => {
   //   console.log("DOCUMENTS=====>>>>>>>>>>>", route?.params?.category);
@@ -102,36 +107,36 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
   //   chek === undefined ? console.log("All posts") : console.log("filtrd");
   // }, [route?.params?.category]);
 
-
-  console.log("Allposts",documentsDetailsList?.responseData)
+  console.log("Allposts", documentsDetailsList?.responseData);
 
   const [isBottomSheetForFilterVisible, setisBottomSheetForFilterVisible] =
     useState<boolean>(false);
   const [isBottomSheetForShare, setIsBottomSheetForShare] =
     useState<boolean>(false);
   const _rightIconOnPress = (selecteArrayItem: any) => {
-   
     setselectedDocuments(selecteArrayItem);
     setselectedItem(selecteArrayItem);
     setisBottomSheetForSideOptionVisible(true);
   };
   const _shareIconPress = (selecteArrayItem: any) => {
-    
     setselectedItem(selecteArrayItem);
     setisBottomSheetForSideOptionVisible(true);
   };
-
+  // useEffect(() => {
+  //   deleteAllBuckets();
+  // }, []);
   const getCategoryImages = (item: { categoryType: any; name: any }) => {
     const getItems = SCREENS.HOMESCREEN.categoryList.filter(
       (itemFiltered, index) => {
         return (
-          itemFiltered.TITLE.toLowerCase() === item?.categoryType?.toLowerCase()
+          itemFiltered.TITLE?.toLowerCase() ===
+          item?.categoryType?.toLowerCase()
         );
       }
     );
-  if(getItems[0]==undefined){
-    return '#D7EFFB'
-  }
+    if (getItems[0] == undefined) {
+      return "#D7EFFB";
+    }
     return getItems[0];
   };
   const getImagesColor = (item: any) => {
@@ -143,7 +148,6 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
     setdocumentsDetailsList(documentsDetailsListData);
   }, [documentsDetailsListData?.responseData]);
 
-
   const multiSelect = (item) => {
     // console.log(item?.base64, "@@@@@@@@@");
     // setMultipleDucuments(item);
@@ -154,47 +158,48 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
     setselectedDocuments(item);
     setdocumentsDetailsList({ ...documentsDetailsList });
   };
-  function convertTimeToAmPmFormat(timeString: { split: (arg0: string) => [any, any]; }) {
-    const [hours, minutes] = timeString.split(':');
-    let formattedTime = '';
-    
+  function convertTimeToAmPmFormat(timeString: {
+    split: (arg0: string) => [any, any];
+  }) {
+    const [hours, minutes] = timeString.split(":");
+    let formattedTime = "";
+
     // Convert the 24-hour format to 12-hour format
     let hoursIn12HourFormat = parseInt(hours, 10) % 12;
     if (hoursIn12HourFormat === 0) {
       hoursIn12HourFormat = 12; // Set 12 for 0 (midnight) in 12-hour format
     }
-    
+
     // Determine AM or PM
-    const amOrPm = parseInt(hours, 10) < 12 ? 'am' : 'pm';
-  
+    const amOrPm = parseInt(hours, 10) < 12 ? "am" : "pm";
+
     // Add leading zero for single-digit minutes
-    const paddedMinutes = minutes.padStart(2, '0');
-    
+    const paddedMinutes = minutes.padStart(2, "0");
+
     // Construct the formatted time string
     formattedTime = `${hoursIn12HourFormat}:${paddedMinutes} ${amOrPm}`;
-    
+
     return formattedTime;
   }
-const getTime =(item: { time: any; })=>{
-  return convertTimeToAmPmFormat(item?.time)
-}
-function compareTime(a, b) {
-  const timeA = new Date(`1970-01-01T${a.time}`);
-  const timeB = new Date(`1970-01-01T${b.time}`);
-  return timeA - timeB;
-}
+  const getTime = (item: { time: any }) => {
+    return convertTimeToAmPmFormat(item?.time);
+  };
+  function compareTime(a, b) {
+    const timeA = new Date(`1970-01-01T${a.time}`);
+    const timeB = new Date(`1970-01-01T${b.time}`);
+    return timeA - timeB;
+  }
 
   const _renderItem = ({ item, index }: any) => {
     // AsyncStorage.setItem("day", item.date);
     // setEdit(item)
     // setitemdata(item)
-    console.log('itemss===>',item)
+    console.log("itemss===>", item);
     return (
       <TouchableOpacity
-      onLongPress={() =>{
-        multiSelect(item)
-          }
-        }
+        onLongPress={() => {
+          multiSelect(item);
+        }}
         style={{
           marginBottom: 20,
         }}
@@ -247,15 +252,20 @@ function compareTime(a, b) {
             leftAvatar={LocalImages.documentsImage}
             absoluteCircleInnerImage={LocalImages.upImage}
             rightIconSrc={LocalImages.menuImage}
-            rightIconOnPress={() => _rightIconOnPress(item) }
-            title={item?.isVc ?item.name : item?.docName?.split("(")[1]?.split(")")[0] == "undefined" ?item?.docName : item?.docName}
+            rightIconOnPress={() => _rightIconOnPress(item)}
+            title={
+              item?.isVc
+                ? item.name
+                : item?.docName?.split("(")[1]?.split(")")[0] == "undefined"
+                ? item?.docName
+                : item?.docName
+            }
             subtitle={
               item.isVc
                 ? `      Received  : ${item.date}`
                 : `      Uploaded  : ${item.date}`
             }
-            timeTitle={getTime(item)
-            }
+            timeTitle={getTime(item)}
             isCheckBoxEnable={isCheckBoxEnable}
             onCheckBoxValueChange={(value: any) => {
               // item.isSelected = value;
@@ -266,7 +276,9 @@ function compareTime(a, b) {
               ...styles.cardContainer,
               ...{
                 avatarContainer: {
-                  backgroundColor:item?.isVc?'#D7EFFB': getImagesColor(item),
+                  backgroundColor: item?.isVc
+                    ? "#D7EFFB"
+                    : getImagesColor(item),
                   width: 60,
                   height: 60,
                   borderRadius: 20,
@@ -275,7 +287,9 @@ function compareTime(a, b) {
                   marginRight: 5,
                 },
                 uploadImageStyle: {
-                  backgroundColor:item?.isVc?'#D7EFFB': getImagesColor(item),
+                  backgroundColor: item?.isVc
+                    ? "#D7EFFB"
+                    : getImagesColor(item),
                   borderRadius: 25,
                   borderWidth: 3,
                   bordercolor: "#fff",
@@ -298,64 +312,41 @@ function compareTime(a, b) {
     );
   };
 
-
-  //AWS3 bucket image store 
-
+  //AWS3 bucket image store
 
   const handleUploadImage = async () => {
-
-    setloading(true)
-
-    //const countryCode = Localize.getCountry();
-    // const region = mapCountryCodeToRegion("");
-
-    // const sharedFileKey = 'example_file.txt';
-    // const preSignedURL = await generatePreSignedURL(userBucket, sharedFileKey);
-
-    // if (!preSignedURL) {
-    //   Alert.alert('Error', 'Failed to generate pre-signed URL.');
-    //   return;
-    // }
-
     const objectKey = imageName; // Replace with your desired object key
-    const uploadedKey : any = await uploadImageToS3(bucketName, objectKey, base64Image)
-    .then(()=>{
-      setloading(false)
-    })
-
+    const uploadedKey: any = await uploadImageToS3(
+      bucketName,
+      `images/${objectKey}`,
+      base64Image
+    );
+    console.log("uploadedKey==>", uploadedKey);
+    setloading(false);
     if (uploadedKey) {
-      Alert.alert('Success', 'Image uploaded to S3 successfully.');
-      console.log(uploadedKey,"uuu");
-      
-    } else {
-      console.log("err","uuu");
+      const objectKeys = `images/${imageName}`;
+      const preSignedURL = await generatePreSignedURL(bucketName, objectKeys);
 
-      Alert.alert('Error', 'Failed to upload image to S3.');
+      console.log("preSignedURL", preSignedURL);
+
+      if (preSignedURL) {
+        setPreSignedUrl(preSignedURL);
+      } else {
+        console.log("err", "uuu");
+
+        Alert.alert("Error", "Failed to upload image to S3.");
+      }
+    } else {
+      console.log(
+        "Failed to upload image to S3--->api1.",
+        "Failed to upload image to S3--->api1."
+      );
+
+      Alert.alert("Error", "Failed to upload image to S3--->api1.");
     }
 
-
-    const objectKeys = imageName;;
-    const preSignedURL = await generatePreSignedURL(bucketName, objectKeys);
-
-    console.log("preSignedURL",preSignedURL);
-    
-
-    if (preSignedURL) {
-      Alert.alert('Success', 'Image uploaded to S3 successfully.');
-      console.log(preSignedURL,"uuu");
-      
-    } else {
-      console.log("err","uuu");
-
-      Alert.alert('Error', 'Failed to upload image to S3.');
-    }
-
+    setActivityLoad(false);
   };
-
-
-
-
-
 
   const RowOption = ({ icon, title, rowAction }: any) => (
     <TouchableOpacity onPress={rowAction}>
@@ -388,23 +379,17 @@ function compareTime(a, b) {
   );
 
   const onChangeHandler = (text: any) => {
-
     // docName to documentName
-        const newDataItem=  documentsDetailsList?.responseData || []
-        const filteredData = newDataItem.filter(
-          (          item: { docName: string; documentName: string; categoryType: string; }) =>
-            item.docName.toLowerCase().includes(text.toLowerCase()) ||
-            item.documentName.toLowerCase().includes(text.toLowerCase()) ||
-            item.categoryType.toLowerCase().includes(text.toLowerCase())
-        );
-        setsearchText(text);
-  
-       
-        setSearchedData(filteredData);
-      
-     
-    
-   
+    const newDataItem = documentsDetailsList?.responseData || [];
+    const filteredData = newDataItem.filter(
+      (item: { docName: string; documentName: string; categoryType: string }) =>
+        item.docName?.toLowerCase()?.includes(text?.toLowerCase()) ||
+        item.documentName?.toLowerCase()?.includes(text?.toLowerCase()) ||
+        item.categoryType?.toLowerCase()?.includes(text?.toLowerCase())
+    );
+    setsearchText(text);
+
+    setSearchedData(filteredData);
 
     // if (text) {
     //   // Inserted text is not blank
@@ -423,7 +408,7 @@ function compareTime(a, b) {
     //         return itemData.indexOf(textData) > -1;
     //     });
     //     setsearchText(text);
-    
+
     //     setSearchedData(newData);
     //   }
     // } else {
@@ -433,8 +418,6 @@ function compareTime(a, b) {
     //   setsearchText(text);
 
     // }
-
-
   };
 
   const shareItem = async () => {
@@ -445,22 +428,19 @@ function compareTime(a, b) {
       });
     } else {
       console.log("selectedItem?.base64===>", selectedItem?.base64);
-      if(selectedItem?.isLivenessImage === 'livenessImage'){
+      if (selectedItem?.isLivenessImage === "livenessImage") {
         await Share.open({
           url: selectedItem?.base64,
         });
-
-      }else if(selectedItem?.type === 'deeplink'){
+      } else if (selectedItem?.type === "deeplink") {
         await Share.open({
-          url:selectedItem?.base64,
+          url: selectedItem?.base64,
         });
-      }else if (selectedItem?.docType === "jpg") {
+      } else if (selectedItem?.docType === "jpg") {
         await Share.open({
-          url:`data:image/jpeg;base64,${selectedItem?.base64}`,
+          url: `data:image/jpeg;base64,${selectedItem?.base64}`,
         });
-      }
-      
-      else {
+      } else {
         await Share.open({
           url: `data:image/png;base64,${selectedItem?.base64}`,
         });
@@ -469,12 +449,19 @@ function compareTime(a, b) {
   };
 
   const qrCodeModal = () => {
-    setModalVisible(true);
-    setloading(true)
-    handleUploadImage()
+    setisBottomSheetForSideOptionVisible(false);
+
+    setTimeout(() => {
+      setModalVisible(true);
+    }, 1000);
+
+    setTimeout(() => {
+      setActivityLoad(true);
+      handleUploadImage();
+    }, 300);
+
+    // setloading(true)
   };
-
-
 
   const shareMultipleItem = async () => {
     let temp = [];
@@ -499,7 +486,7 @@ function compareTime(a, b) {
   };
 
   const deleteItem = () => {
-    console.log('selectedItem?.id',selectedItem)
+    console.log("selectedItem?.id", selectedItem);
     Alert.alert(
       "Confirmation! ",
       "Are you sure you want to delete this document ?",
@@ -509,12 +496,14 @@ function compareTime(a, b) {
           text: "OK",
           onPress: () => {
             setisBottomSheetForSideOptionVisible(false);
-          
-            const helpArra = [...documentsDetailsList?.responseData]
-            console.log('documentsDetailsList',helpArra);
-            const findIndex = helpArra?.findIndex((item)=>item.id === selectedItem?.id)
-             findIndex >= -1 &&  helpArra?.splice(findIndex,1)
-           // console.log('helpArra',helpArra)
+
+            const helpArra = [...documentsDetailsList?.responseData];
+            console.log("documentsDetailsList", helpArra);
+            const findIndex = helpArra?.findIndex(
+              (item) => item.id === selectedItem?.id
+            );
+            findIndex >= -1 && helpArra?.splice(findIndex, 1);
+            // console.log('helpArra',helpArra)
             dispatch(saveDocuments(helpArra));
           },
         },
@@ -523,17 +512,19 @@ function compareTime(a, b) {
     );
   };
 
+  function editItem() {
+    setisBottomSheetForSideOptionVisible(false);
+    navigation.navigate("categoryScreen", {
+      selectedItem: selectedItem,
+      editDoc: "editDoc",
+      itemData: edit,
+    });
+    // var data : any =selectedItem
+    // await AsyncStorage.setItem("userDetails", data);
+    // await AsyncStorage.setItem("editDoc", "editDoc");
 
-function editItem(){
-  setisBottomSheetForSideOptionVisible(false)
-   navigation.navigate("categoryScreen", { selectedItem: selectedItem , editDoc : "editDoc", itemData:edit})
-  // var data : any =selectedItem
-  // await AsyncStorage.setItem("userDetails", data);
-  // await AsyncStorage.setItem("editDoc", "editDoc");
-
-  console.log('iteName==>',selectedItem)
-}
-
+    console.log("iteName==>", selectedItem);
+  }
 
   const onPressNavigateTo = () => {
     navigation.navigate("uploadDocumentsScreen");
@@ -541,9 +532,9 @@ function editItem(){
   const _keyExtractor = ({ path }: any) => path.toString();
 
   const getFilteredData = () => {
-    console.log('getFilteredData')
-    let datas = documentsDetailsList?.responseData?.sort(compareTime)
-  let data =  datas?.reverse()
+    console.log("getFilteredData");
+    let datas = documentsDetailsList?.responseData?.sort(compareTime);
+    let data = datas?.reverse();
 
     if (categoryTypes !== "") {
       var alter = function (item: any) {
@@ -558,30 +549,30 @@ function editItem(){
       return filter;
     }
 
-    if (searchedData.length > 0) {getFilteredData
+    if (searchedData.length > 0) {
+      getFilteredData;
       data = searchedData;
       return data;
     }
 
     if (searchedData.length === 0 && searchText != "") {
-      return [];  // earlier []
+      return []; // earlier []
     }
     console.log("searchedData====>{{}}}}}-", data);
     return data;
   };
   const clearData = () => {};
 
-  const listEmpty =()=>{
-    return(
-      <View style={{flex:1,alignItems:'center',}}>
-       <Text>No Documents found</Text>
+  const listEmpty = () => {
+    return (
+      <View style={{ flex: 1, alignItems: "center" }}>
+        <Text>No Documents found</Text>
       </View>
-    )
-  }
+    );
+  };
 
   return (
     <View style={styles.sectionContainer}>
-
       <ScrollView
         style={{ flex: 1 }}
         contentContainerStyle={{
@@ -589,47 +580,7 @@ function editItem(){
           paddingBottom: 200,
           backgroundColor: "#fff",
         }}
-      > 
-        
-
-        <Modal 
-        isVisible={isModalVisible}
-        backdropOpacity={0.5}
-        >
-        <TouchableOpacity
-        activeOpacity={1}
-         onPress={()=>{
-          setModalVisible(false)
-          setisBottomSheetForSideOptionVisible(false);
-        }}
-        style={{ flex: 1 ,justifyContent:"center",alignItems:"center" }}>
-         
-       
-
-          <View style={{width:240,height:240,backgroundColor:'#fff',borderRadius:20,justifyContent:"center",alignItems:"center"}}>
-
-         
-                <QRCode
-                  getBase64={(base64: string) => {
-                    qrBase64 = base64;
-                    setBase64(base64);
-                  }}
-                  value={789654}
-                  size={200}
-                />
-
-            <Spinner
-              visible={loading}
-              textContent={"Loading..."}
-              textStyle={{color: "#fff",}}
-            />
-
-                
-          </View>
-        </TouchableOpacity>
-      </Modal>
-        
-        
+      >
         <View>
           <Header
             rightIconPress={onPressNavigateTo}
@@ -641,25 +592,21 @@ function editItem(){
             linearStyle={styles.linearStyle}
           ></Header>
 
-      {
-          documentsDetailsList?.responseData && documentsDetailsList?.responseData?.length> 0 ? 
+          {documentsDetailsList?.responseData &&
+          documentsDetailsList?.responseData?.length > 0 ? (
+            <TextInput
+              leftIcon={LocalImages.searchImage}
+              style={{
+                container: styles.textInputContainer,
+              }}
+              isError={false}
+              isNumeric={false}
+              placeholder={"Search documents"}
+              value={searchText}
+              onChangeText={onChangeHandler}
+            />
+          ) : null}
 
-          <TextInput
-          leftIcon={LocalImages.searchImage}
-          style={{
-            container: styles.textInputContainer,
-          }}
-          isError={false}
-          isNumeric={false}
-          placeholder={"Search documents"}
-          value={searchText}
-          onChangeText={onChangeHandler}
-          />
-          :
-          null
-    }
-
-         
           {isCheckBoxEnable && (
             <View
               style={{ alignItems: "flex-end", marginTop: 20, marginRight: 25 }}
@@ -697,16 +644,14 @@ function editItem(){
             </View>
           )}
 
-          {
-             documentsDetailsList?.responseData && documentsDetailsList?.responseData?.length>0? 
-          <FlatList<any>
-            data={getFilteredData()}
-            renderItem={_renderItem}
-           ListEmptyComponent={listEmpty}
-          />
-          
-            :
-
+          {documentsDetailsList?.responseData &&
+          documentsDetailsList?.responseData?.length > 0 ? (
+            <FlatList<any>
+              data={getFilteredData()}
+              renderItem={_renderItem}
+              ListEmptyComponent={listEmpty}
+            />
+          ) : (
             // <GenericText
             // style={{
             //   color:"black",
@@ -717,16 +662,20 @@ function editItem(){
             // >{"norecentactivity"}
             // </GenericText>
 
-            <View style={{ justifyContent: "center", alignItems: "center",marginTop:"30%" }}>
-            <Image
-              resizeMode="contain"
-              style={[styles.logoContainers]}
-              source={LocalImages.recent}
-            ></Image>
-          </View>
-
-          }        
-
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: "30%",
+              }}
+            >
+              <Image
+                resizeMode="contain"
+                style={[styles.logoContainers]}
+                source={LocalImages.recent}
+              ></Image>
+            </View>
+          )}
 
           <BottomSheet
             onClose={() => setisBottomSheetForSideOptionVisible(false)}
@@ -734,12 +683,12 @@ function editItem(){
             isVisible={isBottomSheetForSideOptionVisible}
           >
             <View style={{ height: 180, width: "100%", paddingHorizontal: 30 }}>
-            <RowOption
+              <RowOption
                 rowAction={() => editItem()}
                 title={"edit"}
                 icon={LocalImages.editIcon}
               />
-               <RowOption
+              <RowOption
                 rowAction={() => qrCodeModal()}
                 title={"QR Code"}
                 icon={LocalImages.qrcodeImage}
@@ -754,9 +703,6 @@ function editItem(){
                 title={"delete"}
                 icon={LocalImages.deleteImage}
               />
-
-
-              
             </View>
           </BottomSheet>
 
@@ -784,11 +730,47 @@ function editItem(){
               <RowOption title={"By Frequency"} />
             </View>
           </BottomSheet>
-
-         
-
         </View>
       </ScrollView>
+      <Modal isVisible={isModalVisible} backdropOpacity={0.5}>
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={() => {
+            setModalVisible(false);
+            setisBottomSheetForSideOptionVisible(false);
+          }}
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <View
+            style={{
+              width: 350,
+              height: 240,
+              backgroundColor: "#fff",
+              borderRadius: 20,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            {activityLoader && !signedUrl ? (
+              <View style={{ justifyContent: "center", alignItems: "center" }}>
+                <ActivityIndicator
+                  size={"small"}
+                  color={"red"}
+                ></ActivityIndicator>
+              </View>
+            ) : (
+              <QRCode
+                getBase64={(base64: string) => {
+                  qrBase64 = base64;
+                  setBase64(base64);
+                }}
+                value={signedUrl}
+                size={200}
+              />
+            )}
+          </View>
+        </TouchableOpacity>
+      </Modal>
     </View>
   );
 };
@@ -877,7 +859,7 @@ const styles = StyleSheet.create({
   logoContainer: {
     width: 25,
     height: 25,
-    tintColor:"black"
+    tintColor: "black",
   },
   avatarContainer: {
     width: 30,
