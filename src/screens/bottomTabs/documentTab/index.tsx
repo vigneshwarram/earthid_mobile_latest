@@ -12,6 +12,7 @@ import {
   AsyncStorage,
   Alert,
   Button,
+  
 } from "react-native";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import Share from "react-native-share";
@@ -26,8 +27,15 @@ import { SCREENS } from "../../../constants/Labels";
 import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
 import { saveDocuments } from "../../../redux/actions/authenticationAction";
 import { Screens } from "../../../themes";
+import Modal from "react-native-modal";
+import QRCode from "react-native-qrcode-image";
 import { getColor } from "../../../utils/CommonFuntion";
 import { createUserSpecificBucket, generatePreSignedURL, mapCountryCodeToRegion, uploadImageToS3 } from "../../../utils/awsSetup";
+import zlib from 'zlib';
+import Spinner from "react-native-loading-spinner-overlay/lib";
+
+
+
 
 interface IDocumentScreenProps {
   navigation?: any;
@@ -44,6 +52,8 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
     documentsDetailsListData
   );
   const [selectedDocuments, setselectedDocuments] = useState();
+  const [isModalVisible, setModalVisible] = useState(false);
+  let [qrBase64, setBase64] = useState("");
 
 
 
@@ -53,7 +63,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
     categoryTypes = route?.params?.category;
   }
   const dispatch = useAppDispatch();
-  const [selectedItem, setselectedItem] = useState();
+  const [selectedItem, setselectedItem] = useState<any>();
   const [edit, setEdit] = useState();
   const [itemdata, setitemdata] = useState([]);
   const [data, setData] = useState(documentsDetailsList?.responseData);
@@ -71,8 +81,20 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const [searchText, setsearchText] = useState("");
   const [isCheckBoxEnable, setCheckBoxEnable] = useState(false);
   const [isClear, setIsClear] = useState(false);
-  const [base64Image, setBase64Image] = useState('');
+  const [loading, setloading] = useState(false);
+ 
   const userDetails = useAppSelector((state) => state.account);
+
+  console.log("userdetails",userDetails?.responseUserSpecificBucket);
+  
+  const bucketName :any = userDetails?.responseUserSpecificBucket
+  const base64Image : any =  selectedItem?.base64
+  const imageName : any = (selectedItem?.docName+"."+selectedItem?.docType)
+
+ 
+
+  console.log("docName==>",selectedItem?.docName+"."+selectedItem?.docType +"    " +base64Image);
+
 
   // useEffect(() => {
   //   console.log("DOCUMENTS=====>>>>>>>>>>>", route?.params?.category);
@@ -166,13 +188,11 @@ function compareTime(a, b) {
     // AsyncStorage.setItem("day", item.date);
     // setEdit(item)
     // setitemdata(item)
-    setBase64Image(item.base64)
-  console.log('itemss===>',item)
+    console.log('itemss===>',item)
     return (
       <TouchableOpacity
-        onLongPress={() =>{
-           multiSelect(item)
-          
+      onLongPress={() =>{
+        multiSelect(item)
           }
         }
         style={{
@@ -283,33 +303,53 @@ function compareTime(a, b) {
 
 
   const handleUploadImage = async () => {
-    const username = userDetails?.responseData?.username;
-    const userBucket = await createUserSpecificBucket(username);
 
-    if (!userBucket) {
-      Alert.alert('Error', 'Failed to create user-specific bucket.');
-      return;
-    }
+    setloading(true)
 
     //const countryCode = Localize.getCountry();
-    const region = mapCountryCodeToRegion("");
+    // const region = mapCountryCodeToRegion("");
 
-    const sharedFileKey = 'example_file.txt';
-    const preSignedURL = await generatePreSignedURL(userBucket, sharedFileKey);
+    // const sharedFileKey = 'example_file.txt';
+    // const preSignedURL = await generatePreSignedURL(userBucket, sharedFileKey);
 
-    if (!preSignedURL) {
-      Alert.alert('Error', 'Failed to generate pre-signed URL.');
-      return;
-    }
+    // if (!preSignedURL) {
+    //   Alert.alert('Error', 'Failed to generate pre-signed URL.');
+    //   return;
+    // }
 
-    const objectKey = 'example_image.jpg'; // Replace with your desired object key
-    const uploadedKey = await uploadImageToS3(userBucket, base64Image, objectKey,"");
+    const objectKey = imageName; // Replace with your desired object key
+    const uploadedKey : any = await uploadImageToS3(bucketName, objectKey, base64Image)
+    .then(()=>{
+      setloading(false)
+    })
 
     if (uploadedKey) {
       Alert.alert('Success', 'Image uploaded to S3 successfully.');
+      console.log(uploadedKey,"uuu");
+      
     } else {
+      console.log("err","uuu");
+
       Alert.alert('Error', 'Failed to upload image to S3.');
     }
+
+
+    const objectKeys = imageName;;
+    const preSignedURL = await generatePreSignedURL(bucketName, objectKeys);
+
+    console.log("preSignedURL",preSignedURL);
+    
+
+    if (preSignedURL) {
+      Alert.alert('Success', 'Image uploaded to S3 successfully.');
+      console.log(preSignedURL,"uuu");
+      
+    } else {
+      console.log("err","uuu");
+
+      Alert.alert('Error', 'Failed to upload image to S3.');
+    }
+
   };
 
 
@@ -428,6 +468,14 @@ function compareTime(a, b) {
     }
   };
 
+  const qrCodeModal = () => {
+    setModalVisible(true);
+    setloading(true)
+    handleUploadImage()
+  };
+
+
+
   const shareMultipleItem = async () => {
     let temp = [];
     temp = documentsDetailsList?.responseData.filter((el) => {
@@ -533,6 +581,7 @@ function editItem(){
 
   return (
     <View style={styles.sectionContainer}>
+
       <ScrollView
         style={{ flex: 1 }}
         contentContainerStyle={{
@@ -540,7 +589,47 @@ function editItem(){
           paddingBottom: 200,
           backgroundColor: "#fff",
         }}
-      >
+      > 
+        
+
+        <Modal 
+        isVisible={isModalVisible}
+        backdropOpacity={0.5}
+        >
+        <TouchableOpacity
+        activeOpacity={1}
+         onPress={()=>{
+          setModalVisible(false)
+          setisBottomSheetForSideOptionVisible(false);
+        }}
+        style={{ flex: 1 ,justifyContent:"center",alignItems:"center" }}>
+         
+       
+
+          <View style={{width:240,height:240,backgroundColor:'#fff',borderRadius:20,justifyContent:"center",alignItems:"center"}}>
+
+         
+                <QRCode
+                  getBase64={(base64: string) => {
+                    qrBase64 = base64;
+                    setBase64(base64);
+                  }}
+                  value={789654}
+                  size={200}
+                />
+
+            <Spinner
+              visible={loading}
+              textContent={"Loading..."}
+              textStyle={{color: "#fff",}}
+            />
+
+                
+          </View>
+        </TouchableOpacity>
+      </Modal>
+        
+        
         <View>
           <Header
             rightIconPress={onPressNavigateTo}
@@ -641,14 +730,19 @@ function editItem(){
 
           <BottomSheet
             onClose={() => setisBottomSheetForSideOptionVisible(false)}
-            height={200}
+            height={230}
             isVisible={isBottomSheetForSideOptionVisible}
           >
-            <View style={{ height: 150, width: "100%", paddingHorizontal: 30 }}>
+            <View style={{ height: 180, width: "100%", paddingHorizontal: 30 }}>
             <RowOption
                 rowAction={() => editItem()}
                 title={"edit"}
                 icon={LocalImages.editIcon}
+              />
+               <RowOption
+                rowAction={() => qrCodeModal()}
+                title={"QR Code"}
+                icon={LocalImages.qrcodeImage}
               />
               <RowOption
                 rowAction={() => shareItem()}
@@ -660,9 +754,12 @@ function editItem(){
                 title={"delete"}
                 icon={LocalImages.deleteImage}
               />
+
+
               
             </View>
           </BottomSheet>
+
           <BottomSheet
             onClose={() => setIsBottomSheetForShare(false)}
             height={150}
@@ -687,6 +784,9 @@ function editItem(){
               <RowOption title={"By Frequency"} />
             </View>
           </BottomSheet>
+
+         
+
         </View>
       </ScrollView>
     </View>

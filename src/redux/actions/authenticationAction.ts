@@ -14,6 +14,7 @@ import { IUserAccountRequest } from "../../typings/AccountCreation/IUserAccount"
 import { IUserSchemaRequest } from "../../typings/AccountCreation/IUserSchema";
 import { generateIssuerDid, generateKeyPair, generateUserDid, newUserDid } from "../../utils/earthid_account";
 import { ICreateUserSignature } from "../../typings/AccountCreation/ICreateUserSignature";
+import { createUserSpecificBucket } from "../../utils/awsSetup";
 const {
   ACCOUNT: {
     CREATE_ACCOUNT: createAccountUrl,
@@ -110,19 +111,28 @@ export const GeneratedKeysAction =
 export const createAccount =
   (requestPayload: IUserAccountRequest) =>
   async (dispatch: any): Promise<any> => {
-    let responseData;
+    let responseData, responseUserSpecificBucket;
     try {
       dispatch({
         type: ACTION_TYPES.CREATEDACCOUNT,
       });
       const response = await postCall(createAccountUrl, requestPayload);
-
       responseData = await _responseHandler(response);
       console.log("responseData", responseData);
+
+      //SW3
+
+      const userSW3 = await createUserSpecificBucket(responseData.username)
+  
+      responseUserSpecificBucket = await _s3responseHandler(userSW3)
+      console.log("responseUserSpecificBucket", responseUserSpecificBucket); 
+
+
       dispatch({
         type: ACTION_TYPES.CREATED_ACCOUNT_RESPONSE,
         payload: {
           responseData,
+          responseUserSpecificBucket,
           isLoading: false,
           errorMesssage: "",
         },
@@ -335,6 +345,20 @@ const _responseHandler = async (response: any): Promise<any> => {
       const responseData = await response.json();
 
       return resolve(responseData);
+    } else {
+      const responseData = await response.json();
+      reject(responseData.message);
+    }
+  });
+};
+
+
+const _s3responseHandler = async (response: any): Promise<any> => {
+  return new Promise(async (resolve, reject) => {
+    if (response) {
+     // const responseData = await response.json();
+
+      return resolve(response);
     } else {
       const responseData = await response.json();
       reject(responseData.message);

@@ -16,9 +16,9 @@ AWS.config.update({
 export async function createUserSpecificBucket(username:any) {
     try {
       const s3 = new AWS.S3();
-  
+      
       // Generate a unique bucket name based on the username (you can modify this as needed).
-      const bucketName = `idv-sessions-${username}`;
+      const bucketName = `idv-sessions-${username.toLowerCase()}`;
   
       const params = {
         Bucket: bucketName,
@@ -26,8 +26,9 @@ export async function createUserSpecificBucket(username:any) {
       };
   
       // Create the bucket
-      await s3.createBucket(params).promise();
-  
+      const news3 = await s3.createBucket(params).promise();
+      console.log("bucketcreated",news3);
+      
       return bucketName;
     } catch (error) {
       console.error('Error creating user-specific bucket:', error);
@@ -45,13 +46,13 @@ export async function createUserSpecificBucket(username:any) {
     return countryToRegionMap[countryCode] || 'us-west-2'; // Default to a region (e.g., us-west-2) if not found in the map
   }
 
-  export async function generatePreSignedURL(bucketName:any, objectKey:any, expirationInSeconds = 3600) {
+  export async function generatePreSignedURL(bucketName:any, objectKeys:any, expirationInSeconds = 3600) {
     try {
       const s3 = new AWS.S3({ signatureVersion: 'v4' });
   
       const params = {
         Bucket: bucketName,
-        Key: objectKey,
+        Key: objectKeys,
         Expires: expirationInSeconds,
       };
   
@@ -64,7 +65,7 @@ export async function createUserSpecificBucket(username:any) {
     }
   }
 
-  export async function uploadImageToS3(bucketName:any, imageUri:any, objectKey:any,base64Image:any) {
+  export async function uploadImageToS3(bucketName:any, objectKey:any,base64Image:any) {
     try {
       const s3 = new AWS.S3();
   
@@ -75,10 +76,12 @@ export async function createUserSpecificBucket(username:any) {
         //   uri: imageUri,
         // },
         Body: Buffer.from(base64Image, 'base64'),
-        ACL: 'public-read', // Set ACL to 'public-read' to make the uploaded image publicly accessible
+       // ACL: 'public-read', // Set ACL to 'public-read' to make the uploaded image publicly accessible
       };
-  
+
+      console.log("fromhere",params);      
       const result = await s3.upload(params).promise();
+      console.log('Image uploaded successfully:', result);
       return result.Key;
     } catch (error) {
       console.error('Error uploading image to S3:', error);

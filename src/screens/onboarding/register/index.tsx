@@ -203,7 +203,7 @@ console.log('keys',keys)
     createVerifiableCredentials().then(()=>{
       setLoading(false)
       setTimeout(() => {
-        setsuccessResponse(false);
+      setsuccessResponse(false);
       navigation.navigate("BackupIdentity");
       }, 7000);
     })
