@@ -200,19 +200,17 @@ console.log('keys',keys)
   if (userDetails && userDetails?.isAccountCreatedSuccess) {
     setsuccessResponse(true); 
     userDetails.isAccountCreatedSuccess = false;
-    createVerifiableCredentials()
-    setLoading(false)
-     
-    navigation.navigate("BackupIdentity");
+    createVerifiableCredentials().then(()=>{
+      setLoading(false)
+      setTimeout(() => {
+        setsuccessResponse(false);
+      navigation.navigate("BackupIdentity");
+      }, 7000);
+    })
+ 
 
-    setsuccessResponse(false);
-    // if (userDetails?.responseData) {
-    //   setTimeout(() => {
-    //     setsuccessResponse(false);
-     
-    // //  navigation.navigate("BackupIdentity");
-    //   }, 7000);
-    // }
+  
+   
   }
   if (userDetails && userDetails?.isAccountCreatedFailure) {
     userDetails.isAccountCreatedFailure = false;
@@ -376,7 +374,7 @@ if(mobileNumber.length < 10){
           var date = dateTime();
           var documentDetails: IDocumentProps = {
             id: res?.data?.verifiableCredential?.id,
-            name: "VC - ACK Token",
+            name: "VC - EarthId Token",
             path: "filePath",
             date: date?.date,
             time: date?.time,
@@ -386,8 +384,8 @@ if(mobileNumber.length < 10){
             processedDoc: "",
             isVc: true,
             vc: JSON.stringify({
-              name: "VC - ACK Token",
-              documentName: "VC - ACK Token",
+              name: "VC - EarthId Token",
+              documentName: "VC - EarthId Token",
               path: "filePath",
               date: date?.date,
               time: date?.time,
