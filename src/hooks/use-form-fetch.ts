@@ -20,14 +20,13 @@ const useFormData = (): IResponse => {
 
       if (response.status === 201 || response.status === 200) {
         const JsonResponse = await response.json();
-        console.log("JsonResponse", JsonResponse);
+     
         setData(JsonResponse);
       } else {
         const JsonResponse = await response.json();
         throw new Error(JsonResponse.message);
       }
     } catch (error) {
-      console.log("error", error);
       serError(error);
     }
     setloading(false);

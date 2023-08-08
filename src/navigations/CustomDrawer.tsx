@@ -89,7 +89,7 @@ const CustomDrawer = (props: any) => {
 
   const deleteuserData = () => {
     const paramsUrl = `${EARTHID_DEV_BASE}/user/deleteUser?earthId=${userDetails?.responseData?.earthId}&publicKey=${userDetails?.responseData?.publicKey}`;
-    console.log("paramsUrl", paramsUrl);
+
     
     const requestBoady = {
       publicKey: userDetails?.responseData?.publicKey,
@@ -214,7 +214,7 @@ const CustomDrawer = (props: any) => {
   const _keyExtractor = ({ title }: any) => title.toString();
 
   useEffect(() => {
-    console.log("routes==>", props.route);
+
   });
 
   return (

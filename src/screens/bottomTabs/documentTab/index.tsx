@@ -93,16 +93,12 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
 
   const userDetails = useAppSelector((state) => state.account);
 
-  console.log("userdetails", userDetails?.responseUserSpecificBucket);
+
 
   const bucketName: any = userDetails?.responseUserSpecificBucket;
  // const base64Image: any = selectedItem?.base64;
   const imageName: any = selectedItem?.docName + "." + selectedItem?.docType;
 
-  console.log(
-    "docName==>",
-    selectedItem?.docName + "." + selectedItem?.docType
-  );
 
 
   
@@ -118,7 +114,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
   //   chek === undefined ? console.log("All posts") : console.log("filtrd");
   // }, [route?.params?.category]);
 
-  console.log("Allposts", documentsDetailsList?.responseData);
+
 
   const [isBottomSheetForFilterVisible, setisBottomSheetForFilterVisible] =
     useState<boolean>(false);
@@ -205,7 +201,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
     // AsyncStorage.setItem("day", item.date);
     // setEdit(item)
     // setitemdata(item)
-    console.log("itemss===>", item);
+
     return (
       <TouchableOpacity
         onLongPress={() => {
@@ -345,26 +341,22 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
       `images/${objectKey}`,
       base64Image
     );
-    console.log("uploadedKey==>", uploadedKey);
+   
     setloading(false);
     if (uploadedKey) {
       const objectKeys = `images/${imageName}`;
       const preSignedURL = await generatePreSignedURL(bucketName, objectKeys);
 
-      console.log("preSignedURL", preSignedURL);
+
 
       if (preSignedURL) {
         setPreSignedUrl(preSignedURL);
       } else {
-        console.log("err", "uuu");
+
 
         Alert.alert("Error", "Failed to upload image to S3.");
       }
     } else {
-      console.log(
-        "Failed to upload image to S3--->api1.",
-        "Failed to upload image to S3--->api1."
-      );
 
       Alert.alert("Error", "Failed to upload image to S3--->api1.");
     }

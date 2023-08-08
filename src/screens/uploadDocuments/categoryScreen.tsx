@@ -47,11 +47,9 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const { editDoc,selectedItem } =route?.params;
   const imageName = fileUri?.imageName
  // const splitName = imageName.split('.')[0]
-  console.log('fileUri=====>',selectedItem)
+
  // const typeItem=selectedItem?.name?.split('(')[1].split(')')[0];
  const typeItem=selectedItem?.documentName?.split('(')[1]?.split(')')[0];
-
-  console.log('selectedItemType',typeItem)
 
 
   
@@ -59,7 +57,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const [categoryList, setCategoryList] = useState([]);
   const [selectedDocument, setselectedDocument] = useState();
   const [editselectedDocument, EditsetselectedDocument] = useState();
-
+  const [loader,setLoading ] = useState(false)
   const [docname, setDocname] = useState(
   fileUri?.route === "gallery" ? 
   imageName.split('.')[0] : editDoc === "editDoc" ? 
@@ -70,8 +68,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const documentsDetailsList = useAppSelector((state) => state.Documents);
   const [successResponse, setsuccessResponse] = useState(false);
   const dispatch =useAppDispatch()
-  console.log("pic",fileUri)
-  console.log("docname",docname)
+
   const {
     loading: isCategoryLoading,
     data: getCategoryData,
@@ -89,13 +86,13 @@ useEffect(()=>{
 
   const onSubmitAction=()=>{
 
-   
+
 
     if (docname == undefined) {
       Alert.alert('Please Enter Document Name');
        return;
      }
-
+  
 if(fileUri?.flow==='deeplink'){
   if(fileUri?.type==='application/pdf'){
     var date = dateTime();    
@@ -164,7 +161,6 @@ if(fileUri?.flow==='deeplink'){
   }
 
 }else{
-  console.log('fileUri?.type===>',fileUri?.type)
   if(fileUri?.type==='application/pdf'){
       
     var date = dateTime();
@@ -264,6 +260,7 @@ else{
             }
           }, 2000);
         }
+        setLoading(false)
     
   }else{
     setIsPrceedForLivenessTest(true)

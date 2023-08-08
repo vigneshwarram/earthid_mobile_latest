@@ -15,7 +15,7 @@ const useFetch = (): IResponse => {
   const [error, serError] = useState<any>(undefined);
 
   const fetch = async (url: string, payLoad?: any, methodName = "POST") => {
-    console.log("API Call ahppening ======>;;;"), setloading(true);
+
     try {
       let response;
       switch (methodName) {
@@ -35,15 +35,15 @@ const useFetch = (): IResponse => {
 
       if ((response && response?.status === 201) || response?.status === 200) {
         const JsonResponse = await response.json();
-        console.log("JsonResponse response ========>;;;", JsonResponse);
+      
         setData(JsonResponse);
       } else {
         const JsonResponse = await response.json();
-        console.log("else error JsonResponse==========>::::", JsonResponse);
+
         throw new Error(JsonResponse?.message);
       }
     } catch (error: any) {
-      console.log("error==============>:::", error);
+   
       SnackBar({
         indicationMessage: error?.message,
       });

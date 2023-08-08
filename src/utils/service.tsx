@@ -26,10 +26,7 @@ import { newssiApiKey, ssiApiKey } from "./earthid_account";
 
 export const postFormData = async (requestURI: string, payload: any) => {
   const formData = new FormData();
-  formData.append('image', {uri: payload?.uri, name: payload?.name, type: payload?.type}), 
-  console.log("FormData==>", "FormData");
-  console.log("request==>::::::::::::", JSON.stringify(payload));
-
+  formData.append('image', {uri: payload?.uri, name: payload?.name, type: payload?.type})
   return await fetch(requestURI, {
     method: "POST",
     headers: {
@@ -51,8 +48,7 @@ export const postCall = (
   payload?: any,
   method: string = "POST"
 ): Promise<any> => {
-  console.log("url==>", uri);
-  console.log("request==>::::::::::::", JSON.stringify(payload));
+
 
   return fetch(uri, {
     method,
@@ -69,7 +65,7 @@ export const fetchParams = (
   payload: any,
   method: string = "DELETE"
 ): Promise<any> => {
-  console.log("method coming");
+
   return fetch(uri, {
     method,
     headers: {
@@ -141,8 +137,6 @@ export const ssiPostCall = (
     payload,
   }
 ): Promise<any> => {
-  console.log("requests==>", JSON.stringify(payload));
-
   return fetch(uri, {
     method,
     headers: {
@@ -164,7 +158,7 @@ export const newssiPostCall = (
   },
   
 ): Promise<any> => {
-  console.log("requests==>", JSON.stringify(payload));
+ 
 
   return fetch(uri, {
     method,

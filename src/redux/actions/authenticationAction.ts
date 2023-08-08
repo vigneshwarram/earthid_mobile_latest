@@ -44,8 +44,6 @@ export const GeneratedKeysAction =
       responseData = await _responseHandler(response);
 
 
-      console.log("reuesturl===>", getUser_did);
-      console.log("reuestparams===>", responseData);
       // const responsedataSSI = await ssiGetCall(
       //   getUser_did,
       //   "GET",
@@ -62,7 +60,7 @@ export const GeneratedKeysAction =
         responseData?.result?.publicKey
       );
       responseIssuerDid = await _responseHandler(issuerDataSSI);
-      console.log("responseIssuerDid==>", responseIssuerDid);
+   
 
       //GenerateKeyPair
 
@@ -72,7 +70,7 @@ export const GeneratedKeysAction =
         responseData?.result?.publicKey
       );
       responseGenerateKeyPair = await _responseHandler(getGenerateKeyPair);
-      console.log("responseGenerateKeyPair==>", responseGenerateKeyPair);
+
 
       //NewUserDid
 
@@ -82,7 +80,7 @@ export const GeneratedKeysAction =
         responseGenerateKeyPair?.data?.publicKey
       );
       responseNewUserDid = await _responseHandler(getNewUserDid);
-      console.log("responseNewUserDid==>", responseNewUserDid);
+  
 
       const data = {
         //userDid: responseDataSSI.data,
@@ -97,7 +95,7 @@ export const GeneratedKeysAction =
         },
       });
     } catch (error) {
-      console.log("generated key  API catch ===>", error);
+    
       dispatch({
         type: ACTION_TYPES.GENERATED_KEYS_ERROR,
       });
@@ -118,14 +116,14 @@ export const createAccount =
       });
       const response = await postCall(createAccountUrl, requestPayload);
       responseData = await _responseHandler(response);
-      console.log("responseData", responseData);
+     
 
       //SW3
 
       const userSW3 = await createUserSpecificBucket(responseData.username)
   
       responseUserSpecificBucket = await _s3responseHandler(userSW3)
-      console.log("responseUserSpecificBucket", responseUserSpecificBucket); 
+  
 
 
       dispatch({
@@ -138,7 +136,7 @@ export const createAccount =
         },
       });
     } catch (error: any) {
-      console.log("create account API catch ===>", error);
+     
 
       dispatch({
         type: ACTION_TYPES.CREATED_ACCOUNT_ERROR,
@@ -162,7 +160,7 @@ export const createSchema =
       });
       const response = await ssiPostCall(createSchemaUrl, requestPayload);
       responseData = await _responseHandler(response);
-      console.log("responseData", responseData);
+   
       dispatch({
         type: ACTION_TYPES.CREATED_SCHEMA_RESPONSE,
         payload: {
@@ -172,7 +170,7 @@ export const createSchema =
         },
       });
     } catch (error) {
-      console.log(" API catch ===>", error);
+     
       dispatch({
         type: ACTION_TYPES.CREATED_SCHEMA_ERROR,
         payload: {
@@ -196,7 +194,7 @@ export const createSchema =
       });
       const response = await newssiPostCall(url, requestPayload , key);
       responseData = await _responseHandler(response);
-      console.log("signatureResponse", responseData);
+  
       dispatch({
         type: ACTION_TYPES.CREATED_USERSIGNATURE_RESPONSE,
         payload: {
@@ -206,7 +204,7 @@ export const createSchema =
         },
       });
     } catch (error) {
-      console.log("API catch ===>", error);
+
       dispatch({
         type: ACTION_TYPES.CREATED_USERSIGNATURE_ERROR,
         payload: {
@@ -219,7 +217,7 @@ export const createSchema =
 export const  approveOTP =
   (requestPayload: any, type: string) =>
   async (dispatch: any): Promise<any> => {
-    console.log("type", type);
+
     let responseData;
     try {
       dispatch({
@@ -239,7 +237,7 @@ export const  approveOTP =
       }
 
       responseData = await _responseHandler(response);
-      console.log("responseData==>", responseData);
+
 
       dispatch({
         type: ACTION_TYPES.APPROVEOTP_RESPONSE,
@@ -249,7 +247,7 @@ export const  approveOTP =
         },
       });
     } catch (error) {
-      console.log("error==>", error);
+   
       dispatch({
         type: ACTION_TYPES.APPROVEOTP_ERROR,
         payload: {
@@ -274,7 +272,7 @@ export const getHistory =
         `${get_History}?userId=${requestPayload?.userId}&publicKey=${requestPayload?.publicKey}`
       );
       responseData = await _responseHandler(response);
-      console.log("responseData==>", responseData);
+
 
       dispatch({
         type: ACTION_TYPES.GET_HISTORY_CALL_RESPONSE,
@@ -284,7 +282,7 @@ export const getHistory =
         },
       });
     } catch (error) {
-      console.log("error", error);
+    
       dispatch({
         type: ACTION_TYPES.GET_HISTORY_CALL_ERROR,
         payload: {

@@ -20,12 +20,12 @@ const useSendData = (): IResponse => {
         methodName === "POST"
           ? await postCall(url, reuestData)
           : await getCall(url);
-      console.log("response", response);
+   
       const JsonResponse = await response.json();
-      console.log("JsonResponse", JsonResponse);
+   
       setData(JsonResponse);
     } catch (error) {
-      console.log("error", error);
+
       serError(error);
     }
     setloading(false);

@@ -7,7 +7,7 @@ export function createUserSignaturekey (url:any,params:any,headersToSend:any){
     return new Promise((reslove:any,reject:any)=>{
         axios.post(url, params, { headers: headersToSend })
         .then((response)=>{
-            console.log(response.data,"createUserSignaturekey")
+          
             reslove(response.data)
         })
         .catch((e)=>console.log(e,"createUserSignaturekey"))

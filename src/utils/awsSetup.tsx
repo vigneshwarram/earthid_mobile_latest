@@ -27,11 +27,11 @@ export async function createUserSpecificBucket(username:any) {
   
       // Create the bucket
       const news3 = await s3.createBucket(params).promise();
-      console.log("bucketcreated",news3);
+    
       
       return bucketName;
     } catch (error) {
-      console.error('Error creating user-specific bucket:', error);
+
       return null;
     }
   }
@@ -60,7 +60,7 @@ export async function createUserSpecificBucket(username:any) {
           Delete: { Objects: objectsToDelete },
         }).promise();
       }
-      console.log('All objects deleted in bucket:', bucketName);
+     
     } catch (error) {
       console.log('Error deleting objects in bucket:', error);
     }
@@ -75,7 +75,7 @@ export async function createUserSpecificBucket(username:any) {
       for (const bucketName of bucketNames) {
         await deleteAllObjectsInBucket(bucketName);
         await s3.deleteBucket({ Bucket: bucketName }).promise();
-        console.log('Bucket deleted:', bucketName);
+       
       }
     }
   };
@@ -140,10 +140,9 @@ export async function createUserSpecificBucket(username:any) {
         ACL: 'private', // Set ACL to 'public-read' to make the uploaded image publicly accessible
       };
 
-      console.log("base64Imagedatas",base64Image);      
-      console.log("fromhere",params);      
+    
       const result = await s3.upload(params).promise();
-      console.log('Image uploaded successfully:', result);
+  
       return result.Key;
     } catch (error) {
       console.error('Error uploading image to S3:', error);

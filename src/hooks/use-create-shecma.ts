@@ -17,12 +17,12 @@ const useCreateScehma = (): IResponse => {
     setloading(true);
     try {
       const response = await ssiGetCall(url);
-      console.log("response", response);
+  
       const JsonResponse = await response.json();
-      console.log("JsonResponse", JsonResponse);
+    
       setData(JsonResponse);
     } catch (error) {
-      console.log("error", error);
+    
       serError(error);
     }
     setloading(false);

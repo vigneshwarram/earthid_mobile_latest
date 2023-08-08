@@ -68,7 +68,7 @@ export const getUserDetails = (response: string[]): IUser => {
     emailApproved,
     score,
     rewardPoint;
-  console.log("response", response);
+
 
   let responseArray = response[0].split("<=>%");
   bytes = decryption(responseArray[0]);

@@ -58,7 +58,6 @@ const SMART_CONTRACT_ADDR_TEST = 16427438; //testnet
 export const SMART_CONTRACT_ADDR =
   isTestnet === true ? SMART_CONTRACT_ADDR_TEST : SMART_CONTRACT_ADDR_MAIN;
 
-console.log(isTestnet ? "net--> testnet" : "net--> mainnet");
 
 export const accountInfo =
   isTestnet === true
