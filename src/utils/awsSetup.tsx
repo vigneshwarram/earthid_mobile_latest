@@ -135,10 +135,12 @@ export async function createUserSpecificBucket(username:any) {
         // Body: {
         //   uri: imageUri,
         // },
-        Body: Buffer.from(base64Image, 'base64'),
-       // ACL: 'public-read', // Set ACL to 'public-read' to make the uploaded image publicly accessible
+      //  Body: base64Image,
+       Body: Buffer.from(base64Image, 'base64'),
+        ACL: 'private', // Set ACL to 'public-read' to make the uploaded image publicly accessible
       };
 
+      console.log("base64Imagedatas",base64Image);      
       console.log("fromhere",params);      
       const result = await s3.upload(params).promise();
       console.log('Image uploaded successfully:', result);

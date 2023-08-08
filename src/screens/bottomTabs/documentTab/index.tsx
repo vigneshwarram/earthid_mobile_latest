@@ -40,6 +40,9 @@ import {
 } from "../../../utils/awsSetup";
 import zlib from "zlib";
 import Spinner from "react-native-loading-spinner-overlay/lib";
+import ImageResizer from 'react-native-image-resizer';
+import RNFS from "react-native-fs";
+
 
 interface IDocumentScreenProps {
   navigation?: any;
@@ -93,13 +96,21 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
   console.log("userdetails", userDetails?.responseUserSpecificBucket);
 
   const bucketName: any = userDetails?.responseUserSpecificBucket;
-  const base64Image: any = selectedItem?.base64;
+ // const base64Image: any = selectedItem?.base64;
   const imageName: any = selectedItem?.docName + "." + selectedItem?.docType;
 
   console.log(
     "docName==>",
-    selectedItem?.docName + "." + selectedItem?.docType + "    " + base64Image
+    selectedItem?.docName + "." + selectedItem?.docType
   );
+
+
+  
+
+
+
+
+
 
   // useEffect(() => {
   //   console.log("DOCUMENTS=====>>>>>>>>>>>", route?.params?.category);
@@ -315,6 +326,19 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
   //AWS3 bucket image store
 
   const handleUploadImage = async () => {
+
+    const base64Images = await  ImageResizer.createResizedImage(
+      `data:image/jpeg;base64,${selectedItem?.base64}`,
+      800, // target width
+      800, // target height
+      'JPEG', // format (you can adjust this)
+      80, // quality (adjust this)
+    );
+
+    const base64Image = await RNFS.readFile(base64Images.uri, 'base64');
+
+    // console.log("base64Images",base64Images);      
+
     const objectKey = imageName; // Replace with your desired object key
     const uploadedKey: any = await uploadImageToS3(
       bucketName,
