@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
   Alert,
   AsyncStorage,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
 } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import RNFetchBlob from "rn-fetch-blob";
@@ -28,7 +28,10 @@ import { LocalImages } from "../../constants/imageUrlConstants";
 import { SCREENS } from "../../constants/Labels";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { useFetch } from "../../hooks/use-fetch";
-import { saveDocuments, updateDocuments } from "../../redux/actions/authenticationAction";
+import {
+  saveDocuments,
+  updateDocuments,
+} from "../../redux/actions/authenticationAction";
 import { Screens } from "../../themes";
 import { alertBox, getCategoriesApi } from "../../utils/earthid_account";
 import { dateTime } from "../../utils/encryption";
@@ -44,30 +47,32 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const fileUri = route?.params?.fileUri;
   const pic = route?.params?.fileUri;
   const itemData = route?.params?.itemData;
-  const { editDoc,selectedItem } =route?.params;
-  const imageName = fileUri?.imageName
- // const splitName = imageName.split('.')[0]
+  const { editDoc, selectedItem } = route?.params;
+  const imageName = fileUri?.imageName;
+  // const splitName = imageName.split('.')[0]
 
- // const typeItem=selectedItem?.name?.split('(')[1].split(')')[0];
- const typeItem=selectedItem?.documentName?.split('(')[1]?.split(')')[0];
+  // const typeItem=selectedItem?.name?.split('(')[1].split(')')[0];
+  const typeItem = selectedItem?.documentName?.split("(")[1]?.split(")")[0];
 
-
-  
   const [isPrceedForLivenessTest, setIsPrceedForLivenessTest] = useState(false);
   const [categoryList, setCategoryList] = useState([]);
   const [selectedDocument, setselectedDocument] = useState();
   const [editselectedDocument, EditsetselectedDocument] = useState();
-  const [loader,setLoading ] = useState(false)
+  const [loader, setLoading] = useState(false);
   const [docname, setDocname] = useState(
-  fileUri?.route === "gallery" ? 
-  imageName.split('.')[0] : editDoc === "editDoc" ? 
-  selectedItem?.docName : fileUri?.flow ==='deeplink' ? 
-  fileUri?.docName : null);
+    fileUri?.route === "gallery"
+      ? imageName.split(".")[0]
+      : editDoc === "editDoc"
+      ? selectedItem?.docName
+      : fileUri?.flow === "deeplink"
+      ? fileUri?.docName
+      : null
+  );
 
   const [selectedParentIndex, setSelectedParentIndex] = useState(0);
   const documentsDetailsList = useAppSelector((state) => state.Documents);
   const [successResponse, setsuccessResponse] = useState(false);
-  const dispatch =useAppDispatch()
+  const dispatch = useAppDispatch();
 
   const {
     loading: isCategoryLoading,
@@ -79,247 +84,236 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const _toggleDrawer = () => {
     navigation.openDrawer();
   };
-useEffect(()=>{
- setIsPrceedForLivenessTest(false);
+  useEffect(() => {
+    setIsPrceedForLivenessTest(false);
+  }, []);
 
-},[])
-
-  const onSubmitAction=()=>{
-
-
-
+  const onSubmitAction = () => {
     if (docname == undefined) {
-      Alert.alert('Please Enter Document Name');
-       return;
-     }
-  
-if(fileUri?.flow==='deeplink'){
-  if(fileUri?.type==='application/pdf'){
-    var date = dateTime();    
-    const filePath =
-      RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
-      const document: any[0] = categoryList[selectedParentIndex]?.value?.filter((data:any)=>data.isSelected)
-    var documentDetails: IDocumentProps = {
-      id:`ID_VERIFICATION${Math.random()}${selectedDocument}${Math.random()}`,
-      documentName: `${categoryList[selectedParentIndex].key} (${document[0]?.title})`,
-    //  name: `${categoryList[selectedParentIndex].key} (${document[0]?.title})`,
-      path: filePath,
-      date: date?.date,
-      time: date?.time,
-      txId:'e4343434343434443',
-      docType: "pdf",
-      docExt: ".jpg",
-      processedDoc: "",
-      base64: fileUri?.base64,
-      categoryType:categoryList[selectedParentIndex].key,
-      pdf: true,
-      docName:docname,
-      typePDF:fileUri?.typePDF
-    };
-    var DocumentList = documentsDetailsList?.responseData
-      ? documentsDetailsList?.responseData
-      : [];
-    DocumentList.push(documentDetails);
-    dispatch(saveDocuments(DocumentList));
-    setsuccessResponse(true);
-    setTimeout(() => {
-      setsuccessResponse(false);
-      navigation.navigate("Documents");
-    }, 2000);
-  }else{
-    var date = dateTime();
-    const document: any[0] = categoryList[selectedParentIndex]?.value?.filter((data:any)=>data.isSelected)
-    const filePath =
-      RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
-    var documentDetails: IDocumentProps = {
-      id:`ID_VERIFICATION${Math.random()}${selectedDocument}${Math.random()}`,
-      documentName: `${categoryList[selectedParentIndex].key} (${document[0]?.title})`,
-    //  name: `${categoryList[selectedParentIndex].key} (${document[0]?.title})`,
-      path: filePath,
-      date: date?.date,
-      time: date?.time,
-      txId:'e4343434343434443',
-      docType: "jpg",
-      docExt: ".jpg",
-      processedDoc: "",
-      base64: fileUri?.base64,
-      type:'deeplink',
-      categoryType:categoryList[selectedParentIndex].key,
-      docName:docname
-  
-    };
-    var DocumentList = documentsDetailsList?.responseData
-      ? documentsDetailsList?.responseData
-      : [];
-    DocumentList.push(documentDetails);
-    dispatch(saveDocuments(DocumentList));
-    setsuccessResponse(true);
-    setTimeout(() => {
-      setsuccessResponse(false);
-      navigation.navigate("Documents");
-    }, 2000);
-  }
+      Alert.alert("Please Enter Document Name");
+      return;
+    }
 
-}else{
-  if(fileUri?.type==='application/pdf'){
-      
-    var date = dateTime();
+    if (fileUri?.flow === "deeplink") {
+      if (fileUri?.type === "application/pdf") {
+        var date = dateTime();
+        const filePath = RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
+        const document: any[0] = categoryList[
+          selectedParentIndex
+        ]?.value?.filter((data: any) => data.isSelected);
+        var documentDetails: IDocumentProps = {
+          id: `ID_VERIFICATION${Math.random()}${selectedDocument}${Math.random()}`,
+          documentName: `${categoryList[selectedParentIndex].key} (${document[0]?.title})`,
+          //  name: `${categoryList[selectedParentIndex].key} (${document[0]?.title})`,
+          path: filePath,
+          date: date?.date,
+          time: date?.time,
+          txId: "e4343434343434443",
+          docType: "pdf",
+          docExt: ".jpg",
+          processedDoc: "",
+          base64: fileUri?.base64,
+          categoryType: categoryList[selectedParentIndex].key,
+          pdf: true,
+          docName: docname,
+          typePDF: fileUri?.typePDF,
+        };
+        var DocumentList = documentsDetailsList?.responseData
+          ? documentsDetailsList?.responseData
+          : [];
+        DocumentList.push(documentDetails);
+        dispatch(saveDocuments(DocumentList));
+        setsuccessResponse(true);
+        setTimeout(() => {
+          setsuccessResponse(false);
+          navigation.navigate("Documents");
+        }, 2000);
+      } else {
+        var date = dateTime();
+        const document: any[0] = categoryList[
+          selectedParentIndex
+        ]?.value?.filter((data: any) => data.isSelected);
+        const filePath = RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
+        var documentDetails: IDocumentProps = {
+          id: `ID_VERIFICATION${Math.random()}${selectedDocument}${Math.random()}`,
+          documentName: `${categoryList[selectedParentIndex].key} (${document[0]?.title})`,
+          //  name: `${categoryList[selectedParentIndex].key} (${document[0]?.title})`,
+          path: filePath,
+          date: date?.date,
+          time: date?.time,
+          txId: "e4343434343434443",
+          docType: "jpg",
+          docExt: ".jpg",
+          processedDoc: "",
+          base64: fileUri?.base64,
+          type: "deeplink",
+          categoryType: categoryList[selectedParentIndex].key,
+          docName: docname,
+        };
+        var DocumentList = documentsDetailsList?.responseData
+          ? documentsDetailsList?.responseData
+          : [];
+        DocumentList.push(documentDetails);
+        dispatch(saveDocuments(DocumentList));
+        setsuccessResponse(true);
+        setTimeout(() => {
+          setsuccessResponse(false);
+          navigation.navigate("Documents");
+        }, 2000);
+      }
+    } else {
+      if (fileUri?.type === "application/pdf") {
+        var date = dateTime();
 
-    const filePath =
-      RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
-    var documentDetails: IDocumentProps = {
-  //    name: fileUri?.file?.name,
-      documentName: fileUri?.file?.name,
-      id:`ID_VERIFICATION${Math.random()}${"random"}${Math.random()}`,
-      path: filePath,
-      date: date?.date,
-      time: date?.time,
-      txId:'e4343434343434443',
-      docType: "pdf",
-      docExt: ".jpg",
-      processedDoc: "",
-      base64: fileUri?.base64,
-      categoryType:categoryList[selectedParentIndex].key,
-      pdf: true,
-      docName:docname,
-      isVerifyNeeded:false,
-      typePDF:fileUri?.typePDF
-
-    };
-    var DocumentList = documentsDetailsList?.responseData
-      ? documentsDetailsList?.responseData
-      : [];
-    DocumentList.push(documentDetails);
-    dispatch(saveDocuments(DocumentList));
-    setsuccessResponse(true);
-    setTimeout(() => {
-      setsuccessResponse(false);
-      navigation.navigate("Documents");
-    }, 2000);
-   
-
-}
-else{
-  const {selfAttested} = route.params
-  if(selfAttested === 'no'){
-    var date = dateTime();
-    const document: any[0] = categoryList[selectedParentIndex]?.value?.filter((data:any)=>data.isSelected)
-    const filePath =
-      RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
-    var documentDetails: IDocumentProps = {
-      id:`ID_VERIFICATION${Math.random()}${selectedDocument}${Math.random()}`,
-      documentName: `${categoryList[selectedParentIndex].key} (${document[0]?.title})`,
-    //  name: `${categoryList[selectedParentIndex].key} (${document[0]?.title})`,
-      path: filePath,
-      date: date?.date,
-      time: date?.time,
-      txId:'e4343434343434443',
-      docType: "jpg",
-      docExt: ".jpg",
-      processedDoc: "",
-      base64: fileUri?.base64,
-      categoryType:categoryList[selectedParentIndex].key,
-      docName:docname,
-      isVerifyNeeded:false
-  
-    };
-    var DocumentList = documentsDetailsList?.responseData
-      ? documentsDetailsList?.responseData
-      : [];
-    DocumentList.push(documentDetails);
-    dispatch(saveDocuments(DocumentList));
-    setsuccessResponse(true);
-    setTimeout(() => {
-      setsuccessResponse(false);
-      navigation.navigate("Documents");
-    }, 2000);
-
-  }
-  else {
-    if(editDoc){
-      const index = documentsDetailsList?.responseData?.findIndex(obj => obj?.id === selectedItem?.id);
-      if (selectedItem ) {
-        if(selectedItem?.isVerifyNeeded) {
-          setIsPrceedForLivenessTest(true)
-        } else {
+        const filePath = RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
+        var documentDetails: IDocumentProps = {
+          //    name: fileUri?.file?.name,
+          documentName: fileUri?.file?.name,
+          id: `ID_VERIFICATION${Math.random()}${"random"}${Math.random()}`,
+          path: filePath,
+          date: date?.date,
+          time: date?.time,
+          txId: "e4343434343434443",
+          docType: "pdf",
+          docExt: ".jpg",
+          processedDoc: "",
+          base64: fileUri?.base64,
+          categoryType: categoryList[selectedParentIndex].key,
+          pdf: true,
+          docName: docname,
+          isVerifyNeeded: false,
+          typePDF: fileUri?.typePDF,
+        };
+        var DocumentList = documentsDetailsList?.responseData
+          ? documentsDetailsList?.responseData
+          : [];
+        DocumentList.push(documentDetails);
+        dispatch(saveDocuments(DocumentList));
+        setsuccessResponse(true);
+        setTimeout(() => {
+          setsuccessResponse(false);
+          navigation.navigate("Documents");
+        }, 2000);
+      } else {
+        const { selfAttested } = route.params;
+        if (selfAttested === "no") {
+          var date = dateTime();
+          const document: any[0] = categoryList[
+            selectedParentIndex
+          ]?.value?.filter((data: any) => data.isSelected);
+          const filePath = RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
+          var documentDetails: IDocumentProps = {
+            id: `ID_VERIFICATION${Math.random()}${selectedDocument}${Math.random()}`,
+            documentName: `${categoryList[selectedParentIndex].key} (${document[0]?.title})`,
+            //  name: `${categoryList[selectedParentIndex].key} (${document[0]?.title})`,
+            path: filePath,
+            date: date?.date,
+            time: date?.time,
+            txId: "e4343434343434443",
+            docType: "jpg",
+            docExt: ".jpg",
+            processedDoc: "",
+            base64: fileUri?.base64,
+            categoryType: categoryList[selectedParentIndex].key,
+            docName: docname,
+            isVerifyNeeded: false,
+          };
+          var DocumentList = documentsDetailsList?.responseData
+            ? documentsDetailsList?.responseData
+            : [];
+          DocumentList.push(documentDetails);
+          dispatch(saveDocuments(DocumentList));
           setsuccessResponse(true);
-          const document: any[0] = categoryList[selectedParentIndex]?.value?.filter((data:any)=>data.isSelected)
-          const obj = documentsDetailsList?.responseData[index];
-          obj.docName = docname
-          obj.documentName = `${categoryList[selectedParentIndex].key} (${document[0]?.title})`
-          obj.categoryType =categoryList[selectedParentIndex].key;
-          console.log('index===>',obj.categoryType)
-          dispatch(updateDocuments(documentsDetailsList?.responseData,index,obj));
-           setTimeout(async () => {
+          setTimeout(() => {
             setsuccessResponse(false);
-            const item = await AsyncStorage.getItem("flow");
-            if (item === "documentflow") {
-              navigation.navigate("RegisterScreen");
-            } else {
-              navigation.navigate("Documents");
-            }
+            navigation.navigate("Documents");
           }, 2000);
+        } else {
+          if (editDoc) {
+            const index = documentsDetailsList?.responseData?.findIndex(
+              (obj) => obj?.id === selectedItem?.id
+            );
+            if (selectedItem) {
+              if (selectedItem?.isVerifyNeeded) {
+                setIsPrceedForLivenessTest(true);
+              } else {
+                setsuccessResponse(true);
+                const document: any[0] = categoryList[
+                  selectedParentIndex
+                ]?.value?.filter((data: any) => data.isSelected);
+                const obj = documentsDetailsList?.responseData[index];
+                obj.docName = docname;
+                obj.documentName = `${categoryList[selectedParentIndex].key} (${document[0]?.title})`;
+                obj.categoryType = categoryList[selectedParentIndex].key;
+                console.log("index===>", obj.categoryType);
+                dispatch(
+                  updateDocuments(
+                    documentsDetailsList?.responseData,
+                    index,
+                    obj
+                  )
+                );
+                setTimeout(async () => {
+                  setsuccessResponse(false);
+                  const item = await AsyncStorage.getItem("flow");
+                  if (item === "documentflow") {
+                    navigation.navigate("RegisterScreen");
+                  } else {
+                    navigation.navigate("Documents");
+                  }
+                }, 2000);
+              }
+              setLoading(false);
+            } else {
+              setIsPrceedForLivenessTest(true);
+              return;
+            }
+          }
+          setIsPrceedForLivenessTest(false);
         }
-        setLoading(false)
-    
-  }else{
-    setIsPrceedForLivenessTest(true)
-    return
-  }
-
-}
-setIsPrceedForLivenessTest(false)
-  }
-}
-}
-  }
-
-
+      }
+    }
+  };
 
   useEffect(() => {
     getCategories(getCategoriesApi, {}, "GET");
-    console.log("itemData",itemData)
-    console.log("doc",docname)
+    console.log("itemData", itemData);
+    console.log("doc", docname);
   }, []);
 
   useEffect(() => {
+    console.log("datra", getCategoryData);
 
-    console.log("datra",getCategoryData)
-     
     if (getCategoryData) {
       var localCategories: any = [];
 
       Object.keys(getCategoryData).map((itemKey, indexOfKey) => {
-        var InternalArray: { title: any,isSelected:boolean }[] = [];
+        var InternalArray: { title: any; isSelected: boolean }[] = [];
         getCategoryData[itemKey].map((item: any) => {
-          console.log('item==>*****))))',item)
-          InternalArray.push({ title: item,isSelected:typeItem===item?true:item?.isSelected });
+          console.log("item==>*****))))", item);
+          InternalArray.push({
+            title: item,
+            isSelected: typeItem === item ? true : item?.isSelected,
+          });
         });
-        if(selectedItem?.documentName?.startsWith(itemKey)){
+        if (selectedItem?.documentName?.startsWith(itemKey)) {
           setSelectedParentIndex(indexOfKey);
         }
-      
+
         localCategories.push({
           key: itemKey,
           value: InternalArray,
           color: SCREENS.CATEGORYSCREEN.categories[indexOfKey]?.color,
-          isSelected:selectedItem?.documentName?.startsWith(itemKey)?true: false,
+          isSelected: selectedItem?.documentName?.startsWith(itemKey)
+            ? true
+            : false,
         });
       });
-      
+
       setCategoryList(localCategories);
-     // setCategoryList([...localCategories])
+      // setCategoryList([...localCategories])
     }
   }, [getCategoryData]);
-
-
-
-
-
-
-
-
-
 
   const selectCategory = (selectedItem: string, selectedIndex: number) => {
     var localCategories = [];
@@ -357,66 +351,66 @@ setIsPrceedForLivenessTest(false)
     });
 
     setCategoryList([...localCategories]);
-   // setIsPrceedForLivenessTest(true);
+    // setIsPrceedForLivenessTest(true);
   };
 
-  useEffect(()=>{
-
-  
-
-  },[])
+  useEffect(() => {}, []);
 
   const _renderItem = ({ item, index }: any) => {
-   
     return (
+      <TouchableOpacity onPress={() => selectCategory(item, index)}>
+        <View
+          style={[
+            styles.cardContainer,
+            {
+              backgroundColor: item.isSelected
+                ? "rgba(184, 191, 241, 1)"
+                : Screens.pureWhite,
+            },
+          ]}
+        >
+          <View style={{ flexDirection: "row" }}>
+            <View
+              style={{
+                width: 12,
+                height: 12,
+                backgroundColor: item.isSelected ? "green" : item.color,
+                alignSelf: "center",
+                marginHorizontal: 10,
+                borderRadius: 2,
+              }}
+            >
+              {item.isSelected && (
+                <Image
+                  style={{
+                    tintColor: "#fff",
+                    width: 8,
+                    height: 10,
+                    alignSelf: "center",
+                  }}
+                  source={LocalImages.tikImage}
+                ></Image>
+              )}
 
-                <TouchableOpacity onPress={() => selectCategory(item, index)}>
-                <View
-                  style={[
-                    styles.cardContainer,
-                    {
-                      backgroundColor: item.isSelected
-                        ? "rgba(184, 191, 241, 1)"
-                        : Screens.pureWhite,
-                    },
-                  ]}
-                >
-                  <View style={{ flexDirection: "row" ,}}>
-                    <View
-                      style={{
-                        width: 12,
-                        height: 12,
-                        backgroundColor: item.isSelected ? "green" : item.color,
-                        alignSelf: "center",
-                        marginHorizontal: 10,
-                        borderRadius:2
-                      }}
-                    >
-                      {item.isSelected && <Image
-                         style={{tintColor:'#fff',width:8,height:10, alignSelf: "center",}}
-                         source={LocalImages.tikImage}
-                      ></Image> }
-                      
-                      {item?.isSelected && <View></View>}
-                    </View>
-                    <Text style={{ fontWeight: "bold" }}>{item.key}</Text>
-                  </View>
-                </View>
-              </TouchableOpacity>
-
+              {item?.isSelected && <View></View>}
+            </View>
+            <Text style={{ fontWeight: "bold" }}>{item.key}</Text>
+          </View>
+        </View>
+      </TouchableOpacity>
     );
   };
 
-  const _renderItemDocuments = ({ item, index }: any) => { 
-
-  
+  const _renderItemDocuments = ({ item, index }: any) => {
     return (
-      <TouchableWithoutFeedback onPress={() => selectCategoryChildren(item, index)}>
+      <TouchableWithoutFeedback
+        onPress={() => selectCategoryChildren(item, index)}
+      >
         <View style={styles.documentContainer}>
           <Card
-            rightIconSrc={item?.isSelected  && LocalImages.successTikImage}
+            rightIconSrc={item?.isSelected && LocalImages.successTikImage}
             leftIconSrc={LocalImages.documentsImage}
-            title={item?.title == 'DL'?'Driving License':item?.title}
+            title={item?.title == "DL" ? "Driving License" : item?.title}
             style={[
               styles.cardContainer1,
               {
@@ -427,22 +421,20 @@ setIsPrceedForLivenessTest(false)
             ]}
           />
         </View>
-            
       </TouchableWithoutFeedback>
     );
   };
 
-  function docnameitem(value:any){
-      console.log("datavalue",value)
-      setDocname(value)
+  function docnameitem(value: any) {
+    console.log("datavalue", value);
+    setDocname(value);
   }
-
 
   return (
     <View style={styles.sectionContainer}>
-      <ScrollView contentContainerStyle={{ flex: 1}}>
+      <ScrollView style={{flex:1}} contentContainerStyle={{ flexGrow: 1 }}>
         <View style={{ flex: 1 }}>
-          <View style={{ flex: 0.3}}>
+          <View style={{ flex: 0.37 }}>
             <Header
               leftIconSource={LocalImages.backImage}
               onpress={() => {
@@ -471,7 +463,7 @@ setIsPrceedForLivenessTest(false)
                 style={{ height: 20, width: 20, resizeMode: "contain" }}
               />
             </TouchableOpacity>
-            <View >
+            <View>
               <FlatList<any>
                 numColumns={3}
                 nestedScrollEnabled
@@ -481,103 +473,96 @@ setIsPrceedForLivenessTest(false)
               />
             </View>
           </View>
-          <View style={{ flex: 0.75}}>
-            
+          <View style={{ flex: 0.63 }}>
+            {categoryList.length != 0 &&
+              categoryList.some((item) => item.isSelected === true) && (
+                <View style={{ marginTop: 5 }}>
+                  <View style={{ flexDirection: "row" }}>
+                    <GenericText
+                      style={[
+                        styles.categoryHeaderText,
+                        { fontSize: 14, fontWeight: "700" },
+                      ]}
+                    >
+                      {"DOCUMENT NAME"}
+                    </GenericText>
+
+                    <GenericText
+                      style={{
+                        alignSelf: "center",
+                        color: "red",
+                        marginLeft: -2,
+                        fontSize: 20,
+                      }}
+                    >
+                      {"*"}
+                    </GenericText>
+                  </View>
+                  <TextInput
+                    placeholder="Enter Document Name"
+                    onChangeText={docnameitem}
+                    value={docname}
+                    style={{
+                      borderWidth: 1,
+                      borderColor: Screens.grayShadeColor,
+                      margin: 16,
+                      borderRadius: 8,
+                      paddingLeft: 15,
+                      height: 40,
+                    }}
+                  />
+                </View>
+              )}
             {categoryList.map((item: any, index: number) => {
               if (item.isSelected) {
                 return (
-                  <ScrollView>
-                    {
-              categoryList.length !== 0 ?
-
-               <View>
-          
-
-          
-<View style={{marginTop:50}}>
-<View style={{flexDirection:"row"}}>
-               
-               <GenericText
-               style={[
-                 styles.categoryHeaderText,
-                 { fontSize: 14, fontWeight: "700" },
-               ]}
-             >
-               {"DOCUMENT NAME"}
-             </GenericText> 
-
-             <GenericText
-               style={{alignSelf:"center",color:"red",marginLeft:-2,fontSize:20}}
-             >
-               {"*"}
-             </GenericText> 
-
-               </View>
-<TextInput
-                placeholder="Enter Document Name"
-                onChangeText={docnameitem}
-                value={docname}
-                style={{
-                  flex:1,
-                  borderWidth:1,
-                  borderColor: Screens.grayShadeColor,
-                  margin:16,
-                  borderRadius: 8,
-                  paddingLeft:15,
-                  height:40
-                }}
-              />
-</View>
-
-             
-
-              
-              <GenericText
-                style={[
-                  styles.categoryHeaderText,
-                  { fontSize: 14, fontWeight: "700" },
-                ]}
-              >
-                {"selectDoc"}
-              </GenericText> 
-               </View>       
-              :
-             <></>
-            }
+                  <View>
+                    {categoryList.length !== 0 ? (
+                      <View>
+                        <GenericText
+                          style={[
+                            styles.categoryHeaderText,
+                            { fontSize: 14, fontWeight: "700" },
+                          ]}
+                        >
+                          {"selectDoc"}
+                        </GenericText>
+                      </View>
+                    ) : (
+                      <></>
+                    )}
                     <FlatList<any>
                       nestedScrollEnabled
-                      scrollEnabled={true}
+                      scrollEnabled={false}
                       data={item?.value}
                       renderItem={_renderItemDocuments}
                     />
-                    <View style={{backgroundColor: Screens.pureWhite}}>
+                    <View style={{ backgroundColor: Screens.pureWhite }}>
                       <Button
-                       onPress={()=>onSubmitAction()}
-                       style={{
-                        buttonContainer: {
-                          elevation: 5,
-                          marginLeft:15,
-                          marginRight:15,
-                        },
-                        text: {
-                          color: Screens.pureWhite,
-                        },
-                        iconStyle: {
-                          tintColor: Screens.pureWhite,
-                        },
-                      }}
-                      title={"submitt"}
+                        onPress={() => onSubmitAction()}
+                        style={{
+                          buttonContainer: {
+                            elevation: 5,
+                            marginLeft: 15,
+                            marginRight: 15,
+                          },
+                          text: {
+                            color: Screens.pureWhite,
+                          },
+                          iconStyle: {
+                            tintColor: Screens.pureWhite,
+                          },
+                        }}
+                        title={"submitt"}
                       />
                     </View>
-                      
-                  </ScrollView>
+                  </View>
                 );
               }
             })}
-           
           </View>
         </View>
-        <ModalView height={250}  isModalVisible={isPrceedForLivenessTest}>
+        <ModalView height={250} isModalVisible={isPrceedForLivenessTest}>
           <View
             style={{
               flex: 1,
@@ -605,18 +590,19 @@ setIsPrceedForLivenessTest(false)
             <Button
               onPress={() => {
                 setIsPrceedForLivenessTest(false);
-             const document: any[0] = categoryList[selectedParentIndex]?.value?.filter((data:any)=>data.isSelected)
+                const document: any[0] = categoryList[
+                  selectedParentIndex
+                ]?.value?.filter((data: any) => data.isSelected);
                 setTimeout(() => {
-                   navigation.navigate("LivenessCameraScreen", {
-                     fileUri,
-                     selectedDocument:`${categoryList[selectedParentIndex].key} (${document[0]?.title})`,
-                     pic,
-                     itemData,
-                     editDoc,
-                     selectedItem,
-                     docname
-                     
-                 });
+                  navigation.navigate("LivenessCameraScreen", {
+                    fileUri,
+                    selectedDocument: `${categoryList[selectedParentIndex].key} (${document[0]?.title})`,
+                    pic,
+                    itemData,
+                    editDoc,
+                    selectedItem,
+                    docname,
+                  });
                 }, 100);
               }}
               style={{
@@ -640,10 +626,10 @@ setIsPrceedForLivenessTest(false)
           isLoaderVisible={isCategoryLoading}
           loadingText="Loading..."
         />
-           <SuccessPopUp
-        isLoaderVisible={successResponse}
-        loadingText={"Document uploaded successfully"}
-      />
+        <SuccessPopUp
+          isLoaderVisible={successResponse}
+          loadingText={"Document uploaded successfully"}
+        />
       </ScrollView>
     </View>
   );

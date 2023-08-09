@@ -21,10 +21,10 @@ export const SavedProfilePictures = (
 };
 
 export const SavedSecurityDatas = (state = {}, { type, securityData }: any) => {
-  console.log("type===>", securityData);
+
   switch (type) {
     case ACTION_TYPES.SAVE_SECURITY:
-      console.log("securityDataReducer===>", securityData);
+    
       return { ...state, securityData };
     default:
       return { ...state };

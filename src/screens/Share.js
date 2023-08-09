@@ -6,9 +6,9 @@ const Share = () => {
   const [sharedMimeType, setSharedMimeType] = useState("");
 
   useEffect(() => {
-    console.log('ist closing',ShareMenuReactView)
+
     ShareMenuReactView.data().then(async ({ mimeType, data }) => {
-      console.log('deeplinkData',data)
+   
       setSharedData(data[0]?.data);
       setSharedMimeType(data[0]?.mimeType);
     });
