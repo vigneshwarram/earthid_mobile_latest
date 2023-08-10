@@ -64,9 +64,7 @@ const CustomDrawer = (props: any) => {
       deleteUser();
     } else if (item.route === "about") {
       Linking.openURL(
-        isEarthId()
-          ? "https://www.myearth.id/about/company"
-          : "https://globalidiq.com/about/"
+       'https://www.iccadubai.ae/'
       );
     } else if (item.route === "terms") {
       // Linking.openURL(
@@ -74,9 +72,7 @@ const CustomDrawer = (props: any) => {
       //    "https://www.myearth.id/privacy":"https://globalidiq.com/terms-of-use-3/"
       // );
       Linking.openURL(
-        isEarthId()
-          ? "https://www.myearth.id/privacy"
-          : "https://globalidiq.com/terms-of-use-3/"
+       'https://www.iccadubai.ae/'
       );
     } else {
       props.navigation.navigate(item.route, { type: item.route });

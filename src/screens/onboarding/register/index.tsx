@@ -121,7 +121,7 @@ const Register = ({ navigation }: IRegister) => {
     if (
       !nameValidator(firstName, true).hasError &&
       !emailValidator(email, true).hasError &&
-      mobileNumber !== "" && mobileNumber.length === 10 &&
+      mobileNumber !== "" && mobileNumber.length === 9 &&
       isValidMobileNumber
     ) {
       return true;
@@ -267,7 +267,7 @@ const Register = ({ navigation }: IRegister) => {
     if(isValidMobileNumber || isMobileEmpty ){
       return false
     }else if(phoneInput.current.isFocused){
-if(mobileNumber.length < 10){
+if(mobileNumber.length < 9){
   console.log('its coming here')
   return false
 }
@@ -338,7 +338,7 @@ if(mobileNumber.length < 10){
               style={{
                 container: styles.textInputContainer,
               }}
-              placeholder={"Enter Username"}
+              placeholder={"Enter Registration Number"}
               isError={isfirstNameError}
               errorText={isfirstNameErrorMessage}
               onFocus={onchangeFirstNameHandler}
@@ -381,7 +381,7 @@ if(mobileNumber.length < 10){
               autoFocus={false}
               placeholder="Mobile number"
               ref={phoneInput}
-              defaultCode="US"
+              defaultCode='AE'
               layout="first"
               onChangeText={(text: any) => {
                 let validate = containsSpecialChars(text);
@@ -394,10 +394,10 @@ if(mobileNumber.length < 10){
               }}
               containerStyle={{
                 borderColor:
-                isValidMobileNumber && mobileNumber.length === 10  
+                isValidMobileNumber && mobileNumber.length === 9  
                     ?Screens.darkGray 
                     : mobileNumber.length != 0 ?  Screens.red:Screens.darkGray ,
-                borderWidth: isValidMobileNumber && mobileNumber.length === 10  ? 1 : mobileNumber.length != 0 ?  2.2:2,
+                borderWidth: isValidMobileNumber && mobileNumber.length === 9  ? 1 : mobileNumber.length != 0 ?  2.2:2,
                 borderRadius: 10,
                 height: 60,
                 marginHorizontal: 10,
@@ -419,7 +419,7 @@ if(mobileNumber.length < 10){
               }}
               filterProps={{ placeholder: "Search country" }}
             />
-            { isValidMobileNumber && mobileNumber.length === 10  ? null:
+            { isValidMobileNumber && mobileNumber.length === 9  ? null:
             
             mobileNumber.length != 0 &&  <Text allowFontScaling={false} style={styles.errorText}>
                   {"Please enter valid mobile number"}
