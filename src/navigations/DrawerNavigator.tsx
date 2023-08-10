@@ -21,6 +21,7 @@ import ViewCredential from "../screens/bottomTabs/documentTab/ViewCredebtials";
 import CustomizeQr from "../screens/profiles/CustomizeQr";
 import backupIdentity from "../screens/onboarding/backupIdentity";
 import Document from "../screens/bottomTabs/documentTab/index";
+import ShareQr from '../screens/onboarding/backupIdentity/ShareQr'
 
 import UpdateAuthentication from "../screens/onboarding/security/UpdateAuthentication";
 import AuthBackupIdentity from "../screens/onboarding/backupIdentity/AuthIdentity";
@@ -65,6 +66,7 @@ const dashBoardStack = {
   UpdateConfirmPincode: UpdateConfirmPincode,
   UpdateNewPin: UpdateNewPin,
   UpdateTouchId: UpdateTouchId,
+  ShareQr:ShareQr
 };
 
 const tabs = {

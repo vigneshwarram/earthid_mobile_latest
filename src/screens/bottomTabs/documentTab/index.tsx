@@ -42,6 +42,7 @@ import zlib from "zlib";
 import Spinner from "react-native-loading-spinner-overlay/lib";
 import ImageResizer from 'react-native-image-resizer';
 import RNFS from "react-native-fs";
+import AWS from "aws-sdk";
 
 
 interface IDocumentScreenProps {
@@ -322,46 +323,9 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
   //AWS3 bucket image store
 
   const handleUploadImage = async () => {
-
-    const base64Images = await  ImageResizer.createResizedImage(
-      `data:image/jpeg;base64,${selectedItem?.base64}`,
-      800, // target width
-      800, // target height
-      'JPEG', // format (you can adjust this)
-      80, // quality (adjust this)
-    );
-
-    const base64Image = await RNFS.readFile(base64Images.uri, 'base64');
-
-    // console.log("base64Images",base64Images);      
-
-    const objectKey = imageName; // Replace with your desired object key
-    const uploadedKey: any = await uploadImageToS3(
-      bucketName,
-      `images/${objectKey}`,
-      base64Image
-    );
+    setisBottomSheetForSideOptionVisible(false)
+navigation.navigate('ShareQr',{selectedItem:selectedItem})
    
-    setloading(false);
-    if (uploadedKey) {
-      const objectKeys = `images/${imageName}`;
-      const preSignedURL = await generatePreSignedURL(bucketName, objectKeys);
-
-
-
-      if (preSignedURL) {
-        setPreSignedUrl(preSignedURL);
-      } else {
-
-
-        Alert.alert("Error", "Failed to upload image to S3.");
-      }
-    } else {
-
-      Alert.alert("Error", "Failed to upload image to S3--->api1.");
-    }
-
-    setActivityLoad(false);
   };
 
   const RowOption = ({ icon, title, rowAction }: any) => (
@@ -465,18 +429,8 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
   };
 
   const qrCodeModal = () => {
-    setisBottomSheetForSideOptionVisible(false);
-
-    setTimeout(() => {
-      setModalVisible(true);
-    }, 1000);
-
-    setTimeout(() => {
-      setActivityLoad(true);
-      handleUploadImage();
-    }, 300);
-
-    // setloading(true)
+    
+    handleUploadImage();
   };
 
   const shareMultipleItem = async () => {
@@ -502,6 +456,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
   };
 
   const deleteItem = () => {
+    
     console.log("selectedItem?.id", selectedItem);
     Alert.alert(
       "Confirmation! ",
@@ -512,7 +467,15 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
           text: "OK",
           onPress: () => {
             setisBottomSheetForSideOptionVisible(false);
+            const imageName: any = selectedItem?.docName + "." + selectedItem?.docType;
+            const key =`images/${imageName}`
+            var s3 = new AWS.S3();
+var params = {  Bucket:bucketName, Key: key };
 
+s3.deleteObject(params, function(err, data) {
+  if (err) console.log(err, err.stack);  // error
+  else     console.log();                 // deleted
+});
             const helpArra = [...documentsDetailsList?.responseData];
             console.log("documentsDetailsList", helpArra);
             const findIndex = helpArra?.findIndex(
