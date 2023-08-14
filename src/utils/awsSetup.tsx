@@ -1,5 +1,6 @@
 
 import AWS from 'aws-sdk';
+import RNFetchBlob from 'rn-fetch-blob';
 
 //AWS S3 bucket
 const bucketName = 'idv-sessions'
@@ -125,7 +126,7 @@ export async function createUserSpecificBucket(username:any) {
     }
   }
 
-  export async function uploadImageToS3(bucketName:any, objectKey:any,base64Image:any) {
+  export async function uploadImageToS3(bucketName:any, objectKey:any,base64Image:any,contentType:any) {
     try {
       const s3 = new AWS.S3();
       
@@ -137,7 +138,36 @@ export async function createUserSpecificBucket(username:any) {
         // },
       //  Body: base64Image,
        Body: Buffer.from(base64Image, 'base64'),
+       ContentType:contentType,
         ACL: 'private', // Set ACL to 'public-read' to make the uploaded image publicly accessible
+      };
+
+    
+      const result = await s3.upload(params).promise();
+  
+      return result.Key;
+    } catch (error) {
+      console.error('Error uploading image to S3:', error);
+      return null;
+    }
+  }
+
+
+
+  export async function uploadPDFToS3(bucketName:any, objectKey:any,pdfFilePath:any) {
+    try {
+      const s3 = new AWS.S3();
+      
+      const params = {
+        Bucket: bucketName,
+        Key: objectKey,
+        // Body: {
+        //   uri: imageUri,
+        // },
+      //  Body: base64Image,
+       Body: pdfFilePath,
+       ContentType: 'application/pdf',
+       ACL: 'private', // Set ACL to 'public-read' to make the uploaded image publicly accessible
       };
 
     

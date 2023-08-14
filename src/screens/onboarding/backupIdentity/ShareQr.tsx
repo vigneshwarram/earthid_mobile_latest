@@ -28,8 +28,9 @@ import { useAppSelector } from "../../../hooks/hooks";
 import { LocalImages } from "../../../constants/imageUrlConstants";
 import { isEarthId } from "../../../utils/PlatFormUtils";
 import ImageResizer from "react-native-image-resizer";
-import { generatePreSignedURL, uploadImageToS3 } from "../../../utils/awsSetup";
+import { generatePreSignedURL, uploadImageToS3, uploadPDFToS3 } from "../../../utils/awsSetup";
 import { Colors } from "react-native/Libraries/NewAppScreen";
+import RNFetchBlob from "rn-fetch-blob";
 
 
 interface IHomeScreenProps {
@@ -68,30 +69,29 @@ const AuthBackupIdentity = ({ navigation, route }: IHomeScreenProps) => {
   const getQRCode =async()=>{
     setActivityLoad(true);
     const selectedItem = route.params.selectedItem
-    const imageName: any = selectedItem?.docName + "." + selectedItem?.docType;
-    const base64Images = await  ImageResizer.createResizedImage(
-        `data:image/jpeg;base64,${selectedItem?.base64}`,
-        800, // target width
-        800, // target height
-        'JPEG', // format (you can adjust this)
-        80, // quality (adjust this)
-      );
-  
-      const base64Image = await RNFS.readFile(base64Images.uri, 'base64');
-  
-      // console.log("base64Images",base64Images);      
-  
+
+
+    let type = selectedItem?.docType
+
+    if(type === "pdf"){
+      console.log("neww","this is pdf type");
+      console.log("newPdf",selectedItem?.typePDF);
+      const imageName: any = selectedItem?.docName + "." + selectedItem?.docType;
+      const pdfFile = selectedItem?.typePDF
+      const pdfFilePath = RNFetchBlob.fs.dirs.CacheDir +"/"+imageName;
+      const response = await fetch(pdfFile);
+      const blob = await response.blob();
+
       const objectKey = imageName; // Replace with your desired object key
-      const uploadedKey: any = await uploadImageToS3(
+      const uploadedKey: any = await uploadPDFToS3(
         bucketName,
         `images/${objectKey}`,
-        base64Image
+        blob
       );
      
       if (uploadedKey) {
         const objectKeys = `images/${imageName}`;
         const preSignedURL = await generatePreSignedURL(bucketName, objectKeys);
-  
   
   
         if (preSignedURL) {
@@ -105,6 +105,51 @@ const AuthBackupIdentity = ({ navigation, route }: IHomeScreenProps) => {
   
         Alert.alert("Error", "Failed to upload image to S3--->api1.");
       }
+  
+
+    }
+    
+    else{
+      console.log("neww","this is image type");
+      const imageName: any = selectedItem?.docName + "." + selectedItem?.docType;
+      const base64Images = await  ImageResizer.createResizedImage(
+          `data:image/jpeg;base64,${selectedItem?.base64}`,
+          800, // target width
+          800, // target height
+          'JPEG', // format (you can adjust this)
+          80, // quality (adjust this)
+        );
+    
+        const base64Image = await RNFS.readFile(base64Images.uri, 'base64');
+    
+        // console.log("base64Images",base64Images);      
+    
+        const objectKey = imageName; // Replace with your desired object key
+        const uploadedKey: any = await uploadImageToS3(
+          bucketName,
+          `images/${objectKey}`,
+          base64Image,
+          ""
+        );
+       
+        if (uploadedKey) {
+          const objectKeys = `images/${imageName}`;
+          const preSignedURL = await generatePreSignedURL(bucketName, objectKeys);
+    
+    
+          if (preSignedURL) {
+            setPreSignedUrl(preSignedURL);
+          } else {
+    
+    
+            Alert.alert("Error", "Failed to upload image to S3.");
+          }
+        } else {
+    
+          Alert.alert("Error", "Failed to upload image to S3--->api1.");
+        }
+      
+    }
   
       setActivityLoad(false);
   }
