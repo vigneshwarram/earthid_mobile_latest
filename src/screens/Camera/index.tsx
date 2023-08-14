@@ -167,6 +167,9 @@ const CameraScreen = (props: any) => {
 
 
   const _handleBarCodeRead = (barCodeData: any) => {
+    // let barcodeData = barCodeData.data
+    // console.log("barcodeData",barcodeData);
+    
     let serviceData = JSON.parse(barCodeData.data);
     console.log("barcodedata", serviceData);
     if (!serviceProviderLoading) {

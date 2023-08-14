@@ -186,7 +186,7 @@ const Register = ({ navigation }: IRegister) => {
       });
     } else {
       console.log("userDetails?.errorMesssage", userDetails?.errorMesssage);
-     Alert.alert("Warning","Your EarthID already exists. Please recover it using your QR code generated during the registration process. If you have lost your QR code, please create a new EarthID using different username, email and phone number.")
+     Alert.alert("Warning","Your ICCAiD already exists. Please recover it using your QR code generated during the registration process. If you have lost your QR code, please create a new EarthID using different username, email and phone number.")
     }
   }
   const Footer = () => (
@@ -228,7 +228,7 @@ const Register = ({ navigation }: IRegister) => {
               textDecorationLine: "underline",
             }}
           >
-            {isEarthId() ? "EarthID" : "GlobaliD"}
+            {"ICCAiD"}
           </GenericText>
         </View>
       </TouchableOpacity>
