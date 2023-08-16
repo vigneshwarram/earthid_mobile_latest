@@ -293,13 +293,14 @@ export const getHistory =
   };
 
 export const byPassUserDetailsRedux =
-  (userDetails: any) =>
+  (userDetails: any,responseUserSpecificBucket: string) =>
   async (dispatch: any): Promise<any> => {
     dispatch({
       type: ACTION_TYPES.CREATED_ACCOUNT_RESPONSE,
       payload: {
         isLoading: false,
         responseData: userDetails,
+        responseUserSpecificBucket:responseUserSpecificBucket
       },
     });
   };
@@ -351,7 +352,7 @@ const _responseHandler = async (response: any): Promise<any> => {
 };
 
 
-const _s3responseHandler = async (response: any): Promise<any> => {
+export const _s3responseHandler = async (response: any): Promise<any> => {
   return new Promise(async (resolve, reject) => {
     if (response) {
      // const responseData = await response.json();

@@ -11,9 +11,10 @@ import { BASE_URL, uploadDocument } from "../../utils/earthid_account";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import RNQRGenerator from "rn-qr-generator";
 import RNFS from "react-native-fs";
-import { byPassUserDetailsRedux } from "../../redux/actions/authenticationAction";
+import { _s3responseHandler, byPassUserDetailsRedux } from "../../redux/actions/authenticationAction";
 import DocumentPicker from "react-native-document-picker";
 import { SnackBar } from "../../components/SnackBar";
+import { createUserSpecificBucket } from "../../utils/awsSetup";
 
 
 
@@ -85,16 +86,21 @@ const UploadDocumentPreviewScreen = (props: any) => {
   useEffect(() => {
     if (getUserResponse) {
 
-      SnackBar({
-        indicationMessage: "QR image should be successfully uploaded",
-      });
-      
-      dispatch(byPassUserDetailsRedux(getUserResponse)).then(() => {
-        props.navigation.navigate("Security");
-       
-      });
+      getDetailsForBucket()
     }
   }, [getUserResponse]);
+
+ const getDetailsForBucket = async()=>{
+    const bucketName = `idv-sessions-${getUserResponse.username.toLowerCase()}`;
+    SnackBar({
+      indicationMessage: "QR image should be successfully uploaded",
+    });
+
+    dispatch(byPassUserDetailsRedux(getUserResponse,bucketName)).then(() => {
+      props.navigation.navigate("Security");
+     
+    });
+  }
 
   return (
     <View style={styles.sectionContainer}>

@@ -215,7 +215,7 @@ const AuthBackupIdentity = ({ navigation, route }: IHomeScreenProps) => {
           <Header
             isLogoAlone={true}
             headingText={
-              route.name == "AuthBackupIdentity" ? "backupidentity" : "important"
+              'Information Sharing'
             }
             linearStyle={styles.linearStyle}
             containerStyle={{
@@ -258,9 +258,7 @@ const AuthBackupIdentity = ({ navigation, route }: IHomeScreenProps) => {
                   },
                 ]}
               >
-                {isEarthId()
-                  ? SCREENS.BACKUPIDENTYSCREEN.instructionEarthID
-                  : SCREENS.BACKUPIDENTYSCREEN.instruction}
+                'Please share this QR code only with the intended recipient, as this will provide access to your information. You can also share this QR code with the intended recipient using the "Share QR Code" button'
               </GenericText>
             </View>
             <View style={{ justifyContent: "center", alignItems: "center" }}>

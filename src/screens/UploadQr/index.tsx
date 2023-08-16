@@ -26,6 +26,7 @@ import { useAppDispatch } from "../../hooks/hooks";
 import { byPassUserDetailsRedux } from "../../redux/actions/authenticationAction";
 import * as ImagePicker from "react-native-image-picker";
 
+
 const UploadQr = (props: any) => {
   const { colors } = useTheme();
   const camRef: any = useRef();
@@ -44,11 +45,18 @@ const UploadQr = (props: any) => {
   const dispatch = useAppDispatch();
   useEffect(() => {
     if (getUserResponse) {
-      dispatch(byPassUserDetailsRedux(getUserResponse)).then(() => {
-        props.navigation.navigate("Security");
-      });
+      getDetailsForBucket()
     }
   }, [getUserResponse]);
+
+  const getDetailsForBucket = async()=>{
+    const bucketName = `idv-sessions-${getUserResponse.username.toLowerCase()}`;
+
+    dispatch(byPassUserDetailsRedux(getUserResponse,bucketName)).then(() => {
+      props.navigation.navigate("Security");
+     
+    });
+  }
 
   const requestPermission = async () => {
     try {
