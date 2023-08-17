@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "iPhone_11__iPhone_XR_portrait.png",
+      "filename" : "LaunchImage-828@2x~iphoneXr-portrait_828x1792.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "iPhone_14__iPhone_13_Pro__iPhone_13__iPhone_12_Pro__iPhone_12_portrait.png",
+      "filename" : "LaunchImage-1125@3x~iphoneX-portrait_1125x2436.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "iPhone_14_Plus__iPhone_13_Pro_Max__iPhone_12_Pro_Max_portrait.png",
+      "filename" : "LaunchImage-1242@3x~iphoneXsMax-portrait_1242x2688.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

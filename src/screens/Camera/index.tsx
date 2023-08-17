@@ -1,21 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
   Image,
   TouchableOpacity,
-  Text,
   Dimensions,
   ScrollView,
   Alert,
-  AsyncStorage,
-  ImageEditor,
-  ImageStore,
+  ActivityIndicator,
   
 } from "react-native";
 import { RNCamera } from "react-native-camera";
 import Button from "../../components/Button";
-
 import axios from "axios";
 import SuccessPopUp from "../../components/Loader";
 import ModalView from "../../components/Modal";
@@ -29,21 +25,15 @@ import { Screens } from "../../themes/index";
 import {
   serviceProviderApi,
   QrcodeApis,
-  generateCredientials,
-  ssiApiKey,
-  alertBox,
   newssiApiKey,
 } from "../../utils/earthid_account";
 import QrScannerMaskedWidget from "../Camera/QrScannerMaskedWidget";
-import { createUserSignature, saveDocuments } from "../../redux/actions/authenticationAction";
+import { saveDocuments } from "../../redux/actions/authenticationAction";
 import { IDocumentProps } from "../uploadDocuments/VerifiDocumentScreen";
 import GenericText from "../../components/Text";
 import Loader from "../../components/Loader";
 import { isEarthId } from "../../utils/PlatFormUtils";
 import { dateTime } from "../../utils/encryption";
-import { ICreateUserSignature } from "../../typings/AccountCreation/ICreateUserSignature";
-import RNFetchBlob from 'rn-fetch-blob';
-import { newpostCall } from "../../utils/service";
 
 
 
@@ -92,14 +82,17 @@ const CameraScreen = (props: any) => {
   const [successResponse, setsuccessResponse] = useState(false);
   const [isCameraVisible, setIsCamerVisible] = useState(true);
   const [isDocumentModal, setisDocumentModal] = useState(false);
+  const [QrScan, setQrScan] = useState(true);
   const documentsDetailsList = useAppSelector((state) => state.Documents);
   const [selectedCheckBox, setselectedCheckBox] = useState(
     documentsDetailsList.responseData
   );
+  const [barCodeButton,setBarCodeScanAgainButton] = useState(false)
+  const [isBarCodeScan,setisBarCodeScan] = useState(true)
   const [issuerSchemaJSON, setissuerSchemaJSON] = useState();
   const [issuerSchemaName, setissuerSchemaName] = useState([{}]);
   const [issuerSchemaDropDown, setissuerSchemaDropDown] = useState(false);
-  const [selectedSchema, setselectedSchema] = useState();
+  const [loading, setloading] = useState(false);
   const [loadingforGentSchemaAPI, setloadingforGentSchemaAPI] = useState(false);
   const [value, setValue] = useState(null);
   const [isDocumentModalkyc, setisDocumentModalkyc] = useState(false);
@@ -134,6 +127,57 @@ const CameraScreen = (props: any) => {
   console.log("baseee",base64Pic)
 
   console.log("url===>",url)
+  const [scanned, setScanned] = useState(false);
+
+  const handleBarCodeScanned = useCallback((barCodeData) => {
+    if (!scanned) {
+      setScanned(true);
+      if(barCodeData.data !=''){
+        let serviceData =barCodeData?.data;
+        if(!serviceData.requestType){
+          createVcForIccaStudent(serviceData)
+  
+        }else{
+          if (!serviceProviderLoading) {
+            setbarCodeData(serviceData);
+      
+            if (serviceData.requestType === "login") {
+              serviceProviderApiCall(serviceData);
+            }
+            if (serviceData.requestType === "generateCredentials") {
+              serviceProviderApiCall(serviceData);
+            }
+            if (serviceData.requestType === "document") {
+              serviceProviderApiCall(serviceData);
+            }
+            if (serviceData.requestType === "shareCredentials") {
+              serviceProviderApiCall(serviceData);
+            }
+          
+          }
+        }
+        console.log("barcodedata", serviceData);
+  
+        setIsCamerVisible(false);
+  
+      }
+      else{
+        Alert.alert(
+          'NO data',
+          'There is no data available in this QR code',
+          [
+            {text: 'OK', onPress:()=>{   setIsCamerVisible(true)}},
+          ],
+          { cancelable: false }
+        )
+      
+      }
+
+      setTimeout(() => {
+        setScanned(false);
+      }, 1000); // Adjust the timeout duration as needed
+    }
+  }, [scanned]);
 
 
 
@@ -164,32 +208,45 @@ const CameraScreen = (props: any) => {
   });
 
   }
+const createVcForIccaStudent=(url)=>{
+  setloading(true)
+  fetch(url)
+  .then(response => response.json())
+  .then(data => {
+    console.log("thiss","this is log")
+      var date = dateTime();
+      var documentDetails: IDocumentProps = {
+        id: data?.id,
+        name: data?.verifiableCredential[0]?.version,
+        documentName: data?.verifiableCredential[0]?.version,
+        date: date?.date,
+        time: date?.time,
+        isVc: true,
+        vc: JSON.stringify(data?.verifiableCredential),
+        docName: "",
+        base64: undefined
+        
+      };
 
+      var DocumentList = documentsDetailsList?.responseData
+        ? documentsDetailsList?.responseData
+        : [];
 
-  const _handleBarCodeRead = (barCodeData: any) => {
-    // let barcodeData = barCodeData.data
-    // console.log("barcodeData",barcodeData);
+      DocumentList.push(documentDetails);
+      dispatch(saveDocuments(DocumentList));
+      setTimeout(() => {
+        setloading(false)
+        setIsCamerVisible(true);
+        setloadingforGentSchemaAPI(false);
+        setissuerSchemaDropDown(false);
+        Alert.alert(data?.verifiableCredential[0]?.message);
+        props.navigation.navigate("Documents");
+      }, 3000);
     
-    let serviceData = JSON.parse(barCodeData.data);
-    console.log("barcodedata", serviceData);
-    if (!serviceProviderLoading) {
-      setbarCodeData(serviceData);
 
-      if (serviceData.requestType === "login") {
-        serviceProviderApiCall(serviceData);
-      }
-      if (serviceData.requestType === "generateCredentials") {
-        serviceProviderApiCall(serviceData);
-      }
-      if (serviceData.requestType === "document") {
-        serviceProviderApiCall(serviceData);
-      }
-      if (serviceData.requestType === "shareCredentials") {
-        serviceProviderApiCall(serviceData);
-      }
-    }
-    setIsCamerVisible(false);
-  };
+  });
+}
+
   useEffect(() => {
     const selectedCheckBoxs = documentsDetailsList?.responseData?.map(
       (item: { selectedForCheckBox: boolean }, index: any) => {
@@ -521,6 +578,7 @@ const CameraScreen = (props: any) => {
 
   return (
     <View style={styles.sectionContainer}>
+   
       <View style={{ position: "absolute", top: 20, left: 20, zIndex: 100 }}>
         <TouchableOpacity
           onPress={() =>
@@ -545,12 +603,17 @@ const CameraScreen = (props: any) => {
           androidCameraPermissionOptions={null}
           type={RNCamera.Constants.Type.back}
           captureAudio={false}
-          onBarCodeRead={(data) => _handleBarCodeRead(data)}
+          onBarCodeRead={handleBarCodeScanned}
         >
           <QrScannerMaskedWidget />
         </RNCamera>
       )}
-
+   {loading &&
+       <View style={styles.loading}>
+       <ActivityIndicator color={'red'} size='large' />
+     </View>
+  }
+   
       <SuccessPopUp
         isLoaderVisible={successResponse}
         loadingText={successMessage}
@@ -831,6 +894,22 @@ const CameraScreen = (props: any) => {
         Status="Success !"
         isLoaderVisible={false}
       ></Loader>
+      {barCodeButton && 
+            <TouchableOpacity
+            style={{width:200,height:30}}
+            onPress={()=>{
+              setIsCamerVisible(true)
+              setBarCodeScanAgainButton(false)
+              setisBarCodeScan(true)
+            }}
+          >
+            <GenericText
+              style={{ color: "green", fontSize: 16, fontWeight: "700" }}
+            >
+              {'Scan Again'}
+            </GenericText>
+          </TouchableOpacity>
+          }
     </View>
   );
 };
@@ -873,6 +952,15 @@ const styles = StyleSheet.create({
   },
   selectedTextStyle: {
     fontSize: 16,
+  },
+  loading: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   iconStyle: {
     width: 20,
