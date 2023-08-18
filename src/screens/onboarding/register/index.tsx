@@ -395,6 +395,7 @@ if(mobileNumber.length < 10){
               processedDoc: "",
               isVc: true,
             }),
+            verifiableCredential:res?.data?.verifiableCredential,
             documentName: "",
             docName: "",
             base64: undefined

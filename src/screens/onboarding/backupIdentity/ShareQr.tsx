@@ -28,7 +28,7 @@ import { useAppSelector } from "../../../hooks/hooks";
 import { LocalImages } from "../../../constants/imageUrlConstants";
 import { isEarthId } from "../../../utils/PlatFormUtils";
 import ImageResizer from "react-native-image-resizer";
-import { generatePreSignedURL, uploadImageToS3, uploadPDFToS3 } from "../../../utils/awsSetup";
+import { generatePreSignedURL, uploadImageToS3, uploadJSONToS3, uploadPDFToS3 } from "../../../utils/awsSetup";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import RNFetchBlob from "rn-fetch-blob";
 
@@ -106,6 +106,39 @@ const AuthBackupIdentity = ({ navigation, route }: IHomeScreenProps) => {
         Alert.alert("Error", "Failed to upload image to S3--->api1.");
       }
   
+
+    }else if(selectedItem?.isVc){
+      console.log("neww","This is Vc");
+      const imageName: any = selectedItem?.docName + "." + selectedItem?.docType;
+      const objectKey = imageName; 
+
+      let credData = selectedItem?.verifiableCredential
+
+      const uploadedKey: any = await uploadJSONToS3(
+        bucketName,
+        `images/${objectKey}`,
+        credData,
+        ""
+      );
+     
+      if (uploadedKey) {
+        const objectKeys = `images/${imageName}`;
+        const preSignedURL = await generatePreSignedURL(bucketName, objectKeys);
+  
+  
+        if (preSignedURL) {
+          setPreSignedUrl(preSignedURL);
+        } else {
+  
+  
+          Alert.alert("Error", "Failed to upload image to S3.");
+        }
+      } else {
+  
+        Alert.alert("Error", "Failed to upload image to S3--->api1.");
+      }
+
+
 
     }
     

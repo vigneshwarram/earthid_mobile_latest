@@ -153,7 +153,6 @@ export async function createUserSpecificBucket(username:any) {
   }
 
 
-
   export async function uploadPDFToS3(bucketName:any, objectKey:any,pdfFilePath:any) {
     try {
       const s3 = new AWS.S3();
@@ -171,6 +170,27 @@ export async function createUserSpecificBucket(username:any) {
       };
 
     
+      const result = await s3.upload(params).promise();
+  
+      return result.Key;
+    } catch (error) {
+      console.error('Error uploading image to S3:', error);
+      return null;
+    }
+  }
+
+  export async function uploadJSONToS3(bucketName:any, objectKey:any,jsonObject:any,contentType:any) {
+    try {
+      const s3 = new AWS.S3();
+      
+      const params = {
+        Bucket: bucketName,
+        Key: objectKey,
+        Body: JSON.stringify(jsonObject),
+        ContentType:contentType,
+        ACL: 'private', // Set ACL to 'public-read' to make the uploaded image publicly accessible
+      };
+
       const result = await s3.upload(params).promise();
   
       return result.Key;
