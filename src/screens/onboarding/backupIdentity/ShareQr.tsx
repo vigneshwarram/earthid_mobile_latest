@@ -67,6 +67,7 @@ const AuthBackupIdentity = ({ navigation, route }: IHomeScreenProps) => {
   },[])
 
   const getQRCode =async()=>{
+   
     setActivityLoad(true);
     const selectedItem = route.params.selectedItem
 
@@ -99,11 +100,11 @@ const AuthBackupIdentity = ({ navigation, route }: IHomeScreenProps) => {
         } else {
   
   
-          Alert.alert("Error", "Failed to upload image to S3.");
+          Alert.alert("Error", "There is a technical issue, please try again later.");
         }
       } else {
   
-        Alert.alert("Error", "Failed to upload image to S3--->api1.");
+        Alert.alert("Error", "There is a technical issue, please try again later.");
       }
   
 
@@ -131,11 +132,11 @@ const AuthBackupIdentity = ({ navigation, route }: IHomeScreenProps) => {
         } else {
   
   
-          Alert.alert("Error", "Failed to upload image to S3.");
+          Alert.alert("Error", "There is a technical issue, please try again later.");
         }
       } else {
   
-        Alert.alert("Error", "Failed to upload image to S3--->api1.");
+        Alert.alert("Error", "There is a technical issue, please try again later.");
       }
 
 
@@ -175,11 +176,11 @@ const AuthBackupIdentity = ({ navigation, route }: IHomeScreenProps) => {
           } else {
     
     
-            Alert.alert("Error", "Failed to upload image to S3.");
+            Alert.alert("Error", "There is a technical issue, please try again later.");
           }
         } else {
     
-          Alert.alert("Error", "Failed to upload image to S3--->api1.");
+          Alert.alert("Error", "There is a technical issue, please try again later.");
         }
       
     }
@@ -188,8 +189,6 @@ const AuthBackupIdentity = ({ navigation, route }: IHomeScreenProps) => {
   }
 
   const capturePicture = () => {
-    console.log("Capturing picture..");
-
     viewShot.current.capture().then(async (imageData: any) => {
         await Share.open({
             url: imageData,

@@ -190,7 +190,7 @@ export async function createUserSpecificBucket(username:any) {
         ContentType:contentType,
         ACL: 'private', // Set ACL to 'public-read' to make the uploaded image publicly accessible
       };
-
+      console.log('params===>',JSON.stringify(params))
       const result = await s3.upload(params).promise();
   
       return result.Key;

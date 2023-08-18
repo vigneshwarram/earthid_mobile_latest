@@ -113,6 +113,29 @@ const DocumentPreviewScreen = (props: any) => {
 
     props.navigation.navigate("Documents");
   };
+  const qrCodeModal = () => {
+    
+    handleUploadImage();
+  };
+  function editItem() {
+    setisBottomSheetForSideOptionVisible(false);
+    props.navigation.navigate("categoryScreen", {
+      selectedItem: selectedItem,
+      editDoc: "editDoc",
+    });
+    // var data : any =selectedItem
+    // await AsyncStorage.setItem("userDetails", data);
+    // await AsyncStorage.setItem("editDoc", "editDoc");
+
+    console.log("iteName==>", selectedItem);
+  }
+  const handleUploadImage = async () => {
+    setisBottomSheetForSideOptionVisible(false)
+ props.navigation.navigate('ShareQr',{selectedItem:selectedItem})
+console.log("selectedItem",selectedItem);
+
+   
+  };
   const RowOption = ({ icon, title, rowAction }: any) => (
     <TouchableOpacity onPress={rowAction}>
       <View
@@ -179,20 +202,30 @@ const DocumentPreviewScreen = (props: any) => {
       </View>
       <BottomSheet
         onClose={() => setisBottomSheetForSideOptionVisible(false)}
-        height={150}
+        height={230}
         isVisible={isBottomSheetForSideOptionVisible}
       >
-        <View style={{ height: 100, width: "100%", paddingHorizontal: 30 }}>
-          <RowOption
-            rowAction={() => shareItem()}
-            title={"Share"}
-            icon={LocalImages.shareImage}
-          />
-          <RowOption
-            rowAction={() => deleteAlert()}
-            title={"Delete"}
-            icon={LocalImages.deleteImage}
-          />
+        <View style={{ height: 180, width: "100%", paddingHorizontal: 30 }}>
+        <RowOption
+                rowAction={() => editItem()}
+                title={"edit"}
+                icon={LocalImages.editIcon}
+              />
+              <RowOption
+                rowAction={() => qrCodeModal()}
+                title={"QR Code"}
+                icon={LocalImages.qrcodeImage}
+              />
+              <RowOption
+                rowAction={() => shareItem()}
+                title={"share"}
+                icon={LocalImages.shareImage}
+              />
+              <RowOption
+                rowAction={() => deleteItem()}
+                title={"delete"}
+                icon={LocalImages.deleteImage}
+              />
         </View>
       </BottomSheet>
       {/* <View style={{ position: "absolute", top: 20, right: 20, zIndex: 100 }}>
