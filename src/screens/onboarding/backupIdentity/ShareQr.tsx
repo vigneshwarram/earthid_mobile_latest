@@ -74,7 +74,41 @@ const AuthBackupIdentity = ({ navigation, route }: IHomeScreenProps) => {
 
     let type = selectedItem?.docType
 
-    if(type === "pdf"){
+    if(selectedItem?.isVc){
+      console.log("neww","This is Vc");
+      const imageName: any = selectedItem?.docName + "." + selectedItem?.docType;
+      const objectKey = imageName; 
+
+      let credData = selectedItem?.verifiableCredential
+
+      const uploadedKey: any = await uploadJSONToS3(
+        bucketName,
+        `images/${objectKey}`,
+        credData,
+        ""
+      );
+     
+      if (uploadedKey) {
+        const objectKeys = `images/${imageName}`;
+        const preSignedURL = await generatePreSignedURL(bucketName, objectKeys);
+  
+  
+        if (preSignedURL) {
+          setPreSignedUrl(preSignedURL);
+        } else {
+  
+  
+          Alert.alert("Error", "There is a technical issue, please try again later.");
+        }
+      } else {
+  
+        Alert.alert("Error", "There is a technical issue, please try again later.");
+      }
+  
+
+    }
+    
+    else if(type === "pdf"){
       console.log("neww","this is pdf type");
       console.log("newPdf",selectedItem?.typePDF);
       const imageName: any = selectedItem?.docName + "." + selectedItem?.docType;
@@ -106,39 +140,6 @@ const AuthBackupIdentity = ({ navigation, route }: IHomeScreenProps) => {
   
         Alert.alert("Error", "There is a technical issue, please try again later.");
       }
-  
-
-    }else if(selectedItem?.isVc){
-      console.log("neww","This is Vc");
-      const imageName: any = selectedItem?.docName + "." + selectedItem?.docType;
-      const objectKey = imageName; 
-
-      let credData = selectedItem?.verifiableCredential
-
-      const uploadedKey: any = await uploadJSONToS3(
-        bucketName,
-        `images/${objectKey}`,
-        credData,
-        ""
-      );
-     
-      if (uploadedKey) {
-        const objectKeys = `images/${imageName}`;
-        const preSignedURL = await generatePreSignedURL(bucketName, objectKeys);
-  
-  
-        if (preSignedURL) {
-          setPreSignedUrl(preSignedURL);
-        } else {
-  
-  
-          Alert.alert("Error", "There is a technical issue, please try again later.");
-        }
-      } else {
-  
-        Alert.alert("Error", "There is a technical issue, please try again later.");
-      }
-
 
 
     }

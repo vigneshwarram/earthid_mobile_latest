@@ -373,6 +373,7 @@ if(mobileNumber.length < 10){
           setLoading(false)
           setCreateVerify(res?.data)
           dispatch(SaveVerifyCred(res.data))
+          AsyncStorage.setItem("vcCred",JSON.stringify(res?.data?.verifiableCredential))
           await AsyncStorage.setItem('apiCalled', 'true');
           var date = dateTime();
           var documentDetails: IDocumentProps = {

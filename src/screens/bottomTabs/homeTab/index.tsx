@@ -81,6 +81,8 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
   //recent activity
   const documentsDetailsList = useAppSelector((state) => state.Documents);
   const recentData = documentsDetailsList?.responseData;
+  const data = documentsDetailsList?.responseData;
+
   const [aState, setAppState] = useState(AppState.currentState);
   useEffect(() => {
     const appStateListener = AppState.addEventListener(
@@ -553,6 +555,115 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
 
   };
 
+
+
+  const _renderItemnew = ({ item }: any) => {
+    return (
+      // <Card
+      //   leftAvatar={LocalImages.documentsImage}
+      //   absoluteCircleInnerImage={LocalImages.upImage}
+      //   //  rightIconSrc={LocalImages.menuImage}
+      //   title={item.name}
+      //   subtitle={`      Uploaded  : ${item.date}`}
+      //   style={{
+      //     ...styles.cardContainer,
+      //     ...{
+      //       avatarContainer: {
+      //         backgroundColor: "rgba(245, 188, 232, 1)",
+      //         width: 62,
+      //         height: 62,
+      //         borderRadius: 20,
+      //         marginTop: 25,
+      //         marginLeft: 10,
+      //         marginRight: 5,
+      //       },
+      //       uploadImageStyle: {
+      //         backgroundColor: "rgba(245, 188, 232, 1)",
+      //         borderRadius: 25,
+      //         borderWidth: 3,
+      //         bordercolor: "#fff",
+      //         borderWidthRadius: 25,
+      //       },
+      //     },
+      //     title: {
+      //       fontSize: 18,
+      //       marginTop: -10,
+      //       fontWeight: "bold",
+      //     },
+      //     subtitle: {
+      //       fontSize: 14,
+      //       marginTop: 5,
+      //     },
+      //   }}
+      // />
+      <TouchableOpacity
+        style={{ marginBottom: 20 }}
+        onPress={() =>
+          navigation.navigate("ViewCredential", { documentDetails: item })
+        }
+      >
+        
+        <View style={{ marginTop: -20}}>
+          <Card
+            titleIcon={item?.isVc ? LocalImages.vcImage : null}
+            leftAvatar={LocalImages.documentsImage}
+            absoluteCircleInnerImage={LocalImages.upImage}
+            rightIconSrc={LocalImages.menuImage}
+          //  rightIconOnPress={() => _rightIconOnPress(item)}
+            title={item?.isVc ?item.name : item?.documentName?.split("(")[1]?.split(")")[0] == "undefined" ? item?.docName : item?.docName}
+            subtitle={`      Uploaded  : ${item.date}`}
+            // timeTitle={
+            //   item.isVc
+            //   ? item.time.substring(0, item.time.length - 3).split(":")[0] >= 24 ?
+            //   item.time.substring(0, item.time.length - 3)+" AM" :
+            //   item.time.substring(0, item.time.length - 3).split(":")[0] >= 12 ?
+            //   item.time.substring(0, item.time.length - 3)+" PM" :
+            //   item.time.substring(0, item.time.length - 3)+" AM"
+            //   : item.time.substring(0, item.time.length - 3).split(":")[0] >= 24 ?
+            //      item.time.substring(0, item.time.length - 3)+" AM" :
+            //      item.time.substring(0, item.time.length - 3).split(":")[0] >= 12 ?
+            //      item.time.substring(0, item.time.length - 3)+" PM" :
+            //      item.time.substring(0, item.time.length - 3)+" AM"
+            // }
+
+            timeTitle={getTime(item)}
+
+            style={{
+              ...styles.cardContainernew,
+              ...{
+                avatarContainer: {
+                  backgroundColor:item?.isVc?'#D7EFFB': getImagesColor(item),
+                  width: 60,
+                  height: 60,
+                  borderRadius: 20,
+                  marginTop: 25,
+                  marginLeft: 10,
+                  marginRight: 5,
+                },
+                uploadImageStyle: {
+                  backgroundColor:item?.isVc?'#D7EFFB': getImagesColor(item),
+                  borderRadius: 25,
+                  borderWidth: 3,
+                  bordercolor: "#fff",
+                  borderWidthRadius: 25,
+                },
+              },
+              title: {
+                fontSize: 18,
+                marginTop: -10,
+                fontWeight: "bold",
+              },
+              subtitle: {
+                fontSize: 14,
+                marginTop: 5,
+              },
+            }}
+          />
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
   return (
     <View style={styles.sectionContainer}>
       <ScrollView
@@ -663,7 +774,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
           <GenericText style={[styles.categoryHeaderText, { fontSize: 13 }]}>
             {SCREENS.HOMESCREEN.documentLabel}
           </GenericText>
-          <FlatList<any>
+          {/* <FlatList<any>
             showsHorizontalScrollIndicator={false}
             // data={
             //   getHistoryReducer && getHistoryReducer?.responseData
@@ -673,7 +784,26 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
             data={getData(recentData)}
             
             renderItem={_renderItemHistory}
-          />
+          /> */}
+
+
+
+                  <FlatList<any>
+                    showsHorizontalScrollIndicator={false}
+                    // data={
+                    //   getHistoryReducer && getHistoryReducer?.responseData
+                    //     ? getHistoryReducer.responseData
+                    //     : []
+                    // }
+                    data={data}
+                    extraData={data}
+                    renderItem={_renderItemnew}
+                    keyExtractor={(item) => item.id}
+                  />
+
+
+
+
           {/* <AnimatedLoader
             isLoaderVisible={getHistoryReducer?.isLoading}
             loadingText="loading"
@@ -706,6 +836,36 @@ const styles = StyleSheet.create({
   },
   spinnerTextStyle: {
     color: "#fff",
+  },
+  cardContainernew: {
+    flex: 1,
+    marginHorizontal: 20,
+    marginVertical: 10,
+    elevation: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 2,
+    alignItems: "center",
+    borderRadius: 20,
+    backgroundColor: Screens.pureWhite,
+    title: {
+      color: Screens.black,
+    },
+    textContainer: {
+      justifyContent: "center",
+      alignItems: "center",
+    },
+
+    avatarImageContainer: {
+      width: 25,
+      height: 30,
+      marginTop: 5,
+    },
+    avatarTextContainer: {
+      fontSize: 13,
+      fontWeight: "500",
+    },
   },
   linearStyle: {
     height: 330,

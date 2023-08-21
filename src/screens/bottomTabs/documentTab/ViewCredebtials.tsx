@@ -354,6 +354,7 @@ const styles = StyleSheet.create({
   bottomLogo: {
     width: 25,
     height: 25,
+    tintColor:'black'
   },
   categoryHeaderText: {
     marginHorizontal: 30,

@@ -61,6 +61,7 @@ const CustomDrawer = (props: any) => {
         await AsyncStorage.removeItem("FaceId");
         await AsyncStorage.removeItem("pageName");
         await AsyncStorage.removeItem("profilePic");
+        await AsyncStorage.removeItem("vcCred");
         props.navigation.dispatch(StackActions.replace("AuthStack"));
       });
     } else if (item.route === "delete") {

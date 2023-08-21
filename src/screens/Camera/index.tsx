@@ -100,6 +100,7 @@ const CameraScreen = (props: any) => {
   const [issuerSchemaName, setissuerSchemaName] = useState([{}]);
   const [issuerSchemaDropDown, setissuerSchemaDropDown] = useState(false);
   const [selectedSchema, setselectedSchema] = useState();
+  const [verifyVcCred, setverifyVcCred] = useState<any>();
   const [loadingforGentSchemaAPI, setloadingforGentSchemaAPI] = useState(false);
   const [value, setValue] = useState(null);
   const [isDocumentModalkyc, setisDocumentModalkyc] = useState(false);
@@ -135,13 +136,22 @@ const CameraScreen = (props: any) => {
 
   console.log("url===>",url)
 
-  const verifyCredDatas : any = useAppSelector((state) => state.saveCred);
 
-  console.log("verifyCredData",verifyCredDatas?.credVerifydata?.verifiableCredential)
-
-  const verifyData = verifyCredDatas?.credVerifydata?.verifiableCredential
+  // const verifyData = verifyCredDatas?.credVerifydata?.verifiableCredential
 
 
+  useEffect(()=>{
+    getVcdata()
+  },[])
+
+  const getVcdata =async () =>{
+
+    const getvcCred : any = await AsyncStorage.getItem("vcCred")
+    const parseData = JSON.parse(getvcCred)
+    console.log("parseData",parseData);
+    setverifyVcCred(parseData)
+
+  }
 
 
 
@@ -305,7 +315,7 @@ const CameraScreen = (props: any) => {
         date: date?.date,
         time: date?.time,
         txId: "data?.result",
-        docType: "pdf",
+        docType: verifyVcCred?.type[1],
         docExt: ".jpg",
         processedDoc: "",
         isVc: true,
@@ -321,7 +331,7 @@ const CameraScreen = (props: any) => {
           processedDoc: "",
           isVc: true,
         }),
-        verifiableCredential:verifyData,
+        verifiableCredential:verifyVcCred,
         documentName: "",
         docName: "",
         base64: undefined
@@ -356,7 +366,7 @@ const CameraScreen = (props: any) => {
         date: date?.date,
         time: date?.time,
         txId: "data?.result",
-        docType: "pdf",
+        docType: verifyVcCred?.type[1],
         docExt: ".jpg",
         processedDoc: "",
         isVc: true,
@@ -372,7 +382,7 @@ const CameraScreen = (props: any) => {
           processedDoc: "",
           isVc: true,
         }),
-        verifiableCredential:verifyData,
+        verifiableCredential:verifyVcCred,
         docName: "",
         base64: undefined
         

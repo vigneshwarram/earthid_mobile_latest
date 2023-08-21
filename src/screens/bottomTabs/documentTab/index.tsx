@@ -327,7 +327,6 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
  navigation.navigate('ShareQr',{selectedItem:selectedItem})
 console.log("selectedItem",selectedItem);
 
-   
   };
 
   const RowOption = ({ icon, title, rowAction }: any) => (
