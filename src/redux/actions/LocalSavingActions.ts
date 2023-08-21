@@ -25,3 +25,13 @@ export const SaveSecurityConfiguration =
       securityData: securityData,
     });
   };
+
+
+  export const SaveVerifyCred =
+  (credVerifydata: any) =>
+  async (dispatch: any): Promise<any> => {
+    dispatch({
+      type: ACTION_TYPES.SAVE_CREDVERIFY,
+      credVerifydata: credVerifydata,
+    });
+  };

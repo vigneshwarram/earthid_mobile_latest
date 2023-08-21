@@ -38,6 +38,8 @@ import { isEarthId } from "../../../utils/PlatFormUtils";
 import Spinner from "react-native-loading-spinner-overlay/lib";
 import { createUserSignaturekey } from "../../../utils/createUserSignaturekey";
 import { createVerifiableCred } from "../../../utils/createVerifiableCred";
+import { SavedCredVerify } from "../../../redux/reducer/saveDataReducer";
+import { SaveVerifyCred } from "../../../redux/actions/LocalSavingActions";
 interface IRegister {
   navigation: any;
 }
@@ -370,6 +372,7 @@ if(mobileNumber.length < 10){
           if(res.data){
           setLoading(false)
           setCreateVerify(res?.data)
+          dispatch(SaveVerifyCred(res.data))
           await AsyncStorage.setItem('apiCalled', 'true');
           var date = dateTime();
           var documentDetails: IDocumentProps = {

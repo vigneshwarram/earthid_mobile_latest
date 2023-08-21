@@ -12,6 +12,7 @@ import {
   createSignatureReducer,
 } from "./reducer/user.reducer";
 import {
+  SavedCredVerify,
   SavedProfilePictures,
   SavedQrData,
   SavedSecurityDatas,
@@ -42,7 +43,8 @@ const rootReducer = combineReducers({
   getHistoryReducer: getHistoryReducer,
   savedPic: SavedProfilePictures,
   security: SavedSecurityDatas,
-  createSignature: createSignatureReducer
+  createSignature: createSignatureReducer,
+  saveCred:SavedCredVerify
 });
 
 const appreducer = (state: any, action: any) => {

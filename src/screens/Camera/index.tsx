@@ -135,6 +135,14 @@ const CameraScreen = (props: any) => {
 
   console.log("url===>",url)
 
+  const verifyCredDatas : any = useAppSelector((state) => state.saveCred);
+
+  console.log("verifyCredData",verifyCredDatas?.credVerifydata?.verifiableCredential)
+
+  const verifyData = verifyCredDatas?.credVerifydata?.verifiableCredential
+
+
+
 
 
   const generateUserSignature = async() => {
@@ -313,6 +321,7 @@ const CameraScreen = (props: any) => {
           processedDoc: "",
           isVc: true,
         }),
+        verifiableCredential:verifyData,
         documentName: "",
         docName: "",
         base64: undefined
@@ -363,6 +372,7 @@ const CameraScreen = (props: any) => {
           processedDoc: "",
           isVc: true,
         }),
+        verifiableCredential:verifyData,
         docName: "",
         base64: undefined
         

@@ -19,6 +19,17 @@ export const SavedProfilePictures = (
       return { ...state };
   }
 };
+export const SavedCredVerify = (
+  state = {},
+  { type, credVerifydata }: any
+) => {
+  switch (type) {
+    case ACTION_TYPES.SAVE_CREDVERIFY:
+      return { ...state, credVerifydata };
+    default:
+      return { ...state };
+  }
+};
 
 export const SavedSecurityDatas = (state = {}, { type, securityData }: any) => {
 
