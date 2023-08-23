@@ -84,6 +84,21 @@ const VerifiDocumentScreen = (props: any) => {
   var base64Icon = `data:image/png;base64,${faceImageData?.base64}`;
   var uploadedDocumentsBase64 = `data:image/png;base64,${uploadedDocuments?.base64}`;
   var name:any=""
+  const [verifyVcCred, setverifyVcCred] = useState<any>();
+
+
+  useEffect(()=>{
+    getVcdata()
+  },[])
+
+  const getVcdata =async () =>{
+
+    const getvcCred : any = await AsyncStorage.getItem("vcCred")
+    const parseData = JSON.parse(getvcCred)
+    console.log("parseData",parseData);
+    setverifyVcCred(parseData)
+
+  }
 
   
   const validateImages = () => {
@@ -100,6 +115,7 @@ const VerifiDocumentScreen = (props: any) => {
       const index = documentsDetailsList?.responseData?.findIndex(obj => obj?.id === selectedItem?.id);
       console.log('index',index)
 if (selectedItem ) {
+  console.log('indexData',"index1")
   setsuccessResponse(true);
 
   const obj = documentsDetailsList?.responseData[index];
@@ -113,11 +129,13 @@ if (selectedItem ) {
     if (item === "documentflow") {
       props.navigation.navigate("RegisterScreen");
     } else {
-      props.navigation.navigate("Documents");
+   //   props.navigation.navigate("Documents");
     }
   }, 2000);
 
 }else{
+  console.log('indexData',"index2")
+
   var date = dateTime();
   const filePath = RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
   var documentDetails: IDocumentProps = {
@@ -151,15 +169,58 @@ if (selectedItem ) {
     if (item === "documentflow") {
       props.navigation.navigate("RegisterScreen");
     } else {
+      generateVc()
       props.navigation.navigate("Documents");
     }
   }, 2000);
-}
-
-     
+}    
     }, 200);
     setLoad(false);
   };
+
+ 
+
+
+function generateVc(){
+  var date = dateTime();
+  var documentDetails: IDocumentProps = {
+    id: `ID_VERIFICATION${Math.random()}${"selectedDocument"}${Math.random()}`,
+    name: "VC - ACK Token",
+    path: "filePath",
+    date: date?.date,
+    time: date?.time,
+    txId: "data?.result",
+    docType: verifyVcCred?.type[1],
+    docExt: ".jpg",
+    processedDoc: "",
+    isVc: true,
+    vc: JSON.stringify({
+      name: "VC - ACK Token",
+      documentName: "VC - ACK Token",
+      path: "filePath",
+      date: date?.date,
+      time: date?.time,
+      txId: "data?.result",
+      docType: "pdf",
+      docExt: ".jpg",
+      processedDoc: "",
+      isVc: true,
+    }),
+    verifiableCredential:verifyVcCred,
+    documentName: "",
+    docName: "",
+    base64: undefined
+   
+  };
+
+  var DocumentList = documentsDetailsList?.responseData
+    ? documentsDetailsList?.responseData
+    : [];
+
+  DocumentList.push(documentDetails);
+  dispatch(saveDocuments(DocumentList));
+}
+
 
   if (getHistoryReducer?.isSuccess) {
     setsuccessResponse(true);

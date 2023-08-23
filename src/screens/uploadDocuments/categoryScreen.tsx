@@ -268,8 +268,12 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
               setIsPrceedForLivenessTest(true);
               return;
             }
-          }
           setIsPrceedForLivenessTest(false);
+          }
+          editDoc ? 
+          setIsPrceedForLivenessTest(false)
+          :
+          setIsPrceedForLivenessTest(true)
         }
       }
     }

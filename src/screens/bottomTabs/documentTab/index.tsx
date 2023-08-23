@@ -324,7 +324,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
 
   const handleUploadImage = async () => {
     setisBottomSheetForSideOptionVisible(false)
- navigation.navigate('ShareQr',{selectedItem:selectedItem})
+  navigation.navigate('ShareQr',{selectedItem:selectedItem})
 console.log("selectedItem",selectedItem);
 
   };

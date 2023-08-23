@@ -123,7 +123,7 @@ const DocumentPreviewScreen = (props: any) => {
           { cancelable: false }
         );
       } else {
-        uploadDoc();
+        uploadDoc("yes");
       }
     });
   };
