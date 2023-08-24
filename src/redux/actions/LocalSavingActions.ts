@@ -35,3 +35,12 @@ export const SaveSecurityConfiguration =
       credVerifydata: credVerifydata,
     });
   };
+
+  export const toggleAction = 
+  (index: {}) =>
+  async (dispatch: any): Promise<any> => {
+    dispatch({
+    type: ACTION_TYPES.SAVE_TOGGLE,
+    index:index
+  });
+};

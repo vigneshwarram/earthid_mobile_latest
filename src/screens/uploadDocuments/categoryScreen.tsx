@@ -230,13 +230,17 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
           }, 2000);
         } else {
           if (editDoc) {
+            console.log("here","here1");
             const index = documentsDetailsList?.responseData?.findIndex(
               (obj) => obj?.id === selectedItem?.id
             );
             if (selectedItem) {
+              console.log("here","here2");
               if (selectedItem?.isVerifyNeeded) {
+                console.log("here","here3");
                 setIsPrceedForLivenessTest(true);
               } else {
+                console.log("here","here4");
                 setsuccessResponse(true);
                 const document: any[0] = categoryList[
                   selectedParentIndex
@@ -259,6 +263,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
                   if (item === "documentflow") {
                     navigation.navigate("RegisterScreen");
                   } else {
+                    setIsPrceedForLivenessTest(false)
                     navigation.navigate("Documents");
                   }
                 }, 2000);
@@ -270,10 +275,15 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
             }
           setIsPrceedForLivenessTest(false);
           }
-          editDoc ? 
-          setIsPrceedForLivenessTest(false)
-          :
-          setIsPrceedForLivenessTest(true)
+
+
+          else{
+            console.log("here","here5");
+            
+            setIsPrceedForLivenessTest(true)
+          }
+         // setIsPrceedForLivenessTest(true)
+         
         }
       }
     }

@@ -31,6 +31,7 @@ import { savingProfilePictures } from "../../redux/actions/LocalSavingActions";
 import { RNCamera } from "react-native-camera";
 import GenericText from "../../components/Text";
 import * as ImagePicker from "react-native-image-picker";
+import { useSelector } from "react-redux";
 interface IHomeScreenProps {
   navigation?: any;
 }
@@ -67,6 +68,9 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
       }, 5000);
     });
   };
+
+  const sele = useAppSelector(state=>state.editProfile)
+  
 
   const {
     value: fullName,

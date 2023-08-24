@@ -153,7 +153,7 @@ if (selectedItem ) {
     categoryType: selectedDocument,
     docName:docname,
     isVerifyNeeded:true,
-    isLivenessImage:"livenessImage"
+    isLivenessImage:"livenessImage",
   };
 
   var DocumentList = documentsDetailsList?.responseData

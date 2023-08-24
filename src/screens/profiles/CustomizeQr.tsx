@@ -12,7 +12,7 @@ import GenericText from "../../components/Text";
 import { LocalImages } from "../../constants/imageUrlConstants";
 import { SCREENS } from "../../constants/Labels";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
-import { savingCustomQrData } from "../../redux/actions/LocalSavingActions";
+import { savingCustomQrData, toggleAction, updateItemCheckedStatus } from "../../redux/actions/LocalSavingActions";
 import { Screens } from "../../themes";
 import { useDrawerStatus } from "@react-navigation/drawer";
 
@@ -23,6 +23,13 @@ interface IDocumentScreenProps {
 const CustomizeQr = ({ navigation }: IDocumentScreenProps) => {
   const qrListData = useAppSelector((state :any) => state.saveData);
   const userDetails = useAppSelector((state) => state.account);
+  const isToggle :any = useAppSelector(state => state.isToggleOn);
+
+  console.log("isToggleData",isToggle?.index?.CHECKED);
+
+  const toggleValue :boolean = isToggle?.index?.CHECKED
+  
+
   var ctList = SCREENS.HOMESCREEN.CategoryCustomiseList;
   if (qrListData && qrListData?.qrListData && qrListData?.qrListData) {
     ctList = qrListData?.qrListData;
@@ -49,6 +56,7 @@ const CustomizeQr = ({ navigation }: IDocumentScreenProps) => {
   const [categoriCustomize, setcategoriCustomize] = useState(ctList);
   const [isBottomSheetForFilterVisible, setisBottomSheetForFilterVisible] =
     useState<boolean>(false);
+    const[data,setData]= useState([])
 
   const _rightIconOnPress = () => {
     setisBottomSheetForSideOptionVisible(true);
@@ -58,12 +66,15 @@ const CustomizeQr = ({ navigation }: IDocumentScreenProps) => {
     categoriCustomize.map((item, index) => {
       if (index === itemIndex) {
         item.CHECKED = !item.CHECKED;
+        dispatch(toggleAction(item))
       }
+     
 
       return item;
     });
     setcategoriCustomize([...categoriCustomize]);
     dispatch(savingCustomQrData([...categoriCustomize]));
+   
   };
 
   const _renderItem = ({ item, index }: any) => {
