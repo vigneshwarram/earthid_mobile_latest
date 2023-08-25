@@ -287,6 +287,7 @@ export const SCREENS = {
     SETTING: "setting",
     LANGUAGE: "language",
     ABOUT_US: "aboutus",
+    CREDITS: "credits",
     TERM_CONDITION: "termcondition",
     BACKUP: "backupidentity",
     DELETE_IDENTITY: "deleteyouridentity",

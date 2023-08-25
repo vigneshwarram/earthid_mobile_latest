@@ -47,6 +47,13 @@ export const ABOUT_ROUTES = {
     SCREEN: "about",
     COLOR: "#FFAFAF",
   },
+  CREDITS: {
+    URI: LocalImages.credit,
+    CARD: "AcceptableUsePolicy",
+    TITLE: SCREENS.DRAWERMENUTITLES.CREDITS,
+    SCREEN: "CreditScreen",
+    COLOR: "#e6e6fa",
+  },
   TERMS: {
     URI: LocalImages.termsImage,
     CARD: "AcceptableUsePolicy",

@@ -33,6 +33,7 @@ import OldPincode from "../screens/onboarding/security/passcode/UpdatePincode/Ol
 import UpdateConfirmPincode from "../screens/onboarding/security/passcode/UpdatePincode/UpdateConfirmPincode";
 import UpdateNewPin from "../screens/onboarding/security/passcode/UpdatePincode/UpdateNewPin";
 import UpdateTouchId from "../screens/onboarding/security/UpdateTouchId";
+import CreditScreen from "../screens/creditscreen/CreditScreen";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -65,6 +66,7 @@ const dashBoardStack = {
   UpdateConfirmPincode: UpdateConfirmPincode,
   UpdateNewPin: UpdateNewPin,
   UpdateTouchId: UpdateTouchId,
+  CreditScreen:CreditScreen
 };
 
 const tabs = {

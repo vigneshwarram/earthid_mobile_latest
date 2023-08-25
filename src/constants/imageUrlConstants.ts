@@ -60,6 +60,11 @@ export const LocalImages = {
   touchidpic: require("../../resources/images/touchidpic.png"),
   nexticon: require("../../resources/images/nexticon.png"),
   backicon: require("../../resources/images/backicon.png"),
+  credit: require("../../resources/images/credit.png"),
+  earth:require("../../resources/images/earth.jpeg"),
+  flexin:require("../../resources/images/flexin.jpeg"),
+  hedera:require("../../resources/images/hedera.jpeg"),
+ 
 
   //categories
   CATEGORIES: {
