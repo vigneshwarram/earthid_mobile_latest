@@ -25,7 +25,7 @@ import { nameValidator } from "../../utils/inputValidations";
 import TextInput from "../../components/TextInput";
 import Loader from "../../components/Loader";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
-import { byPassUserDetailsRedux } from "../../redux/actions/authenticationAction";
+import { byPassUserDetailsRedux, saveProfileDetails } from "../../redux/actions/authenticationAction";
 import { useTheme } from "@react-navigation/native";
 import { savingProfilePictures } from "../../redux/actions/LocalSavingActions";
 import { RNCamera } from "react-native-camera";
@@ -41,9 +41,10 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
     useState<boolean>(false);
   const disPatch = useAppDispatch();
   const profilePicture = useAppSelector((state) => state.savedPic);
+  const profileDetails = useAppSelector((state) => state.SaveProfile?.profileDetails);
   const [isCamerVisible, setIsCameraVisible] = useState(false);
   const camRef: any = useRef();
-  console.log("profilePicture", profilePicture);
+  console.log("profileDetails+++++", profileDetails);
   const { colors } = useTheme();
   const [isLoading, setIsLoading] = useState(false);
   const phoneInput: any = useRef();
@@ -52,6 +53,7 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
   const [Response, setResponse] = useState<any>("");
   const [focus, setFocus] = useState<any>("");
   const [nameFocus, setNameFocus] = useState<boolean>("");
+  const [medialList, setmedialList] = useState(profileDetails);
   const _letfIconPress = () => {
     navigation.goBack();
   };
@@ -60,12 +62,15 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
       ...userDetails.responseData,
       ...{ username: fullName },
     };
-    disPatch(byPassUserDetailsRedux(overallResponseData)).then(() => {
-      setIsLoading(true);
-      setTimeout(() => {
-        setIsLoading(false);
-        navigation.goBack();
-      }, 5000);
+    console.log('medialList====>',medialList)
+    disPatch(saveProfileDetails(medialList)).then(() => {
+      disPatch(byPassUserDetailsRedux(overallResponseData)).then(() => {
+        setIsLoading(true);
+        setTimeout(() => {
+          setIsLoading(false);
+          navigation.goBack();
+        }, 5000);
+      });
     });
   };
 
@@ -96,24 +101,33 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
     inputBlurHandler: dateOfBirthlurHandler,
   } = useFormInput("22/02/1995", true, nameValidator);
 
-  const socialMedialList = values(SCREENS.HOMESCREEN.SocialMedialList).map(
-    ({ TITLE: title, URI: uri, DOMAIN: domain }: any) => ({
-      title,
-      uri,
-      domain,
-    })
-  );
-  const [medialList, setmedialList] = useState(socialMedialList);
+ 
+
+
+  useEffect(()=>{
+    console.log('profileDetails',profileDetails)
+    if(Object.keys(profileDetails).length ===0){
+      setmedialList(SCREENS.HOMESCREEN.SocialMedialList)
+    }
+    else{
+      setmedialList([...profileDetails])
+    }
+
+  },[profileDetails])
+
+
 
   const onChangeHandler = (text: string, indexofItem: number) => {
-    const mediListLocal = socialMedialList.map((item, index) => {
+    const mediListLocal = medialList.map((item, index) => {
       if (indexofItem === index) {
-        item.domain = text;
+        item.DOMAIN = text;
       }
 
       return item;
     });
+
     setmedialList([...mediListLocal]);
+
   };
   const openCamera = async () => {
     const options = { quality: 0.1, base64: true };
@@ -192,7 +206,7 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
     return (
       <View>
         <GenericText style={[styles.categoryHeaderText, { fontSize: 13 }]}>
-          {item.title}
+          {item.TITLE}
         </GenericText>
 
         <TextInput
@@ -214,8 +228,8 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
               tintColor: Screens.grayShadeColor,
             },
           }}
-          leftIcon={item.uri}
-          value={item.domain}
+          leftIcon={item.URI}
+          value={item.DOMAIN}
           onChangeText={(text) => onChangeHandler(text, index)}
           onFocus={() => setFocus(index) }
           onBlur={()=>setFocus(false)}
@@ -244,12 +258,12 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
     </View>
   );
 
-  const _keyExtractor = ({ title }: any) => title.toString();
+  const _keyExtractor = ({ TITLE }: any) => TITLE.toString();
 
   const _avatarClick = () => {
     setisCameraOptionVisible(true);
   };
-
+console.log('medialList=============>,',medialList)
   return (
     <View style={styles.sectionContainer}>
       {isCamerVisible ? (

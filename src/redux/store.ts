@@ -10,14 +10,15 @@ import {
   schemaReducer,
   getHistoryReducer,
   createSignatureReducer,
+  SavedProfilePictures,
+  SaveProfileDetails
 } from "./reducer/user.reducer";
 import {
   EditProfileReducer,
   SavedCredVerify,
-  SavedProfilePictures,
   SavedQrData,
   SavedSecurityDatas,
-  toggleReducer,
+  toggleReducer
 } from "./reducer/saveDataReducer";
 
 const persistConfig = {
@@ -33,7 +34,8 @@ const persistConfig = {
     "savedPic",
     "security",
     "isToggleOn",
-    "editProfile"
+    "editProfile",
+    "SaveProfile"
   ],
 };
 const rootReducer = combineReducers({
@@ -50,7 +52,8 @@ const rootReducer = combineReducers({
   createSignature: createSignatureReducer,
   saveCred:SavedCredVerify,
   isToggleOn:toggleReducer,
-  editProfile:EditProfileReducer
+  editProfile:EditProfileReducer,
+  SaveProfile:SaveProfileDetails
 });
 
 const appreducer = (state: any, action: any) => {

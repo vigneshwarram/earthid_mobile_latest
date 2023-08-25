@@ -502,8 +502,6 @@ s3.deleteObject(params, function(err, data) {
     // var data : any =selectedItem
     // await AsyncStorage.setItem("userDetails", data);
     // await AsyncStorage.setItem("editDoc", "editDoc");
-
-    console.log("iteName==>", selectedItem);
   }
 
   const onPressNavigateTo = () => {
@@ -513,8 +511,11 @@ s3.deleteObject(params, function(err, data) {
 
   const getFilteredData = () => {
     console.log("getFilteredData");
-    let datas = documentsDetailsList?.responseData?.sort(compareTime);
-    let data = datas?.reverse();
+     let data =  documentsDetailsList?.responseData.sort((a: { date: any; }, b: { date: any; }) => a.date - b.date);
+    //  let data = documentsDetailsList?.responseData?.sort(compareTime);
+
+   // 
+   
 
     if (categoryTypes !== "") {
       var alter = function (item: any) {

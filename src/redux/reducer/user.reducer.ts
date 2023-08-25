@@ -3,6 +3,26 @@ import { ACTION_TYPES } from "../actions/types";
 const initialState = {
   isLoading: false,
 };
+export const SavedProfilePictures = (
+  state = {},
+  { type, profileData }: any
+) => {
+  switch (type) {
+    case ACTION_TYPES.SAVE_PROFILE_PIC:
+      return { ...state, profileData };
+    default:
+      return { ...state };
+  }
+};
+
+export const SaveProfileDetails = (state = {}, { type, payload }: any) => {
+  switch (type) {
+    case ACTION_TYPES.PROFILEDETAILS:
+      return { ...state, ...payload };
+    default:
+      return state;
+  }
+}
 
 export const userReducer = (state = initialState, { type, payload }: any) => {
   switch (type) {

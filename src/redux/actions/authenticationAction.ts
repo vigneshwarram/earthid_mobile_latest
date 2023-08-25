@@ -15,6 +15,7 @@ import { IUserSchemaRequest } from "../../typings/AccountCreation/IUserSchema";
 import { generateIssuerDid, generateKeyPair, generateUserDid, newUserDid } from "../../utils/earthid_account";
 import { ICreateUserSignature } from "../../typings/AccountCreation/ICreateUserSignature";
 import { createUserSpecificBucket } from "../../utils/awsSetup";
+import { SCREENS } from "../../constants/Labels";
 const {
   ACCOUNT: {
     CREATE_ACCOUNT: createAccountUrl,
@@ -304,6 +305,19 @@ export const byPassUserDetailsRedux =
       },
     });
   };
+
+
+export const saveProfileDetails =
+(profileDetails=SCREENS.HOMESCREEN.SocialMedialList) =>
+async (dispatch: any): Promise<any> => {
+  dispatch({
+    type: ACTION_TYPES.PROFILEDETAILS,
+    payload: {
+      isLoading: false,
+      profileDetails,
+    },
+  });
+};
 
 export const saveDocuments =
   (documentsDetails: any) =>
