@@ -185,25 +185,44 @@ const CameraScreen = (props: any) => {
 
 
   const _handleBarCodeRead = (barCodeData: any) => {
-    let serviceData = JSON.parse(barCodeData.data);
-    console.log("barcodedata", serviceData);
-    if (!serviceProviderLoading) {
-      setbarCodeData(serviceData);
 
-      if (serviceData.requestType === "login") {
-        serviceProviderApiCall(serviceData);
-      }
-      if (serviceData.requestType === "generateCredentials") {
-        serviceProviderApiCall(serviceData);
-      }
-      if (serviceData.requestType === "document") {
-        serviceProviderApiCall(serviceData);
-      }
-      if (serviceData.requestType === "shareCredentials") {
-        serviceProviderApiCall(serviceData);
-      }
+    console.log("barcodeDetails",barCodeData);
+    
+
+    if(barCodeData?.data === undefined) {
+      Alert.alert("This is not the type of QR we expecting")
     }
-    setIsCamerVisible(false);
+    else{
+      try {
+        let serviceData = JSON.parse(barCodeData.data);
+        console.log("barcodedata", serviceData);
+        if (!serviceProviderLoading) {
+          setbarCodeData(serviceData);
+    
+          if (serviceData.requestType === "login") {
+            serviceProviderApiCall(serviceData);
+          }
+          if (serviceData.requestType === "generateCredentials") {
+            serviceProviderApiCall(serviceData);
+          }
+          if (serviceData.requestType === "document") {
+            serviceProviderApiCall(serviceData);
+          }
+          if (serviceData.requestType === "shareCredentials") {
+            serviceProviderApiCall(serviceData);
+          }
+        }
+        setIsCamerVisible(false);
+    } catch (error) {
+      Alert.alert("This is not the type of QR we expecting")
+      props.navigation.goBack()
+      console.error("JSON Parse Error:", error);
+       
+    }
+
+
+    
+  }
   };
   useEffect(() => {
     const selectedCheckBoxs = documentsDetailsList?.responseData?.map(
