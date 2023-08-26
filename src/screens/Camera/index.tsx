@@ -176,14 +176,14 @@ const CameraScreen = (props: any) => {
 
   const _handleBarCodeRead = (barCodeData: any) => {
     console.log("barcodeDetails", barcodeScanned);
-    if (barcodeScanned) {
-      barcodeScanned=false
+  
       if (barCodeData?.data === undefined) {
+        setIsCamerVisible(false);
         Alert.alert(
           //This is title
          "Invalid QR Code",
            //This is body text
-         "his is not the type of QR we expecting",
+         "This is not the type of QR we expecting",
          [
            {text: 'Go Back', onPress: () => getBack() },
           
@@ -212,11 +212,12 @@ const CameraScreen = (props: any) => {
           }
           setIsCamerVisible(false);
         } catch (error) {
+          setIsCamerVisible(false);
           Alert.alert(
             //This is title
            "Invalid QR Code",
              //This is body text
-           "his is not the type of QR we expecting",
+           "This is not the type of QR we expecting",
            [
              {text: 'Go Back', onPress: () => getBack() },
             
@@ -225,11 +226,12 @@ const CameraScreen = (props: any) => {
          );
        }
         }
-      }
+      
     }
 
   
     const getBack =()=>{
+      setIsCamerVisible(true);
       props.navigation.goBack(null)
     }
 
