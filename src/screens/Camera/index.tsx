@@ -11,7 +11,6 @@ import {
   AsyncStorage,
   ImageEditor,
   ImageStore,
-  
 } from "react-native";
 import { RNCamera } from "react-native-camera";
 import Button from "../../components/Button";
@@ -35,21 +34,18 @@ import {
   newssiApiKey,
 } from "../../utils/earthid_account";
 import QrScannerMaskedWidget from "../Camera/QrScannerMaskedWidget";
-import { createUserSignature, saveDocuments } from "../../redux/actions/authenticationAction";
+import {
+  createUserSignature,
+  saveDocuments,
+} from "../../redux/actions/authenticationAction";
 import { IDocumentProps } from "../uploadDocuments/VerifiDocumentScreen";
 import GenericText from "../../components/Text";
 import Loader from "../../components/Loader";
 import { isEarthId } from "../../utils/PlatFormUtils";
 import { dateTime } from "../../utils/encryption";
 import { ICreateUserSignature } from "../../typings/AccountCreation/ICreateUserSignature";
-import RNFetchBlob from 'rn-fetch-blob';
+import RNFetchBlob from "rn-fetch-blob";
 import { newpostCall } from "../../utils/service";
-
-
-
-
-
-
 
 const data = [
   { label: " 1", value: "1" },
@@ -118,112 +114,126 @@ const CameraScreen = (props: any) => {
 
   const [createSignatureKey, setCreateSignatureKey] = useState();
 
+  const issurDid = keys?.responseData?.issuerDid;
+  const UserDid = keys?.responseData?.newUserDid;
+  const privateKey = keys?.responseData?.generateKeyPair?.privateKey;
 
-  const issurDid = keys?.responseData?.issuerDid
-  const UserDid  = keys?.responseData?.newUserDid  
-  const privateKey = keys?.responseData?.generateKeyPair?.privateKey
+  console.log("issuerDid", keys?.responseData);
+  console.log("issuerDid", keys?.responseData?.issuerDid);
+  console.log("UserDid", keys?.responseData?.newUserDid);
+  console.log("privatekey", keys?.responseData?.generateKeyPair?.privateKey);
+  console.log("createSignatureKey", createSignatureKey);
+  var barcodeScanned = true;
+  let url: any = `https://ssi-test.myearth.id/api/user/sign?issuerDID=${issurDid}`;
+  let key = privateKey;
+  var base64Pic = documentsDetailsList?.responseData
+    ? documentsDetailsList?.responseData[0]?.base64
+    : null;
+  console.log("baseee", base64Pic);
 
-  console.log("issuerDid",keys?.responseData)
-  console.log("issuerDid",keys?.responseData?.issuerDid)
-  console.log("UserDid",keys?.responseData?.newUserDid)
-  console.log("privatekey",keys?.responseData?.generateKeyPair?.privateKey)
-  console.log("createSignatureKey",createSignatureKey)
-
-  let url : any  = `https://ssi-test.myearth.id/api/user/sign?issuerDID=${issurDid}`
-  let key = privateKey
-  var base64Pic = documentsDetailsList?.responseData ? documentsDetailsList?.responseData[0]?.base64 : null
-  console.log("baseee",base64Pic)
-
-  console.log("url===>",url)
-
+  console.log("url===>", url);
 
   // const verifyData = verifyCredDatas?.credVerifydata?.verifiableCredential
 
+  useEffect(() => {
+    getVcdata();
+  }, []);
 
-  useEffect(()=>{
-    getVcdata()
-  },[])
+  const getVcdata = async () => {
+    const getvcCred: any = await AsyncStorage.getItem("vcCred");
+    const parseData = JSON.parse(getvcCred);
+    console.log("parseData", parseData);
+    setverifyVcCred(parseData);
+  };
 
-  const getVcdata =async () =>{
+  const generateUserSignature = async () => {
+    const data = {
+      payload: {
+        credentialSubject: {
+          id: UserDid,
+        },
+      },
+    };
+    const headersToSend = {
+      "Content-Type": "application/json",
+      privateKey: privateKey,
+      "x-api-key": newssiApiKey,
+    };
 
-    const getvcCred : any = await AsyncStorage.getItem("vcCred")
-    const parseData = JSON.parse(getvcCred)
-    console.log("parseData",parseData);
-    setverifyVcCred(parseData)
-
-  }
-
-
-
-  const generateUserSignature = async() => {
-      const data = {
-        payload: {
-          credentialSubject: {
-            id:UserDid
-          }
-        }
-      };
-      const headersToSend = {
-        'Content-Type': 'application/json',
-        "privateKey":privateKey,
-        "x-api-key": newssiApiKey
-      };
-
-  axios.post(url, data, { headers: headersToSend })
-  .then(async (response) => {
-    // Handle the API response
-    console.log('Response==>', response.data);
-    let data = await response.data.Signature
-    setCreateSignatureKey(data)
-  })
-  .catch(error => {
-    // Handle any errors
-    console.error('Error:', error);
-  });
-
-  }
-
+    axios
+      .post(url, data, { headers: headersToSend })
+      .then(async (response) => {
+        // Handle the API response
+        console.log("Response==>", response.data);
+        let data = await response.data.Signature;
+        setCreateSignatureKey(data);
+      })
+      .catch((error) => {
+        // Handle any errors
+        console.error("Error:", error);
+      });
+  };
 
   const _handleBarCodeRead = (barCodeData: any) => {
-
-    console.log("barcodeDetails",barCodeData);
-    
-
-    if(barCodeData?.data === undefined) {
-      Alert.alert("This is not the type of QR we expecting")
-    }
-    else{
-      try {
-        let serviceData = JSON.parse(barCodeData.data);
-        console.log("barcodedata", serviceData);
-        if (!serviceProviderLoading) {
-          setbarCodeData(serviceData);
-    
-          if (serviceData.requestType === "login") {
-            serviceProviderApiCall(serviceData);
+    console.log("barcodeDetails", barcodeScanned);
+    if (barcodeScanned) {
+      barcodeScanned=false
+      if (barCodeData?.data === undefined) {
+        Alert.alert(
+          //This is title
+         "Invalid QR Code",
+           //This is body text
+         "his is not the type of QR we expecting",
+         [
+           {text: 'Go Back', onPress: () => getBack() },
+          
+         ],
+         //on clicking out side, Alert will not dismiss
+       );
+      } else {
+        try {
+          let serviceData = JSON.parse(barCodeData.data);
+          console.log("barcodedata", serviceData);
+          if (!serviceProviderLoading) {
+            setbarCodeData(serviceData);
+  
+            if (serviceData.requestType === "login") {
+              serviceProviderApiCall(serviceData);
+            }
+            if (serviceData.requestType === "generateCredentials") {
+              serviceProviderApiCall(serviceData);
+            }
+            if (serviceData.requestType === "document") {
+              serviceProviderApiCall(serviceData);
+            }
+            if (serviceData.requestType === "shareCredentials") {
+              serviceProviderApiCall(serviceData);
+            }
           }
-          if (serviceData.requestType === "generateCredentials") {
-            serviceProviderApiCall(serviceData);
-          }
-          if (serviceData.requestType === "document") {
-            serviceProviderApiCall(serviceData);
-          }
-          if (serviceData.requestType === "shareCredentials") {
-            serviceProviderApiCall(serviceData);
-          }
+          setIsCamerVisible(false);
+        } catch (error) {
+          Alert.alert(
+            //This is title
+           "Invalid QR Code",
+             //This is body text
+           "his is not the type of QR we expecting",
+           [
+             {text: 'Go Back', onPress: () => getBack() },
+            
+           ],
+           //on clicking out side, Alert will not dismiss
+         );
+       }
         }
-        setIsCamerVisible(false);
-    } catch (error) {
-      Alert.alert("This is not the type of QR we expecting")
-      props.navigation.goBack()
-      console.error("JSON Parse Error:", error);
-       
+      }
+    }
+
+  
+    const getBack =()=>{
+      props.navigation.goBack(null)
     }
 
 
-    
-  }
-  };
   useEffect(() => {
     const selectedCheckBoxs = documentsDetailsList?.responseData?.map(
       (item: { selectedForCheckBox: boolean }, index: any) => {
@@ -266,7 +276,7 @@ const CameraScreen = (props: any) => {
       setisDocumentModalkyc(false);
       if (barCodeDataDetails?.requestType === "login") {
         setIsCamerVisible(true);
-        generateUserSignature()
+        generateUserSignature();
         Alert.alert("Login Successfully");
       }
       if (barCodeDataDetails?.requestType === "generateCredentials") {
@@ -304,27 +314,19 @@ const CameraScreen = (props: any) => {
     let datas = [];
     datas = documentsDetailsList?.responseData;
     if (barCodeDataDetails?.requestType === "shareCredentials") {
-      datas = datas?.filter((item: { isVc: any; }) => item.isVc);
+      datas = datas?.filter((item: { isVc: any }) => item.isVc);
       return datas;
     }
     return datas;
   };
 
-
-  useEffect(()=>{
-
-    
-  },[])
-
-
-
-  
+  useEffect(() => {}, []);
 
   const createVerifiableCredentials = async () => {
-    generateUserSignature()
+    generateUserSignature();
     getData();
     setloadingforGentSchemaAPI(true);
-  
+
     if (barCodeDataDetails?.requestType === "document") {
       var date = dateTime();
       var documentDetails: IDocumentProps = {
@@ -350,11 +352,10 @@ const CameraScreen = (props: any) => {
           processedDoc: "",
           isVc: true,
         }),
-        verifiableCredential:verifyVcCred,
+        verifiableCredential: verifyVcCred,
         documentName: "",
         docName: "",
-        base64: undefined
-       
+        base64: undefined,
       };
 
       var DocumentList = documentsDetailsList?.responseData
@@ -368,14 +369,14 @@ const CameraScreen = (props: any) => {
       setTimeout(() => {
         setloadingforGentSchemaAPI(false);
         setissuerSchemaDropDown(false);
-    //    Alert.alert("KYC token Saved successfully");
+        //    Alert.alert("KYC token Saved successfully");
         Alert.alert("ACK token Saved successfully");
         props.navigation.navigate("Documents");
       }, 3000);
     } else if (barCodeDataDetails.requestType === "shareCredentials") {
       // getData();
     } else {
-      console.log("thiss","this is log")
+      console.log("thiss", "this is log");
       var date = dateTime();
       var documentDetails: IDocumentProps = {
         id: `ID_VERIFICATION${Math.random()}${"selectedDocument"}${Math.random()}`,
@@ -401,10 +402,9 @@ const CameraScreen = (props: any) => {
           processedDoc: "",
           isVc: true,
         }),
-        verifiableCredential:verifyVcCred,
+        verifiableCredential: verifyVcCred,
         docName: "",
-        base64: undefined
-        
+        base64: undefined,
       };
 
       var DocumentList = documentsDetailsList?.responseData
@@ -471,7 +471,7 @@ const CameraScreen = (props: any) => {
     if (barCodeDataDetails) {
       let data;
       if (barCodeDataDetails?.requestType === "login") {
-        console.log("type===>","login")
+        console.log("type===>", "login");
         data = {
           sessionKey: barCodeDataDetails?.sessionKey,
           encrypted_object: {
@@ -480,26 +480,26 @@ const CameraScreen = (props: any) => {
             userName: userDetails?.responseData?.username,
             userEmail: userDetails?.responseData?.email,
             userMobileNo: userDetails?.responseData?.phone,
-            publicKey:keys?.responseData?.result?.publicKey,
-            userDid:keys?.responseData?.newUserDid 
-          },         
+            publicKey: keys?.responseData?.result?.publicKey,
+            userDid: keys?.responseData?.newUserDid,
+          },
         };
       } else if (barCodeDataDetails?.requestType === "generateCredentials") {
-        console.log("type===>","generateCredentials")
+        console.log("type===>", "generateCredentials");
         data = {
           sessionKey: barCodeDataDetails?.sessionKey,
           encrypted_object: {
             earthId: userDetails?.responseData?.earthId,
             pressed: false,
-            publicKey:keys?.responseData?.result?.publicKey,
-            userDid:keys?.responseData?.newUserDid ,
-            signature:createSignatureKey,
-            base64:base64Pic,
-            docName :documentsDetailsList?.responseData[0]?.docName,
+            publicKey: keys?.responseData?.result?.publicKey,
+            userDid: keys?.responseData?.newUserDid,
+            signature: createSignatureKey,
+            base64: base64Pic,
+            docName: documentsDetailsList?.responseData[0]?.docName,
           },
         };
       } else if (barCodeDataDetails?.requestType === "document") {
-        console.log("type===>","document")
+        console.log("type===>", "document");
         data = {
           sessionKey: barCodeDataDetails?.sessionKey,
           encrypted_object: {
@@ -517,16 +517,15 @@ const CameraScreen = (props: any) => {
             reqNo: barCodeDataDetails?.reqNo,
             kycToken:
               "6hrFDATxrG9w14QY9wwnmVhLE0Wg6LIvwOwUaxz761m1JfRp4rs8Mzozk5xhSkw0_MQz6bpcJnrFUDwp5lPPFC157dHxbkKlDiQ9XY3ZIP8zAGCsS8ruN2uKjIaIargX",
-              publicKey:keys?.responseData?.result?.publicKey,
-              userDid:keys?.responseData?.newUserDid ,
-              docName :documentsDetailsList?.responseData[0]?.docName,
-              signature:createSignatureKey,
-              base64:base64Pic,
-           
+            publicKey: keys?.responseData?.result?.publicKey,
+            userDid: keys?.responseData?.newUserDid,
+            docName: documentsDetailsList?.responseData[0]?.docName,
+            signature: createSignatureKey,
+            base64: base64Pic,
           },
         };
       } else if (barCodeDataDetails.requestType === "shareCredentials") {
-        console.log("type===>","shareCredentials")
+        console.log("type===>", "shareCredentials");
         data = {
           sessionKey: barCodeDataDetails?.sessionKey,
           encrypted_object: {
@@ -542,15 +541,15 @@ const CameraScreen = (props: any) => {
             //documents: documentsDetailsList?.responseData,
             requestType: barCodeDataDetails?.requestType,
             reqNo: barCodeDataDetails?.reqNo,
-            signature:createSignatureKey,
-            base64:base64Pic,
-            docName :documentsDetailsList?.responseData[0]?.docName,
+            signature: createSignatureKey,
+            base64: base64Pic,
+            docName: documentsDetailsList?.responseData[0]?.docName,
             kycToken:
               "6hrFDATxrG9w14QY9wwnmVhLE0Wg6LIvwOwUaxz761m1JfRp4rs8Mzozk5xhSkw0_MQz6bpcJnrFUDwp5lPPFC157dHxbkKlDiQ9XY3ZIP8zAGCsS8ruN2uKjIaIargX",
           },
         };
       }
-      console.log("getSignature",data)
+      console.log("getSignature", data);
       sendDatatoServiceProvider(QrcodeApis, data, "POST");
     }
   };
@@ -571,9 +570,6 @@ const CameraScreen = (props: any) => {
             source={LocalImages.scanbarImage}
           ></Image>
         </TouchableOpacity>
-
-
-
       </View>
       {isCameraVisible && (
         <RNCamera
@@ -581,7 +577,7 @@ const CameraScreen = (props: any) => {
           androidCameraPermissionOptions={null}
           type={RNCamera.Constants.Type.back}
           captureAudio={false}
-          onBarCodeRead={(data) => _handleBarCodeRead(data)}
+          onBarCodeRead={(data) =>barcodeScanned && _handleBarCodeRead(data)}
         >
           <QrScannerMaskedWidget />
         </RNCamera>
@@ -724,7 +720,13 @@ const CameraScreen = (props: any) => {
                   getDropDownList()?.map(
                     (
                       item: {
-                        docName: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null | undefined;
+                        docName:
+                          | boolean
+                          | React.ReactChild
+                          | React.ReactFragment
+                          | React.ReactPortal
+                          | null
+                          | undefined;
                         id: any;
                         name:
                           | boolean
@@ -736,7 +738,7 @@ const CameraScreen = (props: any) => {
                       },
                       index: any
                     ) => {
-                      console.log('item',item)
+                      console.log("item", item);
                       return (
                         <View
                           style={{ flexDirection: "row", marginVertical: 10 }}

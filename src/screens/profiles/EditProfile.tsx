@@ -106,11 +106,14 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
 
   useEffect(()=>{
     console.log('profileDetails',profileDetails)
-    if(Object.keys(profileDetails).length ===0){
-      setmedialList(SCREENS.HOMESCREEN.SocialMedialList)
+    if(profileDetails){
+      if(Object.keys(profileDetails).length ===0){
+        setmedialList(SCREENS.HOMESCREEN.SocialMedialList)
+      }
+     
     }
     else{
-      setmedialList([...profileDetails])
+      setmedialList(SCREENS.HOMESCREEN.SocialMedialList)
     }
 
   },[profileDetails])

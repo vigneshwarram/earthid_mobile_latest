@@ -308,7 +308,7 @@ export const byPassUserDetailsRedux =
 
 
 export const saveProfileDetails =
-(profileDetails=SCREENS.HOMESCREEN.SocialMedialList) =>
+(profileDetails: any) =>
 async (dispatch: any): Promise<any> => {
   dispatch({
     type: ACTION_TYPES.PROFILEDETAILS,
