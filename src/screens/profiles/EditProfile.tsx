@@ -61,10 +61,10 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
       ...userDetails.responseData,
       ...{ username: fullName },
     };
-    const userNameDetails = medialList[0]
-    userNameDetails.VALUE = fullName
-    console.log('medialList====>',[...medialList,...[userNameDetails]])
-    disPatch(saveProfileDetails([...medialList,...[userNameDetails]])).then(() => {
+    const userNameDetails =medialList[0]
+    userNameDetails.VALUE =fullName
+    replaceObjectByName(medialList,'username',userNameDetails)
+    disPatch(saveProfileDetails(medialList)).then(() => {
       disPatch(byPassUserDetailsRedux(overallResponseData)).then(() => {
         setIsLoading(true);
         setTimeout(() => {
@@ -74,7 +74,15 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
       });
     });
   };
-
+// Function to replace an object by name
+function replaceObjectByName(array, nameToFind, replacementObject) {
+  for (let i = 0; i < array.length; i++) {
+    if (array[i].TITLE === nameToFind) {
+      array[i] = replacementObject;
+      break; // Stop looping once the object is replaced
+    }
+  }
+}
   const sele = useAppSelector(state=>state.editProfile)
   
 
