@@ -176,7 +176,7 @@ const CameraScreen = (props: any) => {
   };
 
   const _handleBarCodeRead = (barCodeData: any) => {
-    console.log("barcodeDetails", barcodeScanned);
+    console.log("barcodeDetails", barCodeData);
   
       if (barCodeData?.data === undefined) {
         setIsCamerVisible(false);
@@ -210,6 +210,34 @@ const CameraScreen = (props: any) => {
             if (serviceData.requestType === "shareCredentials") {
               serviceProviderApiCall(serviceData);
             }
+            if(!serviceData.requestType){
+              setIsCamerVisible(false);
+              Alert.alert(
+                //This is title
+               "Invalid QR Code",
+                 //This is body text
+               "This is not the type of QR we expecting",
+               [
+                 {text: 'Go Back', onPress: () => getBack() },
+                
+               ],
+               //on clicking out side, Alert will not dismiss
+             );
+            }
+          }
+          else{
+            setIsCamerVisible(false);
+            Alert.alert(
+              //This is title
+             "Invalid QR Code",
+               //This is body text
+             "This is not the type of QR we expecting",
+             [
+               {text: 'Go Back', onPress: () => getBack() },
+              
+             ],
+             //on clicking out side, Alert will not dismiss
+           );
           }
           setIsCamerVisible(false);
         } catch (error) {
