@@ -12,9 +12,9 @@ import GenericText from "../../components/Text";
 import { LocalImages } from "../../constants/imageUrlConstants";
 import { SCREENS } from "../../constants/Labels";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
-import { savingCustomQrData, toggleAction, updateItemCheckedStatus } from "../../redux/actions/LocalSavingActions";
+import { savingCustomQrData, toggleAction } from "../../redux/actions/LocalSavingActions";
 import { Screens } from "../../themes";
-import { useDrawerStatus } from "@react-navigation/drawer";
+import { saveProfileDetails } from "../../redux/actions/authenticationAction";
 
 interface IDocumentScreenProps {
   navigation?: any;
@@ -22,18 +22,29 @@ interface IDocumentScreenProps {
 
 const CustomizeQr = ({ navigation }: IDocumentScreenProps) => {
   const qrListData = useAppSelector((state :any) => state.saveData);
+  const profileDetails = useAppSelector((state) => state.SaveProfile?.profileDetails);
   const userDetails = useAppSelector((state) => state.account);
   const isToggle :any = useAppSelector(state => state.isToggleOn);
-
+  const [medialList, setmedialList] = useState(profileDetails);
   console.log("isToggleData",isToggle?.index?.CHECKED);
 
   const toggleValue :boolean = isToggle?.index?.CHECKED
   
+  useEffect(()=>{
+    console.log('profileDetails',profileDetails)
+    if(profileDetails){
+      if(Object.keys(profileDetails).length ===0){
+        setmedialList(SCREENS.HOMESCREEN.CategoryCustomiseList)
+      }
+     
+    }
+    else{
+      setmedialList(SCREENS.HOMESCREEN.CategoryCustomiseList)
+    }
 
-  var ctList = SCREENS.HOMESCREEN.CategoryCustomiseList;
-  if (qrListData && qrListData?.qrListData && qrListData?.qrListData) {
-    ctList = qrListData?.qrListData;
-  }
+  },[profileDetails])
+
+
 
   const dispatch = useAppDispatch();
 
@@ -53,7 +64,7 @@ const CustomizeQr = ({ navigation }: IDocumentScreenProps) => {
     isBottomSheetForSideOptionVisible,
     setisBottomSheetForSideOptionVisible,
   ] = useState<boolean>(false);
-  const [categoriCustomize, setcategoriCustomize] = useState(ctList);
+  const [categoriCustomize, setcategoriCustomize] = useState(medialList);
   const [isBottomSheetForFilterVisible, setisBottomSheetForFilterVisible] =
     useState<boolean>(false);
     const[data,setData]= useState([])
@@ -63,7 +74,7 @@ const CustomizeQr = ({ navigation }: IDocumentScreenProps) => {
   };
 
   const onToggelchange = (toggle: any, item: any, itemIndex: any) => {
-    categoriCustomize.map((item, index) => {
+    medialList.map((item: { CHECKED?: any; }, index: any) => {
       if (index === itemIndex) {
         item.CHECKED = !item.CHECKED;
         dispatch(toggleAction(item))
@@ -72,8 +83,10 @@ const CustomizeQr = ({ navigation }: IDocumentScreenProps) => {
 
       return item;
     });
-    setcategoriCustomize([...categoriCustomize]);
-    dispatch(savingCustomQrData([...categoriCustomize]));
+    setcategoriCustomize([...medialList]);
+    dispatch(savingCustomQrData([...medialList]));
+    dispatch(saveProfileDetails([...medialList])).then(() => {
+    })
    
   };
 
@@ -150,7 +163,7 @@ const CustomizeQr = ({ navigation }: IDocumentScreenProps) => {
       </GenericText>
       <FlatList<any>
         showsHorizontalScrollIndicator={false}
-        data={ctList}
+        data={medialList}
         renderItem={_renderItem}
       />
     </View>

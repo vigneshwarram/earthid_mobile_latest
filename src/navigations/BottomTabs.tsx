@@ -87,8 +87,10 @@ export const BottomMenus = (propss: any) => {
       />
       <Tab.Screen
         name="Camera"
+        
         component={CameraScreen}
         options={{
+          unmountOnBlur: true,
           tabBarLabelStyle: {
             color: "transparent",
           },

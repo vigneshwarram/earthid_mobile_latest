@@ -79,12 +79,6 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
    
   };
 
-  const socialMedialList = values(SCREENS.HOMESCREEN.SocialMedialList).map(
-    ({ TITLE: title, URI: uri }: any) => ({
-      title,
-      uri,
-    })
-  );
 
   const _renderItem = ({ item }: any) => {
     return (

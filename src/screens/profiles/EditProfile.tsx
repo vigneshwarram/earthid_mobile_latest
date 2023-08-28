@@ -44,7 +44,6 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
   const profileDetails = useAppSelector((state) => state.SaveProfile?.profileDetails);
   const [isCamerVisible, setIsCameraVisible] = useState(false);
   const camRef: any = useRef();
-  console.log("profileDetails+++++", profileDetails);
   const { colors } = useTheme();
   const [isLoading, setIsLoading] = useState(false);
   const phoneInput: any = useRef();
@@ -62,8 +61,10 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
       ...userDetails.responseData,
       ...{ username: fullName },
     };
-    console.log('medialList====>',medialList)
-    disPatch(saveProfileDetails(medialList)).then(() => {
+    const userNameDetails = medialList[0]
+    userNameDetails.VALUE = fullName
+    console.log('medialList====>',[...medialList,...[userNameDetails]])
+    disPatch(saveProfileDetails([...medialList,...[userNameDetails]])).then(() => {
       disPatch(byPassUserDetailsRedux(overallResponseData)).then(() => {
         setIsLoading(true);
         setTimeout(() => {
@@ -108,12 +109,12 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
     console.log('profileDetails',profileDetails)
     if(profileDetails){
       if(Object.keys(profileDetails).length ===0){
-        setmedialList(SCREENS.HOMESCREEN.SocialMedialList)
+        setmedialList(SCREENS.HOMESCREEN.CategoryCustomiseList)
       }
      
     }
     else{
-      setmedialList(SCREENS.HOMESCREEN.SocialMedialList)
+      setmedialList(SCREENS.HOMESCREEN.CategoryCustomiseList)
     }
 
   },[profileDetails])
@@ -207,20 +208,18 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
 
   const _renderItem = ({ item, index }: any) => {
     return (
+      index !==0 && index!==1 && index !==2 &&
       <View>
-        <GenericText style={[styles.categoryHeaderText, { fontSize: 13 }]}>
-          {item.TITLE}
-        </GenericText>
-
-        <TextInput
+        <><GenericText style={[styles.categoryHeaderText, { fontSize: 13 }]}>
+        {item.TITLE}
+      </GenericText><TextInput
           style={{
             container: [
               styles.containerForSocialMedia,
               {
-                borderColor:
-                  focus === index
-                    ? Screens.colors.primary
-                    : Screens.grayShadeColor,
+                borderColor: focus === index
+                  ? Screens.colors.primary
+                  : Screens.grayShadeColor,
                 borderWidth: focus === index ? 2 : 1,
               },
             ],
@@ -234,10 +233,8 @@ const EditProfile = ({ navigation }: IHomeScreenProps) => {
           leftIcon={item.URI}
           value={item.DOMAIN}
           onChangeText={(text) => onChangeHandler(text, index)}
-          onFocus={() => setFocus(index) }
-          onBlur={()=>setFocus(false)}
-          // isFocused={true}
-        />
+          onFocus={() => setFocus(index)}
+          onBlur={() => setFocus(false)} /></>
       </View>
     );
   };

@@ -136,6 +136,7 @@ const CameraScreen = (props: any) => {
   // const verifyData = verifyCredDatas?.credVerifydata?.verifiableCredential
 
   useEffect(() => {
+    setIsCamerVisible(true);
     getVcdata();
   }, []);
 
@@ -231,7 +232,7 @@ const CameraScreen = (props: any) => {
 
   
     const getBack =()=>{
-      setIsCamerVisible(true);
+   
       props.navigation.goBack(null)
     }
 
