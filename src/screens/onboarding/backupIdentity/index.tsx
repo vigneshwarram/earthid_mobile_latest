@@ -47,10 +47,18 @@ const Register = ({ navigation,route }: IHomeScreenProps) => {
   const viewShot: any = useRef();
   const { loading: getUserLoading } = useFetch();
   const dispatch = useAppDispatch();
+  const keys = useAppSelector((state) => state.user);
+  const UserDid  = keys?.responseData?.newUserDid  
+  const privateKey = keys?.responseData?.generateKeyPair?.privateKey
+  const publicKey= userDetails?.responseData?.publicKey
 
   let qrData = {
     earthId: userDetails?.responseData.earthId,
+    publicKey:publicKey,
+    privateKey:privateKey,
+    UserDid:UserDid
   };
+  const serializedData = JSON.stringify(qrData);
 
   let data = {
     email: userDetails?.responseData.email,
@@ -214,7 +222,7 @@ const Register = ({ navigation,route }: IHomeScreenProps) => {
                     qrBase64 = base64;
                     setBase64(base64);
                   }}
-                  value={qrData.earthId}
+                  value={serializedData}
                   size={250}
                 />
               </View>
