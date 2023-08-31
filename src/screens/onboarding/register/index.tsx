@@ -36,7 +36,7 @@ import { useFetch } from "../../../hooks/use-fetch";
 import { newssiApiKey, superAdminApi } from "../../../utils/earthid_account";
 import { isEarthId } from "../../../utils/PlatFormUtils";
 import Spinner from "react-native-loading-spinner-overlay/lib";
-import { createUserSignaturekey } from "../../../utils/createUserSignaturekey";
+import { createUserSignaturekey, postApi } from "../../../utils/createUserSignaturekey";
 import { createVerifiableCred } from "../../../utils/createVerifiableCred";
 import { SavedCredVerify } from "../../../redux/reducer/saveDataReducer";
 import { SaveVerifyCred } from "../../../redux/actions/LocalSavingActions";
@@ -62,8 +62,6 @@ const Register = ({ navigation }: IRegister) => {
   const [callingCode, setcallingCode] = useState<string>("1");
   const [isValidMobileNumber, setValidMobileNumber] = useState<boolean>(false);
   const [isMobileEmpty, setMobileEmpty] = useState<boolean>(false);
-
-
 
   // createVerifiableCrendital
 
@@ -136,6 +134,7 @@ const Register = ({ navigation }: IRegister) => {
     mobileNumber === "" ? setMobileEmpty(true) : null;
     console.log('isValid()',isValid())
     if (isValid()) {
+      auditFlowApi()
       setLoginLoading(true);
       dispatch(GeneratedKeysAction());
     
@@ -146,6 +145,44 @@ const Register = ({ navigation }: IRegister) => {
       dateOfBirthlurHandler();
     }
   };
+
+
+
+
+
+  async function auditFlowApi(){
+
+    const min = 1;
+    const max = 666666;
+    const minid = 1;
+    const maxid = 6666667777;
+    const randomNumtopic = Math.floor(Math.random() * (max - min + 1)) + min;
+    const randomNumtransID = Math.floor(Math.random() * (maxid - minid + 1)) + minid;
+    const currentTimestamp = new Date().toISOString();
+    const urlRequest:any = "https://w3storage.myearth.id/api/subs/publish"
+
+    const postData = {
+      topic: '0.0.'+randomNumtopic,
+      message: JSON.stringify({
+        transactionID: randomNumtransID,
+        flowName: 'loginFlow',
+        topicId: '0.0.'+randomNumtopic,
+        timestamp:currentTimestamp
+      })
+    };
+
+    const headersToSend = {
+      'Content-Type': 'application/json',
+    };
+
+   await postApi(urlRequest,postData,headersToSend)
+    .then((res:any)=>{
+      console.log("resData",res)
+    })
+    .catch((e:any)=>{
+      console.log("error",e);
+    })
+  }
 
 
  

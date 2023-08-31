@@ -46,6 +46,7 @@ import { dateTime } from "../../utils/encryption";
 import { ICreateUserSignature } from "../../typings/AccountCreation/ICreateUserSignature";
 import RNFetchBlob from "rn-fetch-blob";
 import { newpostCall } from "../../utils/service";
+import { postApi } from "../../utils/createUserSignaturekey";
 
 const data = [
   { label: " 1", value: "1" },
@@ -353,7 +354,46 @@ const CameraScreen = (props: any) => {
 
   useEffect(() => {}, []);
 
+
+  async function auditFlowApi(){
+
+    const min = 1;
+    const max = 666666;
+    const minid = 1;
+    const maxid = 6666667777;
+    const randomNumtopic = Math.floor(Math.random() * (max - min + 1)) + min;
+    const randomNumtransID = Math.floor(Math.random() * (maxid - minid + 1)) + minid;
+    const currentTimestamp = new Date().toISOString();
+    const urlRequest:any = "https://w3storage.myearth.id/api/subs/publish"
+
+    const postData = {
+      topic: '0.0.'+randomNumtopic,
+      message: JSON.stringify({
+        transactionID: randomNumtransID,
+        flowName: 'DocumentVcFlow',
+        topicId: '0.0.'+randomNumtopic,
+        timestamp:currentTimestamp
+      })
+    };
+
+    const headersToSend = {
+      'Content-Type': 'application/json',
+    };
+
+   await postApi(urlRequest,postData,headersToSend)
+    .then((res:any)=>{
+      console.log("resData",res)
+    })
+    .catch((e:any)=>{
+      console.log("error",e);
+    })
+  }
+
+
+
+
   const createVerifiableCredentials = async () => {
+    auditFlowApi()
     generateUserSignature();
     getData();
     setloadingforGentSchemaAPI(true);

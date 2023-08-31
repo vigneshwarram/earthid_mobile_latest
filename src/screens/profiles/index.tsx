@@ -30,6 +30,7 @@ import { savingProfilePictures } from "../../redux/actions/LocalSavingActions";
 // import { launchImageLibrary } from "react-native-image-picker";
 import * as ImagePicker from "react-native-image-picker";
 import { alertBox } from "../../utils/earthid_account";
+import { postApi } from "../../utils/createUserSignaturekey";
 
 interface IHomeScreenProps {
   navigation?: any;
@@ -117,11 +118,50 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
     setisCameraOptionVisible(true);
   };
 
+
+
+  async function auditFlowApi(){
+
+    const min = 1;
+    const max = 666666;
+    const minid = 1;
+    const maxid = 6666667777;
+    const randomNumtopic = Math.floor(Math.random() * (max - min + 1)) + min;
+    const randomNumtransID = Math.floor(Math.random() * (maxid - minid + 1)) + minid;
+    const currentTimestamp = new Date().toISOString();
+    const urlRequest:any = "https://w3storage.myearth.id/api/subs/publish"
+
+    const postData = {
+      topic: '0.0.'+randomNumtopic,
+      message: JSON.stringify({
+        transactionID: randomNumtransID,
+        flowName: 'ProfileChangeFlow',
+        topicId: '0.0.'+randomNumtopic,
+        timestamp:currentTimestamp
+      })
+    };
+
+    const headersToSend = {
+      'Content-Type': 'application/json',
+    };
+
+   await postApi(urlRequest,postData,headersToSend)
+    .then((res:any)=>{
+      console.log("resData",res)
+    })
+    .catch((e:any)=>{
+      console.log("error",e);
+    })
+  }
+
+
+
   const openCamera = async () => {
     const options = { quality: 0.1, base64: true };
     const data = await camRef.current.takePictureAsync(options);
     console.log("data", data);
     if (data) {
+      auditFlowApi()
       AsyncStorage.setItem("profilePic",data?.uri)
       disPatch(savingProfilePictures(data?.uri));
       setIsCameraVisible(false);
@@ -146,6 +186,7 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
   };
 const setResponseData =(data: any)=>{
   setResponse(data)
+  auditFlowApi()
   setisCameraOptionVisible(false)
 }
   const openFilePicker = async () => {

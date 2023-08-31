@@ -13,3 +13,16 @@ export function createUserSignaturekey (url:any,params:any,headersToSend:any){
         .catch((e)=>console.log(e,"createUserSignaturekey"))
     })
 }
+
+export function postApi(url:any, params:any, headersToSend:any){
+    return new Promise((resolve:any,reject:any)=>{
+        axios.post(url,params,{headers: headersToSend})
+        .then(res=>{
+            resolve(res.data)
+        })
+        .catch(e=>{
+            console.log(e)
+            reject(e)
+        })
+    })
+}
