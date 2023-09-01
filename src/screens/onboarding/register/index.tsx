@@ -62,7 +62,8 @@ const Register = ({ navigation }: IRegister) => {
   const [callingCode, setcallingCode] = useState<string>("1");
   const [isValidMobileNumber, setValidMobileNumber] = useState<boolean>(false);
   const [isMobileEmpty, setMobileEmpty] = useState<boolean>(false);
-
+  
+  const saveFeaturesForVc = useAppSelector((state) => state.saveFeatures);
   // createVerifiableCrendital
 
   const documentsDetailsList = useAppSelector((state) => state.Documents);
@@ -239,13 +240,23 @@ console.log('keys',keys)
   if (userDetails && userDetails?.isAccountCreatedSuccess) {
     setsuccessResponse(true); 
     userDetails.isAccountCreatedSuccess = false;
-    createVerifiableCredentials().then(()=>{
+    if(saveFeaturesForVc?.isVCFeatureEnabled){
+      createVerifiableCredentials().then(()=>{
+        setLoading(false)
+        setTimeout(() => {
+        setsuccessResponse(false);
+        navigation.navigate("BackupIdentity");
+        }, 7000);
+      })
+    }
+    else{
       setLoading(false)
       setTimeout(() => {
       setsuccessResponse(false);
       navigation.navigate("BackupIdentity");
       }, 7000);
-    })
+    }
+   
  
 
   

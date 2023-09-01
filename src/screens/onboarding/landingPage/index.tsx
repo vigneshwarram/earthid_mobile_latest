@@ -25,6 +25,9 @@ import { useTranslation } from "react-i18next";
 import DocumentPicker from "react-native-document-picker";
 import RNFS from "react-native-fs";
 import { isEarthId } from "../../../utils/PlatFormUtils";
+import ToggleSwitch from "toggle-switch-react-native";
+import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
+import { saveFeature } from "../../../redux/actions/authenticationAction";
 interface IHomeScreenProps {
   navigation?: any;
 }
@@ -34,6 +37,8 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
   const navigateAction = async () => {
     navigation.navigate("RegisterScreen");
   };
+  const dispatch = useAppDispatch();
+  const saveFeaturesForVc = useAppSelector((state) => state.saveFeatures);
   const [languageVisible, setLanguageVisible] = useState(false);
   const [selectedLanguage, setselectedLanguage] = useState(AppLanguage.ENGLISH);
   const [loading, setLoading] = useState(true);
@@ -121,7 +126,10 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
   const _handleBarCodeRead = (barCodeData: any) => {
     console.log("barcodedata", barCodeData);
   };
+const onToggelchange = (data: boolean)=>{
+  dispatch(saveFeature(data));
 
+}
   return (
     <View style={styles.sectionContainer}>
       <ScrollView contentContainerStyle={styles.sectionContainer}>
@@ -318,6 +326,29 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
                 ))}
               </View>
             </BottomSheet>
+          </View>
+          <View>
+          <View style={{justifyContent:'center',alignItems:'center',flexDirection:'row'}}>
+          <GenericText
+                        style={[
+                          {
+                            fontSize: 18,
+                            marginHorizontal: 20,
+                            color: Screens.black,
+                            fontWeight: "500",
+                          },
+                        ]}
+                      >
+                        {'VC Features'}
+                      </GenericText>
+          <ToggleSwitch
+            onToggle={(value) => onToggelchange(value)}
+            isOn={saveFeaturesForVc?.isVCFeatureEnabled}
+            size={"small"}
+            onColor={Screens.colors.primary}
+            offColor={Screens.darkGray}
+          />
+        </View>
           </View>
           <TouchableOpacity
             style={{ marginTop: 20 }}

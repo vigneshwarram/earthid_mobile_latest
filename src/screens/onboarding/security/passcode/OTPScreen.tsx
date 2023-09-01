@@ -15,6 +15,7 @@ import {
   approveOTP,
   byPassUserDetailsRedux,
   createUserSignature,
+  saveDocuments,
 } from "../../../../redux/actions/authenticationAction";
 import { is } from "immer/dist/internal";
 import GenericText from "../../../../components/Text";
@@ -34,7 +35,7 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
   const dispatch = useAppDispatch();
   const userDetails = useAppSelector((state) => state.account);
   const documentsDetailsList = useAppSelector((state) => state.Documents);
-
+  const saveFeaturesForVc = useAppSelector((state) => state.saveFeatures);
   const[signature,setSignature]=useState()
   const [loading, setLoading] = useState(false);
   const[createVerify,setCreateVerify]=useState({})
@@ -139,15 +140,18 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
       .catch(e=>console.log(e))
     }
 
+    useEffect(()=>{
+      if(signature){
+        createVerifiableCredentials() 
+      }
+
+    },[signature])
+
 
 
     async function createVerifiableCredentials(){
       setLoading(true)
-      const hasApiBeenCalled = await AsyncStorage.getItem('apiCalled');
-      console.log("hasApiBeenCalled",hasApiBeenCalled);
-
-      if(!hasApiBeenCalled) {
-     
+ 
         const params = {
           schemaName: "EarthIdVCSchema:1",
           isEncrypted: false,
@@ -177,7 +181,7 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
           var date = dateTime();
           var documentDetails: IDocumentProps = {
             id: res?.data?.verifiableCredential?.id,
-            name: "VC - ACK Token",
+            name: `VC - ${type} Token`,
             path: "filePath",
             date: date?.date,
             time: date?.time,
@@ -186,18 +190,7 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
             docExt: ".jpg",
             processedDoc: "",
             isVc: true,
-            vc: JSON.stringify({
-              name: "VC - ACK Token",
-              documentName: "VC - ACK Token",
-              path: "filePath",
-              date: date?.date,
-              time: date?.time,
-              txId: "data?.result",
-              docType: "pdf",
-              docExt: ".jpg",
-              processedDoc: "",
-              isVc: true,
-            }),
+            vc: JSON.stringify(res?.data?.verifiableCredential?.type[1]),
             documentName: "",
             docName: "",
             base64: undefined
@@ -207,15 +200,13 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
             ? documentsDetailsList?.responseData
             : [];
           DocumentList.push(documentDetails);
-          dispatch(saveDocuments(DocumentList));
+          dispatch(saveDocuments(DocumentList)).then(()=>{
+            navigation.navigate("ProfileScreen");
+          })
           }
         })
         .catch(e=>console.log(e))
         
-    }else{
-      setLoading(false)
-      console.log("API hit already","praveen")
-    }
     }
 
 
@@ -239,19 +230,23 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
     }
 
     dispatch(byPassUserDetailsRedux(overallResponseData)).then(() => {
-      navigation.navigate("ProfileScreen");
+      if(saveFeaturesForVc?.isVCFeatureEnabled){
+        getSignature()
+ 
+      }else{
+        navigation.navigate("ProfileScreen");
+      }
+    
     });
   }
 
   const approveOtp = () => {
 
-    getSignature()
-    createVerifiableCredentials()
-    const request = {
-      otp: code,
-      earthId: userDetails?.responseData?.earthId,
-      publicKey: userDetails?.responseData?.publicKey,
-    };
+  const request = {
+    otp: code,
+    earthId: userDetails?.responseData?.earthId,
+    publicKey: userDetails?.responseData?.publicKey,
+  };
     dispatch(approveOTP(request, type));
   };
 
