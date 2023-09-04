@@ -37,9 +37,16 @@ const AuthBackupIdentity = ({ navigation, route }: IHomeScreenProps) => {
   let [qrBase64, setBase64] = useState("");
   const userDetails = useAppSelector((state) => state.account);
   const viewShot: any = useRef();
+  const keys = useAppSelector((state) => state.user);
+  const UserDid  = keys?.responseData?.newUserDid  
+  const privateKey = keys?.responseData?.generateKeyPair?.privateKey
+  const publicKey= userDetails?.responseData?.publicKey
 
   let qrData = {
-    accountId: userDetails?.responseData?.earthId,
+    earthId: userDetails?.responseData?.earthId,
+    publicKey:publicKey,
+    privateKey:privateKey,
+    UserDid:UserDid
   };
   // var encryptedString: any = CryptoJS.AES.encrypt(
   //   JSON.stringify(qrData),
@@ -111,7 +118,7 @@ const AuthBackupIdentity = ({ navigation, route }: IHomeScreenProps) => {
   useEffect(() => {
     console.log("route==>", route);
   }, []);
-
+  console.log('qrData===>',qrData)
   return (
     <View style={styles.sectionContainer}>
       <ScrollView contentContainerStyle={styles.sectionContainer}>
@@ -180,7 +187,7 @@ const AuthBackupIdentity = ({ navigation, route }: IHomeScreenProps) => {
                   qrBase64 = base64;
                   setBase64(base64);
                 }}
-                value={qrData.accountId}
+                value={JSON.stringify(qrData)}
                 size={250}
               />
             </ViewShot>

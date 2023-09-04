@@ -170,7 +170,7 @@ const Register = ({ navigation,route }: IHomeScreenProps) => {
     return () =>
       BackHandler.removeEventListener("hardwareBackPress", onBackPress);
   }, []);
-
+  console.log('qrData===>',qrData)
   return (
     <View style={styles.sectionContainer}>
       <ScrollView contentContainerStyle={styles.sectionContainer}>
@@ -222,7 +222,7 @@ const Register = ({ navigation,route }: IHomeScreenProps) => {
                     qrBase64 = base64;
                     setBase64(base64);
                   }}
-                  value={serializedData}
+                  value={JSON.stringify(qrData)}
                   size={250}
                 />
               </View>

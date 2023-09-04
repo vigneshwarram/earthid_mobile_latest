@@ -35,6 +35,8 @@ const UploadQr = (props: any) => {
   const [source, setSource] = useState({});
   const [filePath, setFilePath] = useState();
   const [imageResponse, setImageResponse] = useState<any>('');
+  const [scanned, setScanned] = useState(false);
+  const [loading, setLoading] = useState(false);
   const {
     loading: getUserLoading,
     data: getUserResponse,
@@ -109,9 +111,29 @@ const UploadQr = (props: any) => {
     });
     }
   }, [imageResponse]);
+  function isJSONString(str: string) {
+    try {
+      JSON.parse(str);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
   const _handleBarCodeRead = (barCodeData: any) => {
-    console.log("barcodedata", barCodeData?.data);
-    detectedBarCodes(barCodeData?.data);
+    if (!scanned) {
+      setScanned(true);
+      isJSONString(barCodeData?.data)
+      if(!isJSONString(barCodeData?.data)){
+        setLoading(true)
+        createVcForIccaStudent(barCodeData?.data)    
+      }else{
+        detectedBarCodes( JSON.parse(barCodeData?.data)?.earthId);
+      }
+      setTimeout(() => {
+        setScanned(false);
+      }, 1000); // Adjust the timeout duration as needed
+    }
+   
   };
   const detectedBarCodes = (barcode: string) => {
     if (getUserResponse === undefined) {
@@ -120,7 +142,20 @@ const UploadQr = (props: any) => {
       getUser(url, {}, "GET");
     }
   };
-
+  const createVcForIccaStudent=(url: RequestInfo)=>{
+    console.log('url========>vicky',url)
+    fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      setLoading(false)
+      if(data){
+        let url = `${BASE_URL}/user/getUser?earthId=${data?.earthId}`;
+        getUser(url, {}, "GET");    
+      }
+    }).catch((error)=>{
+      setLoading(false)
+    })
+  }
   return (
     <View style={styles.sectionContainer}>
       <View style={{ position: "absolute", top: 20, right: 20, zIndex: 100 }}>
@@ -137,14 +172,17 @@ const UploadQr = (props: any) => {
           flex: 0.8,
         }}
       >
-        <RNCamera
+      <RNCamera
           ref={camRef}
           style={styles.preview}
           androidCameraPermissionOptions={null}
           type={RNCamera.Constants.Type.back}
           captureAudio={false}
-          onBarCodeRead={(data) => !getUserLoading && _handleBarCodeRead(data)}
-        ></RNCamera>
+          onBarCodeRead={(data) => !getUserLoading && !loading && _handleBarCodeRead(data)}
+        >
+            <QrScannerMaskedWidget />
+        </RNCamera>
+      
       </View>
       <View>
         <GenericText
@@ -181,7 +219,7 @@ const UploadQr = (props: any) => {
           title={"uploadgallery"}
         ></Button>
       </View>
-      {getUserLoading && (
+      {getUserLoading && loading && (
         <View style={styles.loading}>
           <ActivityIndicator color={Screens.colors.primary} size="large" />
         </View>

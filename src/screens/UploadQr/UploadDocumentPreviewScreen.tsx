@@ -26,6 +26,7 @@ const UploadDocumentPreviewScreen = (props: any) => {
   const [message, Setmessage] = useState("ooo");
   const [datas, SetData] = useState(null);
   const [source, setSource] = useState({});
+  const [isloading,setLoading] = useState(false)
 
   const dispatch = useAppDispatch();
   const {
@@ -35,6 +36,28 @@ const UploadDocumentPreviewScreen = (props: any) => {
     fetch: getUser,
   } = useFetch();
 
+  function isJSONString(str: string) {
+    try {
+      JSON.parse(str);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+  const createVcForIccaStudent=(url: RequestInfo)=>{
+    console.log('url========>vicky',url)
+    fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      setLoading(false)
+      if(data){
+        let url = `${BASE_URL}/user/getUser?earthId=${data?.earthId}`;
+        getUser(url, {}, "GET");    
+      }
+    }).catch((error)=>{
+      setLoading(false)
+    })
+  }
   const uploadDoc = async () => {
     console.log("fileUri?.base64", fileUri?.base64);
     RNQRGenerator.detect({
@@ -42,10 +65,16 @@ const UploadDocumentPreviewScreen = (props: any) => {
     })
       .then((detectedQRCodes) => {
         const { values } = detectedQRCodes; // Array of detected QR code values. Empty if nothing found.
-
-        let url = `${BASE_URL}/user/getUser?earthId=${values[0]}`;
-        console.log("values==>", url);
-        getUser(url, {}, "GET");
+        console.log('values====>',values)
+        if(isJSONString(values[0])){
+          let url = `${BASE_URL}/user/getUser?earthId=${JSON.parse(values[0])?.earthId}`;
+          console.log("values==>", url);
+          getUser(url, {}, "GET");
+        }
+        else{
+          createVcForIccaStudent(values[0])
+        }
+       
       })
       .catch((error) => {
         console.log("error==>", error);
@@ -161,7 +190,7 @@ const UploadDocumentPreviewScreen = (props: any) => {
         ></Button>
       </View>
       <AnimatedLoader
-        isLoaderVisible={getUserLoading}
+        isLoaderVisible={getUserLoading || isloading}
         loadingText={"uploaddocs"}
       />
       <SuccessPopUp
