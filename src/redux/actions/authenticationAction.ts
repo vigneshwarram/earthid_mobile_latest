@@ -319,6 +319,18 @@ async (dispatch: any): Promise<any> => {
   });
 };
 
+export const saveFeature =
+(isVCFeatureEnabled: any) =>
+async (dispatch: any): Promise<any> => {
+  dispatch({
+    type: ACTION_TYPES.SAVEFEATURE,
+    payload: {
+      isLoading: false,
+      isVCFeatureEnabled,
+    },
+  });
+};
+
 export const saveDocuments =
   (documentsDetails: any) =>
   async (dispatch: any): Promise<any> => {

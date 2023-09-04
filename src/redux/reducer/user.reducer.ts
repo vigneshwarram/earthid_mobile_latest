@@ -24,6 +24,15 @@ export const SaveProfileDetails = (state = {}, { type, payload }: any) => {
   }
 }
 
+export const saveFeatures = (state = {}, { type, payload }: any) => {
+  switch (type) {
+    case ACTION_TYPES.SAVEFEATURE:
+      return { ...state, ...payload };
+    default:
+      return state;
+  }
+}
+
 export const userReducer = (state = initialState, { type, payload }: any) => {
   switch (type) {
     case ACTION_TYPES.GENERATED_KEYS_LOADING:
