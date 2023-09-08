@@ -17,13 +17,16 @@ import DocumentMasks from "../uploadDocuments/DocumentMasks";
 import RNFS from "react-native-fs";
 import GenericText from "../../components/Text";
 import { useFetch } from "../../hooks/use-fetch";
-import { useAppSelector } from "../../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import SuccessPopUp from "../../components/Loader";
 import {encodeBase64} from 'react-native-image-base64'
+import Spinner from "react-native-loading-spinner-overlay/lib";
+import { saveDocuments } from "../../redux/actions/authenticationAction";
+import { dateTime } from "../../utils/encryption";
 
 
 const UploadScreen = (props: any) => {
-  const _handleBarCodeRead = () => {};
+
   const { colors } = useTheme();
   const camRef: any = useRef();
   const { loading } = useFetch();
@@ -32,6 +35,15 @@ const UploadScreen = (props: any) => {
   const [message, Setmessage] = useState<string>("ooo");
   const [source, setSource] = useState({});
   const [filePath, setFilePath] = useState();
+
+  const [url, setUrl] = useState('');
+  const [isLoading, setisLoading] = useState(false);
+  const documentsDetailsList = useAppSelector((state) => state.Documents);
+  const dispatch = useAppDispatch();
+
+
+
+
   const _takePicture = async () => {
     const options = { quality: 0.1, base64: true };
     const data = await camRef.current.takePictureAsync(options);
@@ -46,6 +58,81 @@ const UploadScreen = (props: any) => {
       console.log(err);
     }
   };
+
+
+  const _handleBarCodeRead = async(barCodeData:any) => {
+    let barcodeData = await barCodeData.data
+    console.log("barcodeData",barcodeData);
+    setUrl(barcodeData)
+  };
+
+  const fetchData = async () => {
+    setisLoading(true)
+    try {
+      const response = await fetch(url);
+      console.log("response",response);
+       
+      if (response) {
+        setisLoading(false)
+        const data = await response.json();
+        console.log('Fetched data:', data)
+
+        var date = dateTime();
+        var documentDetails: IDocumentProps = {
+          id: `ID_VERIFICATION${Math.random()}${"selectedDocument"}${Math.random()}`,
+          name: "Transcript VC Token",
+          path: "filePath",
+          date: date?.date,
+          time: date?.time,
+          txId: "data?.result",
+          docType: "pdf",
+          docExt: ".jpg",
+          processedDoc: "",
+          isVc: true,
+          vc: JSON.stringify({
+            name: "Transcript VC Token",
+            documentName: "Transcript VC Token",
+            path: "filePath",
+            date: date?.date,
+            time: date?.time,
+            txId: "data?.result",
+            docType: "pdf",
+            docExt: ".jpg",
+            processedDoc: "",
+            isVc: true,
+          }),
+          documentName: "",
+          docName: "",
+          base64: undefined,
+          transcriptVc:data
+         
+        };
+  
+        var DocumentList = documentsDetailsList?.responseData
+          ? documentsDetailsList?.responseData
+          : [];
+
+        DocumentList.push(documentDetails);
+        dispatch(saveDocuments(DocumentList));
+        props.navigation.goBack()
+
+      } else {
+        setisLoading(false)
+        console.log('Error fetching data:', response);
+      }
+    } catch (error) {
+      setisLoading(false)
+      console.log('Error:', error);
+    }
+  };
+
+
+  useEffect(()=>{
+    fetchData();
+  },[url])
+
+
+
   const openFilePicker = async () => {
     if (Platform.OS == "android") {
       await requestPermission();
@@ -247,6 +334,13 @@ const UploadScreen = (props: any) => {
         isLoaderVisible={successResponse}
         loadingText={"Pdf uploaded successfully"}
       />
+
+            <Spinner
+              visible={isLoading}
+              textContent={"Loading..."}
+              textStyle={styles.spinnerTextStyle}
+            />
+
     </View>
   );
 };
