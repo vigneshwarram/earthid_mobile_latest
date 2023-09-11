@@ -112,10 +112,6 @@ const CameraScreen = (props: any) => {
   const [successMessage, setsuccessMessage] = useState(
     "verification successfully"
   );
-  const [onPress, setonPress] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(null);
-  const [toggleCheckBox, setToggleCheckBox] = useState(false)
-  const [toggleCheckBox1, setToggleCheckBox1] = useState(false)
 
   const [createSignatureKey, setCreateSignatureKey] = useState();
 
@@ -629,13 +625,6 @@ const CameraScreen = (props: any) => {
     }
   };
 
-  function onPressItem(item:any){
-    setonPress(!onPress)
-    setSelectedItem(item.docName)
-    setToggleCheckBox(false)
-    setToggleCheckBox1(false)
-  }
-
   return (
     <View style={styles.sectionContainer}>
       <View style={{ position: "absolute", top: 20, left: 20, zIndex: 100 }}>
@@ -823,12 +812,8 @@ const CameraScreen = (props: any) => {
                       console.log("item", item);
                       return (
                         <View
-                          style={{ flexDirection: "row", marginVertical: 7}}
+                          style={{ flexDirection: "row", marginVertical: 10 }}
                         >
-                          <TouchableOpacity
-                          style={{ flexDirection: "row" }}
-                          onPress={()=>onPressItem(item)}
-                          >         
                           <CheckBox
                             disabled={false}
                             onValueChange={(value) => {
@@ -871,74 +856,9 @@ const CameraScreen = (props: any) => {
                                 fontWeight: "300",
                               }}
                             >
-                              {item?.docName}
+                              {item?.documentName}
                             </GenericText>
-
-                              {
-                                onPress && selectedItem === item.docName ?
-                                <View>
-                                    <View
-                                  style={{ flexDirection: "row",width:'100%'}}>
-                                            <CheckBox
-                                            style={{marginLeft:-50}}
-                                              disabled={false}
-                                              value={toggleCheckBox}
-                                              onValueChange={(newValue) => setToggleCheckBox(newValue)}
-                                              />
-                                          <Text
-                                          style={{
-                                            alignSelf:"center",
-                                            color: "#000",
-                                            fontSize: 12,
-                                            fontWeight: "300",
-                                           
-                                          }}
-                                          >Firstname</Text>
-                                    </View>
-                                      <View
-                                  style={{ flexDirection: "row" ,width:'100%'}}>
-                                         <CheckBox
-                                          style={{
-                                            marginLeft:-50
-                                          }}
-                                              disabled={false}
-                                              value={toggleCheckBox1}
-                                              onValueChange={(newValue) => setToggleCheckBox1(newValue)}
-                                              />
-                                          <Text
-                                             style={{
-                                              alignSelf:"center",
-                                              color: "#000",
-                                              fontSize: 12,
-                                              fontWeight: "300",
-                                              
-                                            }}>DOB,Age</Text>
-                                    </View>
-                                </View>
-                              :
-                              null
-
-                              }
                           </View>
-                          </TouchableOpacity>
-                          <TouchableOpacity  style={{
-                              justifyContent: "center",
-                              alignSelf: "center",
-                              position:"absolute",
-                              right:0
-                            }}
-                          onPress={()=>onPressItem(item)}
-                          >
-                                <Image
-                                source={onPress && selectedItem === item.docName  ? LocalImages.uparrow : LocalImages.downarrow}
-                                style={{
-                                  width:20,
-                                  height:20, 
-                                  marginTop:selectedItem === item.docName && onPress ? -60 : 0                             
-                                }}
-                                />
-                              </TouchableOpacity>
-
                         </View>
                       );
                     }

@@ -439,8 +439,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
     );
   };
 
-  function 
-  docnameitem(value: any) {
+  function docnameitem(value: any) {
     console.log("datavalue", value);
     setDocname(value);
   }
