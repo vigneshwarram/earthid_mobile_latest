@@ -96,6 +96,7 @@ export const GeneratedKeysAction =
         },
       });
     } catch (error) {
+      console.log('error====>',error)
     
       dispatch({
         type: ACTION_TYPES.GENERATED_KEYS_ERROR,
@@ -124,7 +125,7 @@ export const createAccount =
       const userSW3 = await createUserSpecificBucket(responseData.username)
   
       responseUserSpecificBucket = await _s3responseHandler(userSW3)
-  
+      console.log('responseUserSpecificBucket====>',responseUserSpecificBucket)
 
 
       dispatch({
@@ -137,7 +138,7 @@ export const createAccount =
         },
       });
     } catch (error: any) {
-     
+     console.log('isLoading====>',error)
 
       dispatch({
         type: ACTION_TYPES.CREATED_ACCOUNT_ERROR,

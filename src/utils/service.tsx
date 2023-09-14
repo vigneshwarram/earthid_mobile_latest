@@ -119,6 +119,8 @@ export const newssiGetCall = (
   method: string = "GET",
   key: string
 ): any => {
+  console.log('uri=========>',uri)
+  console.log('key=========>',key)
   return fetch(uri, {
     method,
     headers: {

@@ -5,7 +5,8 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
-  AsyncStorage
+  AsyncStorage,
+  Alert
 } from "react-native";
 import { Screens } from "../../../themes/index";
 import { LocalImages } from "../../../constants/imageUrlConstants";
@@ -17,11 +18,12 @@ import il8n, { getUserLanguagePreference } from "../.././../utils/i18n";
 import { AppLanguage } from "../../../typings/enums/AppLanguage";
 import { alertBox } from "../../../utils/earthid_account";
 import Header from "../../../components/Header";
+import TouchID from "react-native-touch-id";
 
 const UpdateAuthentication = (props: any) => {
   const dispatch = useAppDispatch();
   const [languageVisible, setLanguageVisible] = useState(false);
-  
+  const [disableTouchId, setDisableTouchId] = useState(true);
 
   // const retrieveData = async (item: any) => {
   //   try {
@@ -63,6 +65,23 @@ const UpdateAuthentication = (props: any) => {
   useEffect(() => {
     getStoredLanguage();
   }, []);
+  useEffect(() => {
+    _isSupported();
+  }, []);
+
+  const _isSupported = async () => {
+    try {
+      const data = await TouchID.isSupported();
+      console.log("data", data);
+      if (data === "FaceID") {
+        setDisableTouchId(true);
+      } else {
+        setDisableTouchId(false);
+      }
+    } catch (e) {
+      Alert.alert("TouchID is not supported!");
+    }
+  };
 
   const getStoredLanguage = async () => {
     const getUserLanguagePreferences = await getUserLanguagePreference();
@@ -92,14 +111,15 @@ const UpdateAuthentication = (props: any) => {
     },
   ]);
 
-  const _renderItem = ({ item }: { item: any }) => (
-    <TouchableOpacity onPress={() => _navigateAction(item)}>
+  const _renderItem = ({ item,index }: { item: any }) => (
+    <TouchableOpacity disabled={index===2&& disableTouchId} onPress={() => _navigateAction(item)}>
       <View
         style={{
           flexDirection: "row",
           flex: 1,
           margin: 10,
           justifyContent: "space-between",
+          opacity:index===2&& disableTouchId ? 0.5 : 1,
         }}
       >
         <View style={{ flexDirection: "row" }}>

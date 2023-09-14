@@ -240,6 +240,7 @@ console.log('keys',keys)
   if (userDetails && userDetails?.isAccountCreatedSuccess) {
     setsuccessResponse(true); 
     userDetails.isAccountCreatedSuccess = false;
+    console.log('saveFeaturesForVc?.isVCFeatureEnabled===>',saveFeaturesForVc?.isVCFeatureEnabled)
     if(saveFeaturesForVc?.isVCFeatureEnabled){
       createVerifiableCredentials().then(()=>{
         setLoading(false)
@@ -255,11 +256,7 @@ console.log('keys',keys)
       setsuccessResponse(false);
       navigation.navigate("BackupIdentity");
       }, 7000);
-    }
-   
- 
-
-  
+    }  
    
   }
   if (userDetails && userDetails?.isAccountCreatedFailure) {
@@ -391,6 +388,7 @@ if(mobileNumber.length < 10){
     setLoading(true)
 
     if(!hasApiBeenCalled) {
+      console.log("hasApiBeenCalled++++++vicky1",hasApiBeenCalled);
       setTimeout(()=>{
         setLoading(true)
       },100)
@@ -417,6 +415,7 @@ if(mobileNumber.length < 10){
       
         createVerifiableCred(requesturl,params,headersToSend)
         .then(async(res:any)=>{
+          console.log('res.data======>',res.data)
           if(res.data){
           setLoading(false)
           setCreateVerify(res?.data)
@@ -457,10 +456,12 @@ if(mobileNumber.length < 10){
             ? documentsDetailsList?.responseData
             : [];
           DocumentList.push(documentDetails);
+          console.log('DocumentList===>',DocumentList)
           dispatch(saveDocuments(DocumentList));
           }
+
         })
-        .catch(e=>console.log(e))
+        .catch(e=>console.log('error=====>vicky',e))
       })
     
   

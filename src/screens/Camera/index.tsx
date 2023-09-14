@@ -404,6 +404,7 @@ const CameraScreen = (props: any) => {
         id: `ID_VERIFICATION${Math.random()}${"selectedDocument"}${Math.random()}`,
         name: "VC - ACK Token",
         path: "filePath",
+        documentName: "Membership Credientials (VC - ACK Token)",
         date: date?.date,
         time: date?.time,
         txId: "data?.result",
@@ -424,7 +425,6 @@ const CameraScreen = (props: any) => {
           isVc: true,
         }),
         verifiableCredential: verifyVcCred,
-        documentName: "",
         docName: "",
         base64: undefined,
       };
