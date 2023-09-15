@@ -144,12 +144,13 @@ const UploadScreen = (props: any) => {
       });
 
       let fileUri = resp[0].uri;
-      console.log("resp[0]?.name==>####", resp[0]?.name);
       fileUri= resp[0]?.uri?.replaceAll('%20',' ')
+      const decodedFileName = decodeURIComponent(fileUri);
+      console.log("resp[0]?.name==>####", decodedFileName);
 
      
 
-      RNFS.readFile(fileUri, "base64").then(async (res) => {
+      RNFS.readFile(decodedFileName, "base64").then(async (res) => {
         console.log("res", resp);
         console.log("typePDF", resp[0].uri);
 
