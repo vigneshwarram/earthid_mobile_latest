@@ -404,7 +404,7 @@ const CameraScreen = (props: any) => {
         id: `ID_VERIFICATION${Math.random()}${"selectedDocument"}${Math.random()}`,
         name: "VC - ACK Token",
         path: "filePath",
-        documentName: "Membership Credientials (VC - ACK Token)",
+        documentName: "VC - ACK Token",
         date: date?.date,
         time: date?.time,
         txId: "data?.result",
@@ -845,6 +845,8 @@ const CameraScreen = (props: any) => {
                             style={{
                               justifyContent: "center",
                               alignItems: "center",
+                              width:230,
+                              flexWrap:'wrap'
                             }}
                           >
                             <GenericText
@@ -854,9 +856,10 @@ const CameraScreen = (props: any) => {
                                 color: "#000",
                                 fontSize: 14,
                                 fontWeight: "300",
+
                               }}
                             >
-                              {item?.documentName}
+                              {item?.isVc?item.documentName: item?.docName }
                             </GenericText>
                           </View>
                         </View>

@@ -133,7 +133,7 @@ const CustomDrawer = (props: any) => {
     il8n.changeLanguage(item.value);
     const languageList = langugeList.map((itemData, inde) => {
       if (itemData.label === item.label) {
-        itemData.selection = !itemData.selection;
+        itemData.selection =true;
       } else {
         itemData.selection = false;
       }

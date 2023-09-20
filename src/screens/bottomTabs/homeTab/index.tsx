@@ -608,8 +608,6 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
             titleIcon={item?.isVc ? LocalImages.vcImage : null}
             leftAvatar={LocalImages.documentsImage}
             absoluteCircleInnerImage={LocalImages.upImage}
-            rightIconSrc={LocalImages.menuImage}
-          //  rightIconOnPress={() => _rightIconOnPress(item)}
             title={item?.isVc ?item.name : item?.documentName?.split("(")[1]?.split(")")[0] == "undefined" ? item?.docName : item?.docName}
             subtitle={`      Uploaded  : ${item.date}`}
             // timeTitle={

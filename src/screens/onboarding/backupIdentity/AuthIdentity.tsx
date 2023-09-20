@@ -38,14 +38,18 @@ const AuthBackupIdentity = ({ navigation, route }: IHomeScreenProps) => {
   const userDetails = useAppSelector((state) => state.account);
   const viewShot: any = useRef();
 
+  const keys = useAppSelector((state) => state.user);
+  const UserDid  = keys?.responseData?.newUserDid  
+  const privateKey = keys?.responseData?.generateKeyPair?.privateKey
+  const publicKey= userDetails?.responseData?.publicKey
+
   let qrData = {
-    accountId: userDetails?.responseData?.earthId,
+    earthId: userDetails?.responseData.earthId,
+    publicKey:publicKey,
+    privateKey:privateKey,
+    UserDid:UserDid
   };
-  // var encryptedString: any = CryptoJS.AES.encrypt(
-  //   JSON.stringify(qrData),
-  //   AES_ENCRYPTION_SALT
-  // );
-  // encryptedString = encryptedString.toString();
+  const serializedData = JSON.stringify(qrData);
 
   const dwFile = async (file_url: any) => {
     await Share.open({ url: `data:image/png;base64,${file_url}` });
@@ -180,7 +184,7 @@ const AuthBackupIdentity = ({ navigation, route }: IHomeScreenProps) => {
                   qrBase64 = base64;
                   setBase64(base64);
                 }}
-                value={qrData.accountId}
+                value={serializedData}
                 size={250}
               />
             </ViewShot>
