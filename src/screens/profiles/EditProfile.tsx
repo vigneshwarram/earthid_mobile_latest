@@ -32,6 +32,7 @@ import { RNCamera } from "react-native-camera";
 import GenericText from "../../components/Text";
 import * as ImagePicker from "react-native-image-picker";
 import { useSelector } from "react-redux";
+import { KeyboardAvoidingScrollView } from "react-native-keyboard-avoiding-scroll-view";
 interface IHomeScreenProps {
   navigation?: any;
 }
@@ -130,15 +131,16 @@ function replaceObjectByName(array, nameToFind, replacementObject) {
 
 
   const onChangeHandler = (text: string, indexofItem: number) => {
-    const mediListLocal = medialList.map((item, index) => {
+    let datas =[...medialList]
+    const modifiedDatas = datas?.map((item: { DOMAIN: string; }, index: number) => {
       if (indexofItem === index) {
-        item.DOMAIN = text;
+        return { ...item, DOMAIN: text };
       }
 
       return item;
     });
 
-    setmedialList([...mediListLocal]);
+    setmedialList([...modifiedDatas]);
 
   };
   const openCamera = async () => {
@@ -273,6 +275,9 @@ function replaceObjectByName(array, nameToFind, replacementObject) {
   };
 console.log('medialList=============>,',medialList)
   return (
+    <KeyboardAvoidingScrollView
+    style={{ paddingBottom: 1000,flexGrow: 1,paddingBottom:100,backgroundColor:'#fff' }}
+  >
     <View style={styles.sectionContainer}>
       {isCamerVisible ? (
         <View style={{ flex: 1 }}>
@@ -439,6 +444,7 @@ console.log('medialList=============>,',medialList)
         </ScrollView>
       )}
     </View>
+    </KeyboardAvoidingScrollView>
   );
 };
 

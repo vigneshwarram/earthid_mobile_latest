@@ -85,7 +85,7 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
     await AsyncStorage.setItem("setLanguage", item.value);
     const languageList = langugeList.map((itemData, inde) => {
       if (itemData.label === item.label) {
-        itemData.selection = !itemData.selection;
+        itemData.selection = true;
         setselectedLanguage(item.value);
       } else {
         itemData.selection = false;

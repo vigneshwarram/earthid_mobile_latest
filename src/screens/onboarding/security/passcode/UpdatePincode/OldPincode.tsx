@@ -172,6 +172,7 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
                 borderColor: Screens.colors.primary,
                 borderWidth: 2,
               }}
+              password
               cellSize={50}
               codeLength={6}
               value={code}

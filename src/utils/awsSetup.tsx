@@ -32,7 +32,7 @@ export async function createUserSpecificBucket(username:any) {
       
       return bucketName;
     } catch (error) {
-
+     console.log('createUserSpecificBucketerror====>',error)
       return null;
     }
   }
@@ -71,6 +71,7 @@ export async function createUserSpecificBucket(username:any) {
   export const deleteAllBuckets = async () => {
     const s3 = new AWS.S3();
     const bucketNames = await listBuckets();
+    console.log('bucketNames====>',bucketNames)
   
     if (bucketNames && bucketNames.length > 0) {
       for (const bucketName of bucketNames) {

@@ -88,15 +88,15 @@ const Register = ({ navigation }: IHomeScreenProps) => {
     return selected;
   };
 
-  useEffect(() => {
-    _isSupported();
-  }, []);
-
+ 
   const showAlert = () => {
     SnackBar({
       indicationMessage: "FingerPrint not supported on this device !",
     });
   };
+  useEffect(() => {
+    _isSupported();
+  }, []);
 
   const _isSupported = async () => {
     try {
