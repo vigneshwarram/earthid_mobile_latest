@@ -4,7 +4,7 @@ import ShareMenu, { ShareMenuReactView } from "react-native-share-menu";
 const Share = () => {
   const [sharedData, setSharedData] = useState("");
   const [sharedMimeType, setSharedMimeType] = useState("");
-
+console.log('ist coming')
   useEffect(() => {
 
     ShareMenuReactView.data().then(async ({ mimeType, data }) => {
@@ -36,6 +36,7 @@ const Share = () => {
             setTimeout(() => {
               ShareMenuReactView.dismissExtension();
             }, 500);
+            console.log('sharedData===>',sharedData)
             ShareMenuReactView.continueInApp({
               data: sharedData.toString(),
               mimeType: sharedMimeType,

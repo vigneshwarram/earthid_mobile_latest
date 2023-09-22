@@ -73,12 +73,12 @@ const Avatar = ({
                   style={[
                     styles.text,
                     style.text,
-                    { marginLeft: 10, fontWeight: "500" },
+                    { marginLeft: 10, fontSize:13 },
                   ]}
                 >
                   {userDetails?.responseData?.email}
                 </GenericText>
-                {userDetails?.responseData?.emailApproved && (
+                {userDetails?.responseData?.emailApproved ? (
                   <View
                     style={{
                       justifyContent: "center",
@@ -95,7 +95,15 @@ const Avatar = ({
                       style={{ width: 20, height: 20, marginTop: 2 }}
                     ></Image>
                   </View>
-                )}
+                ): <View style={{justifyContent:'center',alignItems:'center'}}><GenericText
+                style={[
+                  styles.text,
+                  style.text,
+                  { marginLeft: 5, fontSize:10,textAlign:'center' },
+                ]}
+              >
+                {'(Not Verified)'}
+              </GenericText></View>}
               </View>
             )}
 
@@ -120,14 +128,14 @@ const Avatar = ({
                   style={[
                     styles.text,
                     style.text,
-                    { marginLeft: 10, fontWeight: "500" },
+                    { marginLeft: 10, fontSize:13 },
                   ]}
                 >
                   {userDetails?.responseData?.countryCode +
                     " " +
                     userDetails?.responseData?.phone}
                 </GenericText>
-                {userDetails?.responseData?.mobileApproved && (
+                {userDetails?.responseData?.mobileApproved ? (
                   <View
                     style={{
                       justifyContent: "center",
@@ -144,7 +152,15 @@ const Avatar = ({
                       style={{ width: 20, height: 20, marginTop: 2 }}
                     ></Image>
                   </View>
-                )}
+                ):<View style={{justifyContent:'center',alignItems:'center'}}><GenericText
+                style={[
+                  styles.text,
+                  style.text,
+                  { marginLeft: 5, fontSize:10,textAlign:'center' },
+                ]}
+              >
+                {'(Not Verified)'}
+              </GenericText></View>}
               </View>
             )}
           </View>

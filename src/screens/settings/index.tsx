@@ -148,7 +148,9 @@ const CustomDrawer = (props: any) => {
     <View style={styles.sectionContainer}>
         <Header
             isBack
-            letfIconPress={() => props.navigation.goBack()}
+            letfIconPress={() => {
+              props.navigation.goBack()
+              props.navigation.openDrawer()}}
             headingText= {"setting"}
             linearStyle={styles.linearStyle}
         ></Header>
