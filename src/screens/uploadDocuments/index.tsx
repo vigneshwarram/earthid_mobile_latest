@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Platform,
   ActivityIndicator,
+  PermissionsAndroid,
 } from "react-native";
 import { RNCamera } from "react-native-camera";
 import DocumentPicker from "react-native-document-picker";
@@ -131,11 +132,32 @@ const UploadScreen = (props: any) => {
     fetchData();
   },[url])
 
-
+  async function requestMediaPermission() {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+        {
+          title: 'Media Permission',
+          message: 'App needs access to your media files.',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log('Media permission granted');
+      } else {
+        console.log('Media permission denied');
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  }
+  
 
   const openFilePicker = async () => {
     if (Platform.OS == "android") {
-      await requestPermission();
+      requestMediaPermission()
     }
     try {
       const resp: any = await DocumentPicker.pick({
@@ -143,10 +165,13 @@ const UploadScreen = (props: any) => {
         readContent: true,
       });
 
-      let fileUri = resp[0].uri;
-      fileUri= resp[0]?.uri?.replaceAll('%20',' ')
-      const decodedFileName = decodeURIComponent(fileUri);
-      console.log("resp[0]?.name==>####", decodedFileName);
+      let decodedFileName = resp[0].uri;
+      decodedFileName= resp[0]?.uri?.replaceAll('%20',' ')
+      if (Platform.OS == "android") {
+      }else{
+        decodedFileName = decodeURIComponent(decodedFileName);
+      }
+  
 
      
 
