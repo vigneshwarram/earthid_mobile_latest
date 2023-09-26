@@ -128,7 +128,6 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
       console.log("datamimeType::homepage", data);
       console.log("datamimeType", mimeType);
       const imageName = data.split("/").pop();
-    //  console.log("imageName",imageName)
 
       // const fileStat = await RNFS.stat(data);
       // console.log("imageName",fileStat)
@@ -151,7 +150,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
           type: mimeType,
           uri: base64,
           flow: "deeplink",
-          docName:imageName+'.jpg',
+          docName:imageName,
           file: {
             uri: base64,
           },
@@ -167,7 +166,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
           type: mimeType,
           uri: base64,
           flow: "deeplink",
-           docName:imageName+'.pdf',
+           docName:imageName,
           file: {
             uri: base64,
           },
@@ -197,7 +196,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
           type: extraData?.mimeType,
           uri: imagePath,
           flow: "deeplink",
-          docName:imageName+'.jpg',
+          docName:imageName,
           imagePath: imagePath,
           file: {
             uri: base64,
@@ -212,7 +211,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
           base64: base64,
           type: extraData?.mimeType,
           uri: base64,
-          docName:imageName+'.pdf',
+          docName:imageName,
           flow: "deeplink",
           file: {
             uri: base64,
@@ -449,7 +448,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
             leftAvatar={LocalImages.documentsImage}
             absoluteCircleInnerImage={LocalImages.upImage}
             // rightIconSrc={LocalImages.menuImage}
-            title={item?.isVc ?item.name : item?.documentName?.split("(")[1]?.split(")")[0] == "undefined" ?item?.docName : item?.docName}
+            title={item?.isVc ?item.name : item?.documentName?.split("(")[1]?.split(")")[0] == "undefined" ?item?.docName?.replaceAll('%20',"") : item?.docName?.replaceAll('%20',"")}
             subtitle={`      Uploaded  : ${item.date}`}
             timeTitle={getTime(item) }
             style={{

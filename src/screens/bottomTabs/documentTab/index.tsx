@@ -265,8 +265,8 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
               item?.isVc
                 ? item.name
                 : item?.docName?.split("(")[1]?.split(")")[0] == "undefined"
-                ? item?.docName
-                : item?.docName
+                ? item?.docName?.replaceAll('%20',"")
+                : item?.docName?.replaceAll('%20',"")
             }
             subtitle={
               item.isVc

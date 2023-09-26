@@ -192,7 +192,7 @@ function compareTime(a, b) {
             absoluteCircleInnerImage={LocalImages.upImage}
             // rightIconSrc={LocalImages.menuImage}
             rightIconOnPress={() => _rightIconOnPress(item)}
-            title={item?.isVc ?item.name : item?.documentName?.split("(")[1]?.split(")")[0] == "undefined" ? item?.docName : item?.docName}
+            title={item?.isVc ?item.name : item?.documentName?.split("(")[1]?.split(")")[0] == "undefined" ? item?.docName?.replaceAll('%20',"") : item?.docName?.replaceAll('%20',"")}
             subtitle={`      Uploaded  : ${item.date}`}
             // timeTitle={
             //   item.isVc
