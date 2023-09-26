@@ -125,18 +125,16 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
     }
     if (Platform.OS === "android") {
       const { mimeType, data, extraData } = item;
-      console.log("datamimeType", data);
-      console.log("datamimeType", extraData);
-      console.log("datamimeType", extraData);
-      const imageName = data.split("/").pop() + ".jpg";
-      console.log("imageName",imageName)
+      console.log("datamimeType::homepage", data);
+      console.log("datamimeType", mimeType);
+      const imageName = data.split("/").pop();
 
-      const fileStat = await RNFS.stat(data);
-      console.log("imageName",fileStat)
-      const uriimage = fileStat.originalFilepath
-      const uriimage1 :any = uriimage.split("/").pop()
-      const uriimage2 = uriimage1.split(".")[0]
-      console.log("imageName",uriimage2)
+      // const fileStat = await RNFS.stat(data);
+      // console.log("imageName",fileStat)
+      // const uriimage = fileStat.originalFilepath
+      // const uriimage1 :any = uriimage.split("/").pop()
+      // const uriimage2 = uriimage1.split(".")[0]
+      // console.log("imageName",uriimage2)
 
 
 
@@ -152,7 +150,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
           type: mimeType,
           uri: base64,
           flow: "deeplink",
-          docName:uriimage2,
+          docName:imageName,
           file: {
             uri: base64,
           },
@@ -160,6 +158,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
         navigation.navigate("DocumentPreviewScreen", { fileUri: fileUri });
       } else {
         const imagePath = data;
+        console.log("imagePath====>", imagePath);
         const base64 = await RNFS.readFile(imagePath, "base64");
         console.log("data====>", base64);
         const fileUri = {
@@ -167,7 +166,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
           type: mimeType,
           uri: base64,
           flow: "deeplink",
-          docName:uriimage2,
+           docName:imageName,
           file: {
             uri: base64,
           },
@@ -180,12 +179,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
       console.log("extraData?.mimeType", extraData?.mimeType);
 
 
-      const fileStat = await RNFS.stat(data);
-      console.log("imageName",fileStat)
-      const uriimage = fileStat.originalFilepath
-      const uriimage1 :any = uriimage.split("/").pop()
-      const uriimage2 = uriimage1.split(".")[0]
-      console.log("imageName",uriimage2)
+      const imageName = data.split("/").pop();
 
 
       if (
@@ -202,7 +196,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
           type: extraData?.mimeType,
           uri: imagePath,
           flow: "deeplink",
-          docName:uriimage2,
+          docName:imageName,
           imagePath: imagePath,
           file: {
             uri: base64,
@@ -217,7 +211,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
           base64: base64,
           type: extraData?.mimeType,
           uri: base64,
-          docName:uriimage2,
+          docName:imageName,
           flow: "deeplink",
           file: {
             uri: base64,
@@ -454,7 +448,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
             leftAvatar={LocalImages.documentsImage}
             absoluteCircleInnerImage={LocalImages.upImage}
             // rightIconSrc={LocalImages.menuImage}
-            title={item?.isVc ?item.name : item?.documentName?.split("(")[1]?.split(")")[0] == "undefined" ?item?.docName : item?.docName}
+            title={item?.isVc ?item.name : item?.documentName?.split("(")[1]?.split(")")[0] == "undefined" ?item?.docName?.replaceAll('%20',"") : item?.docName?.replaceAll('%20',"")}
             subtitle={`      Uploaded  : ${item.date}`}
             timeTitle={getTime(item) }
             style={{
