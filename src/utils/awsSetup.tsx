@@ -154,7 +154,7 @@ export async function createUserSpecificBucket(username:any) {
   }
 
 
-  export async function uploadPDFToS3(bucketName:any, objectKey:any,pdfFilePath:any) {
+  export async function uploadPDFToS3(bucketName:any, objectKey:any,base64Data:any) {
     try {
       const s3 = new AWS.S3();
       
@@ -165,8 +165,8 @@ export async function createUserSpecificBucket(username:any) {
         //   uri: imageUri,
         // },
       //  Body: base64Image,
-       Body: pdfFilePath,
-       ContentType: 'application/pdf',
+      Body: Buffer.from(base64Data, 'base64'),
+      ContentType: 'application/pdf', // Set the correct content type
        ACL: 'private', // Set ACL to 'public-read' to make the uploaded image publicly accessible
       };
 

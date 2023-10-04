@@ -80,32 +80,37 @@ const AuthBackupIdentity = ({ navigation, route }: IHomeScreenProps) => {
       const objectKey = imageName; 
 
       let credData = selectedItem?.verifiableCredential
-
-      const uploadedKey: any = await uploadJSONToS3(
-        bucketName,
-        `images/${objectKey}`,
-        credData,
-        ""
-      );
-     
-      if (uploadedKey) {
-        const objectKeys = `images/${imageName}`;
-        const preSignedURL = await generatePreSignedURL(bucketName, objectKeys);
-  
-  
-        if (preSignedURL) {
-          setPreSignedUrl(preSignedURL);
+      try{
+        const uploadedKey: any = await uploadJSONToS3(
+          bucketName,
+          `images/${objectKey}`,
+          credData,
+          ""
+        );
+       
+        if (uploadedKey) {
+          const objectKeys = `images/${imageName}`;
+          const preSignedURL = await generatePreSignedURL(bucketName, objectKeys);
+    
+    
+          if (preSignedURL) {
+            setPreSignedUrl(preSignedURL);
+            setActivityLoad(false);
+          } else {
+    
+            setActivityLoad(false);
+            Alert.alert("Error", "There is a technical issue, please try again later.");
+          }
         } else {
-  
-  
+          setActivityLoad(false);
           Alert.alert("Error", "There is a technical issue, please try again later.");
         }
-      } else {
-  
-        Alert.alert("Error", "There is a technical issue, please try again later.");
       }
-  
-
+      catch (error) {
+        console.log('erro----->',error)
+        setActivityLoad(false);
+        // Code to handle the exception
+      }
     }
     
     else if(type === "pdf"){
@@ -114,33 +119,40 @@ const AuthBackupIdentity = ({ navigation, route }: IHomeScreenProps) => {
       const imageName: any = selectedItem?.docName + "." + selectedItem?.docType;
       const pdfFile = selectedItem?.typePDF
       const pdfFilePath = RNFetchBlob.fs.dirs.CacheDir +"/"+imageName;
-      const response = await fetch(pdfFile);
-      const blob = await response.blob();
-
-      const objectKey = imageName; // Replace with your desired object key
-      const uploadedKey: any = await uploadPDFToS3(
-        bucketName,
-        `images/${objectKey}`,
-        blob
-      );
-     
-      if (uploadedKey) {
-        const objectKeys = `images/${imageName}`;
-        const preSignedURL = await generatePreSignedURL(bucketName, objectKeys);
+      try{
   
+        const objectKey = imageName; // Replace with your desired object key
+        const uploadedKey: any = await uploadPDFToS3(
+          bucketName,
+          `images/${objectKey}`,
+          selectedItem?.base64
+        );
   
-        if (preSignedURL) {
-          setPreSignedUrl(preSignedURL);
+        if (uploadedKey) {
+          const objectKeys = `images/${imageName}`;
+          const preSignedURL = await generatePreSignedURL(bucketName, objectKeys);
+    
+    
+          if (preSignedURL) {
+            setPreSignedUrl(preSignedURL);
+          } else {
+    
+            setActivityLoad(false);
+            Alert.alert("Error", "There is a technical issue, please try again later.");
+          }
         } else {
-  
-  
+          setActivityLoad(false);
           Alert.alert("Error", "There is a technical issue, please try again later.");
         }
-      } else {
   
-        Alert.alert("Error", "There is a technical issue, please try again later.");
+      }
+      catch (error) {
+        console.log('erro----->++++',error)
+        setActivityLoad(false);
+        // Code to handle the exception
       }
 
+     
 
     }
 
@@ -281,17 +293,11 @@ const AuthBackupIdentity = ({ navigation, route }: IHomeScreenProps) => {
     );
   };
 
-  useEffect(() => {
-    console.log("route==>", route);
-  }, []);
+
 
   return (
     <View style={styles.sectionContainer}>
-                  {activityLoader && signedUrl ===undefined ?
-                  <View style={{flex:1,justifyContent:'center',alignItems:'center'}}><ActivityIndicator
-            size={'large'}
-            color={'blue'}
-          ></ActivityIndicator></View>:    <ScrollView contentContainerStyle={styles.sectionContainer}>
+            <ScrollView contentContainerStyle={styles.sectionContainer}>
           <Header
             isLogoAlone={true}
             headingText={
@@ -341,7 +347,11 @@ const AuthBackupIdentity = ({ navigation, route }: IHomeScreenProps) => {
                 'Please share this QR code only with the intended recipient, as this will provide access to your information. You can also share this QR code with the intended recipient using the "Share QR Code" button'
               </GenericText>
             </View>
-            <View style={{ justifyContent: "center", alignItems: "center" }}>
+          {activityLoader?  <ActivityIndicator
+            size={'large'}
+            color={'blue'}
+          ></ActivityIndicator>
+            :<View style={{ justifyContent: "center", alignItems: "center" }}>
               <ViewShot
                 ref={viewShot}
                 captureMode="update"
@@ -359,12 +369,14 @@ const AuthBackupIdentity = ({ navigation, route }: IHomeScreenProps) => {
                   size={250}
                 />
               </ViewShot>
-            </View>
+            </View>}
             <Button
+            disabled={activityLoader}
               onPress={capturePicture}
               style={{
                 buttonContainer: {
                   elevation: 5,
+                opacity:activityLoader?0.5:1
                 },
                 text: {
                   color: Screens.pureWhite,
@@ -377,7 +389,6 @@ const AuthBackupIdentity = ({ navigation, route }: IHomeScreenProps) => {
             ></Button>
        </View>
         </ScrollView>
-}
    
   
     </View>

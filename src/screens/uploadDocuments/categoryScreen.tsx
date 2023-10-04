@@ -294,7 +294,21 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
     console.log("itemData", itemData);
     console.log("doc", docname);
   }, []);
-
+  const getCategoryImages = (itemKey: string ) => {
+    console.log('categoryType+++++educate',itemKey)
+    const getItems = SCREENS.HOMESCREEN.categoryList.filter(
+      (itemFiltered, index) => {
+        return (
+          itemFiltered.TITLE?.toLowerCase() ===
+          itemKey?.toLowerCase()
+        );
+      }
+    );
+    if (!getItems[0]) {
+      return "#D7EFFB";
+    }
+    return getItems[0];
+  };
   useEffect(() => {
     console.log("datra", getCategoryData);
 
@@ -317,7 +331,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
         localCategories.push({
           key: itemKey,
           value: InternalArray,
-          color: SCREENS.CATEGORYSCREEN.categories[indexOfKey]?.color,
+          color: getCategoryImages(itemKey)?.COLOR,
           isSelected: selectedItem?.documentName?.startsWith(itemKey)
             ? true
             : false,

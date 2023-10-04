@@ -214,7 +214,7 @@ function compareTime(a, b) {
               ...styles.cardContainer,
               ...{
                 avatarContainer: {
-                  backgroundColor:item?.isVc?'#D7EFFB': getImagesColor(item),
+                  backgroundColor:item?.isVc?'#D7EFFB': getCategoryImages(item)?.COLOR,
                   width: 60,
                   height: 60,
                   borderRadius: 20,
@@ -223,7 +223,7 @@ function compareTime(a, b) {
                   marginRight: 5,
                 },
                 uploadImageStyle: {
-                  backgroundColor:item?.isVc?'#D7EFFB': getImagesColor(item),
+                  backgroundColor:item?.isVc?'#D7EFFB': getCategoryImages(item)?.COLOR,
                   borderRadius: 25,
                   borderWidth: 3,
                   bordercolor: "#fff",

@@ -624,7 +624,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
               ...styles.cardContainernew,
               ...{
                 avatarContainer: {
-                  backgroundColor:item?.isVc?'#D7EFFB': getImagesColor(item),
+                  backgroundColor:item?.isVc?'#D7EFFB':getCategoryImages(item)?.COLOR,
                   width: 60,
                   height: 60,
                   borderRadius: 20,
@@ -633,7 +633,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
                   marginRight: 5,
                 },
                 uploadImageStyle: {
-                  backgroundColor:item?.isVc?'#D7EFFB': getImagesColor(item),
+                  backgroundColor:item?.isVc?'#D7EFFB':getCategoryImages(item)?.COLOR,
                   borderRadius: 25,
                   borderWidth: 3,
                   bordercolor: "#fff",

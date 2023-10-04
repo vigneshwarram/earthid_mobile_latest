@@ -134,6 +134,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
   //   deleteAllBuckets();
   // }, []);
   const getCategoryImages = (item: { categoryType: any; name: any }) => {
+    console.log('categoryType+++++educate',item?.categoryType)
     const getItems = SCREENS.HOMESCREEN.categoryList.filter(
       (itemFiltered, index) => {
         return (
@@ -142,7 +143,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
         );
       }
     );
-    if (getItems[0] == undefined) {
+    if (!getItems[0]) {
       return "#D7EFFB";
     }
     return getItems[0];
@@ -286,7 +287,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
                 avatarContainer: {
                   backgroundColor: item?.isVc
                     ? "#D7EFFB"
-                    : getImagesColor(item),
+                    :getCategoryImages(item)?.COLOR,
                   width: 60,
                   height: 60,
                   borderRadius: 20,
@@ -297,7 +298,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
                 uploadImageStyle: {
                   backgroundColor: item?.isVc
                     ? "#D7EFFB"
-                    : getImagesColor(item),
+                    : getCategoryImages(item)?.COLOR,
                   borderRadius: 25,
                   borderWidth: 3,
                   bordercolor: "#fff",
@@ -325,7 +326,6 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const handleUploadImage = async () => {
     setisBottomSheetForSideOptionVisible(false)
  navigation.navigate('ShareQr',{selectedItem:selectedItem})
-console.log("selectedItem",selectedItem);
 
   };
 
@@ -408,7 +408,6 @@ console.log("selectedItem",selectedItem);
         title: "Token",
       });
     } else {
-      console.log("selectedItem?.base64===>", selectedItem?.base64);
       if (selectedItem?.isLivenessImage === "livenessImage") {
         await Share.open({
           url: selectedItem?.base64,
@@ -478,7 +477,6 @@ s3.deleteObject(params, function(err, data) {
   else     console.log();                 // deleted
 });
             const helpArra = [...documentsDetailsList?.responseData];
-            console.log("documentsDetailsList", helpArra);
             const findIndex = helpArra?.findIndex(
               (item) => item.id === selectedItem?.id
             );

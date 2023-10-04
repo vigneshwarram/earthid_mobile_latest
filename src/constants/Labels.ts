@@ -68,7 +68,7 @@ export const SCREENS = {
       {
         TITLE: "travel",
         URI: LocalImages.CATEGORIES.travelImage,
-        COLOR: "#F5BCE8",
+        COLOR: "#33FFE0",
       },
       {
         TITLE: "insurance",

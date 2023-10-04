@@ -57,7 +57,8 @@ const Register = ({ navigation,route }: IHomeScreenProps) => {
     earthId: userDetails?.responseData.earthId,
     publicKey:publicKey,
     privateKey:privateKey,
-    UserDid:UserDid
+    UserDid:UserDid,
+    bucketName:`idv-sessions-${userDetails?.responseData.username.toLowerCase()}`
   };
   const serializedData = JSON.stringify(qrData);
 
