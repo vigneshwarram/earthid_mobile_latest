@@ -128,51 +128,46 @@ const CameraScreen = (props: any) => {
 
   console.log("url===>",url)
   const [scanned, setScanned] = useState(false);
-
+  function isJSONString(str: string) {
+    try {
+      JSON.parse(str);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
   const handleBarCodeScanned = useCallback((barCodeData) => {
     if (!scanned) {
       setScanned(true);
-      if(barCodeData.data !=''){
-        let serviceData =barCodeData?.data;
-        if(!serviceData.requestType){
-          createVcForIccaStudent(serviceData)
-  
-        }else{
-          if (!serviceProviderLoading) {
-            setbarCodeData(serviceData);
-      
-            if (serviceData.requestType === "login") {
-              serviceProviderApiCall(serviceData);
-            }
-            if (serviceData.requestType === "generateCredentials") {
-              serviceProviderApiCall(serviceData);
-            }
-            if (serviceData.requestType === "document") {
-              serviceProviderApiCall(serviceData);
-            }
-            if (serviceData.requestType === "shareCredentials") {
-              serviceProviderApiCall(serviceData);
-            }
-          
+      isJSONString(barCodeData?.data)
+      if(!isJSONString(barCodeData?.data)){    
+        createVcForIccaStudent(barCodeData)
+      }
+      else{
+         const serviceData =JSON.parse(barCodeData?.data)
+        if (!serviceProviderLoading) {
+          setbarCodeData(serviceData);
+    
+          if (serviceData?.requestType === "login") {
+            serviceProviderApiCall(serviceData);
           }
+          if (serviceData?.requestType === "generateCredentials") {
+            serviceProviderApiCall(serviceData);
+          }
+          if (serviceData.requestType === "document") {
+            serviceProviderApiCall(serviceData);
+          }
+          if (serviceData.requestType === "shareCredentials") {
+            serviceProviderApiCall(serviceData);
+          }
+        
         }
-        console.log("barcodedata", serviceData);
+      }
   
         setIsCamerVisible(false);
   
-      }
-      else{
-        Alert.alert(
-          'NO data',
-          'There is no data available in this QR code',
-          [
-            {text: 'OK', onPress:()=>{   setIsCamerVisible(true)}},
-          ],
-          { cancelable: false }
-        )
       
-      }
-
+    
       setTimeout(() => {
         setScanned(false);
       }, 1000); // Adjust the timeout duration as needed
@@ -608,7 +603,7 @@ const createVcForIccaStudent=(url)=>{
           <QrScannerMaskedWidget />
         </RNCamera>
       )}
-   {loading &&
+   {loading || serviceProviderLoading &&
        <View style={styles.loading}>
        <ActivityIndicator color={'red'} size='large' />
      </View>
