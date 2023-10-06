@@ -11,6 +11,7 @@ import {
   AsyncStorage,
   ImageEditor,
   ImageStore,
+  ActivityIndicator,
 } from "react-native";
 import { RNCamera } from "react-native-camera";
 import Button from "../../components/Button";
@@ -88,6 +89,7 @@ const CameraScreen = (props: any) => {
   const keys = useAppSelector((state) => state.user);
   const [successResponse, setsuccessResponse] = useState(false);
   const [isCameraVisible, setIsCamerVisible] = useState(true);
+  const [isLoading,setisLoading] = useState(false)
   const [isDocumentModal, setisDocumentModal] = useState(false);
   const documentsDetailsList = useAppSelector((state) => state.Documents);
   const [selectedCheckBox, setselectedCheckBox] = useState(
@@ -178,8 +180,9 @@ const CameraScreen = (props: any) => {
 
   const _handleBarCodeRead = (barCodeData: any) => {
     console.log("barcodeDetails", barCodeData);
-  
+    setisLoading(true)
       if (barCodeData?.data === undefined) {
+        setisLoading(false)
         setIsCamerVisible(false);
         Alert.alert(
           //This is title
@@ -212,6 +215,7 @@ const CameraScreen = (props: any) => {
               serviceProviderApiCall(serviceData);
             }
             if(!serviceData.requestType){
+              setisLoading(false)
               setIsCamerVisible(false);
               Alert.alert(
                 //This is title
@@ -228,6 +232,7 @@ const CameraScreen = (props: any) => {
           }
           else{
             setIsCamerVisible(false);
+            setisLoading(false)
             Alert.alert(
               //This is title
              "Invalid QR Code",
@@ -242,6 +247,7 @@ const CameraScreen = (props: any) => {
           }
           setIsCamerVisible(false);
         } catch (error) {
+          setisLoading(false)
           setIsCamerVisible(false);
           Alert.alert(
             //This is title
@@ -283,7 +289,7 @@ const CameraScreen = (props: any) => {
       serviceProviderResponse?.values?.length > 0
     ) {
       setisDocumentModalkyc(false);
-
+      setisLoading(false)
       if (barCodeDataDetails?.requestType === "login") {
         setTimeout(() => {
           setissuerLogin(true);
@@ -306,6 +312,7 @@ const CameraScreen = (props: any) => {
     if (sendDatatoServiceProviderData) {
       //passwordless login flow
       setisDocumentModalkyc(false);
+      setisLoading(false)
       if (barCodeDataDetails?.requestType === "login") {
         setIsCamerVisible(true);
         generateUserSignature();
@@ -352,6 +359,17 @@ const CameraScreen = (props: any) => {
     return datas;
   };
 
+  const getArrayOfBase64 =()=>{
+    let datas: any[] =[]
+      documentsDetailsList?.responseData.map((item,index)=>{
+        if(item?.base64 && !item.isVc){
+          datas.push(item.base64)
+        }
+      })
+   return datas
+  };
+  
+
   useEffect(() => {}, []);
 
 
@@ -393,6 +411,8 @@ const CameraScreen = (props: any) => {
 
 
   const createVerifiableCredentials = async () => {
+    setisLoading(true)
+    setisDocumentModalkyc(false);
     auditFlowApi()
     generateUserSignature();
     getData();
@@ -438,12 +458,13 @@ const CameraScreen = (props: any) => {
 
       setIsCamerVisible(true);
       setTimeout(() => {
+        setisLoading(false)
         setloadingforGentSchemaAPI(false);
         setissuerSchemaDropDown(false);
         //    Alert.alert("KYC token Saved successfully");
         Alert.alert("ACK token Saved successfully");
         props.navigation.navigate("Documents");
-      }, 3000);
+      }, 5000);
     } else if (barCodeDataDetails.requestType === "shareCredentials") {
       // getData();
     } else {
@@ -488,11 +509,12 @@ const CameraScreen = (props: any) => {
 
       setIsCamerVisible(true);
       setTimeout(() => {
+        setisLoading(false)
         setloadingforGentSchemaAPI(false);
         setissuerSchemaDropDown(false);
         Alert.alert("Membership Credential Saved successfully");
         props.navigation.navigate("Documents");
-      }, 3000);
+      }, 5000);
     }
   };
 
@@ -565,7 +587,7 @@ const CameraScreen = (props: any) => {
             publicKey: keys?.responseData?.result?.publicKey,
             userDid: keys?.responseData?.newUserDid,
             signature: createSignatureKey,
-            base64: base64Pic,
+            base64: getArrayOfBase64(),
             docName: documentsDetailsList?.responseData[0]?.docName,
           },
         };
@@ -592,7 +614,7 @@ const CameraScreen = (props: any) => {
             userDid: keys?.responseData?.newUserDid,
             docName: documentsDetailsList?.responseData[0]?.docName,
             signature: createSignatureKey,
-            base64: base64Pic,
+            base64: getArrayOfBase64(),
           },
         };
       } else if (barCodeDataDetails.requestType === "shareCredentials") {
@@ -613,7 +635,7 @@ const CameraScreen = (props: any) => {
             requestType: barCodeDataDetails?.requestType,
             reqNo: barCodeDataDetails?.reqNo,
             signature: createSignatureKey,
-            base64: base64Pic,
+            base64: getArrayOfBase64(),
             docName: documentsDetailsList?.responseData[0]?.docName,
             kycToken:
               "6hrFDATxrG9w14QY9wwnmVhLE0Wg6LIvwOwUaxz761m1JfRp4rs8Mzozk5xhSkw0_MQz6bpcJnrFUDwp5lPPFC157dHxbkKlDiQ9XY3ZIP8zAGCsS8ruN2uKjIaIargX",
@@ -642,7 +664,8 @@ const CameraScreen = (props: any) => {
           ></Image>
         </TouchableOpacity>
       </View>
-      {isCameraVisible && (
+   
+      {isCameraVisible &&!isLoading && (
         <RNCamera
           style={styles.preview}
           androidCameraPermissionOptions={null}
@@ -653,6 +676,11 @@ const CameraScreen = (props: any) => {
           <QrScannerMaskedWidget />
         </RNCamera>
       )}
+   {serviceProviderLoading || isLoading &&
+       <View style={styles.loading}>
+       <ActivityIndicator color={'red'} size='large' />
+     </View>
+}
 
       <SuccessPopUp
         isLoaderVisible={successResponse}
@@ -750,7 +778,11 @@ const CameraScreen = (props: any) => {
         height={500}
         isModalVisible={isDocumentModalkyc}
       >
+          {isLoading ? <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>        
+          <ActivityIndicator color={'red'} size='large' />
+          </View>:
         <View style={{ flex: 1, paddingHorizontal: 5 }}>
+          
           {documentsDetailsList?.responseData?.length === 0 ||
             (documentsDetailsList?.responseData === undefined && (
               <TouchableOpacity onPress={() => navigateToCamerScreen()}>
@@ -931,7 +963,7 @@ const CameraScreen = (props: any) => {
               </GenericText>
             </TouchableOpacity>
           </View>
-        </View>
+        </View>}
       </ModalView>
 
       <Loader
@@ -980,6 +1012,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     fontSize: 14,
   },
+  loading: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+
   placeholderStyle: {
     fontSize: 16,
   },
