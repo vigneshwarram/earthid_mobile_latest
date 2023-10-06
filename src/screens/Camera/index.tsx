@@ -362,12 +362,24 @@ const CameraScreen = (props: any) => {
   const getArrayOfBase64 =()=>{
     let datas: any[] =[]
       documentsDetailsList?.responseData.map((item,index)=>{
-        if(item?.base64 && !item.isVc){
+        console.log('itemselected',item.selectedForCheckBox)
+        if(item?.base64 && !item.isVc && item.selectedForCheckBox){
           datas.push(item.base64)
         }
       })
    return datas
   };
+
+  const getArrayOfDocName =()=>{
+    let datas: any[] =[]
+      documentsDetailsList?.responseData.map((item,index)=>{
+        if(item?.docName && !item.isVc && item.selectedForCheckBox){
+          datas.push(item.docName)
+        }
+      })
+   return datas
+  };
+  
   
 
   useEffect(() => {}, []);
@@ -588,7 +600,7 @@ const CameraScreen = (props: any) => {
             userDid: keys?.responseData?.newUserDid,
             signature: createSignatureKey,
             base64: getArrayOfBase64(),
-            docName: documentsDetailsList?.responseData[0]?.docName,
+            docName:getArrayOfDocName(),
           },
         };
       } else if (barCodeDataDetails?.requestType === "document") {
@@ -612,7 +624,7 @@ const CameraScreen = (props: any) => {
               "6hrFDATxrG9w14QY9wwnmVhLE0Wg6LIvwOwUaxz761m1JfRp4rs8Mzozk5xhSkw0_MQz6bpcJnrFUDwp5lPPFC157dHxbkKlDiQ9XY3ZIP8zAGCsS8ruN2uKjIaIargX",
             publicKey: keys?.responseData?.result?.publicKey,
             userDid: keys?.responseData?.newUserDid,
-            docName: documentsDetailsList?.responseData[0]?.docName,
+            docName:getArrayOfDocName(),
             signature: createSignatureKey,
             base64: getArrayOfBase64(),
           },
@@ -636,7 +648,7 @@ const CameraScreen = (props: any) => {
             reqNo: barCodeDataDetails?.reqNo,
             signature: createSignatureKey,
             base64: getArrayOfBase64(),
-            docName: documentsDetailsList?.responseData[0]?.docName,
+            docName:getArrayOfDocName(),
             kycToken:
               "6hrFDATxrG9w14QY9wwnmVhLE0Wg6LIvwOwUaxz761m1JfRp4rs8Mzozk5xhSkw0_MQz6bpcJnrFUDwp5lPPFC157dHxbkKlDiQ9XY3ZIP8zAGCsS8ruN2uKjIaIargX",
           },
