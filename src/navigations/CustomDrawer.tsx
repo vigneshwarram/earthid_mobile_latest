@@ -65,8 +65,8 @@ const CustomDrawer = (props: any) => {
         props.navigation.dispatch(StackActions.replace("AuthStack"));
       });
     } else if (item.route === "delete") {
-      const bucketName = `idv-sessions-${userDetails?.username.toLowerCase()}`;
-      deleteSingleBucket(bucketName)
+      // const bucketName = `idv-sessions-${userDetails?.username.toLowerCase()}`;
+      // deleteSingleBucket(bucketName)
       await AsyncStorage.removeItem('apiCalled');
       deleteUser();
     } else if (item.route === "about") {
