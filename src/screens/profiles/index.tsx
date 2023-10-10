@@ -315,6 +315,7 @@ const setResponseData =(data: any)=>{
       ) : (
         <ScrollView contentContainerStyle={styles.sectionContainer}>
           <Header
+          hideUser={true}
             picUri={local_img == "" ? profilePicture?.profileData : local_img}
             actionIcon={LocalImages.editImage}
             avatarClick={_avatarClick}

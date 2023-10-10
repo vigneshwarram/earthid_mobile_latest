@@ -118,21 +118,10 @@ export const createAccount =
       });
       const response = await postCall(createAccountUrl, requestPayload);
       responseData = await _responseHandler(response);
-     
-
-      //SW3
-
-      const userSW3 = await createUserSpecificBucket(responseData.username)
-  
-      responseUserSpecificBucket = await _s3responseHandler(userSW3)
-      console.log('responseUserSpecificBucket====>',responseUserSpecificBucket)
-
-
       dispatch({
         type: ACTION_TYPES.CREATED_ACCOUNT_RESPONSE,
         payload: {
           responseData,
-          responseUserSpecificBucket,
           isLoading: false,
           errorMesssage: "",
         },

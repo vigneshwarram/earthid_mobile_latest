@@ -7,14 +7,13 @@ import AnimatedLoader from "../../components/Loader/AnimatedLoader";
 import { LocalImages } from "../../constants/imageUrlConstants";
 import { useFetch } from "../../hooks/use-fetch";
 import { Screens } from "../../themes/index";
-import { BASE_URL, uploadDocument } from "../../utils/earthid_account";
+import { BASE_URL } from "../../utils/earthid_account";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import RNQRGenerator from "rn-qr-generator";
 import RNFS from "react-native-fs";
 import { _s3responseHandler, byPassUserDetailsRedux } from "../../redux/actions/authenticationAction";
 import DocumentPicker from "react-native-document-picker";
 import { SnackBar } from "../../components/SnackBar";
-import { createUserSpecificBucket } from "../../utils/awsSetup";
 
 
 

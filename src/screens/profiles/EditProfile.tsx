@@ -339,7 +339,7 @@ console.log('medialList=============>,',medialList)
             leftIconSource={LocalImages.backImage}
             isAvatar
             isBack
-            onpress={_navigateAction}
+            onpress={isfullNameError ?null: _navigateAction}
             linearStyle={styles.linearStyle}
             containerStyle={{
               iconStyle: {

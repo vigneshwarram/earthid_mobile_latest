@@ -120,8 +120,7 @@ if (selectedItem ) {
 
   const obj = documentsDetailsList?.responseData[index];
   obj.documentName = selectedDocument
-  obj.categoryType =selectedDocument;
-  console.log('index===>',obj)
+  obj.categoryType =selectedDocument && selectedDocument?.split("(")[0]?.trim();
   dispatch(updateDocuments(documentsDetailsList?.responseData,index,obj));
    setTimeout(async () => {
     setsuccessResponse(false);
@@ -150,7 +149,7 @@ if (selectedItem ) {
     docExt: ".jpg",
     processedDoc: "",
     base64: uploadedDocumentsBase64,
-    categoryType: selectedDocument,
+    categoryType: selectedDocument && selectedDocument?.split("(")[0]?.trim(),
     docName:docname,
     isVerifyNeeded:true,
     isLivenessImage:"livenessImage",
@@ -169,7 +168,7 @@ if (selectedItem ) {
     if (item === "documentflow") {
       props.navigation.navigate("RegisterScreen");
     } else {
-      generateVc()
+     // generateVc()
       props.navigation.navigate("Documents");
     }
   }, 2000);
@@ -185,7 +184,7 @@ function generateVc(){
   var date = dateTime();
   var documentDetails: IDocumentProps = {
     id: `ID_VERIFICATION${Math.random()}${"selectedDocument"}${Math.random()}`,
-    name: "VC - ACK Token",
+    name: "Acknowledgement Token",
     path: "filePath",
     date: date?.date,
     time: date?.time,
@@ -195,8 +194,8 @@ function generateVc(){
     processedDoc: "",
     isVc: true,
     vc: JSON.stringify({
-      name: "VC - ACK Token",
-      documentName: "VC - ACK Token",
+      name: "Acknowledgement Token",
+      documentName: "Acknowledgement Token",
       path: "filePath",
       date: date?.date,
       time: date?.time,

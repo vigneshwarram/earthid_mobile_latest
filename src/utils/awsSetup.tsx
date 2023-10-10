@@ -37,6 +37,17 @@ export async function createUserSpecificBucket(username:any) {
     }
   }
 
+  export async function checkBucketExists(bucketName: string) {
+    try {
+      const s3 = new AWS.S3();
+    const res =  await s3.headBucket({ Bucket: bucketName }).promise();
+     console.log('response===>',res)
+      return true
+    } catch (error) {
+      return false
+    }
+  }
+
  export const listBuckets = async () => {
   const s3 = new AWS.S3();
     try {

@@ -26,6 +26,7 @@ const Header = ({
   containerStyle = {},
   linearStyle = {},
   onpress,
+  hideUser=false,
   isUploaded = false,
   isAvatar,
   isProfileAvatar = false,
@@ -230,7 +231,7 @@ const Header = ({
                 absoluteCircleInnerImage={absoluteCircleInnerImage}
                 isProfileAvatar={isProfileAvatar}
                 isUploaded={isUploaded}
-                text={userDetails?.responseData?.username}
+                text={hideUser?'': userDetails?.responseData?.username}
                 iconSource={picUri ? { uri: picUri } : LocalImages.avatarImage}
               ></Avatar>
             )}

@@ -14,6 +14,7 @@ import {
   Text
 } from "react-native";
 import { EventRegister } from "react-native-event-listeners";
+import il8n, { getUserLanguagePreference } from "../.././../utils/i18n";
 import RNFS from "react-native-fs";
 import Avatar from "../../../components/Avatar";
 import Card from "../../../components/Card";
@@ -85,6 +86,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
 
   const [aState, setAppState] = useState(AppState.currentState);
   useEffect(() => {
+    setLanguage()
     const appStateListener = AppState.addEventListener(
       'change',
       nextAppState => {
@@ -92,6 +94,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
         if(nextAppState==='active'){
           ShareMenu.getInitialShare(handleShare);
         }
+        setLanguage()
         setAppState(nextAppState);
       },
     );
@@ -99,6 +102,15 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
       appStateListener?.remove();
     };
   }, []);
+  
+  const setLanguage =async()=>{
+    const language = await AsyncStorage.getItem("setLanguage");
+    if(language){
+      il8n.changeLanguage(language);
+    }
+    
+  }
+
   const [recentDataOfDocument, setrecentData] = useState([]);
   const dispatch = useAppDispatch();
   const _toggleDrawer = () => {

@@ -41,7 +41,7 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
       setIsLoading(true);
       setTimeout(() => {
         setIsLoading(false);
-        navigation.navigate("Home");
+        navigation.navigate("UpdateAuthentication");
       }, 3000);
     } else {
       setisError(true);

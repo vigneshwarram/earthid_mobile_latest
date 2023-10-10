@@ -362,13 +362,24 @@ const CameraScreen = (props: any) => {
   const getArrayOfBase64 =()=>{
     let datas: any[] =[]
       documentsDetailsList?.responseData.map((item,index)=>{
-        console.log('itemselected',item.selectedForCheckBox)
+        console.log('itemselected',item)
         if(item?.base64 && !item.isVc && item.selectedForCheckBox){
           datas.push(item.base64)
         }
       })
    return datas
   };
+
+  const getTypesOfDoc =()=>{
+    let datas: any[] =[]
+    documentsDetailsList?.responseData.map((item,index)=>{
+      console.log('itemselected',item.selectedForCheckBox)
+      if(item?.base64 && !item.isVc && item.selectedForCheckBox){
+        datas.push(item.docType)
+      }
+    })
+ return datas
+  }
 
   const getArrayOfDocName =()=>{
     let datas: any[] =[]
@@ -434,9 +445,9 @@ const CameraScreen = (props: any) => {
       var date = dateTime();
       var documentDetails: IDocumentProps = {
         id: `ID_VERIFICATION${Math.random()}${"selectedDocument"}${Math.random()}`,
-        name: "VC - ACK Token",
+        name: "Acknowledgement Token",
         path: "filePath",
-        documentName: "VC - ACK Token",
+        documentName: "Acknowledgement Token",
         date: date?.date,
         time: date?.time,
         txId: "data?.result",
@@ -445,8 +456,8 @@ const CameraScreen = (props: any) => {
         processedDoc: "",
         isVc: true,
         vc: JSON.stringify({
-          name: "VC - ACK Token",
-          documentName: "VC - ACK Token",
+          name: "Acknowledgement Token",
+          documentName: "Acknowledgement Token",
           path: "filePath",
           date: date?.date,
           time: date?.time,
@@ -465,8 +476,8 @@ const CameraScreen = (props: any) => {
         ? documentsDetailsList?.responseData
         : [];
 
-      DocumentList.push(documentDetails);
-      dispatch(saveDocuments(DocumentList));
+      // DocumentList.push(documentDetails);
+      // dispatch(saveDocuments(DocumentList));
 
       setIsCamerVisible(true);
       setTimeout(() => {
@@ -474,9 +485,9 @@ const CameraScreen = (props: any) => {
         setloadingforGentSchemaAPI(false);
         setissuerSchemaDropDown(false);
         //    Alert.alert("KYC token Saved successfully");
-        Alert.alert("ACK token Saved successfully");
+        Alert.alert("Document uploaded successfully");
         props.navigation.navigate("Documents");
-      }, 5000);
+      }, 10000);
     } else if (barCodeDataDetails.requestType === "shareCredentials") {
       // getData();
     } else {
@@ -526,7 +537,7 @@ const CameraScreen = (props: any) => {
         setissuerSchemaDropDown(false);
         Alert.alert("Membership Credential Saved successfully");
         props.navigation.navigate("Documents");
-      }, 5000);
+      }, 10000);
     }
   };
 
@@ -601,6 +612,7 @@ const CameraScreen = (props: any) => {
             signature: createSignatureKey,
             base64: getArrayOfBase64(),
             docName:getArrayOfDocName(),
+            type:getTypesOfDoc()
           },
         };
       } else if (barCodeDataDetails?.requestType === "document") {
@@ -614,10 +626,6 @@ const CameraScreen = (props: any) => {
             userEmail: userDetails?.responseData?.email,
             userMobileNo: userDetails?.responseData?.phone,
             OrganizationID: userDetails?.responseData?.orgId,
-            // countryCode: userDetails?.responseData?.countryCode,
-            // emailVerified: userDetails?.responseData?.emailVerified,
-            // mobileVerified: userDetails?.responseData?.mobileVerified,
-            //documents: documentsDetailsList?.responseData,
             requestType: barCodeDataDetails?.requestType,
             reqNo: barCodeDataDetails?.reqNo,
             kycToken:
@@ -627,6 +635,8 @@ const CameraScreen = (props: any) => {
             docName:getArrayOfDocName(),
             signature: createSignatureKey,
             base64: getArrayOfBase64(),
+            type:getTypesOfDoc()
+            
           },
         };
       } else if (barCodeDataDetails.requestType === "shareCredentials") {
@@ -649,6 +659,7 @@ const CameraScreen = (props: any) => {
             signature: createSignatureKey,
             base64: getArrayOfBase64(),
             docName:getArrayOfDocName(),
+            type:getTypesOfDoc(),
             kycToken:
               "6hrFDATxrG9w14QY9wwnmVhLE0Wg6LIvwOwUaxz761m1JfRp4rs8Mzozk5xhSkw0_MQz6bpcJnrFUDwp5lPPFC157dHxbkKlDiQ9XY3ZIP8zAGCsS8ruN2uKjIaIargX",
           },

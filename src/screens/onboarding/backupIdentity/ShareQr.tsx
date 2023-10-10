@@ -28,9 +28,10 @@ import { useAppSelector } from "../../../hooks/hooks";
 import { LocalImages } from "../../../constants/imageUrlConstants";
 import { isEarthId } from "../../../utils/PlatFormUtils";
 import ImageResizer from "react-native-image-resizer";
-import { generatePreSignedURL, uploadImageToS3, uploadJSONToS3, uploadPDFToS3 } from "../../../utils/awsSetup";
+import { checkBucketExists, createUserSpecificBucket, generatePreSignedURL, uploadImageToS3, uploadJSONToS3, uploadPDFToS3 } from "../../../utils/awsSetup";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import RNFetchBlob from "rn-fetch-blob";
+import { _s3responseHandler } from "../../../redux/actions/authenticationAction";
 
 
 interface IHomeScreenProps {
@@ -67,8 +68,20 @@ const AuthBackupIdentity = ({ navigation, route }: IHomeScreenProps) => {
   },[])
 
   const getQRCode =async()=>{
-   
-    setActivityLoad(true);
+       //SW3
+       setActivityLoad(true);
+       let bucketName = `idv-sessions-${userDetails?.responseData.username.toLowerCase()}`;
+if( await checkBucketExists(bucketName)){
+  console.log('bucket already existed')
+}
+else{
+  const userSW3 = await createUserSpecificBucket(userDetails?.responseData.username) 
+  const  responseUserSpecificBucket = await _s3responseHandler(userSW3)
+  bucketName =responseUserSpecificBucket
+}
+      
+    
+  
     const selectedItem = route.params.selectedItem
 
 
@@ -82,7 +95,7 @@ const AuthBackupIdentity = ({ navigation, route }: IHomeScreenProps) => {
       let credData = selectedItem?.verifiableCredential
       try{
         const uploadedKey: any = await uploadJSONToS3(
-          bucketName,
+          responseUserSpecificBucket,
           `images/${objectKey}`,
           credData,
           ""
@@ -90,7 +103,7 @@ const AuthBackupIdentity = ({ navigation, route }: IHomeScreenProps) => {
        
         if (uploadedKey) {
           const objectKeys = `images/${imageName}`;
-          const preSignedURL = await generatePreSignedURL(bucketName, objectKeys);
+          const preSignedURL = await generatePreSignedURL(responseUserSpecificBucket, objectKeys);
     
     
           if (preSignedURL) {

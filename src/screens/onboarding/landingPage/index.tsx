@@ -43,16 +43,35 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
   const [selectedLanguage, setselectedLanguage] = useState(AppLanguage.ENGLISH);
   const [loading, setLoading] = useState(true);
   const [langugeList, setLanguageList] = useState([
-    { label: "English", value: AppLanguage.ENGLISH, selection: true },
-    { label: "Spanish", value: AppLanguage.SPANISH, selection: false },
-    { label: "Portuguese", value: AppLanguage.PORTUGUESE, selection: false },
+    { label: "English", value: AppLanguage.ENGLISH,selection:true },
+    { label: "Spanish", value: AppLanguage.SPANISH },
+    { label: "Portuguese", value: AppLanguage.PORTUGUESE },
   ]);
   useEffect(() => {
+    getLanguageSelection()
+  
+  }, []);
+
+  const getLanguageSelection =async()=>{
+   const language = await AsyncStorage.getItem("setLanguage");
+   if(language){
+    const localList =langugeList.map((item)=>{
+      if(item.value === language){
+        il8n.changeLanguage(item.value);
+        item.selection =true
+      }
+      else{
+        item.selection =false
+      }
+      return item
+     })
+     setLanguageList([...localList])
+   }
+
     setTimeout(() => {
       setLanguageVisible(true);
     }, 500);
-  }, []);
-
+  }
   useEffect(() => {
     navigationCheck();
   }, []);

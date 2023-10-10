@@ -30,14 +30,6 @@ import { Screens } from "../../../themes";
 import Modal from "react-native-modal";
 import QRCode from "react-native-qrcode-image";
 import { getColor } from "../../../utils/CommonFuntion";
-import {
-  createUserSpecificBucket,
-  deleteAllBuckets,
-  generatePreSignedURL,
-  listBuckets,
-  mapCountryCodeToRegion,
-  uploadImageToS3,
-} from "../../../utils/awsSetup";
 import zlib from "zlib";
 import Spinner from "react-native-loading-spinner-overlay/lib";
 import ImageResizer from 'react-native-image-resizer';
@@ -134,15 +126,16 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
   //   deleteAllBuckets();
   // }, []);
   const getCategoryImages = (item: { categoryType: any; name: any }) => {
-    console.log('categoryType+++++educate',item?.categoryType)
+   
     const getItems = SCREENS.HOMESCREEN.categoryList.filter(
       (itemFiltered, index) => {
         return (
-          itemFiltered.TITLE?.toLowerCase() ===
+          itemFiltered?.TITLE?.toLowerCase() ===
           item?.categoryType?.toLowerCase()
         );
       }
     );
+   
     if (!getItems[0]) {
       return "#D7EFFB";
     }

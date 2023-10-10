@@ -101,7 +101,7 @@ const LivenessCameraScreen = (props: any) => {
             };
             const data = await camRef.current.takePictureAsync(options);
 
-            props.navigation.navigate("Home");
+            navigation.navigate("UpdateAuthentication");
           } else {
             SnackBar({
               indicationMessage: "I can still see you moving",

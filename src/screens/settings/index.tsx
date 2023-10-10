@@ -35,53 +35,35 @@ const CustomDrawer = (props: any) => {
     }
   };
   const [langugeList, setLanguageList] = useState([
-    { label: "English", value: AppLanguage.ENGLISH, selection: true },
-    { label: "Spanish", value: AppLanguage.SPANISH, selection: false },
-    { label: "Portuguese", value: AppLanguage.PORTUGUESE, selection: false },
+    { label: "English", value: AppLanguage.ENGLISH},
+    { label: "Spanish", value: AppLanguage.SPANISH},
+    { label: "Portuguese", value: AppLanguage.PORTUGUESE },
   ]);
 
   useEffect(() => {
-    getStoredLanguage();
+    getLanguageSelection()
+  
   }, []);
 
-  const getStoredLanguage = async () => {
-    const getUserLanguagePreferences = await AsyncStorage.getItem(
-      "setLanguage"
-    );
-    let langugeLists = [];
+  const getLanguageSelection =async()=>{
+   const language = await AsyncStorage.getItem("setLanguage");
+   if(language){
+    const localList =langugeList.map((item)=>{
+      if(item.value === language){
+        il8n.changeLanguage(item.value);
+        item.selection =true
+      }
+      else{
+        item.selection =false
+      }
+      return item
+     })
+     setLanguageList([...localList])
+   }
 
-    if (getUserLanguagePreferences === AppLanguage.ENGLISH) {
-      console.log("getUserLanguagePreferences=====>");
-      langugeLists = langugeList.map((item, index) => {
-        if (index === 0) {
-          item.selection = true;
-        } else {
-          item.selection = false;
-        }
-        return item;
-      });
-    } else if (getUserLanguagePreferences === AppLanguage.PORTUGUESE) {
-      langugeLists = langugeList.map((item, index) => {
-        if (index === 2) {
-          item.selection = true;
-        } else {
-          item.selection = false;
-        }
-        return item;
-      });
-    } else {
-      langugeLists = langugeList.map((item, index) => {
-        if (index === 1) {
-          item.selection = true;
-        } else {
-          item.selection = false;
-        }
-        return item;
-      });
-    }
+  }
 
-    setLanguageList([...langugeLists]);
-  };
+
 
   const _renderItem = ({ item }: { item: any }) => (
     <TouchableOpacity onPress={() => _navigateAction(item)}>
@@ -129,8 +111,9 @@ const CustomDrawer = (props: any) => {
     </TouchableOpacity>
   );
 
-  const selectLanguage = (item: any) => {
+  const selectLanguage = async(item: any) => {
     il8n.changeLanguage(item.value);
+    await AsyncStorage.setItem("setLanguage", item.value);
     const languageList = langugeList.map((itemData, inde) => {
       if (itemData.label === item.label) {
         itemData.selection =true;
