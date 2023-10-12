@@ -1,4 +1,4 @@
-package com.myearthid.newarchitecture;
+package com.globalidiqtechandroid.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.EmptyReactNativeConfig;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.myearthid.BuildConfig;
-import com.myearthid.newarchitecture.components.MainComponentsRegistry;
-import com.myearthid.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.globalidiqtechandroid.BuildConfig;
+import com.globalidiqtechandroid.newarchitecture.components.MainComponentsRegistry;
+import com.globalidiqtechandroid.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 
