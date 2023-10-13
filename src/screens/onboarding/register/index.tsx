@@ -425,7 +425,7 @@ if(mobileNumber.length < 10){
           var date = dateTime();
           var documentDetails: IDocumentProps = {
             id: res?.data?.verifiableCredential?.id,
-            name: "VC - EarthId Token",
+            name:isEarthId()? `VC - EarthId Token`:'VC - GlobalId Token',
             path: "filePath",
             date: date?.date,
             time: date?.time,
@@ -435,8 +435,8 @@ if(mobileNumber.length < 10){
             processedDoc: "",
             isVc: true,
             vc: JSON.stringify({
-              name: "VC - EarthId Token",
-              documentName: "VC - EarthId Token",
+              name: isEarthId()? `VC - EarthId Token`:'VC - GlobalId Token',
+              documentName:isEarthId()? `VC - EarthId Token`:'VC - GlobalId Token',
               path: "filePath",
               date: date?.date,
               time: date?.time,
@@ -447,8 +447,8 @@ if(mobileNumber.length < 10){
               isVc: true,
             }),
             verifiableCredential:res?.data?.verifiableCredential,
-            documentName: "",
-            docName: "",
+            documentName:isEarthId()? `VC - EarthId Token`:'VC - GlobalId Token',
+            docName: isEarthId()? `VC - EarthId Token`:'VC - GlobalId Token',
             base64: undefined
           };
     

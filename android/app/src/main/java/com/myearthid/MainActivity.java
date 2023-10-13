@@ -1,4 +1,4 @@
-package com.globalidiqtechandroid;
+package com.myearthid;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
