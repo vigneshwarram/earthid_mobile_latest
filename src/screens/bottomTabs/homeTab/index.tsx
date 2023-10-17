@@ -11,7 +11,8 @@ import {
   Alert,
   Platform,
   AppState,
-  Text
+  Text,
+  InteractionManager
 } from "react-native";
 import { EventRegister } from "react-native-event-listeners";
 import il8n, { getUserLanguagePreference } from "../.././../utils/i18n";
@@ -41,6 +42,8 @@ import { createUserSignaturekey } from "../../../utils/createUserSignaturekey";
 import { newssiApiKey } from "../../../utils/earthid_account";
 import { createVerifiableCred } from "../../../utils/createVerifiableCred";
 import Spinner from "react-native-loading-spinner-overlay/lib";
+import { StackActions } from "@react-navigation/native";
+import TouchID from "react-native-touch-id";
 
 
 interface IHomeScreenProps {
@@ -52,7 +55,17 @@ type SharedItem = {
   data: string;
   extraData: any;
 };
-
+const optionalConfigObject = {
+  title: "Authentication Required", // Android
+  imageColor: "#2AA2DE", // Android
+  imageErrorColor: "#ff0000", // Android
+  sensorDescription: "Touch sensor", // Android
+  sensorErrorDescription: "Failed", // Android
+  cancelText: "Cancel", // Android
+  fallbackLabel: "Show Passcode", // iOS (if empty, then label is hidden)
+  unifiedErrors: false, // use unified error messages (default false)
+  passcodeFallback: false, // iOS - allows the device to fall back to using the passcode, if faceid/touch is not available. this does not mean that if touchid/faceid fails the first few times it will revert to passcode, rather that if the former are not enrolled, then it will use the passcode.
+};
 const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
   const userDetails = useAppSelector((state) => state.account);
   const getHistoryReducer = useAppSelector((state) => state.getHistoryReducer);
@@ -73,12 +86,12 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
   const disPatch = useAppDispatch();
 
   let flatListRef: any = useRef();
-
+  const IDLE_TIMEOUT = 60000; // 1 minute
   console.log(signature,"sign");
   console.log(createVerify,"createVerify");
   console.log(UserDid,"UserDid");
   console.log(userDetails?.responseData?.publicKey,"publickey");
-  
+  let idleTimer: string | number | NodeJS.Timeout | undefined;
   //recent activity
   const documentsDetailsList = useAppSelector((state) => state.Documents);
   const recentData = documentsDetailsList?.responseData;
@@ -102,6 +115,68 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
       appStateListener?.remove();
     };
   }, []);
+  useEffect(() => {
+    resetIdleTimer();
+    InteractionManager.runAfterInteractions(() => {
+      // Additional initialization code after idle time is reset
+    });
+  
+    // Clear the timer when the component unmounts
+    return () => clearTimeout(idleTimer);
+  }, []);
+  const aunthenticateBioMetricInfo = () => {
+    TouchID.isSupported(optionalConfigObject)
+      .then(async (biometryType) => {
+        // Success code
+        if (biometryType === "FaceID") {
+        } else {
+          TouchID.authenticate("", optionalConfigObject)
+            .then(async (success: any) => {
+              console.log("success", success);
+              const getItem = await AsyncStorage.getItem("passcode");
+              if (getItem) {
+                navigation.dispatch(StackActions.replace("PasswordCheck"));
+              } else {
+                navigation.dispatch(StackActions.replace("DrawerNavigator"));
+              }
+            })
+            .catch((e: any) => {
+              aunthenticateBioMetricInfo();
+            });
+          console.log("TouchID is supported.");
+        }
+      })
+      .catch((error) => {
+        // Failure code
+        console.log(error);
+      });
+  };
+  const checkAuth = async () => {
+    const fingerPrint = await AsyncStorage.getItem("fingerprint");
+    const passcode = await AsyncStorage.getItem("passcode");
+    const FaceID = await AsyncStorage.getItem("FaceID");
+    console.log("FaceID===>", FaceID);
+    if (fingerPrint && passcode) {
+      aunthenticateBioMetricInfo();
+    } else if (FaceID && passcode) {
+      navigation.dispatch(StackActions.replace("FaceCheck"));
+    } else if (passcode) {
+      navigation.dispatch(StackActions.replace("PasswordCheck"));
+    } else {
+      navigation.dispatch(StackActions.replace("AuthStack"));
+    }
+  };
+  const resetIdleTimer = () => {
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(handleIdle, IDLE_TIMEOUT);
+  };
+// Function to handle idle timeout
+const handleIdle = () => {
+  if(userDetails && userDetails?.responseData?.publicKey){
+    checkAuth()
+  }
+
+};
   
   const setLanguage =async()=>{
     const language = await AsyncStorage.getItem("setLanguage");
@@ -110,7 +185,12 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
     }
     
   }
-
+  AppState.addEventListener('change', (newState) => {
+    if (newState === 'active') {
+      resetIdleTimer();
+    }
+  });
+  
   const [recentDataOfDocument, setrecentData] = useState([]);
   const dispatch = useAppDispatch();
   const _toggleDrawer = () => {
@@ -461,8 +541,8 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
             absoluteCircleInnerImage={LocalImages.upImage}
             // rightIconSrc={LocalImages.menuImage}
             title={item?.isVc ?item.name : item?.documentName?.split("(")[1]?.split(")")[0] == "undefined" ?item?.docName?.replaceAll('%20',"") : item?.docName?.replaceAll('%20',"")}
-            subtitle={`      Uploaded  : ${item.date}`}
-            timeTitle={getTime(item) }
+            subtitle={`      Uploaded  : ${item.date} `}
+            timeTitle={"   "+`${getTime(item)}`}
             style={{
               ...styles.cardContainers,
               ...{
@@ -630,7 +710,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
             //      item.time.substring(0, item.time.length - 3)+" AM"
             // }
 
-            timeTitle={getTime(item)}
+            timeTitle={"   "+`${getTime(item)}`}
 
             style={{
               ...styles.cardContainernew,

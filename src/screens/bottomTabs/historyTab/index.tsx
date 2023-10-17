@@ -208,7 +208,7 @@ function compareTime(a, b) {
             //      item.time.substring(0, item.time.length - 3)+" AM"
             // }
 
-            timeTitle={getTime(item)}
+            timeTitle={"   "+`${getTime(item)}`}
 
             style={{
               ...styles.cardContainer,

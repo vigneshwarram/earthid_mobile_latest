@@ -52,8 +52,9 @@ const Register = ({ navigation }: IRegister) => {
     data: superAdminResponse,
     fetch: getSuperAdminApiCall,
   } = useFetch();
-  const [mobileNumber, setmobileNumber] = useState<string>("");
+  const [mobileNumber, setmobileNumber] = useState<string>('');
   const [loginLoading, setLoginLoading] = useState(false);
+  const [buttonPressed ,setButtonPressed] = useState(false)
   const userDetails = useAppSelector((state) => state.account);
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const keys = useAppSelector((state) => state.user);
@@ -132,6 +133,7 @@ const Register = ({ navigation }: IRegister) => {
 
   const _navigateAction = () => {
     setKeyboardVisible(false);
+    setButtonPressed(true)
     mobileNumber === "" ? setMobileEmpty(true) : null;
     console.log('isValid()',isValid())
     if (isValid()) {
@@ -477,14 +479,14 @@ if(mobileNumber.length < 10){
 
   return (
     <KeyboardAvoidingScrollView
-      style={{ paddingBottom: 1000 }}
-      stickyFooter={isKeyboardVisible && <Footer />}
+      style={{ backgroundColor:Screens.colors.background,flex:1 }}
+      stickyFooter={isKeyboardVisible ? <Footer />:<View style={{backgroundColor:'red'}}></View>}
     >
       <View
         style={{
           flex: 1,
           backgroundColor: Screens.colors.background,
-          paddingBottom: 1000,
+      
         }}
       >
         <Header
@@ -618,7 +620,7 @@ if(mobileNumber.length < 10){
             />
             { isValidMobileNumber && mobileNumber.length === 10  ? null:
             
-            mobileNumber.length != 0 &&  <Text allowFontScaling={false} style={styles.errorText}>
+            buttonPressed &&   mobileNumber.length === 0 &&  <Text allowFontScaling={false} style={styles.errorText}>
                   {"Please enter valid mobile number"}
                 </Text>
               }
@@ -762,8 +764,11 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     elevation: 5,
     borderRadius: 30,
-
     justifyContent: "space-between",
+    shadowColor: '#171717',
+    shadowOffset: {width: -2, height: 4},
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
   },
   loading: {
     position: "absolute",

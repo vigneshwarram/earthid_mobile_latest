@@ -267,7 +267,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
                 ? `      Received  : ${item.date}`
                 : `      Uploaded  : ${item.date}`
             }
-            timeTitle={getTime(item)}
+            timeTitle={"   "+`${getTime(item)}`}
             isCheckBoxEnable={isCheckBoxEnable}
             onCheckBoxValueChange={(value: any) => {
               // item.isSelected = value;
