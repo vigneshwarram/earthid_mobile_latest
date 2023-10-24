@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Image, TouchableOpacity, Alert } from "react-native";
 
 import Button from "../../components/Button";
 import SuccessPopUp from "../../components/Loader";
@@ -14,6 +14,7 @@ import RNFS from "react-native-fs";
 import { _s3responseHandler, byPassUserDetailsRedux } from "../../redux/actions/authenticationAction";
 import DocumentPicker from "react-native-document-picker";
 import { SnackBar } from "../../components/SnackBar";
+import { isEarthId } from "../../utils/PlatFormUtils";
 
 
 
@@ -50,7 +51,21 @@ const UploadDocumentPreviewScreen = (props: any) => {
         getUser(url, {}, "GET");
       })
       .catch((error) => {
-        console.log("error==>", error);
+        Alert.alert(
+          `${isEarthId()?"EarthId":"GlobaliD"} does'nt exist,please Upload with some valid QR Identity`,
+          '',
+          [
+            {
+              text: "Back",
+              onPress: async () => {
+                props.navigation.goBack(null)
+              },
+              style: "cancel",
+            },
+         
+          ],
+          { cancelable: false }
+        );
         // handle errors
       });
   };

@@ -130,7 +130,8 @@ const UploadQr = (props: any) => {
     }
   };
   useEffect(() => {
-    if(imageResponse != ''){
+    console.log('imageResponse',imageResponse)
+    if(imageResponse != '' && !imageResponse?.didCancel){
     console.log('==>result',imageResponse?.assets[0]?.uri)
     let fileUri = imageResponse?.assets[0]?.uri;
     // disPatch(savingProfilePictures(fileUri));
