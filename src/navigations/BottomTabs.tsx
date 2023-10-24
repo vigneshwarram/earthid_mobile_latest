@@ -12,16 +12,19 @@ import DocumentScreen from "../screens/bottomTabs/documentTab";
 import HistoryScreen from "../screens/bottomTabs/historyTab";
 import CameraScreen from "../screens/Camera";
 import { EventRegister } from "react-native-event-listeners";
+import { useTranslation } from "react-i18next";
 const Tab = createBottomTabNavigator();
 
 export const BottomMenus = (propss: any) => {
   const { colors } = useTheme();
+  const { t } = useTranslation()
 
   return (
     <Tab.Navigator
       screenOptions={{
         tabBarStyle: styles.tabBar,
         headerShown: false,
+       
       }}
       initialRouteName="Home"
     >
@@ -29,6 +32,7 @@ export const BottomMenus = (propss: any) => {
         name="Home"
         component={HomeScreen}
         options={{
+          tabBarLabel:t("home"),
           tabBarLabelStyle: styles.tabBarLabelStyle,
           tabBarIcon: ({ focused }: any) => (
             <View
@@ -61,6 +65,7 @@ export const BottomMenus = (propss: any) => {
         })}
         initialParams={{category:undefined}}
         options={{
+          tabBarLabel:t("document"),
           unmountOnBlur: true,
           tabBarLabelStyle: styles.tabBarLabelStyle,
           tabBarIcon: ({ focused }: any) => (
@@ -87,9 +92,9 @@ export const BottomMenus = (propss: any) => {
       />
       <Tab.Screen
         name="Camera"
-        
         component={CameraScreen}
         options={{
+          tabBarLabel:t("camera"),
           unmountOnBlur: true,
           tabBarLabelStyle: {
             color: "transparent",
@@ -119,6 +124,7 @@ export const BottomMenus = (propss: any) => {
         name="History"
         component={HistoryScreen}
         options={{
+          tabBarLabel:t("history"),
           tabBarLabelStyle: styles.tabBarLabelStyle,
           tabBarIcon: ({ focused }: any) => (
             <View
@@ -150,6 +156,7 @@ export const BottomMenus = (propss: any) => {
         name="More"
         component={HistoryScreen}
         options={{
+          tabBarLabel:t("document"),
           tabBarLabelStyle: styles.tabBarLabelStyle,
           tabBarButton: (props) => (
             <TouchableOpacity
