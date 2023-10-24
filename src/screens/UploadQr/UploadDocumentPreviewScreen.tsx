@@ -42,8 +42,10 @@ const UploadDocumentPreviewScreen = (props: any) => {
     })
       .then((detectedQRCodes) => {
         const { values } = detectedQRCodes; // Array of detected QR code values. Empty if nothing found.
-
-        let url = `${BASE_URL}/user/getUser?earthId=${values[0]}`;
+      
+        let serviceData = JSON.parse(values);
+        console.log('values=====>',serviceData)
+        let url = `${BASE_URL}/user/getUser?earthId=${serviceData?.earthId}`;
         console.log("values==>", url);
         getUser(url, {}, "GET");
       })

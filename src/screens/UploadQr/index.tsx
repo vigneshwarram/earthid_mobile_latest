@@ -8,6 +8,7 @@ import {
   PermissionsAndroid,
   Platform,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import { RNCamera } from "react-native-camera";
 import DocumentPicker from "react-native-document-picker";
@@ -25,6 +26,7 @@ import { useFetch } from "../../hooks/use-fetch";
 import { useAppDispatch } from "../../hooks/hooks";
 import { byPassUserDetailsRedux } from "../../redux/actions/authenticationAction";
 import * as ImagePicker from "react-native-image-picker";
+import { isEarthId } from "../../utils/PlatFormUtils";
 
 
 const UploadQr = (props: any) => {
@@ -35,6 +37,7 @@ const UploadQr = (props: any) => {
   const [data, SetData] = useState(null);
   const [source, setSource] = useState({});
   const [filePath, setFilePath] = useState();
+  const [isBarcodeScanned,setBarCodeScanned] = useState(false)
   const [imageResponse, setImageResponse] = useState<any>('');
   const {
     loading: getUserLoading,
@@ -48,6 +51,33 @@ const UploadQr = (props: any) => {
       getDetailsForBucket()
     }
   }, [getUserResponse]);
+
+  useEffect(()=>{
+    if(getUserError){
+      Alert.alert(
+        `${isEarthId()?"EarthId":"GlobaliD"} does'nt exist,please Re-try with some valid QR Identity`,
+        '',
+        [
+          {
+            text: "Back",
+            onPress: async () => {
+              props.navigation.goBack(null)
+            },
+            style: "cancel",
+          },
+          {
+            text: "Retry",
+            onPress: async () => {
+              setBarCodeScanned(false)
+            },
+          },
+        ],
+        { cancelable: false }
+      );
+   
+    }
+
+  },[getUserError])
 
   const getDetailsForBucket = async()=>{
     const bucketName = `idv-sessions-${getUserResponse.username.toLowerCase()}`;
@@ -118,12 +148,16 @@ const UploadQr = (props: any) => {
     }
   }, [imageResponse]);
   const _handleBarCodeRead = (barCodeData: any) => {
-    console.log("barcodedata", barCodeData?.data);
-    detectedBarCodes(barCodeData?.data);
+    if(!isBarcodeScanned){
+      setBarCodeScanned(true)
+      let serviceData = JSON.parse(barCodeData.data);
+      detectedBarCodes(serviceData);
+    }
+ 
   };
-  const detectedBarCodes = (barcode: string) => {
+  const detectedBarCodes = (barcode: any) => {
     if (getUserResponse === undefined) {
-      let url = `${BASE_URL}/user/getUser?earthId=${barcode}`;
+      let url = `${BASE_URL}/user/getUser?earthId=${barcode?.earthId}`;
 
       getUser(url, {}, "GET");
     }

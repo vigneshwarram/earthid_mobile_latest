@@ -86,7 +86,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
   const disPatch = useAppDispatch();
 
   let flatListRef: any = useRef();
-  const IDLE_TIMEOUT = 60000; // 1 minute
+  const IDLE_TIMEOUT = 60000*10; // 10 minute
   console.log(signature,"sign");
   console.log(createVerify,"createVerify");
   console.log(UserDid,"UserDid");
