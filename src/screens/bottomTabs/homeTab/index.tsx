@@ -86,7 +86,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
   const disPatch = useAppDispatch();
 
   let flatListRef: any = useRef();
-  const IDLE_TIMEOUT = 60000*10; // 10 minute
+  const IDLE_TIMEOUT = 60000 * 10; // 10 minute
   console.log(signature,"sign");
   console.log(createVerify,"createVerify");
   console.log(UserDid,"UserDid");
@@ -107,6 +107,9 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
         if(nextAppState==='active'){
           ShareMenu.getInitialShare(handleShare);
         }
+        else if(nextAppState==='inactive'){
+          resetIdleTimer();
+        }
         setLanguage()
         setAppState(nextAppState);
       },
@@ -116,8 +119,9 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
     };
   }, []);
   useEffect(() => {
-    resetIdleTimer();
+
     InteractionManager.runAfterInteractions(() => {
+      clearTimeout(idleTimer)
       // Additional initialization code after idle time is reset
     });
   
