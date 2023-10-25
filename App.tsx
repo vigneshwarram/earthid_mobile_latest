@@ -8,8 +8,8 @@
  * @format
  */
 
-import React, { useEffect } from "react";
-import { SafeAreaView, StyleSheet, View ,Alert,LogBox} from "react-native";
+import React, { useEffect ,useState} from "react";
+import { SafeAreaView, StyleSheet, View ,Alert,LogBox, TouchableHighlight, TouchableWithoutFeedback, PanResponder} from "react-native";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/lib/integration/react";
 //@ts-ignore
@@ -19,6 +19,8 @@ import { persistor, store } from "./src/redux/store";
 import { Buffer } from "buffer";
 import { isEarthId } from "./src/utils/PlatFormUtils";
 import { Screens } from "./src/themes";
+import IdleTimer, { IdleTimeout } from "./src/navigations/IdleTimerInteration";
+import { EventRegister } from "react-native-event-listeners";
 
 LogBox.ignoreLogs(['Warning: ...']); //Hide warnings
 
@@ -33,18 +35,36 @@ type SharedItem = {
 
 
 const App = () => {
+  const [isIdle, setIsIdle] = useState(false);
+  let timer: string | number | NodeJS.Timeout | undefined 
+  const resetIdleTimer = () => {
+    clearTimeout(timer);
+    timer = setTimeout(handleIdle, 60000*10);
+  };
+  const handleIdle = () => {  
+    EventRegister.emit("t");
+  };
+
+
+  const panResponder = PanResponder.create({
+    onStartShouldSetPanResponder: () => true,
+    onPanResponderGrant: resetIdleTimer,
+  });
   return (
+ 
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
+      <View  style={{flex:1}}  {...panResponder.panHandlers}>
         <SafeAreaView style={styles.container}>
-          <LanguageContextProvider>
+          <LanguageContextProvider>    
             <RootNavigator />
           </LanguageContextProvider>
         </SafeAreaView>
+        </View>
       </PersistGate>
     </Provider>
-  );
-};
+  )
+}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -55,3 +75,5 @@ const styles = StyleSheet.create({
 });
 
 export default App;
+
+

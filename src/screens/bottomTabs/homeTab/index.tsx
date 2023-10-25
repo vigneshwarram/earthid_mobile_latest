@@ -86,7 +86,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
   const disPatch = useAppDispatch();
 
   let flatListRef: any = useRef();
-  const IDLE_TIMEOUT = 60000 * 10; // 10 minute
+  const IDLE_TIMEOUT = 60000*10; // 10 minute
   console.log(signature,"sign");
   console.log(createVerify,"createVerify");
   console.log(UserDid,"UserDid");
@@ -107,9 +107,6 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
         if(nextAppState==='active'){
           ShareMenu.getInitialShare(handleShare);
         }
-        else if(nextAppState==='inactive'){
-          resetIdleTimer();
-        }
         setLanguage()
         setAppState(nextAppState);
       },
@@ -117,16 +114,6 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
     return () => {
       appStateListener?.remove();
     };
-  }, []);
-  useEffect(() => {
-
-    InteractionManager.runAfterInteractions(() => {
-      clearTimeout(idleTimer)
-      // Additional initialization code after idle time is reset
-    });
-  
-    // Clear the timer when the component unmounts
-    return () => clearTimeout(idleTimer);
   }, []);
   const aunthenticateBioMetricInfo = () => {
     TouchID.isSupported(optionalConfigObject)
@@ -170,10 +157,6 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
       navigation.dispatch(StackActions.replace("AuthStack"));
     }
   };
-  const resetIdleTimer = () => {
-    clearTimeout(idleTimer);
-    idleTimer = setTimeout(handleIdle, IDLE_TIMEOUT);
-  };
 // Function to handle idle timeout
 const handleIdle = () => {
   if(userDetails && userDetails?.responseData?.publicKey){
@@ -189,11 +172,6 @@ const handleIdle = () => {
     }
     
   }
-  AppState.addEventListener('change', (newState) => {
-    if (newState === 'active') {
-      resetIdleTimer();
-    }
-  });
   
   const [recentDataOfDocument, setrecentData] = useState([]);
   const dispatch = useAppDispatch();
@@ -448,6 +426,17 @@ const handleIdle = () => {
   useEffect(() => {
     const listener: any = EventRegister.addEventListener("OpenDrawer", () => {
       navigation.openDrawer();
+      return;
+    });
+    return () => {
+      EventRegister.removeEventListener(listener);
+      listener;
+    };
+  });
+
+  useEffect(() => {
+    const listener: any = EventRegister.addEventListener("t", () => {
+      handleIdle()
       return;
     });
     return () => {
