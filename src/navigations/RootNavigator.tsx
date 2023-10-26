@@ -3,6 +3,7 @@ import * as React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { Apptheme } from "../themes";
+import InteractionProvider from 'react-native-interaction-provider'
 import { enableScreens } from "react-native-screens";
 import DrawerNavigator from "../navigations/DrawerNavigator";
 import { SlidAnimation } from "./SlidAnimation";
@@ -78,6 +79,7 @@ export default function RootNavigator() {
   }
 
   return (
+
     <NavigationContainer theme={Apptheme}>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen
