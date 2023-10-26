@@ -156,7 +156,7 @@ export const BottomMenus = (propss: any) => {
         name="More"
         component={HistoryScreen}
         options={{
-          tabBarLabel:t("document"),
+          tabBarLabel:t("more"),
           tabBarLabelStyle: styles.tabBarLabelStyle,
           tabBarButton: (props) => (
             <TouchableOpacity
