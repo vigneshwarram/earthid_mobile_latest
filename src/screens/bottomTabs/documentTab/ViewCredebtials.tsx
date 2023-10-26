@@ -42,6 +42,7 @@ const DocumentPreviewScreen = (props: any) => {
   console.log("documentDetails?.base64", documentDetails?.base64);
   console.log("documentDetails?.base64", documentDetails?.docName);
   console.log("documentDetails?.base64", documentDetails?.isLivenessImage);
+  console.log("documentDetailsCheck", documentDetails);
   const resources = {
     file:
       Platform.OS === "ios"

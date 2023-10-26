@@ -489,6 +489,7 @@ s3.deleteObject(params, function(err, data) {
       selectedItem: selectedItem,
       editDoc: "editDoc",
       itemData: edit,
+      itemVerify:selectedItem?.isLivenessImage
     });
     // var data : any =selectedItem
     // await AsyncStorage.setItem("userDetails", data);

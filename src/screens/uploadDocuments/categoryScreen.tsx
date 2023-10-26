@@ -48,6 +48,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const pic = route?.params?.fileUri;
   const itemData = route?.params?.itemData;
   const { editDoc, selectedItem } = route?.params;
+  const itemVerify  = route?.params?.itemVerify
   const imageName = fileUri?.imageName;
   // const splitName = imageName.split('.')[0]
 
@@ -69,10 +70,15 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
       : null
   );
 
+  console.log("selectedItem",selectedItem)
+
   const [selectedParentIndex, setSelectedParentIndex] = useState(0);
   const documentsDetailsList = useAppSelector((state) => state.Documents);
   const [successResponse, setsuccessResponse] = useState(false);
   const dispatch = useAppDispatch();
+
+  console.log("itemVerify",itemVerify)
+
 
   const {
     loading: isCategoryLoading,
@@ -236,11 +242,45 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
             );
             if (selectedItem) {
               console.log("here","here2");
-              if (selectedItem?.isVerifyNeeded) {
+              console.log("testing","pass1");
+
+              if (itemVerify) {
                 console.log("here","here3");
+                console.log("testing","pass2");
+
+                setsuccessResponse(true);
+                const document: any[0] = categoryList[
+                  selectedParentIndex
+                ]?.value?.filter((data: any) => data.isSelected);
+                const obj = documentsDetailsList?.responseData[index];
+                obj.docName = docname;
+                obj.documentName = `${categoryList[selectedParentIndex].key} (${document[0]?.title})`;
+                obj.categoryType = categoryList[selectedParentIndex].key;
+                console.log("index===>", obj.categoryType);
+                dispatch(
+                  updateDocuments(
+                    documentsDetailsList?.responseData,
+                    index,
+                    obj
+                  )
+                );
+                setTimeout(async () => {
+                  setsuccessResponse(false);
+                  const item = await AsyncStorage.getItem("flow");
+                  if (item === "documentflow") {
+                    navigation.navigate("RegisterScreen");
+                  } else {
+                    setIsPrceedForLivenessTest(false)
+                    navigation.navigate("Documents");
+                  }
+                }, 2000);
+
+
                 setIsPrceedForLivenessTest(true);
+
               } else {
                 console.log("here","here4");
+                console.log("testing","pass3");
                 setsuccessResponse(true);
                 const document: any[0] = categoryList[
                   selectedParentIndex
@@ -273,9 +313,10 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
               setIsPrceedForLivenessTest(true);
               return;
             }
+            console.log("testing","pass4");
+
           setIsPrceedForLivenessTest(false);
           }
-
 
           else{
             console.log("here","here5");
