@@ -12,6 +12,7 @@ import com.microsoft.codepush.react.CodePush;
 
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import fr.snapp.imagebase64.RNImgToBase64Package;
+import io.xogus.reactnative.versioncheck.RNVersionCheckPackage; 
 import com.reactnativecommunity.cameraroll.CameraRollPackage;
 
 import com.christopherdro.htmltopdf.RNHTMLtoPDFPackage;
@@ -50,6 +51,7 @@ public class MainApplication extends Application implements ReactApplication {
           List<ReactPackage> packages = new PackageList(this).getPackages();
             new SplashScreenReactPackage();
             new ShareMenuPackage() ;
+             new RNVersionCheckPackage();
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
            new CodePush("00844653-ea43-466d-adc9-5ac0a4eabbeb", MainApplication.this, BuildConfig.DEBUG);

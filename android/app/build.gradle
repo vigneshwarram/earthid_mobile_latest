@@ -145,8 +145,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
       missingDimensionStrategy 'react-native-camera', 'mlkit' 
-        versionCode 23
-        versionName "5.7"
+        versionCode 24
+        versionName "5.9"
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
 
         if (isNewArchitectureEnabled()) {
@@ -270,6 +270,7 @@ dependencies {
  implementation project(':react-native-splash-screen')
     implementation project(':react-native-share-menu')
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+    implementation project(':react-native-version-check')
 implementation 'com.facebook.soloader:soloader:0.10.3+'
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
         exclude group:'com.facebook.fbjni'

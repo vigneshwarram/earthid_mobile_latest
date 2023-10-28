@@ -478,9 +478,8 @@ if(mobileNumber.length < 10){
 
 
   return (
-    <KeyboardAvoidingScrollView
+    <View
       style={{ backgroundColor:Screens.colors.background,flex:1 }}
-      stickyFooter={isKeyboardVisible ? <Footer />:<View style={{backgroundColor:'red'}}></View>}
     >
       <View
         style={{
@@ -686,7 +685,7 @@ if(mobileNumber.length < 10){
           }}
         />
       </View>
-    </KeyboardAvoidingScrollView>
+    </View>
   );
 };
 

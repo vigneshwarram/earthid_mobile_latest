@@ -7,3 +7,4 @@ declare module "react-native-image-base64";
 declare module "react-native-image-picker";
 declare module "react-native-tweetnacl";
 declare module "react-native-share-menu";
+
