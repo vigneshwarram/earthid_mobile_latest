@@ -146,7 +146,7 @@ export const SCREENS = {
         TITLE: "Instagram",
         URI: LocalImages.SOCIAL_MEDIA_.instagramImage,
         VALUE: "https://yourdomain.com",
-        DOMAIN: "https://instagram.com/yourdoamin",
+        DOMAIN: "https://instagram.com/yourdomain",
         CHECKED: true,
       },
       {
@@ -167,7 +167,7 @@ export const SCREENS = {
         TITLE: "Twitter",
         URI: LocalImages.SOCIAL_MEDIA_.twitterImage,
         VALUE: "https://yourdomain.com",
-        DOMAIN: "https://twitter.com/yourdoamin",
+        DOMAIN: "https://twitter.com/yourdomain",
         CHECKED: true,
       },
     ],

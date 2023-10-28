@@ -129,6 +129,15 @@ const UploadQr = (props: any) => {
       console.log("data==>", err);
     }
   };
+  function isValidJSON(jsonString: string) {
+    try {
+      JSON.parse(jsonString);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+  
   useEffect(() => {
     console.log('imageResponse',imageResponse)
     if(imageResponse != '' && !imageResponse?.didCancel){
@@ -149,11 +158,38 @@ const UploadQr = (props: any) => {
     }
   }, [imageResponse]);
   const _handleBarCodeRead = (barCodeData: any) => {
+     
     if(!isBarcodeScanned){
       setBarCodeScanned(true)
-      let serviceData = JSON.parse(barCodeData.data);
-      detectedBarCodes(serviceData);
+      try{
+        let serviceData = JSON.parse(barCodeData?.data);
+        detectedBarCodes(serviceData);
+      }
+      catch (error) {
+        Alert.alert(
+          `${isEarthId()?"EarthId":"GlobaliD"} does'nt exist,please Re-try with some valid QR Identity`,
+          '',
+          [
+            {
+              text: "Back",
+              onPress: async () => {
+                props.navigation.goBack(null)
+              },
+              style: "cancel",
+            },
+            {
+              text: "Retry",
+              onPress: async () => {
+                setBarCodeScanned(false)
+              },
+            },
+          ],
+          { cancelable: false }
+        );
+      }
+ 
     }
+ 
  
   };
   const detectedBarCodes = (barcode: any) => {

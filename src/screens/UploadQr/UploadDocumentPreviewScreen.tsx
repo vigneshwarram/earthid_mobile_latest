@@ -43,12 +43,33 @@ const UploadDocumentPreviewScreen = (props: any) => {
     })
       .then((detectedQRCodes) => {
         const { values } = detectedQRCodes; // Array of detected QR code values. Empty if nothing found.
-      
-        let serviceData = JSON.parse(values);
-        console.log('values=====>',serviceData)
-        let url = `${BASE_URL}/user/getUser?earthId=${serviceData?.earthId}`;
-        console.log("values==>", url);
-        getUser(url, {}, "GET");
+        try{
+          let serviceData = JSON.parse(values);
+          console.log('values=====>',serviceData)
+          let url = `${BASE_URL}/user/getUser?earthId=${serviceData?.earthId}`;
+          console.log("values==>", url);
+          getUser(url, {}, "GET");
+        }
+        catch (error) {
+          Alert.alert(
+            `${isEarthId()?"EarthId":"GlobaliD"} does'nt exist,please Upload with some valid QR Identity`,
+            '',
+            [
+              {
+                text: "Back",
+                onPress: async () => {
+                  props.navigation.goBack(null)
+                },
+                style: "cancel",
+              },
+           
+            ],
+            { cancelable: false }
+          );
+          
+        }
+
+ 
       })
       .catch((error) => {
         Alert.alert(

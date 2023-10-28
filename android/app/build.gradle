@@ -145,8 +145,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
       missingDimensionStrategy 'react-native-camera', 'mlkit' 
-        versionCode 24
-        versionName "5.9"
+        versionCode 26
+        versionName "5.9.1"
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
 
         if (isNewArchitectureEnabled()) {

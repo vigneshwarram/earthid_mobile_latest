@@ -3,7 +3,7 @@ import {
   View,
   StyleSheet,
   Platform,
-  ActivityIndicator,
+  TouchableOpacity,
   Alert,
   Text,
   AsyncStorage,
@@ -30,7 +30,6 @@ import { IUserAccountRequest } from "../../../typings/AccountCreation/IUserAccou
 import { dateTime, getDeviceId, getDeviceName } from "../../../utils/encryption";
 import GenericText from "../../../components/Text";
 import { SnackBar } from "../../../components/SnackBar";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { isArray } from "lodash";
 import { useFetch } from "../../../hooks/use-fetch";
 import { newssiApiKey, superAdminApi } from "../../../utils/earthid_account";
@@ -654,7 +653,7 @@ if(mobileNumber.length < 10){
               onChangeText={emailChangeHandler}
             />
           </View>
-          {!isKeyboardVisible && <Footer />}
+          <Footer />
 
           <Loader
             loadingText={

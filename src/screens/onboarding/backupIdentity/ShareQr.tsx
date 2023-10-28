@@ -327,7 +327,7 @@ else{
             }}
           ></Header>
           <TouchableOpacity
-            onPress={() => navigation.goBack()}
+            onPress={() => navigation.navigate("Documents")}
             style={{
               position: "absolute",
               marginTop: 38,
