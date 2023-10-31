@@ -32,10 +32,9 @@ import QRCode from "react-native-qrcode-image";
 import { getColor } from "../../../utils/CommonFuntion";
 import zlib from "zlib";
 import Spinner from "react-native-loading-spinner-overlay/lib";
-import ImageResizer from 'react-native-image-resizer';
+import ImageResizer from "react-native-image-resizer";
 import RNFS from "react-native-fs";
 import AWS from "aws-sdk";
-
 
 interface IDocumentScreenProps {
   navigation?: any;
@@ -86,28 +85,15 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
 
   const userDetails = useAppSelector((state) => state.account);
 
-
-
   const bucketName: any = userDetails?.responseUserSpecificBucket;
- // const base64Image: any = selectedItem?.base64;
+  // const base64Image: any = selectedItem?.base64;
   const imageName: any = selectedItem?.docName + "." + selectedItem?.docType;
-
-
-
-  
-
-
-
-
-
 
   // useEffect(() => {
   //   console.log("DOCUMENTS=====>>>>>>>>>>>", route?.params?.category);
   //   const chek = route?.params?.category;
   //   chek === undefined ? console.log("All posts") : console.log("filtrd");
   // }, [route?.params?.category]);
-
-
 
   const [isBottomSheetForFilterVisible, setisBottomSheetForFilterVisible] =
     useState<boolean>(false);
@@ -126,7 +112,6 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
   //   deleteAllBuckets();
   // }, []);
   const getCategoryImages = (item: { categoryType: any; name: any }) => {
-   
     const getItems = SCREENS.HOMESCREEN.categoryList.filter(
       (itemFiltered, index) => {
         return (
@@ -135,7 +120,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
         );
       }
     );
-   
+
     if (!getItems[0]) {
       return "#D7EFFB";
     }
@@ -259,15 +244,15 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
               item?.isVc
                 ? item.name
                 : item?.docName?.split("(")[1]?.split(")")[0] == "undefined"
-                ? item?.docName?.replaceAll('%20',"")
-                : item?.docName?.replaceAll('%20',"")
+                ? item?.docName?.replaceAll("%20", "")
+                : item?.docName?.replaceAll("%20", "")
             }
             subtitle={
               item.isVc
                 ? `      Received  : ${item.date}`
                 : `      Uploaded  : ${item.date}`
             }
-            timeTitle={"   "+`${getTime(item)}`}
+            timeTitle={"   " + `${getTime(item)}`}
             isCheckBoxEnable={isCheckBoxEnable}
             onCheckBoxValueChange={(value: any) => {
               // item.isSelected = value;
@@ -280,7 +265,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
                 avatarContainer: {
                   backgroundColor: item?.isVc
                     ? "#D7EFFB"
-                    :getCategoryImages(item)?.COLOR,
+                    : getCategoryImages(item)?.COLOR,
                   width: 60,
                   height: 60,
                   borderRadius: 20,
@@ -317,9 +302,8 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
   //AWS3 bucket image store
 
   const handleUploadImage = async () => {
-    setisBottomSheetForSideOptionVisible(false)
- navigation.navigate('ShareQr',{selectedItem:selectedItem})
-
+    setisBottomSheetForSideOptionVisible(false);
+    navigation.navigate("ShareQr", { selectedItem: selectedItem });
   };
 
   const RowOption = ({ icon, title, rowAction }: any) => (
@@ -422,7 +406,6 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
   };
 
   const qrCodeModal = () => {
-    
     handleUploadImage();
   };
 
@@ -449,26 +432,32 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
   };
 
   const deleteItem = () => {
-    
     console.log("selectedItem?.id", selectedItem);
     Alert.alert(
       "Confirmation! ",
       "Are you sure you want to delete this document ?",
       [
-        { text: "Cancel", onPress: () => console.log("Cancel Pressed!") },
+        {
+          text: "Cancel",
+          onPress: () => (
+            console.log("Cancel Pressed!"),
+            setisBottomSheetForSideOptionVisible(false)
+          ),
+        },
         {
           text: "OK",
           onPress: () => {
             setisBottomSheetForSideOptionVisible(false);
-            const imageName: any = selectedItem?.docName + "." + selectedItem?.docType;
-            const key =`images/${imageName}`
+            const imageName: any =
+              selectedItem?.docName + "." + selectedItem?.docType;
+            const key = `images/${imageName}`;
             var s3 = new AWS.S3();
-var params = {  Bucket:bucketName, Key: key };
+            var params = { Bucket: bucketName, Key: key };
 
-s3.deleteObject(params, function(err, data) {
-  if (err) console.log(err, err.stack);  // error
-  else     console.log();                 // deleted
-});
+            s3.deleteObject(params, function (err, data) {
+              if (err) console.log(err, err.stack); // error
+              else console.log(); // deleted
+            });
             const helpArra = [...documentsDetailsList?.responseData];
             const findIndex = helpArra?.findIndex(
               (item) => item.id === selectedItem?.id
@@ -489,7 +478,7 @@ s3.deleteObject(params, function(err, data) {
       selectedItem: selectedItem,
       editDoc: "editDoc",
       itemData: edit,
-      itemVerify:selectedItem?.isLivenessImage
+      itemVerify: selectedItem?.isLivenessImage,
     });
     // var data : any =selectedItem
     // await AsyncStorage.setItem("userDetails", data);
@@ -503,11 +492,12 @@ s3.deleteObject(params, function(err, data) {
 
   const getFilteredData = () => {
     console.log("getFilteredData");
-     let data =  documentsDetailsList?.responseData.sort((a: { date: any; }, b: { date: any; }) => a.date - b.date);
+    let data = documentsDetailsList?.responseData.sort(
+      (a: { date: any }, b: { date: any }) => a.date - b.date
+    );
     //  let data = documentsDetailsList?.responseData?.sort(compareTime);
 
-   // 
-   
+    //
 
     if (categoryTypes !== "") {
       var alter = function (item: any) {

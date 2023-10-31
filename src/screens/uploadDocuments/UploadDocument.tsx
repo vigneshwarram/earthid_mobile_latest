@@ -242,7 +242,7 @@ const UploadDocument = (props: any) => {
         {"capture"}
       </GenericText>
       <GenericText
-        style={{ textAlign: "center", paddingVertical: 5, color: "#fff" }}
+        style={{ textAlign: "center", paddingVertical: 5, color: "#696969" }}
       >
         {"placethedoc"}
       </GenericText>

@@ -28,6 +28,7 @@ import { isEarthId } from "../../../utils/PlatFormUtils";
 import ToggleSwitch from "toggle-switch-react-native";
 import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
 import { saveFeature } from "../../../redux/actions/authenticationAction";
+
 interface IHomeScreenProps {
   navigation?: any;
 }
@@ -41,37 +42,51 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
   const saveFeaturesForVc = useAppSelector((state) => state.saveFeatures);
   const [languageVisible, setLanguageVisible] = useState(false);
   const [selectedLanguage, setselectedLanguage] = useState(AppLanguage.ENGLISH);
+  const [flag, setflag] = useState(59);
   const [loading, setLoading] = useState(true);
+  console.log("flag==>", flag);
+
   const [langugeList, setLanguageList] = useState([
-    { label: "English", value: AppLanguage.ENGLISH,selection:true },
-    { label: "Spanish", value: AppLanguage.SPANISH },
-    { label: "Portuguese", value: AppLanguage.PORTUGUESE },
+    {
+      flag: LocalImages.englishflag,
+      label: "English",
+      value: AppLanguage.ENGLISH,
+      selection: true,
+    },
+    {
+      flag: LocalImages.spainflag,
+      label: "Spanish",
+      value: AppLanguage.SPANISH,
+    },
+    {
+      flag: LocalImages.portugalflag,
+      label: "Portuguese",
+      value: AppLanguage.PORTUGUESE,
+    },
   ]);
   useEffect(() => {
-    getLanguageSelection()
-  
+    getLanguageSelection();
   }, []);
 
-  const getLanguageSelection =async()=>{
-   const language = await AsyncStorage.getItem("setLanguage");
-   if(language){
-    const localList =langugeList.map((item)=>{
-      if(item.value === language){
-        il8n.changeLanguage(item.value);
-        item.selection =true
-      }
-      else{
-        item.selection =false
-      }
-      return item
-     })
-     setLanguageList([...localList])
-   }
+  const getLanguageSelection = async () => {
+    const language = await AsyncStorage.getItem("setLanguage");
+    if (language) {
+      const localList = langugeList.map((item) => {
+        if (item.value === language) {
+          il8n.changeLanguage(item.value);
+          item.selection = true;
+        } else {
+          item.selection = false;
+        }
+        return item;
+      });
+      setLanguageList([...localList]);
+    }
 
     setTimeout(() => {
       setLanguageVisible(true);
     }, 500);
-  }
+  };
   useEffect(() => {
     navigationCheck();
   }, []);
@@ -106,6 +121,7 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
       if (itemData.label === item.label) {
         itemData.selection = true;
         setselectedLanguage(item.value);
+        setflag(item.flag);
       } else {
         itemData.selection = false;
       }
@@ -116,7 +132,6 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
   };
 
   useEffect(() => {
-    
     initializeUserPreferences();
   }, []);
 
@@ -145,10 +160,9 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
   const _handleBarCodeRead = (barCodeData: any) => {
     console.log("barcodedata", barCodeData);
   };
-const onToggelchange = (data: boolean)=>{
-  dispatch(saveFeature(data));
-
-}
+  const onToggelchange = (data: boolean) => {
+    dispatch(saveFeature(data));
+  };
   return (
     <View style={styles.sectionContainer}>
       <ScrollView contentContainerStyle={styles.sectionContainer}>
@@ -194,7 +208,11 @@ const onToggelchange = (data: boolean)=>{
                 {SCREENS.LANDINGSCREEN.instruction}
               </GenericText>
               <Button
-                onPress={() => navigation.navigate("UploadDocument",{type :{data:"reg"}})}
+                onPress={() =>
+                  navigation.navigate("UploadDocument", {
+                    type: { data: "reg" },
+                  })
+                }
                 style={{
                   buttonContainer: {
                     backgroundColor: Screens.pureWhite,
@@ -278,14 +296,13 @@ const onToggelchange = (data: boolean)=>{
                     }
                   >
                     {"Terms & Conditions and Privacy Policy "}
-                   
                   </Text>
                 </Text>
               </View>
             </View>
             <BottomSheet
               onClose={() => setLanguageVisible(false)}
-              height={300}
+              height={250}
               isVisible={languageVisible}
             >
               <View
@@ -320,18 +337,25 @@ const onToggelchange = (data: boolean)=>{
                         flexDirection: "row",
                       }}
                     >
-                      <GenericText
-                        style={[
-                          {
-                            fontSize: 18,
-                            marginHorizontal: 20,
-                            color: Screens.black,
-                            fontWeight: "500",
-                          },
-                        ]}
-                      >
-                        {item?.label}
-                      </GenericText>
+                      <View style={{ flexDirection: "row" }}>
+                        <Image
+                          resizeMode="contain"
+                          source={item?.flag}
+                          style={{ height: 25, width: 25 }}
+                        ></Image>
+                        <GenericText
+                          style={[
+                            {
+                              fontSize: 18,
+                              marginHorizontal: 20,
+                              color: Screens.black,
+                              fontWeight: "500",
+                            },
+                          ]}
+                        >
+                          {item?.label}
+                        </GenericText>
+                      </View>
                       <Image
                         resizeMode="contain"
                         style={[
@@ -347,27 +371,33 @@ const onToggelchange = (data: boolean)=>{
             </BottomSheet>
           </View>
           <View>
-          <View style={{justifyContent:'center',alignItems:'center',flexDirection:'row'}}>
-          <GenericText
-                        style={[
-                          {
-                            fontSize: 18,
-                            marginHorizontal: 20,
-                            color: Screens.black,
-                            fontWeight: "500",
-                          },
-                        ]}
-                      >
-                        {'VC Features'}
-                      </GenericText>
-          <ToggleSwitch
-            onToggle={(value) => onToggelchange(value)}
-            isOn={saveFeaturesForVc?.isVCFeatureEnabled}
-            size={"small"}
-            onColor={Screens.colors.primary}
-            offColor={Screens.darkGray}
-          />
-        </View>
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "row",
+              }}
+            >
+              <GenericText
+                style={[
+                  {
+                    fontSize: 18,
+                    marginHorizontal: 20,
+                    color: Screens.black,
+                    fontWeight: "500",
+                  },
+                ]}
+              >
+                {"VC Features"}
+              </GenericText>
+              <ToggleSwitch
+                onToggle={(value) => onToggelchange(value)}
+                isOn={saveFeaturesForVc?.isVCFeatureEnabled}
+                size={"small"}
+                onColor={Screens.colors.primary}
+                offColor={Screens.darkGray}
+              />
+            </View>
           </View>
           <TouchableOpacity
             style={{ marginTop: 20 }}
@@ -382,7 +412,7 @@ const onToggelchange = (data: boolean)=>{
                 alignItems: "center",
                 marginBottom: 15,
                 borderRadius: 20,
-                backgroundColor: Screens.colors.primary,
+                backgroundColor: "#BBC1F6",
                 flexDirection: "row",
                 elevation: 5,
                 shadowColor: "#000",
@@ -397,9 +427,9 @@ const onToggelchange = (data: boolean)=>{
                   width: 25,
                   height: 25,
                   resizeMode: "contain",
-                  tintColor: "#fff",
+                  // tintColor: "#fff",
                 }}
-                source={LocalImages.translateImage}
+                source={flag}
               ></Image>
               <View style={{ justifyContent: "center", alignItems: "center" }}>
                 <GenericText
@@ -524,9 +554,9 @@ const styles = StyleSheet.create({
     backgroundColor: Screens.lightGray,
   },
   avatarImageContainer: {
-    width: 25,
-    height: 30,
-    marginTop: 5,
+    width: 22,
+    height: 28,
+    bottom: 3,
   },
   avatarTextContainer: {
     fontSize: 13,

@@ -60,6 +60,9 @@ export const LocalImages = {
   touchidpic: require("../../resources/images/touchidpic.png"),
   nexticon: require("../../resources/images/nexticon.png"),
   backicon: require("../../resources/images/backicon.png"),
+  englishflag: require("../../resources/images/united-kingdom.png"),
+  spainflag: require("../../resources/images/spain.png"),
+  portugalflag: require("../../resources/images/portugal.png"),
 
   //categories
   CATEGORIES: {
@@ -69,7 +72,6 @@ export const LocalImages = {
     personalcardImage: require("../../resources/images/personalcard.png"),
     employment: require("../../resources/images/employment.png"),
     finance: require("../../resources/images/hand.png"),
-
   },
   SOCIAL_MEDIA_: {
     facebookImage: require("../../resources/images/facebook.png"),

@@ -1,10 +1,19 @@
+import { LocalImages } from "../../constants/imageUrlConstants";
+
+
 export enum AppLanguage {
   ENGLISH = "en-IN",
   SPANISH = "es-ES",
-  PORTUGUESE="pot-PT"
+  PORTUGUESE = "pot-PT",
+  ENGLISHFLAG = "ENGLISHFLAG"
 }
 
 export enum VoiceLanguage {
   ENGLISH = "en_IN",
   HINDI = "hi_IN",
+}
+export enum flag {
+  ENGLISHFLAG = LocalImages.englishflag,
+  SPANISHFLAG = LocalImages.spainflag,
+  PORTUGUESEFLAG = LocalImages.portugalflag,
 }
