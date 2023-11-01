@@ -7,6 +7,8 @@ import {
   Dimensions,
   Platform,
   Alert,
+  Pressable,
+  Text,
 } from "react-native";
 import PDFView from "react-native-view-pdf";
 import SuccessPopUp from "../../../components/Loader";
@@ -21,12 +23,18 @@ import Share from "react-native-share";
 import BottomSheet from "../../../components/Bottomsheet";
 import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
 import { saveDocuments } from "../../../redux/actions/authenticationAction";
+import Header from "../../../components/Header";
+import LinearGradients from "../../../components/GradientsPanel/LinearGradient";
 
 const DocumentPreviewScreen = (props: any) => {
   const dispatch = useAppDispatch();
   const { fileUri, type } = props.route.params;
-  const { documentDetails } = props.route.params;
-  console.log("documentDetails============>", documentDetails);
+  const { documentDetails } = props?.route?.params;
+  // console.log("documentDetails============>", documentDetails);
+  const HistoryParams = props?.route?.params?.history;
+
+  console.log("HistoryParams=========>", HistoryParams);
+
   let documentsDetailsList = useAppSelector((state) => state.Documents);
   const { loading, data, error, fetch: postFormfetch } = useFetch();
   const [successResponse, setsuccessResponse] = useState(false);
@@ -39,10 +47,10 @@ const DocumentPreviewScreen = (props: any) => {
     setisBottomSheetForSideOptionVisible,
   ] = useState<boolean>(false);
   const [selectedItem, setselectedItem] = useState(documentDetails);
-  console.log("documentDetails?.base64", documentDetails?.base64);
-  console.log("documentDetails?.base64", documentDetails?.docName);
-  console.log("documentDetails?.base64", documentDetails?.isLivenessImage);
-  console.log("documentDetailsCheck", documentDetails);
+  // console.log("documentDetails?.base64", documentDetails?.base64);
+  // console.log("documentDetails?.base64", documentDetails?.docName);
+  // console.log("documentDetails?.base64", documentDetails?.isLivenessImage);
+  // console.log("documentDetailsCheck", documentDetails);
   const resources = {
     file:
       Platform.OS === "ios"
@@ -55,22 +63,19 @@ const DocumentPreviewScreen = (props: any) => {
   const resourceType = "base64";
   const shareItem = async () => {
     console.log("selectedItem?.base64===>", selectedItem?.base64);
-    if(selectedItem?.isLivenessImage === 'livenessImage'){
+    if (selectedItem?.isLivenessImage === "livenessImage") {
       await Share.open({
         url: selectedItem?.base64,
       });
-
-    }else if(selectedItem?.type === 'deeplink'){
+    } else if (selectedItem?.type === "deeplink") {
       await Share.open({
-        url:selectedItem?.base64,
+        url: selectedItem?.base64,
       });
-    }else if (selectedItem?.docType === "jpg") {
+    } else if (selectedItem?.docType === "jpg") {
       await Share.open({
-        url:`data:image/jpeg;base64,${selectedItem?.base64}`,
+        url: `data:image/jpeg;base64,${selectedItem?.base64}`,
       });
-    }
-    
-    else {
+    } else {
       await Share.open({
         url: `data:image/png;base64,${selectedItem?.base64}`,
       });
@@ -96,26 +101,65 @@ const DocumentPreviewScreen = (props: any) => {
     );
   }
 
+  // const deleteItem = () => {
+  //   setisBottomSheetForSideOptionVisible(false);
+  //   // const newData = documentsDetailsList?.responseData.filter(function (item: {
+  //   //   name: any;
+  //   // }) {
+  //   //   return item.name !== selectedItem?.name;
+  //   // });
+
+  //   // dispatch(saveDocuments(newData));
+
+  //   const newData = documentsDetailsList?.responseData;
+  //   const findIndex = newData?.findIndex(
+  //     (item) => item.id === selectedItem?.id
+  //   );
+  //   findIndex >= -1 && newData?.splice(findIndex, 1);
+  //   // console.log('helpArra',helpArra)
+  //   dispatch(saveDocuments(newData));
+
+  //   props.navigation.navigate("Documents");
+  // };
+
   const deleteItem = () => {
-    setisBottomSheetForSideOptionVisible(false);
-    // const newData = documentsDetailsList?.responseData.filter(function (item: {
-    //   name: any;
-    // }) {
-    //   return item.name !== selectedItem?.name;
-    // });
+    console.log("selectedItem?.id", selectedItem);
+    Alert.alert(
+      "Confirmation! ",
+      "Are you sure you want to delete this document ?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => (
+            console.log("Cancel Pressed!"),
+            setisBottomSheetForSideOptionVisible(false)
+          ),
+        },
+        {
+          text: "OK",
+          onPress: () => {
+            setisBottomSheetForSideOptionVisible(false);
+            const newData = documentsDetailsList?.responseData;
+            const findIndex = newData?.findIndex(
+              (item) => item.id === selectedItem?.id
+            );
+            findIndex >= -1 && newData?.splice(findIndex, 1);
+            // console.log('helpArra',helpArra)
+            dispatch(saveDocuments(newData));
 
-    // dispatch(saveDocuments(newData));
-
-    const newData = documentsDetailsList?.responseData
-    const findIndex = newData?.findIndex((item)=>item.id === selectedItem?.id)
-    findIndex >= -1 &&  newData?.splice(findIndex,1)
-  // console.log('helpArra',helpArra)
-   dispatch(saveDocuments(newData));
-
-    props.navigation.navigate("Documents");
+            {
+              HistoryParams
+                ? props?.navigation.goBack()
+                : props.navigation.navigate("Home");
+            }
+          },
+        },
+      ],
+      { cancelable: false }
+    );
   };
+
   const qrCodeModal = () => {
-    
     handleUploadImage();
   };
   function editItem() {
@@ -131,11 +175,9 @@ const DocumentPreviewScreen = (props: any) => {
     console.log("iteName==>", selectedItem);
   }
   const handleUploadImage = async () => {
-    setisBottomSheetForSideOptionVisible(false)
- props.navigation.navigate('ShareQr',{selectedItem:selectedItem})
-console.log("selectedItem",selectedItem);
-
-   
+    setisBottomSheetForSideOptionVisible(false);
+    props.navigation.navigate("ShareQr", { selectedItem: selectedItem });
+    console.log("selectedItem", selectedItem);
   };
   const RowOption = ({ icon, title, rowAction }: any) => (
     <TouchableOpacity onPress={rowAction}>
@@ -169,7 +211,7 @@ console.log("selectedItem",selectedItem);
 
   return (
     <View style={styles.sectionContainer}>
-      <View
+      {/* <View
         style={{
           flex: 1,
           position: "absolute",
@@ -200,33 +242,122 @@ console.log("selectedItem",selectedItem);
             source={LocalImages.menuImage}
           ></Image>
         </TouchableOpacity>
-      </View>
+      </View> */}
+
+      {/* <Header linearStyle={styles.linearStyle}>
+        <TouchableOpacity
+          style={{ flex: 0.1, left: 20 }}
+          onPress={() => props.navigation.goBack()}
+        >
+          <Image
+            resizeMode="contain"
+            style={[styles.logoContainer]}
+            source={LocalImages.backImage}
+          ></Image>
+        </TouchableOpacity>
+        <GenericText style={styles.text}>Details</GenericText>
+        <TouchableOpacity
+          style={{ flex: 0.1 }}
+          onPress={() => setisBottomSheetForSideOptionVisible(true)}
+        >
+          <Image
+            resizeMode="contain"
+            style={[styles.logoContainer]}
+            source={LocalImages.menuImage}
+          ></Image>
+        </TouchableOpacity>
+      </Header> */}
+
+      <LinearGradients
+        endColor={Screens.colors.header.endColor}
+        middleColor={Screens.colors.header.middleColor}
+        startColor={Screens.colors.header.startColor}
+        style={styles.linearStyle}
+        horizontalGradient={false}
+      >
+        <View style={{ flex: 1 }}>
+          <View style={{ flex: 0.4 }}></View>
+          <View style={{ flex: 0.6, flexDirection: "row" }}>
+            <View style={{ flex: 0.2 }}>
+              <View
+                style={{ position: "absolute", top: 30, left: 25, zIndex: 100 }}
+              >
+                <Pressable onPress={() => props.navigation.goBack()}>
+                  <Image
+                    resizeMode="contain"
+                    style={{
+                      width: 15,
+                      height: 15,
+                      resizeMode: "contain",
+                      tintColor: isEarthId()
+                        ? Screens.pureWhite
+                        : Screens.black,
+                    }}
+                    source={LocalImages.backImage}
+                  ></Image>
+                </Pressable>
+              </View>
+            </View>
+            <View style={{ flex: 0.6, justifyContent: "center" }}>
+              <GenericText
+                style={{ color: "#fff", fontSize: 18, alignSelf: "center" }}
+              >
+                Details
+              </GenericText>
+            </View>
+
+            <View style={{ flex: 0.2, justifyContent: "center" }}>
+              <View
+                style={{ position: "absolute", top: 30, left: 25, zIndex: 100 }}
+              >
+                <Pressable
+                  onPress={() => setisBottomSheetForSideOptionVisible(true)}
+                >
+                  <Image
+                    resizeMode="contain"
+                    style={{
+                      width: 15,
+                      height: 15,
+                      resizeMode: "contain",
+                      tintColor: isEarthId()
+                        ? Screens.pureWhite
+                        : Screens.black,
+                    }}
+                    source={LocalImages.menudot}
+                  ></Image>
+                </Pressable>
+              </View>
+            </View>
+          </View>
+        </View>
+      </LinearGradients>
+
       <BottomSheet
         onClose={() => setisBottomSheetForSideOptionVisible(false)}
         height={230}
         isVisible={isBottomSheetForSideOptionVisible}
       >
         <View style={{ height: 180, width: "100%", paddingHorizontal: 30 }}>
-        <RowOption
-                rowAction={() => editItem()}
-                title={"edit"}
-                icon={LocalImages.editIcon}
-              />
-              <RowOption
-                rowAction={() => qrCodeModal()}
-                title={"QR Code"}
-                icon={LocalImages.qrcodeImage}
-              />
-              <RowOption
-                rowAction={() => shareItem()}
-                title={"share"}
-                icon={LocalImages.shareImage}
-              />
-              <RowOption
-                rowAction={() => deleteItem()}
-                title={"delete"}
-                icon={LocalImages.deleteImage}
-              />
+          <RowOption
+            rowAction={() => editItem()}
+            title={"edit"}
+            icon={LocalImages.editIcon}
+          />
+          <RowOption
+            rowAction={() => qrCodeModal()}
+            title={"QR Code"}
+            icon={LocalImages.qrcodeImage}
+          />
+          <RowOption
+            rowAction={() => shareItem()}
+            title={"share"}
+            icon={LocalImages.shareImage}
+          />
+          <RowOption
+            rowAction={() => deleteItem()}
+            title={"delete"}
+            icon={LocalImages.deleteImage}
+          />
         </View>
       </BottomSheet>
       {/* <View style={{ position: "absolute", top: 20, right: 20, zIndex: 100 }}>
@@ -239,7 +370,7 @@ console.log("selectedItem",selectedItem);
           ></Image>
         </TouchableOpacity>
       </View> */}
-      <View style={{ flex: 1, marginTop: 70 }}>
+      <View style={{ flex: 1, marginTop: 30 }}>
         {documentDetails.pdf ? (
           <PDFView
             fadeInDuration={100.0}
@@ -255,17 +386,19 @@ console.log("selectedItem",selectedItem);
             style={{
               flex: 1,
             }}
-          //   source={{ uri:documentDetails?.type === 'deeplink' ? `${documentDetails?.base64}`: documentDetails?.docType == "jpg"? `data:image/jpeg;base64,${documentDetails?.base64}`
-          //   : documentDetails?.isLivenessImage === 'livenessImage' ? documentDetails?.base64  : `data:image/png;base64,${documentDetails?.base64}` 
-          // }}
-          source={{
-          uri:documentDetails?.type === 'deeplink' ? `${documentDetails?.base64}`:
-          documentDetails?.isLivenessImage === 'livenessImage' ? documentDetails?.base64 : 
-          documentDetails?.docType == "jpg"? `data:image/jpeg;base64,${documentDetails?.base64}` :
-          `data:image/png;base64,${documentDetails?.base64}`
-          
-          }}
-          
+            //   source={{ uri:documentDetails?.type === 'deeplink' ? `${documentDetails?.base64}`: documentDetails?.docType == "jpg"? `data:image/jpeg;base64,${documentDetails?.base64}`
+            //   : documentDetails?.isLivenessImage === 'livenessImage' ? documentDetails?.base64  : `data:image/png;base64,${documentDetails?.base64}`
+            // }}
+            source={{
+              uri:
+                documentDetails?.type === "deeplink"
+                  ? `${documentDetails?.base64}`
+                  : documentDetails?.isLivenessImage === "livenessImage"
+                  ? documentDetails?.base64
+                  : documentDetails?.docType == "jpg"
+                  ? `data:image/jpeg;base64,${documentDetails?.base64}`
+                  : `data:image/png;base64,${documentDetails?.base64}`,
+            }}
           ></Image>
         ) : (
           <GenericText style={{ color: "#fff", marginVertical: 50 }}>
@@ -287,7 +420,7 @@ console.log("selectedItem",selectedItem);
       </GenericText>
       <GenericText
         style={{
-          color: "#fff",
+          color: "#696969",
           fontSize: 18,
           alignSelf: "center",
           marginTop: 5,
@@ -319,7 +452,7 @@ console.log("selectedItem",selectedItem);
 const styles = StyleSheet.create({
   sectionContainer: {
     flex: 1,
-    backgroundColor: Screens.black,
+    backgroundColor: Screens.pureWhite,
   },
   text: {
     flex: 0.8,
@@ -355,12 +488,18 @@ const styles = StyleSheet.create({
   bottomLogo: {
     width: 25,
     height: 25,
-    tintColor:'black'
+    tintColor: "black",
   },
   categoryHeaderText: {
     marginHorizontal: 30,
     marginVertical: 20,
     color: Screens.headingtextColor,
+  },
+  linearStyle: {
+    height: 120,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
+    elevation: 4,
   },
 });
 

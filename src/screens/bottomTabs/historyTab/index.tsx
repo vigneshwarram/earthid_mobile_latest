@@ -146,7 +146,7 @@ function compareTime(a, b) {
       <TouchableOpacity
         style={{ marginBottom: 20 }}
         onPress={() =>
-          navigation.navigate("ViewCredential", { documentDetails: item })
+          navigation.navigate("ViewCredential", { documentDetails: item,history:"HistoryTab" })
         }
       >
         <View style={{ flexDirection: "row", marginTop: 5 }}>
