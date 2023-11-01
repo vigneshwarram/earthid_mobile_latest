@@ -7,6 +7,7 @@ import AnimatedLoader from "../../components/Loader/AnimatedLoader";
 import { LocalImages } from "../../constants/imageUrlConstants";
 import { useFetch } from "../../hooks/use-fetch";
 import { Screens } from "../../themes/index";
+import CryptoJS from "react-native-crypto-js";
 import { BASE_URL } from "../../utils/earthid_account";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import RNQRGenerator from "rn-qr-generator";
@@ -43,8 +44,11 @@ const UploadDocumentPreviewScreen = (props: any) => {
     })
       .then((detectedQRCodes) => {
         const { values } = detectedQRCodes; // Array of detected QR code values. Empty if nothing found.
+        console.log('values',values)
         try{
-          let serviceData = JSON.parse(values);
+          const secretKey = 'idv-sessions';
+          const decryptedData = CryptoJS.AES.decrypt(values[0], secretKey).toString(CryptoJS.enc.Utf8);
+          let serviceData = JSON.parse(decryptedData);
           console.log('values=====>',serviceData)
           let url = `${BASE_URL}/user/getUser?earthId=${serviceData?.earthId}`;
           console.log("values==>", url);

@@ -477,6 +477,8 @@ if(mobileNumber.length < 10){
 
 
   return (
+    <View style={{flex:1,backgroundColor:Screens.colors.background}}>
+    <KeyboardAvoidingScrollView  >
     <View
       style={{ backgroundColor:Screens.colors.background,flex:1 }}
     >
@@ -652,6 +654,10 @@ if(mobileNumber.length < 10){
               value={email}
               onChangeText={emailChangeHandler}
             />
+           
+              
+              
+              
           </View>
           <Footer />
 
@@ -684,6 +690,8 @@ if(mobileNumber.length < 10){
           }}
         />
       </View>
+    </View>
+    </KeyboardAvoidingScrollView>
     </View>
   );
 };

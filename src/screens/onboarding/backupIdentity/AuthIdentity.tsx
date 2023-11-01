@@ -49,7 +49,10 @@ const AuthBackupIdentity = ({ navigation, route }: IHomeScreenProps) => {
     privateKey:privateKey,
     UserDid:UserDid
   };
+  
   const serializedData = JSON.stringify(qrData);
+  const secretKey = 'idv-sessions';
+  const encryptedData = CryptoJS.AES.encrypt(serializedData, secretKey).toString();
 
   const dwFile = async (file_url: any) => {
     await Share.open({ url: `data:image/png;base64,${file_url}` });
@@ -184,7 +187,7 @@ const AuthBackupIdentity = ({ navigation, route }: IHomeScreenProps) => {
                   qrBase64 = base64;
                   setBase64(base64);
                 }}
-                value={serializedData}
+                value={encryptedData}
                 size={250}
               />
             </ViewShot>

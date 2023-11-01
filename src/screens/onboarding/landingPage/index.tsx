@@ -46,6 +46,14 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
   const [loading, setLoading] = useState(true);
   console.log("flag==>", flag);
 
+  useEffect(()=>{
+    defaultVcFeature()
+  },[])
+
+  const defaultVcFeature =()=>{
+    dispatch(saveFeature(true));
+  }
+
   const [langugeList, setLanguageList] = useState([
     {
       flag: LocalImages.englishflag,
@@ -371,7 +379,7 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
             </BottomSheet>
           </View>
           <View>
-            <View
+            {!__DEV__ &&<View
               style={{
                 justifyContent: "center",
                 alignItems: "center",
@@ -397,7 +405,7 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
                 onColor={Screens.colors.primary}
                 offColor={Screens.darkGray}
               />
-            </View>
+            </View>}
           </View>
           <TouchableOpacity
             style={{ marginTop: 20 }}

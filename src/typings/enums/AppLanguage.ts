@@ -5,7 +5,6 @@ export enum AppLanguage {
   ENGLISH = "en-IN",
   SPANISH = "es-ES",
   PORTUGUESE = "pot-PT",
-  ENGLISHFLAG = "ENGLISHFLAG"
 }
 
 export enum VoiceLanguage {

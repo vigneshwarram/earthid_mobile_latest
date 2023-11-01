@@ -61,7 +61,8 @@ const Register = ({ navigation,route }: IHomeScreenProps) => {
     bucketName:`idv-sessions-${userDetails?.responseData.username.toLowerCase()}`
   };
   const serializedData = JSON.stringify(qrData);
-
+  const secretKey = 'idv-sessions';
+  const encryptedData = CryptoJS.AES.encrypt(serializedData, secretKey).toString();
   let data = {
     email: userDetails?.responseData.email,
     mobile: userDetails?.responseData.phone,
@@ -172,7 +173,6 @@ const Register = ({ navigation,route }: IHomeScreenProps) => {
     return () =>
       BackHandler.removeEventListener("hardwareBackPress", onBackPress);
   }, []);
-
   return (
     <View style={styles.sectionContainer}>
       <ScrollView contentContainerStyle={styles.sectionContainer}>
@@ -224,7 +224,7 @@ const Register = ({ navigation,route }: IHomeScreenProps) => {
                     qrBase64 = base64;
                     setBase64(base64);
                   }}
-                  value={serializedData}
+                  value={encryptedData}
                   size={250}
                 />
               </View>

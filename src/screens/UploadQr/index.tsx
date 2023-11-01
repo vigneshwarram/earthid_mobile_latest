@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { RNCamera } from "react-native-camera";
 import DocumentPicker from "react-native-document-picker";
+import CryptoJS from "react-native-crypto-js";
 import Button from "../../components/Button";
 import { LocalImages } from "../../constants/imageUrlConstants";
 import { Screens } from "../../themes/index";
@@ -39,6 +40,7 @@ const UploadQr = (props: any) => {
   const [filePath, setFilePath] = useState();
   const [isBarcodeScanned,setBarCodeScanned] = useState(false)
   const [imageResponse, setImageResponse] = useState<any>('');
+  const secretKey = 'idv-sessions';
   const {
     loading: getUserLoading,
     data: getUserResponse,
@@ -162,8 +164,10 @@ const UploadQr = (props: any) => {
     if(!isBarcodeScanned){
       setBarCodeScanned(true)
       try{
-        let serviceData = JSON.parse(barCodeData?.data);
-        detectedBarCodes(serviceData);
+        const decryptedData = CryptoJS.AES.decrypt(barCodeData?.data, secretKey).toString(CryptoJS.enc.Utf8);
+
+const decryptedJsonObject = JSON.parse(decryptedData);
+        detectedBarCodes(decryptedJsonObject);
       }
       catch (error) {
         Alert.alert(

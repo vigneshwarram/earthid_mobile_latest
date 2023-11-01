@@ -22,6 +22,7 @@ import GenericText from "../../../../components/Text";
 import { createUserSignaturekey } from "../../../../utils/createUserSignaturekey";
 import { createVerifiableCred } from "../../../../utils/createVerifiableCred";
 import { dateTime } from "../../../../utils/encryption";
+import Spinner from "react-native-loading-spinner-overlay";
 
 interface IHomeScreenProps {
   navigation?: any;
@@ -141,6 +142,7 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
     }
 
     useEffect(()=>{
+      console.log('signature"""""=====>',signature)
       if(signature){
         createVerifiableCredentials() 
       }
@@ -346,10 +348,11 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
             }}
             title={"submt"}
           ></Button>
-          <AnimatedLoader
-            isLoaderVisible={ApproveOtpResponse.isApproveLoading && loading}
-            loadingText="Loading..."
-          />
+           <Spinner
+              visible={ApproveOtpResponse.isApproveLoading || loading}
+              textContent={"Loading..."}
+              textStyle={styles.spinnerTextStyle}
+            />
           <SuccessPopUp
             isLoaderVisible={
               ApproveOtpResponse?.responseData &&
@@ -475,6 +478,9 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     marginLeft: 10,
     marginTop: -2,
+  },
+  spinnerTextStyle: {
+    color: "#fff",
   },
 });
 

@@ -35,9 +35,23 @@ const CustomDrawer = (props: any) => {
     }
   };
   const [langugeList, setLanguageList] = useState([
-    { label: "English", value: AppLanguage.ENGLISH},
-    { label: "Spanish", value: AppLanguage.SPANISH},
-    { label: "Portuguese", value: AppLanguage.PORTUGUESE },
+    {
+      flag: LocalImages.englishflag,
+      label: "English",
+      value: AppLanguage.ENGLISH,
+      selection: true,
+    },
+    {
+      flag: LocalImages.spainflag,
+      label: "Spanish",
+      value: AppLanguage.SPANISH,
+    },
+    {
+      flag: LocalImages.portugalflag,
+      label: "Portuguese",
+      value: AppLanguage.PORTUGUESE,
+    },
+
   ]);
 
   useEffect(() => {
@@ -180,18 +194,26 @@ const CustomDrawer = (props: any) => {
                   flexDirection: "row",
                 }}
               >
-                <GenericText
-                  style={[
-                    {
-                      fontSize: 18,
-                      marginHorizontal: 20,
-                      color: Screens.black,
-                      fontWeight: "500",
-                    },
-                  ]}
-                >
-                  {item?.label}
-                </GenericText>
+             <View style={{ flexDirection: "row" }}>
+                        <Image
+                          resizeMode="contain"
+                          source={item?.flag}
+                          style={{ height: 25, width: 25 }}
+                        ></Image>
+                        <GenericText
+                          style={[
+                            {
+                              fontSize: 18,
+                              marginHorizontal: 20,
+                              color: Screens.black,
+                              fontWeight: "500",
+                            },
+                          ]}
+                        >
+                          {item?.label}
+                        </GenericText>
+                      </View>
+
                 <Image
                   resizeMode="contain"
                   style={[
