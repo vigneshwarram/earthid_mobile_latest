@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Platform,
   TouchableOpacity,
+  KeyboardAvoidingView,
   Alert,
   Text,
   AsyncStorage,
@@ -477,19 +478,11 @@ if(mobileNumber.length < 10){
 
 
   return (
-    <View style={{flex:1,backgroundColor:Screens.colors.background}}>
-    <KeyboardAvoidingScrollView  >
-    <View
-      style={{ backgroundColor:Screens.colors.background,flex:1 }}
-    >
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: Screens.colors.background,
-      
-        }}
-      >
-        <Header
+   
+   <KeyboardAvoidingScrollView
+  style={{ flex: 1, backgroundColor: Screens.colors.background }}
+>
+<Header
           isLogoAlone={true}
           linearStyle={styles.linearStyle}
           containerStyle={{
@@ -501,6 +494,11 @@ if(mobileNumber.length < 10){
             iconContainer: styles.alignCenter,
           }}
         ></Header>
+    <View
+      style={{ backgroundColor:Screens.colors.background,marginBottom:50 }}
+    >
+     
+   
         <View style={styles.category}>
           <View>
             <GenericText
@@ -690,9 +688,9 @@ if(mobileNumber.length < 10){
           }}
         />
       </View>
-    </View>
+
     </KeyboardAvoidingScrollView>
-    </View>
+ 
   );
 };
 
@@ -765,11 +763,11 @@ const styles = StyleSheet.create({
   },
   category: {
     backgroundColor: Screens.pureWhite,
-    padding: 10,
-    marginTop: -250,
+    padding: 5,
+    marginTop: -260,
     marginHorizontal: 15,
     elevation: 5,
-    borderRadius: 30,
+    borderRadius: 25,
     justifyContent: "space-between",
     shadowColor: '#171717',
     shadowOffset: {width: -2, height: 4},

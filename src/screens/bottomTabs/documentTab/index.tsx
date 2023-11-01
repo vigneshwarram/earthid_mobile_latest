@@ -238,7 +238,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
             titleIcon={item?.isVc ? LocalImages.vcImage : null}
             leftAvatar={LocalImages.documentsImage}
             absoluteCircleInnerImage={LocalImages.upImage}
-            rightIconSrc={LocalImages.menuImage}
+            rightIconSrc={  item?.isVc?null: LocalImages.menuImage}
             rightIconOnPress={() => _rightIconOnPress(item)}
             title={
               item?.isVc

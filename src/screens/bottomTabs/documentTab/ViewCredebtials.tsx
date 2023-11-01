@@ -211,63 +211,6 @@ const DocumentPreviewScreen = (props: any) => {
 
   return (
     <View style={styles.sectionContainer}>
-      {/* <View
-        style={{
-          flex: 1,
-          position: "absolute",
-          top: 20,
-          zIndex: 100,
-          flexDirection: "row",
-          alignItems: "center",
-        }}
-      >
-        <TouchableOpacity
-          style={{ flex: 0.1, left: 20 }}
-          onPress={() => props.navigation.goBack()}
-        >
-          <Image
-            resizeMode="contain"
-            style={[styles.logoContainer]}
-            source={LocalImages.backImage}
-          ></Image>
-        </TouchableOpacity>
-        <GenericText style={styles.text}>Details</GenericText>
-        <TouchableOpacity
-          style={{ flex: 0.1 }}
-          onPress={() => setisBottomSheetForSideOptionVisible(true)}
-        >
-          <Image
-            resizeMode="contain"
-            style={[styles.logoContainer]}
-            source={LocalImages.menuImage}
-          ></Image>
-        </TouchableOpacity>
-      </View> */}
-
-      {/* <Header linearStyle={styles.linearStyle}>
-        <TouchableOpacity
-          style={{ flex: 0.1, left: 20 }}
-          onPress={() => props.navigation.goBack()}
-        >
-          <Image
-            resizeMode="contain"
-            style={[styles.logoContainer]}
-            source={LocalImages.backImage}
-          ></Image>
-        </TouchableOpacity>
-        <GenericText style={styles.text}>Details</GenericText>
-        <TouchableOpacity
-          style={{ flex: 0.1 }}
-          onPress={() => setisBottomSheetForSideOptionVisible(true)}
-        >
-          <Image
-            resizeMode="contain"
-            style={[styles.logoContainer]}
-            source={LocalImages.menuImage}
-          ></Image>
-        </TouchableOpacity>
-      </Header> */}
-
       <LinearGradients
         endColor={Screens.colors.header.endColor}
         middleColor={Screens.colors.header.middleColor}
@@ -401,7 +344,7 @@ const DocumentPreviewScreen = (props: any) => {
             }}
           ></Image>
         ) : (
-          <GenericText style={{ color: "#fff", marginVertical: 50 }}>
+          <GenericText style={{ color: "#000", marginVertical:50,paddingHorizontal:5 }}>
             {JSON.stringify(documentDetails)}
           </GenericText>
         )}
@@ -415,7 +358,7 @@ const DocumentPreviewScreen = (props: any) => {
             source={{ uri: documentDetails.base64 }}
           ></Image> */}
 
-      <GenericText style={{ color: "#fff", fontSize: 18, alignSelf: "center" }}>
+      <GenericText style={{ color: "#000", fontSize: 18, alignSelf: "center" }}>
         {documentDetails.name}
       </GenericText>
       <GenericText
