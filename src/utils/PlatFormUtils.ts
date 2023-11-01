@@ -8,15 +8,14 @@ export const isAndroid = Platform.OS === "android";
 export const isEarthId = () => {
   // const outData = await getAppName();
   // console.log("getAsynOperation()", outData);
-  return true                                                                                            ;
+  return true;
 };
 
 export const isFeatureNeed = () => {
   // const outData = await getAppName();
   // console.log("getAsynOperation()", outData);
-  return true                                                                                            ;
+  return true;
 };
-
 
 /**
  * @description Provides the the OS platform level language on the user's device. The logic supports

@@ -12,7 +12,7 @@ import {
   Platform,
   AppState,
   Text,
-  InteractionManager
+  InteractionManager,
 } from "react-native";
 import { EventRegister } from "react-native-event-listeners";
 import il8n, { getUserLanguagePreference } from "../.././../utils/i18n";
@@ -37,14 +37,13 @@ import { getColor } from "../../../utils/CommonFuntion";
 import { dateTime } from "../../../utils/encryption";
 import RNFetchBlob from "rn-fetch-blob";
 import { IDocumentProps } from "../../uploadDocuments/VerifiDocumentScreen";
-import NetInfo from '@react-native-community/netinfo';
+import NetInfo from "@react-native-community/netinfo";
 import { createUserSignaturekey } from "../../../utils/createUserSignaturekey";
 import { newssiApiKey } from "../../../utils/earthid_account";
 import { createVerifiableCred } from "../../../utils/createVerifiableCred";
 import Spinner from "react-native-loading-spinner-overlay/lib";
 import { StackActions } from "@react-navigation/native";
 import TouchID from "react-native-touch-id";
-
 
 interface IHomeScreenProps {
   navigation?: any;
@@ -71,26 +70,26 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
   const getHistoryReducer = useAppSelector((state) => state.getHistoryReducer);
   const profilePicture = useAppSelector((state) => state.savedPic);
   const securityReducer: any = useAppSelector((state) => state.security);
-  const[createVerifyCondition,setcreateVerifyCondition]=useState(true)
-  const[createVerifyCondition1,setcreateVerifyCondition1]=useState(true)
-  const[signature,setSignature]=useState()
+  const [createVerifyCondition, setcreateVerifyCondition] = useState(true);
+  const [createVerifyCondition1, setcreateVerifyCondition1] = useState(true);
+  const [signature, setSignature] = useState();
   const [loading, setLoading] = useState(false);
-  const[createVerify,setCreateVerify]=useState({})
+  const [createVerify, setCreateVerify] = useState({});
   const keys = useAppSelector((state) => state.user);
-  const issurDid = keys?.responseData?.issuerDid
-  const UserDid  = keys?.responseData?.newUserDid  
-  const privateKey = keys?.responseData?.generateKeyPair?.privateKey 
-  let url : any  = `https://ssi-test.myearth.id/api/user/sign?issuerDID=${issurDid}`
-  let requesturl : any  = `https://ssi-test.myearth.id/api/issuer/verifiableCredential?isCryptograph=${false}&downloadCryptograph=${false}`    
+  const issurDid = keys?.responseData?.issuerDid;
+  const UserDid = keys?.responseData?.newUserDid;
+  const privateKey = keys?.responseData?.generateKeyPair?.privateKey;
+  let url: any = `https://ssi-test.myearth.id/api/user/sign?issuerDID=${issurDid}`;
+  let requesturl: any = `https://ssi-test.myearth.id/api/issuer/verifiableCredential?isCryptograph=${false}&downloadCryptograph=${false}`;
 
   const disPatch = useAppDispatch();
 
   let flatListRef: any = useRef();
-  const IDLE_TIMEOUT = 60000*10; // 10 minute
-  console.log(signature,"sign");
-  console.log(createVerify,"createVerify");
-  console.log(UserDid,"UserDid");
-  console.log(userDetails?.responseData?.publicKey,"publickey");
+  const IDLE_TIMEOUT = 60000 * 10; // 10 minute
+  console.log(signature, "sign");
+  console.log(createVerify, "createVerify");
+  console.log(UserDid, "UserDid");
+  console.log(userDetails?.responseData?.publicKey, "publickey");
   let idleTimer: string | number | NodeJS.Timeout | undefined;
   //recent activity
   const documentsDetailsList = useAppSelector((state) => state.Documents);
@@ -99,17 +98,17 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
 
   const [aState, setAppState] = useState(AppState.currentState);
   useEffect(() => {
-    setLanguage()
+    setLanguage();
     const appStateListener = AppState.addEventListener(
-      'change',
-      nextAppState => {
-        console.log('Next AppState is: ', nextAppState);
-        if(nextAppState==='active'){
+      "change",
+      (nextAppState) => {
+        console.log("Next AppState is: ", nextAppState);
+        if (nextAppState === "active") {
           ShareMenu.getInitialShare(handleShare);
         }
-        setLanguage()
+        setLanguage();
         setAppState(nextAppState);
-      },
+      }
     );
     return () => {
       appStateListener?.remove();
@@ -157,22 +156,20 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
       navigation.dispatch(StackActions.replace("AuthStack"));
     }
   };
-// Function to handle idle timeout
-const handleIdle = () => {
-  if(userDetails && userDetails?.responseData?.publicKey){
-    checkAuth()
-  }
+  // Function to handle idle timeout
+  const handleIdle = () => {
+    if (userDetails && userDetails?.responseData?.publicKey) {
+      checkAuth();
+    }
+  };
 
-};
-  
-  const setLanguage =async()=>{
+  const setLanguage = async () => {
     const language = await AsyncStorage.getItem("setLanguage");
-    if(language){
+    if (language) {
       il8n.changeLanguage(language);
     }
-    
-  }
-  
+  };
+
   const [recentDataOfDocument, setrecentData] = useState([]);
   const dispatch = useAppDispatch();
   const _toggleDrawer = () => {
@@ -188,12 +185,7 @@ const handleIdle = () => {
     ShareMenu.getInitialShare(handleShare);
   }, []);
 
-
-
- 
-
   const handleShare = useCallback(async (item: SharedItem | null) => {
-  
     if (!item) {
       return;
     }
@@ -210,8 +202,6 @@ const handleIdle = () => {
       // const uriimage2 = uriimage1.split(".")[0]
       // console.log("imageName",uriimage2)
 
-
-
       if (
         mimeType === "image/*" ||
         mimeType === "image/jpeg" ||
@@ -224,7 +214,7 @@ const handleIdle = () => {
           type: mimeType,
           uri: base64,
           flow: "deeplink",
-          docName:imageName,
+          docName: imageName,
           file: {
             uri: base64,
           },
@@ -240,7 +230,7 @@ const handleIdle = () => {
           type: mimeType,
           uri: base64,
           flow: "deeplink",
-           docName:imageName,
+          docName: imageName,
           file: {
             uri: base64,
           },
@@ -252,9 +242,7 @@ const handleIdle = () => {
       console.log("datamimeType", extraData);
       console.log("extraData?.mimeType", extraData?.mimeType);
 
-
       const imageName = data.split("/").pop();
-
 
       if (
         extraData?.mimeType === "image/*" ||
@@ -270,7 +258,7 @@ const handleIdle = () => {
           type: extraData?.mimeType,
           uri: imagePath,
           flow: "deeplink",
-          docName:imageName,
+          docName: imageName,
           imagePath: imagePath,
           file: {
             uri: base64,
@@ -285,7 +273,7 @@ const handleIdle = () => {
           base64: base64,
           type: extraData?.mimeType,
           uri: base64,
-          docName:imageName,
+          docName: imageName,
           flow: "deeplink",
           file: {
             uri: base64,
@@ -317,33 +305,34 @@ const handleIdle = () => {
         isVc: false,
         color: "rgba(191, 245, 206, 1)",
       };
-     console.log('documentsDetailsList?.responseData',documentsDetailsList?.responseData)
+      console.log(
+        "documentsDetailsList?.responseData",
+        documentsDetailsList?.responseData
+      );
       var DocumentList = documentsDetailsList?.responseData
         ? documentsDetailsList?.responseData
         : [];
       DocumentList.push(documentDetails);
       dispatch(saveDocuments(DocumentList));
       getHistoryReducer.isSuccess = false;
-      setTimeout(() => {
-       
-      }, 2000);
+      setTimeout(() => {}, 2000);
     }, 200);
   };
   useEffect(() => {
-    console.log('recentData====>',recentData)
+    console.log("recentData====>", recentData);
     if (documentsDetailsList) {
-      let recentDataFillerWithColor: any = recentData &&  recentData?.map(
-        (item: any, index: any) => {
+      let recentDataFillerWithColor: any =
+        recentData &&
+        recentData?.map((item: any, index: any) => {
           let colors = item?.documentName;
           let iteName = colors?.trim()?.split("(")[0].trim();
           console.log("recentDataFillerWithColor====>", iteName);
           item.color = getColor(iteName);
           return item;
-        }
-      );
+        });
       if (recentDataFillerWithColor?.length > 0) {
         setrecentData(recentDataFillerWithColor);
-      }else{
+      } else {
         setrecentData([]);
       }
     }
@@ -364,27 +353,23 @@ const handleIdle = () => {
     })
   );
 
-
-  const isNetworkConnect=()=>{
-  
+  const isNetworkConnect = () => {
     NetInfo.fetch().then((state) => {
       console.log("isconnect", state.isConnected);
       if (!state.isConnected) {
         Alert.alert(
-          'Network not connected',
-          'Please check your internet connection and try again.',
-          [{ text: 'OK' }],
-          { cancelable: false },
+          "Network not connected",
+          "Please check your internet connection and try again.",
+          [{ text: "OK" }],
+          { cancelable: false }
         );
       }
     });
-  }
-  
-  
-  useEffect(()=>{
-    isNetworkConnect()
-  },[])
+  };
 
+  useEffect(() => {
+    isNetworkConnect();
+  }, []);
 
   const _renderItem = ({ item }: any) => {
     return (
@@ -436,7 +421,7 @@ const handleIdle = () => {
 
   useEffect(() => {
     const listener: any = EventRegister.addEventListener("t", () => {
-      handleIdle()
+      handleIdle();
       return;
     });
     return () => {
@@ -469,36 +454,37 @@ const handleIdle = () => {
     const profilePic = await AsyncStorage.getItem("profilePic");
     disPatch(savingProfilePictures(profilePic));
   };
-  function convertTimeToAmPmFormat(timeString: { split: (arg0: string) => [any, any]; }) {
-    const [hours, minutes] = timeString.split(':');
-    let formattedTime = '';
-    
+  function convertTimeToAmPmFormat(timeString: {
+    split: (arg0: string) => [any, any];
+  }) {
+    const [hours, minutes] = timeString.split(":");
+    let formattedTime = "";
+
     // Convert the 24-hour format to 12-hour format
     let hoursIn12HourFormat = parseInt(hours, 10) % 12;
     if (hoursIn12HourFormat === 0) {
       hoursIn12HourFormat = 12; // Set 12 for 0 (midnight) in 12-hour format
     }
-    
+
     // Determine AM or PM
-    const amOrPm = parseInt(hours, 10) < 12 ? 'am' : 'pm';
-  
+    const amOrPm = parseInt(hours, 10) < 12 ? "am" : "pm";
+
     // Add leading zero for single-digit minutes
-    const paddedMinutes = minutes.padStart(2, '0');
-    
+    const paddedMinutes = minutes.padStart(2, "0");
+
     // Construct the formatted time string
     formattedTime = `${hoursIn12HourFormat}:${paddedMinutes} ${amOrPm}`;
-    
+
     return formattedTime;
   }
-  const getTime =(item: { time: any; })=>{
-    return convertTimeToAmPmFormat(item?.time)
-  }
-  const getData =(datas: any[])=>{
-    let arrayData =  datas?.sort(compareTime)
-    let data =  arrayData?.reverse()
-    return data
-  
-  }
+  const getTime = (item: { time: any }) => {
+    return convertTimeToAmPmFormat(item?.time);
+  };
+  const getData = (datas: any[]) => {
+    let arrayData = datas?.sort(compareTime);
+    let data = arrayData?.reverse();
+    return data;
+  };
   function compareTime(a, b) {
     const timeA = new Date(`1970-01-01T${a.time}`);
     const timeB = new Date(`1970-01-01T${b.time}`);
@@ -533,9 +519,16 @@ const handleIdle = () => {
             leftAvatar={LocalImages.documentsImage}
             absoluteCircleInnerImage={LocalImages.upImage}
             // rightIconSrc={LocalImages.menuImage}
-            title={item?.isVc ?item.name : item?.documentName?.split("(")[1]?.split(")")[0] == "undefined" ?item?.docName?.replaceAll('%20',"") : item?.docName?.replaceAll('%20',"")}
+            title={
+              item?.isVc
+                ? item.name
+                : item?.documentName?.split("(")[1]?.split(")")[0] ==
+                  "undefined"
+                ? item?.docName?.replaceAll("%20", "")
+                : item?.docName?.replaceAll("%20", "")
+            }
             subtitle={`      Uploaded  : ${item.date} `}
-            timeTitle={"   "+`${getTime(item)}`}
+            timeTitle={"   " + `${getTime(item)}`}
             style={{
               ...styles.cardContainers,
               ...{
@@ -570,7 +563,6 @@ const handleIdle = () => {
         )}
       </TouchableOpacity>
     );
-
 
     // return (
     //   <TouchableOpacity
@@ -630,11 +622,7 @@ const handleIdle = () => {
     //     </View>
     //   </TouchableOpacity>
     // );
-
-
   };
-
-
 
   const _renderItemnew = ({ item }: any) => {
     return (
@@ -681,13 +669,19 @@ const handleIdle = () => {
           navigation.navigate("ViewCredential", { documentDetails: item })
         }
       >
-        
-        <View style={{ marginTop: -20}}>
+        <View style={{ marginTop: -20 }}>
           <Card
             titleIcon={item?.isVc ? LocalImages.vcImage : null}
             leftAvatar={LocalImages.documentsImage}
             absoluteCircleInnerImage={LocalImages.upImage}
-            title={item?.isVc ?item.name : item?.documentName?.split("(")[1]?.split(")")[0] == "undefined" ? item?.docName : item?.docName}
+            title={
+              item?.isVc
+                ? item.name
+                : item?.documentName?.split("(")[1]?.split(")")[0] ==
+                  "undefined"
+                ? item?.docName
+                : item?.docName
+            }
             subtitle={`      Uploaded  : ${item.date}`}
             // timeTitle={
             //   item.isVc
@@ -703,13 +697,14 @@ const handleIdle = () => {
             //      item.time.substring(0, item.time.length - 3)+" AM"
             // }
 
-            timeTitle={"   "+`${getTime(item)}`}
-
+            timeTitle={"   " + `${getTime(item)}`}
             style={{
               ...styles.cardContainernew,
               ...{
                 avatarContainer: {
-                  backgroundColor:item?.isVc?'#D7EFFB':getCategoryImages(item)?.COLOR,
+                  backgroundColor: item?.isVc
+                    ? "#D7EFFB"
+                    : getCategoryImages(item)?.COLOR,
                   width: 60,
                   height: 60,
                   borderRadius: 20,
@@ -718,7 +713,9 @@ const handleIdle = () => {
                   marginRight: 5,
                 },
                 uploadImageStyle: {
-                  backgroundColor:item?.isVc?'#D7EFFB':getCategoryImages(item)?.COLOR,
+                  backgroundColor: item?.isVc
+                    ? "#D7EFFB"
+                    : getCategoryImages(item)?.COLOR,
                   borderRadius: 25,
                   borderWidth: 3,
                   bordercolor: "#fff",
@@ -863,23 +860,18 @@ const handleIdle = () => {
             renderItem={_renderItemHistory}
           /> */}
 
-
-
-                  <FlatList<any>
-                    showsHorizontalScrollIndicator={false}
-                    // data={
-                    //   getHistoryReducer && getHistoryReducer?.responseData
-                    //     ? getHistoryReducer.responseData
-                    //     : []
-                    // }
-                    data={data}
-                    extraData={data}
-                    renderItem={_renderItemnew}
-                    keyExtractor={(item) => item.id}
-                  />
-
-
-
+          <FlatList<any>
+            showsHorizontalScrollIndicator={false}
+            // data={
+            //   getHistoryReducer && getHistoryReducer?.responseData
+            //     ? getHistoryReducer.responseData
+            //     : []
+            // }
+            data={data}
+            extraData={data}
+            renderItem={_renderItemnew}
+            keyExtractor={(item) => item.id}
+          />
 
           {/* <AnimatedLoader
             isLoaderVisible={getHistoryReducer?.isLoading}
@@ -897,10 +889,10 @@ const handleIdle = () => {
         </View>
 
         <Spinner
-              visible={loading}
-              textContent={"Loading..."}
-              textStyle={styles.spinnerTextStyle}
-            />
+          visible={loading}
+          textContent={"Loading..."}
+          textStyle={styles.spinnerTextStyle}
+        />
       </ScrollView>
     </View>
   );

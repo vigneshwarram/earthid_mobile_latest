@@ -63,7 +63,7 @@ export const LocalImages = {
   englishflag: require("../../resources/images/united-kingdom.png"),
   spainflag: require("../../resources/images/spain.png"),
   portugalflag: require("../../resources/images/portugal.png"),
-
+  menudot: require("../../resources/images/menu-dots.png"),
   //categories
   CATEGORIES: {
     travelImage: require("../../resources/images/travel.png"),
