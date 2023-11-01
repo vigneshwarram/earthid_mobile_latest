@@ -1,48 +1,34 @@
 import { newssiApiKey, ssiApiKey } from "./earthid_account";
 
-/**
- * @function postFormData - function to call the backend with the request and fetches response.
- * @param requestURI - string uri of the request
- * @param payload - Form data to be posted as a property with key/value pairs, like {key1: value1, key2: value2}
- */
-// export const postFormData = async (requestURI: string, payload: any) => {
-
-//   const formData = new FormData();
-//   console.log("payload", payload);
-//   formData.append("image", payload);
-//   formData.append("image", {uri: "", name: 'image.jpg', type: 'image/jpeg'}), 
-//   console.log("FormData==>", "FormData");
-//   console.log("request==>::::::::::::", JSON.stringify(payload));
-
-//   return await fetch(requestURI, {
-//     method: "POST",
-//     headers: {
-//     "Content-Type": "multipart/form-data",
-//     },
-//     body: formData,
-//   });
-// };
-
 
 export const postFormData = async (requestURI: string, payload: any) => {
-  const formData = new FormData();
-  formData.append('image', {uri: payload?.uri, name: payload?.name, type: payload?.type})
-  return await fetch(requestURI, {
-    method: "POST",
-    headers: {
-    "Accept": "application/json",
-    "Content-Type": "multipart/form-data",
-    },
-    body: formData,
-  });
+  try {
+    const formData = new FormData();
+    formData.append('image', { uri: payload?.uri, name: payload?.name, type: payload?.type });
+    
+    const response = await fetch(requestURI, {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "multipart/form-data",
+      },
+      body: formData,
+    });
+
+    if (!response.ok) {
+      // Handle non-successful HTTP responses (e.g., 404, 500, etc.)
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    return response; // Assuming you want to work with JSON responses
+  } catch (error) {
+    // Handle and log the error
+    console.error("Error in postFormData:", error);
+    throw error; // You can choose to re-throw the error or handle it differently
+  }
 };
 
 
-/**
- * @function postCall - function to call the backend with the request and fetches response
- * @param uri - string uri of the request
- * @param payload - body data to be posted as a json object key value pair,like {key1: value1, key2: value2}
- */
 export const postCall = (
   uri: string,
   payload?: any,
@@ -75,11 +61,7 @@ export const fetchParams = (
   });
 };
 
-/**
- * @function getCall - function to call the backend with the request and fetches response
- * @param uri - string uri of the request
- * @param payload - body data to be posted as a json object key value pair,like {key1: value1, key2: value2}
- */
+
 export const getCall = (uri: string, method: string = "GET"): any => {
   return fetch(uri);
 };
@@ -94,81 +76,122 @@ export const getCallWithHeader = (uri: string, method: string = "GET"): any => {
   });
 };
 
-/**
- * @function getCall - function to call the backend with the request and fetches response
- * @param uri - string uri of the request
- * @param payload - body data to be posted as a json object key value pair,like {key1: value1, key2: value2}
- */
-export const ssiGetCall = (
+export const ssiGetCall = async (
   uri: string,
   method: string = "GET",
   key: string
-): any => {
-  return fetch(uri, {
-    method,
-    headers: {
-      "Content-Type": "application/json",
-      "X-API-KEY": ssiApiKey,
-      publicKey: key,
-    },
-  });
-};
+): Promise<any> => {
+  try {
+    const response = await fetch(uri, {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+        "X-API-KEY": ssiApiKey,
+        publicKey: key,
+      },
+    });
 
-export const newssiGetCall = (
-  uri: string,
-  method: string = "GET",
-  key: string
-): any => {
-  console.log('uri=========>',uri)
-  console.log('key=========>',key)
-  return fetch(uri, {
-    method,
-    headers: {
-      "Content-Type": "application/json",
-      "X-API-KEY": newssiApiKey,
-      publicKey: key,
-    },
-  });
-};
+    if (!response.ok) {
+      // Handle non-successful HTTP responses (e.g., 404, 500, etc.)
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
 
-export const ssiPostCall = (
-  uri: string,
-  payload?: any,
-  method: string = "POST",
-  data: any = {
-    payload,
+    return response; // Assuming you want to work with JSON responses
+  } catch (error) {
+    // Handle and log the error
+    console.error("Error in ssiGetCall:", error);
+    throw error; // You can choose to re-throw the error or handle it differently
   }
-): Promise<any> => {
-  return fetch(uri, {
-    method,
-    headers: {
-      "Content-Type": "application/json",
-      "X-API-KEY": ssiApiKey,
-    },
-    body: JSON.stringify(payload),
-  });
 };
 
 
-export const newssiPostCall = (
+export const newssiGetCall = async (
+  uri: string,
+  method: string = "GET",
+  key: string
+): Promise<any> => {
+  console.log('uri=========>', uri);
+  console.log('key=========>', key);
+
+  try {
+    const response = await fetch(uri, {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+        "X-API-KEY": newssiApiKey,
+        publicKey: key,
+      },
+    });
+
+    if (!response.ok) {
+      // Handle non-successful HTTP responses (e.g., 404, 500, etc.)
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    return response; // Assuming you want to work with JSON responses
+  } catch (error) {
+    // Handle and log the error
+    console.error("Error in newssiGetCall:", error);
+    throw error; // You can choose to re-throw the error or handle it differently
+  }
+};
+
+export const ssiPostCall = async (
+  uri: string,
+  payload?: any,
+  method: string = "POST"
+): Promise<any> => {
+  try {
+    const response = await fetch(uri, {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+        "X-API-KEY": ssiApiKey,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      // Handle non-successful HTTP responses (e.g., 404, 500, etc.)
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    return response; // Assuming you want to work with JSON responses
+  } catch (error) {
+    // Handle and log the error
+    console.error("Error in ssiPostCall:", error);
+    throw error; // You can choose to re-throw the error or handle it differently
+  }
+};
+
+
+export const newssiPostCall = async (
   uri: string,
   payload?: any,
   method: string = "POST",
-  key?:any,
-  data: any = {
-    payload,
-  },
-  
+  key?: any
 ): Promise<any> => {
- 
+  try {
+    const response = await fetch(uri, {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+        "X-API-KEY": newssiApiKey,
+        privateKey: key,
+      },
+      body: JSON.stringify(payload),
+    });
 
-  return fetch(uri, {
-    method,
-    headers: {
-      "Content-Type": "application/json",
-      "X-API-KEY": newssiApiKey,
-      privateKey : key
-    },
-    body: JSON.stringify(payload),
-  });
+    if (!response.ok) {
+      // Handle non-successful HTTP responses (e.g., 404, 500, etc.)
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    return response; // Assuming you want to work with JSON responses
+  } catch (error) {
+    // Handle and log the error
+    console.error("Error in newssiPostCall:", error);
+    throw error; // You can choose to re-throw the error or handle it differently
+  }
 };
+

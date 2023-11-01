@@ -4,7 +4,6 @@ import {
   newssiGetCall,
   newssiPostCall,
   postCall,
-  ssiGetCall,
   ssiPostCall,
 } from "../../utils/service";
 import { ACTION_TYPES } from "./types";
@@ -12,132 +11,106 @@ import { URI } from "../../constants/URLContstants";
 import { SnackBar } from "../../components/SnackBar";
 import { IUserAccountRequest } from "../../typings/AccountCreation/IUserAccount";
 import { IUserSchemaRequest } from "../../typings/AccountCreation/IUserSchema";
-import { generateIssuerDid, generateKeyPair, generateUserDid, newUserDid } from "../../utils/earthid_account";
-import { ICreateUserSignature } from "../../typings/AccountCreation/ICreateUserSignature";
-import { createUserSpecificBucket } from "../../utils/awsSetup";
-import { SCREENS } from "../../constants/Labels";
+import { generateIssuerDid, generateKeyPair, generateUserDid } from "../../utils/earthid_account";;
 const {
   ACCOUNT: {
     CREATE_ACCOUNT: createAccountUrl,
-    GENERATE_KEYS: generateKeyUrl,
     APPROVE_EMAIL_OTP: approveOTPEmail,
     APPROVE_PHONE_OTP: approvePhoneOtp,
     GET_HISTORY: get_History,
-    GET_USERDID: getUser_did,
-    GENERATE_KEYS:generateKeys
   },
 } = URI;
 
 let createSchemaUrl = "https://ssi-gbg.myearth.id/api/issuer/createSchema";
 
+export const GeneratedKeysAction = () => async (dispatch: any): Promise<any> => {
+  try {
+    dispatch({
+      type: ACTION_TYPES.GENERATED_KEYS_LOADING,
+    });
 
-export const GeneratedKeysAction =
-  () =>
-  async (dispatch: any): Promise<any> => {
-    let responseData, responseDataSSI, responseIssuerDid, responseGenerateKeyPair , responseNewUserDid
-    try {
-      dispatch({
-        type: ACTION_TYPES.GENERATED_KEYS_LOADING,
-      });
-      const response = await getCallWithHeader(
-        "https://api-stage.myearth.id/contract/generateKeys"
-      );
-      responseData = await _responseHandler(response);
+    const response = await getCallWithHeader(
+      "https://api-stage.myearth.id/contract/generateKeys"
+    );
+    const responseData = await _responseHandler(response);
+
+    // Use Promise.all to parallelize the API calls
+    const [responseIssuerDid, responseGenerateKeyPair, responseNewUserDid] = await Promise.all([
+      newssiGetCall(generateIssuerDid, "GET", responseData?.result?.publicKey),
+      newssiGetCall(generateKeyPair, "GET", responseData?.result?.publicKey),
+      newssiGetCall(generateUserDid, "GET", responseData?.result?.publicKey),
+    ]);
+
+    const [issuerData, generateKeyPairs, newUserDid] = await Promise.all([
+      _responseHandler(responseIssuerDid),
+      _responseHandler(responseGenerateKeyPair),
+      _responseHandler(responseNewUserDid),
+    ]);
+
+    const data = {
+      issuerDid: issuerData.data,
+      generateKeyPair: generateKeyPairs.data,
+      newUserDid: newUserDid.data,
+    };
+
+    dispatch({
+      type: ACTION_TYPES.GENERATED_KEYS_RESPONSE,
+      payload: {
+        responseData: { ...responseData, ...data },
+      },
+    });
+  } catch (error) {
+    console.error('Error:', error);
+
+    dispatch({
+      type: ACTION_TYPES.GENERATED_KEYS_ERROR,
+    });
+    SnackBar({
+      indicationMessage: "Internal Server Error, please try again later",
+      actionMessage: "Internal Server Error",
+    });
+  }
+};
 
 
-      // const responsedataSSI = await ssiGetCall(
-      //   getUser_did,
-      //   "GET",
-      //   responseData?.result?.publicKey
-      // );
-      // responseDataSSI = await _responseHandler(responsedataSSI);
-      // console.log("responseDatassi==>", responseDataSSI);
+export const createAccount = (requestPayload: IUserAccountRequest) => async (dispatch: any): Promise<any> => {
+  try {
+    dispatch({
+      type: ACTION_TYPES.CREATEDACCOUNT,
+    });
 
-      //IssuerDid
+    // Define the array of promises for parallel execution
+    const promises = [
+      postCall(createAccountUrl, requestPayload),
+      // Add other API calls here if needed
+    ];
 
-      const issuerDataSSI = await newssiGetCall(
-        generateIssuerDid,
-        "GET",
-        responseData?.result?.publicKey
-      );
-      responseIssuerDid = await _responseHandler(issuerDataSSI);
-   
+    // Execute the promises in parallel
+    const [response] = await Promise.all(promises);
 
-      //GenerateKeyPair
+    // Handle the response
+    const responseData = await _responseHandler(response);
 
-      const getGenerateKeyPair = await newssiGetCall(
-        generateKeyPair,
-        "GET",
-        responseData?.result?.publicKey
-      );
-      responseGenerateKeyPair = await _responseHandler(getGenerateKeyPair);
+    dispatch({
+      type: ACTION_TYPES.CREATED_ACCOUNT_RESPONSE,
+      payload: {
+        responseData,
+        isLoading: false,
+        errorMesssage: "",
+      },
+    });
+  } catch (error: any) {
+    console.error('Error:', error);
 
-
-      //NewUserDid
-
-      const getNewUserDid = await newssiGetCall(
-        generateUserDid,
-        "GET",
-        responseGenerateKeyPair?.data?.publicKey
-      );
-      responseNewUserDid = await _responseHandler(getNewUserDid);
-  
-
-      const data = {
-        //userDid: responseDataSSI.data,
-        issuerDid:responseIssuerDid.data,
-        generateKeyPair:responseGenerateKeyPair.data,
-        newUserDid:responseNewUserDid.data
-      };
-      dispatch({
-        type: ACTION_TYPES.GENERATED_KEYS_RESPONSE,
-        payload: {
-          responseData: { ...responseData, ...data },
-        },
-      });
-    } catch (error) {
-      console.log('error====>',error)
-    
-      dispatch({
-        type: ACTION_TYPES.GENERATED_KEYS_ERROR,
-      });
-      SnackBar({
-        indicationMessage: "Retry",
-        actionMessage: "Internal Server Error",
-      });
-    }
-  };
-
-export const createAccount =
-  (requestPayload: IUserAccountRequest) =>
-  async (dispatch: any): Promise<any> => {
-    let responseData, responseUserSpecificBucket;
-    try {
-      dispatch({
-        type: ACTION_TYPES.CREATEDACCOUNT,
-      });
-      const response = await postCall(createAccountUrl, requestPayload);
-      responseData = await _responseHandler(response);
-      dispatch({
-        type: ACTION_TYPES.CREATED_ACCOUNT_RESPONSE,
-        payload: {
-          responseData,
-          isLoading: false,
-          errorMesssage: "",
-        },
-      });
-    } catch (error: any) {
-     console.log('isLoading====>',error)
-
-      dispatch({
-        type: ACTION_TYPES.CREATED_ACCOUNT_ERROR,
-        payload: {
-          errorMesssage: error,
-          isLoading: false,
-        },
-      });
-    }
-  };
+    dispatch({
+      type: ACTION_TYPES.CREATED_ACCOUNT_ERROR,
+      payload: {
+        errorMesssage: error,
+        isLoading: false,
+      },
+    });
+  }
+};
 
 //create schema
 
