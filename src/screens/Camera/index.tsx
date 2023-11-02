@@ -369,7 +369,14 @@ const CameraScreen = (props: any) => {
       documentsDetailsList?.responseData.map((item,index)=>{
         console.log('itemselected',item)
         if(item?.base64 && !item.isVc && item.selectedForCheckBox){
-          datas.push(item.base64)
+          if(item?.isVerifyNeeded){
+            const baseImage =item?.base64?.split('data:image/png;base64,')[1]
+            datas.push(baseImage)
+          }
+          else{
+            datas.push(item.base64)
+          }
+         
         }
       })
    return datas
@@ -657,6 +664,7 @@ const CameraScreen = (props: any) => {
             
           },
         };
+        console.log('vicky+++data123',data)
       } else if (barCodeDataDetails.requestType === "shareCredentials") {
         console.log("type===>", "shareCredentials");
         data = {
