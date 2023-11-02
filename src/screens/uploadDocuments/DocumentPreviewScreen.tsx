@@ -85,12 +85,12 @@ const DocumentPreviewScreen = (props: any) => {
             {
               text: "No",
               onPress: () => {
-                // if (type == "regDoc") {
-                //   uploadDocumentImage();
-                // } else {
-                //   isNetworkConnect();
-                // }
-                props.navigation.navigate("uploadDocumentsScreen")
+                if (type == "regDoc") {
+                  uploadDocumentImage();
+                } else {
+                  isNetworkConnect();
+                }
+              //  props.navigation.navigate("uploadDocumentsScreen")
               },
             },
           ],
