@@ -339,6 +339,7 @@ console.log('keys',keys)
   };
   const onMobileNumberBlur = () => {
     setKeyboardVisible(false);
+    setButtonPressed(true)
   };
   function containsSpecialChars(str: string) {
 
@@ -588,12 +589,13 @@ if(mobileNumber.length < 10){
                 setValidMobileNumber(validate);
                 setmobileNumber(text);
                 setMobileEmpty(false);
+                setButtonPressed(false)
               }}
               containerStyle={{
                 borderColor:
                 isValidMobileNumber && mobileNumber.length === 10  
                     ?Screens.darkGray 
-                    : mobileNumber.length != 0 ?  Screens.red:Screens.darkGray ,
+                    :buttonPressed && mobileNumber.length!==10 || mobileNumber.length>0?  Screens.red:Screens.darkGray ,
                 borderWidth: isValidMobileNumber && mobileNumber.length === 10  ? 1 : mobileNumber.length != 0 ?  2.2:2,
                 borderRadius: 10,
                 height: 60,
@@ -618,8 +620,8 @@ if(mobileNumber.length < 10){
             />
             { isValidMobileNumber && mobileNumber.length === 10  ? null:
             
-            buttonPressed &&   mobileNumber.length === 0 &&  <Text allowFontScaling={false} style={styles.errorText}>
-                  {"Please enter valid mobile number"}
+            buttonPressed &&  mobileNumber.length === 0  &&  <Text allowFontScaling={false} style={styles.errorText}>
+                  {"Please enter Valid mobile number"}
                 </Text>
               }
             <View style={{flexDirection:"row"}}>

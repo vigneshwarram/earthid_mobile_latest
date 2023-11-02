@@ -44,7 +44,7 @@ const AuthBackupIdentity = ({ navigation, route }: IHomeScreenProps) => {
   const publicKey= userDetails?.responseData?.publicKey
 
   let qrData = {
-    earthId: userDetails?.responseData.earthId,
+    earthId: userDetails?.responseData?.earthId,
     publicKey:publicKey,
     privateKey:privateKey,
     UserDid:UserDid
