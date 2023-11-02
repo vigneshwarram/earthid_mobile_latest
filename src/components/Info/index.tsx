@@ -11,7 +11,6 @@ import { IInfoProps } from "./IInfoProps";
  * @description This is a base component for the implementation of Info.
  */
 
-
 const Info = ({
   title,
   subtitle,
@@ -22,25 +21,35 @@ const Info = ({
   tailIcon,
   tailIconPress,
   tailIcondisabled,
-  timeTitle
+  timeTitle,
 }: IInfoProps) => (
   <View style={[styles.container, style.container]}>
     {title && (
       <View style={styles.titleTextContainer}>
         <View>
-          <GenericText  style={[styles.title, style.title,{flexShrink: 1,width:200}]}>{title}</GenericText>
+          <GenericText
+            style={[styles.title, style.title, { flexShrink: 1, width: 200 }]}
+          >
+            {title}
+          </GenericText>
           {subtitle && (
             <View
               style={{ justifyContent: "space-between", flexDirection: "row" }}
             >
               <View style={styles.titleTextContainer}>
-                <View style={{flexDirection:'column'}}>
-                <GenericText style={[styles.subtitle, style.subtitle]}>
-                  {subtitle}
-                </GenericText>
-                <GenericText style={[styles.subtitle, style.subtitle,{position:"absolute",left:170}]}>
-                  {timeTitle}
-                </GenericText>
+                <View style={{ flexDirection: "column" }}>
+                  <GenericText style={[styles.subtitle, style.subtitle]}>
+                    {subtitle}
+                  </GenericText>
+                  <GenericText
+                    style={[
+                      styles.subtitle,
+                      style.subtitle,
+                      { position: "absolute", left: 170 },
+                    ]}
+                  >
+                    {timeTitle}
+                  </GenericText>
                 </View>
                 {subtitleRowText && (
                   <TouchableOpacity onPress={subTitlePress}>
@@ -71,9 +80,6 @@ const Info = ({
               </View>
 
               {tailIcon && (
-
-               
-                
                 <TouchableOpacity
                   activeOpacity={tailIcondisabled}
                   onPress={tailIconPress}
@@ -94,13 +100,17 @@ const Info = ({
             </View>
           )}
           {titleIcon && (
-            <View style={{position: "absolute",
-            justifyContent: "center",
-            alignItems: "center",
-            top: -30,
-            bottom: 0,
-            left: 40,
-            right: 0,}}>
+            <View
+              style={{
+                position: "absolute",
+                justifyContent: "center",
+                alignItems: "center",
+                top: -30,
+                bottom: 0,
+                left: 40,
+                right: 0,
+              }}
+            >
               <Image
                 resizeMode="contain"
                 style={styles.logoContainers}

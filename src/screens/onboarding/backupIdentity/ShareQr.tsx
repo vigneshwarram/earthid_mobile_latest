@@ -28,11 +28,17 @@ import { useAppSelector } from "../../../hooks/hooks";
 import { LocalImages } from "../../../constants/imageUrlConstants";
 import { isEarthId } from "../../../utils/PlatFormUtils";
 import ImageResizer from "react-native-image-resizer";
-import { checkBucketExists, createUserSpecificBucket, generatePreSignedURL, uploadImageToS3, uploadJSONToS3, uploadPDFToS3 } from "../../../utils/awsSetup";
+import {
+  checkBucketExists,
+  createUserSpecificBucket,
+  generatePreSignedURL,
+  uploadImageToS3,
+  uploadJSONToS3,
+  uploadPDFToS3,
+} from "../../../utils/awsSetup";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import RNFetchBlob from "rn-fetch-blob";
 import { _s3responseHandler } from "../../../redux/actions/authenticationAction";
-
 
 interface IHomeScreenProps {
   navigation?: any;
@@ -63,209 +69,209 @@ const AuthBackupIdentity = ({ navigation, route }: IHomeScreenProps) => {
     await Share.open({ url: `data:image/png;base64,${file_url}` });
   };
 
-  useEffect(()=>{
-   getQRCode()
-  },[])
+  useEffect(() => {
+    getQRCode();
+  }, []);
 
-  const getQRCode =async()=>{
-       //SW3
-       setActivityLoad(true);
-       let bucketName = `idv-sessions-${userDetails?.responseData.username.toLowerCase()}`;
-if( await checkBucketExists(bucketName)){
-  console.log('bucket already existed')
-}
-else{
-  const userSW3 = await createUserSpecificBucket(userDetails?.responseData.username) 
-  const  responseUserSpecificBucket = await _s3responseHandler(userSW3)
-  bucketName =responseUserSpecificBucket
-}
-      
-    
-  
-    const selectedItem = route.params.selectedItem
+  const getQRCode = async () => {
+    //SW3
+    setActivityLoad(true);
+    let bucketName = `idv-sessions-${userDetails?.responseData.username.toLowerCase()}`;
+    if (await checkBucketExists(bucketName)) {
+      console.log("bucket already existed");
+    } else {
+      const userSW3 = await createUserSpecificBucket(
+        userDetails?.responseData.username
+      );
+      const responseUserSpecificBucket = await _s3responseHandler(userSW3);
+      bucketName = responseUserSpecificBucket;
+    }
 
+    const selectedItem = route.params.selectedItem;
 
-    let type = selectedItem?.docType
+    let type = selectedItem?.docType;
 
-    if(selectedItem?.isVc){
-      console.log("neww","This is Vc");
-      const imageName: any = selectedItem?.docName + "." + selectedItem?.docType;
-      const objectKey = imageName; 
+    if (selectedItem?.isVc) {
+      console.log("neww", "This is Vc");
+      const imageName: any =
+        selectedItem?.docName + "." + selectedItem?.docType;
+      const objectKey = imageName;
 
-      let credData = selectedItem?.verifiableCredential
-      try{
+      let credData = selectedItem?.verifiableCredential;
+      try {
         const uploadedKey: any = await uploadJSONToS3(
           responseUserSpecificBucket,
           `images/${objectKey}`,
           credData,
           ""
         );
-       
+
         if (uploadedKey) {
           const objectKeys = `images/${imageName}`;
-          const preSignedURL = await generatePreSignedURL(responseUserSpecificBucket, objectKeys);
-    
-    
+          const preSignedURL = await generatePreSignedURL(
+            responseUserSpecificBucket,
+            objectKeys
+          );
+
           if (preSignedURL) {
             setPreSignedUrl(preSignedURL);
             setActivityLoad(false);
           } else {
-    
             setActivityLoad(false);
-            Alert.alert("Error", "There is a technical issue, please try again later.");
+            Alert.alert(
+              "Error",
+              "There is a technical issue, please try again later."
+            );
           }
         } else {
           setActivityLoad(false);
-          Alert.alert("Error", "There is a technical issue, please try again later.");
+          Alert.alert(
+            "Error",
+            "There is a technical issue, please try again later."
+          );
         }
-      }
-      catch (error) {
-        console.log('erro----->',error)
+      } catch (error) {
+        console.log("erro----->", error);
         setActivityLoad(false);
         // Code to handle the exception
       }
-    }
-    
-    else if(type === "pdf"){
-      console.log("neww","this is pdf type");
-      console.log("newPdf",selectedItem?.typePDF);
-      const imageName: any = selectedItem?.docName + "." + selectedItem?.docType;
-      const pdfFile = selectedItem?.typePDF
-      const pdfFilePath = RNFetchBlob.fs.dirs.CacheDir +"/"+imageName;
-      try{
-  
+    } else if (type === "pdf") {
+      console.log("neww", "this is pdf type");
+      console.log("newPdf", selectedItem?.typePDF);
+      const imageName: any =
+        selectedItem?.docName + "." + selectedItem?.docType;
+      const pdfFile = selectedItem?.typePDF;
+      const pdfFilePath = RNFetchBlob.fs.dirs.CacheDir + "/" + imageName;
+      try {
         const objectKey = imageName; // Replace with your desired object key
         const uploadedKey: any = await uploadPDFToS3(
           bucketName,
           `images/${objectKey}`,
           selectedItem?.base64
         );
-  
+
         if (uploadedKey) {
           const objectKeys = `images/${imageName}`;
-          const preSignedURL = await generatePreSignedURL(bucketName, objectKeys);
-    
-    
+          const preSignedURL = await generatePreSignedURL(
+            bucketName,
+            objectKeys
+          );
+
           if (preSignedURL) {
             setPreSignedUrl(preSignedURL);
           } else {
-    
             setActivityLoad(false);
-            Alert.alert("Error", "There is a technical issue, please try again later.");
+            Alert.alert(
+              "Error",
+              "There is a technical issue, please try again later."
+            );
           }
         } else {
           setActivityLoad(false);
-          Alert.alert("Error", "There is a technical issue, please try again later.");
+          Alert.alert(
+            "Error",
+            "There is a technical issue, please try again later."
+          );
         }
-  
-      }
-      catch (error) {
-        console.log('erro----->++++',error)
+      } catch (error) {
+        console.log("erro----->++++", error);
         setActivityLoad(false);
         // Code to handle the exception
       }
+    } else if (selectedItem?.isLivenessImage) {
+      console.log("neww", "this is Liveness image type");
+      const imageName: any =
+        selectedItem?.docName + "." + selectedItem?.docType;
+      const base64Images = await ImageResizer.createResizedImage(
+        `${selectedItem?.base64}`,
+        800, // target width
+        800, // target height
+        "JPEG", // format (you can adjust this)
+        80 // quality (adjust this)
+      );
 
-     
+      const base64Image = await RNFS.readFile(base64Images.uri, "base64");
 
-    }
+      // console.log("base64Images",base64Images);
 
+      const objectKey = imageName; // Replace with your desired object key
+      const uploadedKey: any = await uploadImageToS3(
+        bucketName,
+        `images/${objectKey}`,
+        base64Image,
+        ""
+      );
 
-    else if(selectedItem?.isLivenessImage){
-      console.log("neww","this is Liveness image type");
-      const imageName: any = selectedItem?.docName + "." + selectedItem?.docType;
-      const base64Images = await  ImageResizer.createResizedImage(
-          `${selectedItem?.base64}`,
-          800, // target width
-          800, // target height
-          'JPEG', // format (you can adjust this)
-          80, // quality (adjust this)
-        );
-    
-        const base64Image = await RNFS.readFile(base64Images.uri, 'base64');
-    
-        // console.log("base64Images",base64Images);      
-    
-        const objectKey = imageName; // Replace with your desired object key
-        const uploadedKey: any = await uploadImageToS3(
-          bucketName,
-          `images/${objectKey}`,
-          base64Image,
-          ""
-        );
-       
-        if (uploadedKey) {
-          const objectKeys = `images/${imageName}`;
-          const preSignedURL = await generatePreSignedURL(bucketName, objectKeys);
-    
-    
-          if (preSignedURL) {
-            setPreSignedUrl(preSignedURL);
-          } else {
-    
-    
-            Alert.alert("Error", "There is a technical issue, please try again later.");
-          }
+      if (uploadedKey) {
+        const objectKeys = `images/${imageName}`;
+        const preSignedURL = await generatePreSignedURL(bucketName, objectKeys);
+
+        if (preSignedURL) {
+          setPreSignedUrl(preSignedURL);
         } else {
-    
-          Alert.alert("Error", "There is a technical issue, please try again later.");
+          Alert.alert(
+            "Error",
+            "There is a technical issue, please try again later."
+          );
         }
-      
-
-
-    }
-
-
-    
-    else{
-      console.log("neww","this is image type");
-      const imageName: any = selectedItem?.docName + "." + selectedItem?.docType;
-      const base64Images = await  ImageResizer.createResizedImage(
-          `data:image/jpeg;base64,${selectedItem?.base64}`,
-          800, // target width
-          800, // target height
-          'JPEG', // format (you can adjust this)
-          80, // quality (adjust this)
+      } else {
+        Alert.alert(
+          "Error",
+          "There is a technical issue, please try again later."
         );
-    
-        const base64Image = await RNFS.readFile(base64Images.uri, 'base64');
-    
-        // console.log("base64Images",base64Images);      
-    
-        const objectKey = imageName; // Replace with your desired object key
-        const uploadedKey: any = await uploadImageToS3(
-          bucketName,
-          `images/${objectKey}`,
-          base64Image,
-          ""
-        );
-       
-        if (uploadedKey) {
-          const objectKeys = `images/${imageName}`;
-          const preSignedURL = await generatePreSignedURL(bucketName, objectKeys);
-    
-    
-          if (preSignedURL) {
-            setPreSignedUrl(preSignedURL);
-          } else {
-    
-    
-            Alert.alert("Error", "There is a technical issue, please try again later.");
-          }
+      }
+    } else {
+      console.log("neww", "this is image type");
+      const imageName: any =
+        selectedItem?.docName + "." + selectedItem?.docType;
+      const base64Images = await ImageResizer.createResizedImage(
+        `data:image/jpeg;base64,${selectedItem?.base64}`,
+        800, // target width
+        800, // target height
+        "JPEG", // format (you can adjust this)
+        80 // quality (adjust this)
+      );
+
+      const base64Image = await RNFS.readFile(base64Images.uri, "base64");
+
+      // console.log("base64Images",base64Images);
+
+      const objectKey = imageName; // Replace with your desired object key
+      const uploadedKey: any = await uploadImageToS3(
+        bucketName,
+        `images/${objectKey}`,
+        base64Image,
+        ""
+      );
+
+      if (uploadedKey) {
+        const objectKeys = `images/${imageName}`;
+        const preSignedURL = await generatePreSignedURL(bucketName, objectKeys);
+
+        if (preSignedURL) {
+          setPreSignedUrl(preSignedURL);
         } else {
-    
-          Alert.alert("Error", "There is a technical issue, please try again later.");
+          Alert.alert(
+            "Error",
+            "There is a technical issue, please try again later."
+          );
         }
-      
+      } else {
+        Alert.alert(
+          "Error",
+          "There is a technical issue, please try again later."
+        );
+      }
     }
-  
-      setActivityLoad(false);
-  }
+
+    setActivityLoad(false);
+  };
 
   const capturePicture = () => {
     viewShot.current.capture().then(async (imageData: any) => {
-        await Share.open({
-            url: imageData,
-          });
+      await Share.open({
+        url: imageData,
+      });
     });
   };
 
@@ -306,65 +312,66 @@ else{
     );
   };
 
-
-
   return (
     <View style={styles.sectionContainer}>
-            <ScrollView contentContainerStyle={styles.sectionContainer}>
-          <Header
-            isLogoAlone={true}
-            headingText={
-              'Information Sharing'
-            }
-            linearStyle={styles.linearStyle}
-            containerStyle={{
-              iconStyle: {
-                width: 205,
-                height: 72,
-                marginTop: 30,
-              },
-              iconContainer: styles.alignCenter,
-            }}
-          ></Header>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("Documents")}
+      <ScrollView contentContainerStyle={styles.sectionContainer}>
+        <Header
+          isLogoAlone={true}
+          headingText={"Information Sharing"}
+          linearStyle={styles.linearStyle}
+          containerStyle={{
+            iconStyle: {
+              width: 205,
+              height: 72,
+              marginTop: 30,
+            },
+            iconContainer: styles.alignCenter,
+          }}
+        ></Header>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={{
+            position: "absolute",
+            marginTop: 38,
+            marginLeft: 20,
+          }}
+        >
+          <Image
+            source={LocalImages.backImage}
             style={{
-              position: "absolute",
-              marginTop: 38,
-              marginLeft: 20,
+              height: 20,
+              width: 20,
+              resizeMode: "contain",
+              tintColor: isEarthId() ? Screens.pureWhite : Screens.black,
             }}
-          >
-            <Image
-              source={LocalImages.backImage}
-              style={{
-                height: 20,
-                width: 20,
-                resizeMode: "contain",
-                tintColor: isEarthId() ? Screens.pureWhite : Screens.black,
-              }}
-            />
-          </TouchableOpacity>
-          <View style={styles.category}>
-            <View>
-              <GenericText
-                style={[
-                  styles.categoryHeaderText,
-                  {
-                    fontSize: 14,
-                    fontWeight: "500",
-                    textAlign: "center",
-                    color: Screens.black,
-                  },
-                ]}
-              >
-                'Please share this QR code only with the intended recipient, as this will provide access to your information. You can also share this QR code with the intended recipient using the "Share QR Code" button'
-              </GenericText>
-            </View>
-          {activityLoader?  <ActivityIndicator
-            size={'large'}
-            color={'blue'}
-          ></ActivityIndicator>
-            :<View style={{ justifyContent: "center", alignItems: "center" }}>
+          />
+        </TouchableOpacity>
+        <View style={styles.category}>
+          <View>
+            <GenericText
+              style={[
+                styles.categoryHeaderText,
+                {
+                  fontSize: 14,
+                  fontWeight: "500",
+                  textAlign: "center",
+                  color: Screens.black,
+                },
+              ]}
+            >
+              'Please share this QR code only with the intended recipient, as
+              this will provide access to your information. You can also share
+              this QR code with the intended recipient using the "Share QR Code"
+              button'
+            </GenericText>
+          </View>
+          {activityLoader ? (
+            <ActivityIndicator
+              size={"large"}
+              color={"blue"}
+            ></ActivityIndicator>
+          ) : (
+            <View style={{ justifyContent: "center", alignItems: "center" }}>
               <ViewShot
                 ref={viewShot}
                 captureMode="update"
@@ -382,28 +389,27 @@ else{
                   size={250}
                 />
               </ViewShot>
-            </View>}
-            <Button
+            </View>
+          )}
+          <Button
             disabled={activityLoader}
-              onPress={capturePicture}
-              style={{
-                buttonContainer: {
-                  elevation: 5,
-                opacity:activityLoader?0.5:1
-                },
-                text: {
-                  color: Screens.pureWhite,
-                },
-                iconStyle: {
-                  tintColor: Screens.pureWhite,
-                },
-              }}
-              title={"Share QR code"}
-            ></Button>
-       </View>
-        </ScrollView>
-   
-  
+            onPress={capturePicture}
+            style={{
+              buttonContainer: {
+                elevation: 5,
+                opacity: activityLoader ? 0.5 : 1,
+              },
+              text: {
+                color: Screens.pureWhite,
+              },
+              iconStyle: {
+                tintColor: Screens.pureWhite,
+              },
+            }}
+            title={"Share QR code"}
+          ></Button>
+        </View>
+      </ScrollView>
     </View>
   );
 };

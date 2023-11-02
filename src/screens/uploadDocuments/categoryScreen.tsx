@@ -71,7 +71,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
   );
 
   console.log("selectedItem",selectedItem)
-
+const[button,setButton]=useState(false);
   const [selectedParentIndex, setSelectedParentIndex] = useState(0);
   const documentsDetailsList = useAppSelector((state) => state.Documents);
   const [successResponse, setsuccessResponse] = useState(false);
@@ -95,6 +95,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
   }, []);
 
   const onSubmitAction = () => {
+    setButton(true)
     if (docname == undefined) {
       Alert.alert("Please Enter Document Name");
       return;
@@ -609,6 +610,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
                     <View style={{ backgroundColor: Screens.pureWhite }}>
                       <Button
                         onPress={() => onSubmitAction()}
+                        disabled={button ? true:false}
                         style={{
                           buttonContainer: {
                             elevation: 5,
