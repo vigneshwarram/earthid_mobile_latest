@@ -59,16 +59,19 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
       flag: LocalImages.englishflag,
       label: "English",
       value: AppLanguage.ENGLISH,
+      display:'ENG',
       selection: true,
     },
     {
       flag: LocalImages.spainflag,
       label: "Spanish",
+      display:'SPA',
       value: AppLanguage.SPANISH,
     },
     {
       flag: LocalImages.portugalflag,
       label: "Portuguese",
+      display:'POR',
       value: AppLanguage.PORTUGUESE,
     },
   ]);

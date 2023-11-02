@@ -2,9 +2,9 @@ import { LocalImages } from "../../constants/imageUrlConstants";
 
 
 export enum AppLanguage {
-  ENGLISH = "en-IN",
-  SPANISH = "es-ES",
-  PORTUGUESE = "pot-PT",
+  ENGLISH = "ENG",
+  SPANISH = "SPA",
+  PORTUGUESE = "POR",
 }
 
 export enum VoiceLanguage {

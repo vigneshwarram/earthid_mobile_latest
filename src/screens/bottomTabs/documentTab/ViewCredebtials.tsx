@@ -208,7 +208,7 @@ const DocumentPreviewScreen = (props: any) => {
       </View>
     </TouchableOpacity>
   );
-
+console.log('documentDetails',documentDetails)
   return (
     <View style={styles.sectionContainer}>
       <LinearGradients
@@ -359,7 +359,7 @@ const DocumentPreviewScreen = (props: any) => {
           ></Image> */}
 
       <GenericText style={{ color: "#000", fontSize: 18, alignSelf: "center" }}>
-        {documentDetails.name}
+        {documentDetails.name || documentDetails?.docName}
       </GenericText>
       <GenericText
         style={{

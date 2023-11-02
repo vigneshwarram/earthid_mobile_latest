@@ -311,17 +311,22 @@ const CameraScreen = (props: any) => {
     );
     if (sendDatatoServiceProviderData) {
       //passwordless login flow
-      setisDocumentModalkyc(false);
-      setisLoading(false)
+  
       if (barCodeDataDetails?.requestType === "login") {
+        setisDocumentModalkyc(false);
+        setisLoading(false)
         setIsCamerVisible(true);
         generateUserSignature();
         Alert.alert("Login Successfully");
       }
       if (barCodeDataDetails?.requestType === "generateCredentials") {
+        setisDocumentModalkyc(false);
+        setisLoading(false)
         setIsCamerVisible(true);
       }
       if (barCodeDataDetails?.requestType === "shareCredentials") {
+        setisDocumentModalkyc(false);
+        setisLoading(false)
         setIsCamerVisible(true);
         Alert.alert("credential has been shared successfully");
       }
@@ -435,14 +440,14 @@ const CameraScreen = (props: any) => {
 
   const createVerifiableCredentials = async () => {
     setisLoading(true)
-    setisDocumentModalkyc(false);
-    auditFlowApi()
+     auditFlowApi()
     generateUserSignature();
-    getData();
+     getData();
     setloadingforGentSchemaAPI(true);
 
     if (barCodeDataDetails?.requestType === "document") {
       var date = dateTime();
+
       var documentDetails: IDocumentProps = {
         id: `ID_VERIFICATION${Math.random()}${"selectedDocument"}${Math.random()}`,
         name: "Acknowledgement Token",
@@ -475,19 +480,32 @@ const CameraScreen = (props: any) => {
       var DocumentList = documentsDetailsList?.responseData
         ? documentsDetailsList?.responseData
         : [];
+        if(documentsDetailsList?.responseData?.length === 0){
+          DocumentList.push(documentDetails);
+        }
+        if(documentsDetailsList?.responseData?.length>0){
+          documentsDetailsList?.responseData?.map((item,index)=>{
+            if(!item?.isVc && item?.selectedForCheckBox){
+              DocumentList.push(documentDetails);
+            }
+          })
+        }
+   
+      dispatch(saveDocuments(DocumentList)).then(()=>{
+        setTimeout(() => {
+          setisDocumentModalkyc(false);
+          setisLoading(false)
+          setIsCamerVisible(true);
+          setloadingforGentSchemaAPI(false);
+          setissuerSchemaDropDown(false);
+          //    Alert.alert("KYC token Saved successfully");
+          Alert.alert("Document uploaded successfully");
+          props.navigation.navigate("Documents");
+        }, 15000);
+      })
 
-      // DocumentList.push(documentDetails);
-      // dispatch(saveDocuments(DocumentList));
-
-      setIsCamerVisible(true);
-      setTimeout(() => {
-        setisLoading(false)
-        setloadingforGentSchemaAPI(false);
-        setissuerSchemaDropDown(false);
-        //    Alert.alert("KYC token Saved successfully");
-        Alert.alert("Document uploaded successfully");
-        props.navigation.navigate("Documents");
-      }, 10000);
+    
+    
     } else if (barCodeDataDetails.requestType === "shareCredentials") {
       // getData();
     } else {
@@ -699,12 +717,7 @@ const CameraScreen = (props: any) => {
           <QrScannerMaskedWidget />
         </RNCamera>
       )}
-   {serviceProviderLoading || isLoading &&
-       <View style={styles.loading}>
-       <ActivityIndicator color={'red'} size='large' />
-     </View>
-}
-
+ 
       <SuccessPopUp
         isLoaderVisible={successResponse}
         loadingText={successMessage}
@@ -722,6 +735,12 @@ const CameraScreen = (props: any) => {
             justifyContent: "space-between",
           }}
         >
+            { isLoading &&
+       <View style={styles.loading}>
+       <ActivityIndicator color={'red'} size='large' />
+     </View>
+}
+
           <View
             style={{
               justifyContent: "center",

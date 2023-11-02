@@ -653,8 +653,7 @@ if(mobileNumber.length < 10){
               onChangeText={emailChangeHandler}
             />
            
-              
-              
+          
               
           </View>
           <Footer />

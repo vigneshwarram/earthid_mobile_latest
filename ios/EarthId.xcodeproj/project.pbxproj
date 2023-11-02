@@ -819,13 +819,13 @@
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				INFOPLIST_FILE = EarthId/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = GlobalId;
+				INFOPLIST_KEY_CFBundleDisplayName = EarthID;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.business";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.3.3;
+				MARKETING_VERSION = 4.2.7;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -855,13 +855,13 @@
 				DEVELOPMENT_TEAM = 3D5QUAXZH3;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				INFOPLIST_FILE = EarthId/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = GlobalId;
+				INFOPLIST_KEY_CFBundleDisplayName = EarthID;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.business";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.3.3;
+				MARKETING_VERSION = 4.2.7;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

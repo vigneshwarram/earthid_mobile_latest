@@ -5,8 +5,10 @@ import {
   Image,
   TouchableOpacity,
   Platform,
+  ScrollView,
   Alert,
   AsyncStorage,
+  Dimensions,
 } from "react-native";
 import NetInfo from "@react-native-community/netinfo";
 import Button from "../../components/Button";
@@ -21,6 +23,7 @@ import PDFView from "react-native-view-pdf";
 import Spinner from "react-native-loading-spinner-overlay/lib";
 import Loader from "../../components/Loader/AnimatedLoader";
 import { isEarthId } from "../../utils/PlatFormUtils";
+
 
 const DocumentPreviewScreen = (props: any) => {
   const { fileUri } = props?.route?.params;
@@ -233,16 +236,21 @@ const DocumentPreviewScreen = (props: any) => {
       </View>
 
       {fileUri?.type === "application/pdf" ? (
+         
         <View style={{ flex: 1, marginTop: 70 }}>
+       
           <PDFView
             fadeInDuration={100.0}
-            style={{ flex: 1 }}
+            style={{ flex: 1,height:Dimensions.get('window').height - 20 }}
             resource={resources[resourceType]}
             resourceType={resourceType}
             onLoad={() => console.log(`PDF rendered from ${resourceType}`)}
             onError={() => console.log("Cannot render PDF", error)}
           />
+        
+   
         </View>
+  
       ) : (
         <View style={{ flex: 0.8, alignSelf: "center" }}>
           <Image
