@@ -47,7 +47,7 @@ const LivenessCameraScreen = (props: any) => {
   const _handleBarCodeRead = async (faceArray: any) => {
     if (!faceDetected) {
       // Face Recognition algorithm
-      if (faceArray.faces.length === 1 && faceCount < 15) {
+      if (faceArray.faces.length === 1 && faceCount < 2) {
         var id = faceArray.faces[0].faceID;
         if (faceId === null) {
           faceId = id;
@@ -61,7 +61,7 @@ const LivenessCameraScreen = (props: any) => {
       } else {
         var avg = average(rightEyeOpen);
         var min = Math.min(...rightEyeOpen);
-        var threshold = avg / 2;
+        var threshold = avg / 5;
         var hasMoved = false;
         for (let index = 0; index < faceOrigin.length - 1; index++) {
           var displacement = distance(
@@ -70,42 +70,40 @@ const LivenessCameraScreen = (props: any) => {
             faceOrigin[index + 1].x,
             faceOrigin[index + 1].y
           );
-          if (displacement > 30) {
+
+          if (displacement < 0) {
+            console.log("displacement", displacement);
             hasMoved = true;
             if (stillToast) {
-              SnackBar({
-                indicationMessage: "Be still like a stone !",
-              });
               setmaskedColor("red");
-            } else {
-              setmaskedColor("red");
-              SnackBar({
-                indicationMessage: "I can still see you moving",
-              });
             }
             break;
           }
         }
-        if (!hasMoved && avg > 0.5) {
-          console.log(avg, min);
-          if (min < threshold && faceId === faceArray.faces[0].faceID) {
+        if ( avg > 0.5) {
+          console.log("ReadData",avg, min);
+          SnackBar({
+            indicationMessage: "I can still see you moving",
+          });
+          
+          if (faceId === faceArray.faces[0].faceID) {
             setmaskedColor("green");
             SnackBar({
-              indicationMessage: "Aww, Thank you",
+              indicationMessage: "Thank you",
             });
 
             faceDetected = true;
             const options = {
-              quality: 0.5,
+              quality: 0.2,
               base64: true,
             };
             const data = await camRef.current.takePictureAsync(options);
-
-            navigation.navigate("UpdateAuthentication");
+            if (data) {
+              setData(data);
+              props.navigation.navigate("UpdateAuthentication");
+      
+            }
           } else {
-            SnackBar({
-              indicationMessage: "I can still see you moving",
-            });
           }
         }
         faceOrigin = [];
@@ -115,7 +113,6 @@ const LivenessCameraScreen = (props: any) => {
       }
     }
   };
-
   const handleFaceDetected = async (data: { base64: any }) => {
     const detectedFace = data.base64;
     const deviceId = getDeviceId();
