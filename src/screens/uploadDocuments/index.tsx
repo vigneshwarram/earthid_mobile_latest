@@ -8,6 +8,7 @@ import {
   Platform,
   ActivityIndicator,
   PermissionsAndroid,
+  Alert,
 } from "react-native";
 import { RNCamera } from "react-native-camera";
 import DocumentPicker from "react-native-document-picker";
@@ -20,14 +21,12 @@ import GenericText from "../../components/Text";
 import { useFetch } from "../../hooks/use-fetch";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import SuccessPopUp from "../../components/Loader";
-import {encodeBase64} from 'react-native-image-base64'
+import { encodeBase64 } from "react-native-image-base64";
 import Spinner from "react-native-loading-spinner-overlay/lib";
 import { saveDocuments } from "../../redux/actions/authenticationAction";
 import { dateTime } from "../../utils/encryption";
 
-
 const UploadScreen = (props: any) => {
-
   const { colors } = useTheme();
   const camRef: any = useRef();
   const { loading } = useFetch();
@@ -37,18 +36,15 @@ const UploadScreen = (props: any) => {
   const [source, setSource] = useState({});
   const [filePath, setFilePath] = useState();
 
-  const [url, setUrl] = useState('');
+  const [url, setUrl] = useState("");
   const [isLoading, setisLoading] = useState(false);
   const documentsDetailsList = useAppSelector((state) => state.Documents);
   const dispatch = useAppDispatch();
 
-
-
-
   const _takePicture = async () => {
     const options = { quality: 0.1, base64: true };
     const data = await camRef.current.takePictureAsync(options);
-    
+
     if (data) {
       props.navigation.navigate("DocumentPreviewScreen", { fileUri: data });
     }
@@ -60,23 +56,22 @@ const UploadScreen = (props: any) => {
     }
   };
 
-
-  const _handleBarCodeRead = async(barCodeData:any) => {
-    let barcodeData = await barCodeData.data
-    console.log("barcodeData",barcodeData);
-    setUrl(barcodeData)
+  const _handleBarCodeRead = async (barCodeData: any) => {
+    let barcodeData = await barCodeData.data;
+    console.log("barcodeData", barcodeData);
+    setUrl(barcodeData);
   };
 
   const fetchData = async () => {
-    setisLoading(true)
+    setisLoading(true);
     try {
       const response = await fetch(url);
-      console.log("response",response);
-       
+      console.log("response", response);
+
       if (response) {
-        setisLoading(false)
+        setisLoading(false);
         const data = await response.json();
-        console.log('Fetched data:', data)
+        console.log("Fetched data:", data);
 
         var date = dateTime();
         var documentDetails: IDocumentProps = {
@@ -105,111 +100,119 @@ const UploadScreen = (props: any) => {
           documentName: "",
           docName: "",
           base64: undefined,
-          transcriptVc:data
-         
+          transcriptVc: data,
         };
-  
+
         var DocumentList = documentsDetailsList?.responseData
           ? documentsDetailsList?.responseData
           : [];
 
         DocumentList.push(documentDetails);
         dispatch(saveDocuments(DocumentList));
-        props.navigation.goBack()
-
+        props.navigation.goBack();
       } else {
-        setisLoading(false)
-        console.log('Error fetching data:', response);
+        setisLoading(false);
+        console.log("Error fetching data:", response);
       }
     } catch (error) {
-      setisLoading(false)
-      console.log('Error:', error);
+      setisLoading(false);
+      console.log("Error:", error);
     }
   };
 
-
-  useEffect(()=>{
+  useEffect(() => {
     fetchData();
-  },[url])
+  }, [url]);
 
   async function requestMediaPermission() {
     try {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
         {
-          title: 'Media Permission',
-          message: 'App needs access to your media files.',
-          buttonNeutral: 'Ask Me Later',
-          buttonNegative: 'Cancel',
-          buttonPositive: 'OK',
+          title: "Media Permission",
+          message: "App needs access to your media files.",
+          buttonNeutral: "Ask Me Later",
+          buttonNegative: "Cancel",
+          buttonPositive: "OK",
         }
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log('Media permission granted');
+        console.log("Media permission granted");
       } else {
-        console.log('Media permission denied');
+        console.log("Media permission denied");
       }
     } catch (err) {
       console.warn(err);
     }
   }
-  
 
   const openFilePicker = async () => {
     if (Platform.OS == "android") {
-      requestMediaPermission()
+      requestMediaPermission();
     }
     try {
       const resp: any = await DocumentPicker.pick({
         type: [DocumentPicker.types.allFiles],
         readContent: true,
       });
-
+      console.log("resp===>", resp);
       let decodedFileName = resp[0].uri;
-      decodedFileName= resp[0]?.uri?.replaceAll('%20',' ')
+      decodedFileName = resp[0]?.uri?.replaceAll("%20", " ");
       if (Platform.OS == "android") {
-      }else{
+      } else {
         decodedFileName = decodeURIComponent(decodedFileName);
       }
-  
 
-     
+      if (
+        resp[0]?.type === "image/jpeg" ||
+        resp[0]?.type === "image/jpg" ||
+        resp[0]?.type === "image/png" ||
+        resp[0]?.type === "application/pdf"
+      ) {
+        RNFS.readFile(decodedFileName, "base64")
+          .then(async (res) => {
+            console.log("res", resp);
+            console.log("typePDF", resp[0].uri);
 
-      RNFS.readFile(decodedFileName, "base64").then(async (res) => {
-        console.log("res", resp);
-        console.log("typePDF", resp[0].uri);
-
-        if (resp[0].type == "application/pdf") {
-          props.navigation.navigate("DocumentPreviewScreen", {
-            fileUri: {
-              uri: `data:image/png;base64,${res}`,
-              base64: res,
-              file: resp[0],
-              type: "application/pdf",
-              imageName:resp[0]?.name,
-              route:"gallery",
-              typePDF:resp[0].uri
-            },
+            if (resp[0].type == "application/pdf") {
+              props.navigation.navigate("DocumentPreviewScreen", {
+                fileUri: {
+                  uri: `data:image/png;base64,${res}`,
+                  base64: res,
+                  file: resp[0],
+                  type: "application/pdf",
+                  imageName: resp[0]?.name,
+                  route: "gallery",
+                  typePDF: resp[0].uri,
+                },
+              });
+            } else {
+              console.log("check==>####", resp[0]);
+              props.navigation.navigate("DocumentPreviewScreen", {
+                fileUri: {
+                  uri: `data:image/png;base64,${res}`,
+                  base64: res,
+                  file: resp[0],
+                  type: "qrRreader",
+                  imageName: resp[0]?.name,
+                  route: "gallery",
+                },
+              });
+            }
+          })
+          .catch((out) => {
+            console.log("real error====>", out);
           });
-          
-          
-          
-        } else {
-          console.log("check==>####", resp[0]);
-          props.navigation.navigate("DocumentPreviewScreen", {
-            fileUri: {
-              uri: `data:image/png;base64,${res}`,
-              base64: res,
-              file: resp[0],
-              type: "qrRreader",
-              imageName:resp[0]?.name,
-              route:"gallery"
-            },
-          });
-        }
-      }).catch((out)=>{
-        console.log('real error====>',out)
-      })
+      } else {
+        Alert.alert("Warning", "This format is not supported", [
+          {
+            text: "Cancel",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel",
+          },
+          { text: "OK", onPress: () => console.log("OK Pressed") },
+        ]);
+      }
     } catch (err) {
       console.log("data==>", err);
     }
@@ -298,7 +301,7 @@ const UploadScreen = (props: any) => {
       >
         {"placethedoc"}
       </GenericText>
-      <TouchableOpacity onPress={()=>_takePicture()}>
+      <TouchableOpacity onPress={() => _takePicture()}>
         <View
           style={{
             width: 60,
@@ -361,12 +364,11 @@ const UploadScreen = (props: any) => {
         loadingText={"Pdf uploaded successfully"}
       />
 
-            <Spinner
-              visible={isLoading}
-              textContent={"Loading..."}
-              textStyle={styles.spinnerTextStyle}
-            />
-
+      <Spinner
+        visible={isLoading}
+        textContent={"Loading..."}
+        textStyle={styles.spinnerTextStyle}
+      />
     </View>
   );
 };
