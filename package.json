@@ -64,6 +64,7 @@
     "react-native-localize": "^2.2.3",
     "react-native-modal": "^13.0.1",
     "react-native-phone-number-input": "^2.1.0",
+    "react-native-plaid-link-sdk": "^11.0.3",
     "react-native-qrcode-image": "^0.2.8",
     "react-native-qrcode-mask": "^1.0.0",
     "react-native-qrcode-svg": "^6.1.2",
