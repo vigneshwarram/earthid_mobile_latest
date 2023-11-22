@@ -158,7 +158,41 @@ if (selectedItem ) {
   var DocumentList = documentsDetailsList?.responseData
     ? documentsDetailsList?.responseData
     : [];
+    var documentDetails1: IDocumentProps = {
+      id: `ID_VERIFICATION${Math.random()}${"selectedDocument"}${Math.random()}`,
+        name: "Proof of Age",
+        path: "filePath",
+        documentName: "Proof of Age",
+        categoryType: selectedDocument && selectedDocument?.split("(")[0]?.trim(),
+        date: date?.date,
+        time: date?.time,
+        txId: "data?.result",
+        docType: verifyVcCred?.type[1],
+        docExt: ".jpg",
+        processedDoc: "",
+        isVc: true,
+        vc: JSON.stringify({
+          name: "Acknowledgement Token",
+          documentName: "Acknowledgement Token",
+          path: "filePath",
+          date: date?.date,
+          time: date?.time,
+          txId: "data?.result",
+          docType: "pdf",
+          docExt: ".jpg",
+          processedDoc: "",
+          isVc: true,
+        }),
+        verifiableCredential: verifyVcCred,
+        docName: "",
+        base64: undefined,
+    };
+  
+    var DocumentList = documentsDetailsList?.responseData
+      ? documentsDetailsList?.responseData
+      : [];
   DocumentList.push(documentDetails);
+  DocumentList.push(documentDetails1);
   dispatch(saveDocuments(DocumentList));
   setsuccessResponse(true);
   getHistoryReducer.isSuccess = false;

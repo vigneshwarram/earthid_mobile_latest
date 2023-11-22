@@ -38,13 +38,13 @@ const App = () => {
   const [isIdle, setIsIdle] = useState(false);
   let timer: string | number | NodeJS.Timeout | undefined 
   const appState = useRef(AppState.currentState);
-  const resetIdleTimer = () => {
-    clearTimeout(timer);
-    timer = setTimeout(handleIdle, 60000*10);
-  };
-  const handleIdle = () => {  
-    EventRegister.emit("t");
-  };
+  // const resetIdleTimer = () => {
+  //   clearTimeout(timer);
+  //   timer = setTimeout(handleIdle, 60000*10);
+  // };
+  // const handleIdle = () => {  
+  //   EventRegister.emit("t");
+  // };
 
   useEffect(() => {
     checkUpdateNeeded()
@@ -84,13 +84,13 @@ const App = () => {
 }
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
-    onPanResponderGrant: resetIdleTimer,
+    // onPanResponderGrant: resetIdleTimer,
   });
   return (
  
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-      <View  style={{flex:1}}  {...panResponder.panHandlers}>
+      <View  style={{flex:1}}  >
         <SafeAreaView style={styles.container}>
           <LanguageContextProvider>    
             <RootNavigator />

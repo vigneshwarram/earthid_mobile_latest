@@ -178,10 +178,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
   }
 
   const _renderItem = ({ item, index }: any) => {
-    // AsyncStorage.setItem("day", item.date);
-    // setEdit(item)
-    // setitemdata(item)
-
+   
     return (
       <TouchableOpacity
         onLongPress={() => {
@@ -228,7 +225,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
                 { fontSize: 15, fontWeight: "bold", marginHorizontal: 9 },
               ]}
             >
-              {item?.isVc ? item.name : item?.categoryType}
+              {item?.isVc ? item.categoryType : item?.categoryType}
             </GenericText>
           </View>
         </View>
@@ -613,6 +610,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
               data={getFilteredData()}
               renderItem={_renderItem}
               ListEmptyComponent={listEmpty}
+              
             />
           ) : (
             // <GenericText

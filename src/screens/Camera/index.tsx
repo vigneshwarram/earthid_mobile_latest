@@ -604,6 +604,7 @@ const CameraScreen = (props: any) => {
         documentName: "Acknowledgement Token",
         date: date?.date,
         time: date?.time,
+        categoryType: 'ID',
         txId: "data?.result",
         docType: verifyVcCred?.type[1],
         docExt: ".jpg",
@@ -662,51 +663,14 @@ const CameraScreen = (props: any) => {
       // getData();
     } 
     else {
-      console.log("thiss", "this is log");
-      var date = dateTime();
-      var documentDetails: IDocumentProps = {
-        id: `ID_VERIFICATION${Math.random()}${"selectedDocument"}${Math.random()}`,
-        name: "Membership Credientials",
-        documentName: "Membership Credientials",
-        path: "filePath",
-        date: date?.date,
-        time: date?.time,
-        txId: "data?.result",
-        docType: verifyVcCred?.type[1],
-        docExt: ".jpg",
-        processedDoc: "",
-        isVc: true,
-        vc: JSON.stringify({
-          name: "Membership Credientials",
-          documentName: "Membership Credientials",
-          path: "filePath",
-          date: date?.date,
-          time: date?.time,
-          txId: "data?.result",
-          docType: "pdf",
-          docExt: ".jpg",
-          processedDoc: "",
-          isVc: true,
-        }),
-        verifiableCredential: verifyVcCred,
-        docName: "",
-        base64: undefined,
-      };
-
-      var DocumentList = documentsDetailsList?.responseData
-        ? documentsDetailsList?.responseData
-        : [];
-
-      DocumentList.push(documentDetails);
-      console.log("documentsDetailsList", documentsDetailsList);
-      dispatch(saveDocuments(DocumentList));
+    
 
       setIsCamerVisible(true);
       setTimeout(() => {
         setisLoading(false)
         setloadingforGentSchemaAPI(false);
         setissuerSchemaDropDown(false);
-        Alert.alert("Membership Credential Saved successfully");
+        Alert.alert("Proof verified successfully");
         props.navigation.navigate("Documents");
       }, 10000);
     }

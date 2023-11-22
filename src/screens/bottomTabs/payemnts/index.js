@@ -30,6 +30,7 @@ const createVerifiableCred=(verifyVcCred)=>{
     name: "Proof of Funds",
     path: "filePath",
     documentName: "Proof of Funds",
+    categoryType: 'Finance',
     date: date?.date,
     time: date?.time,
     txId: "data?.result",
@@ -51,7 +52,7 @@ const createVerifiableCred=(verifyVcCred)=>{
   dispatch(saveDocuments(DocumentList)).then(()=>{
   setTimeout(()=>{
     setLoading(false)
-      Alert.alert("Document uploaded successfully");
+      Alert.alert("Proof of fund generated successfully");
       props.navigation.navigate("Documents");
   },1000)
   })
