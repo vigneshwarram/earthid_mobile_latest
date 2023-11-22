@@ -270,6 +270,9 @@ dependencies {
  implementation project(':react-native-splash-screen')
     implementation project(':react-native-share-menu')
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0"
+implementation "androidx.lifecycle:lifecycle-viewmodel:2.5.0"
+
     implementation project(':react-native-version-check')
 implementation 'com.facebook.soloader:soloader:0.10.3+'
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
@@ -303,6 +306,8 @@ if (isNewArchitectureEnabled()) {
     // This will be applied to all the imported transtitive dependency.
     configurations.all {
         resolutionStrategy.dependencySubstitution {
+             force "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0"
+        force "androidx.lifecycle:lifecycle-viewmodel:2.5.0"
             substitute(module("com.facebook.react:react-native"))
                     .using(project(":ReactAndroid"))
                     .because("On New Architecture we're building React Native from source")

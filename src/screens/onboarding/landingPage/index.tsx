@@ -51,7 +51,7 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
   },[])
 
   const defaultVcFeature =()=>{
-    dispatch(saveFeature(true));
+    dispatch(saveFeature(false));
   }
 
   const [langugeList, setLanguageList] = useState([

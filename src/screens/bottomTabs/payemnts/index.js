@@ -16,7 +16,7 @@ const Payment = (props) => {
   const [accessToken, setAccessToken] = useState(null);
   const documentsDetailsList = useAppSelector((state) => state.Documents);
   const [transactionDetails, setTransactionDetails] = useState(null);
-  const [ZkpSignature, setZkpSignature] = useState(null);
+
 const createToken =(success)=>{
   setBankDetails(success)   
   createAccessToken(success)
@@ -49,97 +49,15 @@ const createVerifiableCred=(verifyVcCred)=>{
     DocumentList.push(documentDetails);
 
   dispatch(saveDocuments(DocumentList)).then(()=>{
-    getZKPSignature()
+  setTimeout(()=>{
+    setLoading(false)
+      Alert.alert("Document uploaded successfully");
+      props.navigation.navigate("Documents");
+  },1000)
   })
 
 }
-const getZKPSignature =(success)=>{
-  const fetchData = async () => {
-    setLoading(true)
-    const payload ={
-      dateOfBirth: {
-        type: "date",
-        value: 18,
-        unit: "years"
-      },
-      verifyParams: [
-        "dateOfBirth=1990-05-28"
-      ],
-      credentials: {
-        "@context": [
-          "https://www.w3.org/2018/credentials/v1"
-        ],
-        id: "UserAgeSchema:1:3027e0c0-b917-4a71-9c7f-409965c41d4a",
-        type: [
-          "VerifiableCredential",
-          "UserAgeSchema:1",
-          "Encrypted"
-        ],
-        version: "UserAgeSchema:1",
-        credentialSchema: {
-          id: "http://ssi-test.myearth.id/schema/UserAgeSchema",
-          type: "JsonSchemaValidator2018"
-        },
-        issuer: "did:earthid:testnet:H8xsGiJMKq9D3KewDwCMnTo8Xs7PexCivnZyC9EgUkdV;earthid:testnet:fid=0.0.2239011",
-        credentialSubject: [
-          {
-            id: "MzMsMTU1LDg1LDU5LDEzMywzNSwxNzMsNTgsMTA1LDg0LDQ4LDIxNSwxOTAsNDMsMjMsMjA1LDIwMSwxOCwxMzcsMTgxLDEwNCwxNjUsMTgxLDg4LDM4LDIyNywxNTEsMjEwLDE1OSw5NywzNCw2Nw==",
-            earthId: "MjA4LDIwNCw5MSwxNzAsNzMsMTQ5LDI0OCwyMjIsNzQsMjAxLDE4MSw5MiwxNCw4LDg5LDI0LDEyOCw0MCwxNjcsMjMsMTU0LDE2NCwxMiwyMDUsMTc0LDcyLDIyOSwzOSwxMTEsNDUsMTExLDIyNQ==",
-            dateOfBirth: "MTcwLDU1LDExNiwyOCwxMzIsMTQsMTA4LDIzLDE2OCwxNjcsMTI5LDQxLDEwMSw0NCw1MCwxMjAsMTMwLDg0LDIwNywxOTEsMTU4LDc4LDE0LDE3OSwxMzAsMjYsNjksMjMsMTMwLDI0NywxMSwxMjI="
-          }
-        ],
-        issuanceDate: "2023-11-21T06:43:26.344Z",
-        expirationDate: "2024-11-21T06:43:24.588Z",
-        proof: {
-          type: "Ed25519Signature2018",
-          creator: "did:earthid:testnet:H8xsGiJMKq9D3KewDwCMnTo8Xs7PexCivnZyC9EgUkdV;earthid:testnet:fid=0.0.2239011",
-          created: "2023-11-21T06:43:26.344Z",
-          proofPurpose: "assertionMethod",
-          vcVerificationMethod: "did:earthid:testnet:H8xsGiJMKq9D3KewDwCMnTo8Xs7PexCivnZyC9EgUkdV;earthid:testnet:fid=0.0.2239011#did-root-key",
-          jws: "eyJjcml0IjpbImI2NCJdLCJiNjQiOmZhbHNlLCJhbGciOiJFZERTQSJ9..NDllYzQxZTUwZDEwZDA1NDdmNDc2MTg4YmU2YjAzZmMxZTE5MTZmZTNmMTA5NDEzZGU1YmU4NDI2MDExZTIxN2UzMWI4ODJhYjQ0NzBhNzYwMDIyNjhlZjU0YjQ0OWMwN2RkMzQ2OTkxYjcwYThhM2VkYmJkZDY1YWNmZTRkMDE="
-        },
-        biometrics: {
-          face: null,
-          iris: null,
-          finger: null
-        },
-        credentialStatus: ""
-      }
-    }
-    try {
-      
-      // Replace 'YOUR_API_ENDPOINT' with the actual API endpoint
-      const response = await fetch('https://ssi-test.myearth.id/api/issuer/createZkp', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-API-KEY':'01a41742-aa8e-4dd6-8c71-d577ac7d463c'
-          // You may need to include additional headers here, such as authentication headers
-        },
-        body: JSON.stringify(payload),
-      });
-      const result = await response.json();
-      console.log('setZkpSignature',result)
-      // Check if the request was successful
-      if (!response.ok) {
-        setLoading(false)
-        throw new Error('Network response was not ok');
-      }
-      console.log('setZkpSignature',result)
-      setZkpSignature(result)
-      setLoading(false)
-      Alert.alert("Document uploaded successfully");
-      props.navigation.navigate("Documents");
-      // Set the data in the state
-      //setData(result);
-    } catch (error) {
-      setLoading(false)
-      console.error('Error fetching data:', error);
-    }
-  };
 
-  fetchData();
-}
 
 const getTransactionDetails =(success)=>{
   const fetchData = async () => {

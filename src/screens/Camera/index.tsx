@@ -111,6 +111,7 @@ const CameraScreen = (props: any) => {
   const [checkbox2, setcheckbox2] = useState(true);
   const [issuerLogin, setissuerLogin] = useState(false);
   const [barCodeDataDetails, setbarCodeData] = useState<any>();
+  const [ZkpSignature, setZkpSignature] = useState(null);
   const [successMessage, setsuccessMessage] = useState(
     "verification successfully"
   );
@@ -177,9 +178,16 @@ const CameraScreen = (props: any) => {
         console.error("Error:", error);
       });
   };
-
+  function isValidJSON(jsonString) {
+    try {
+      JSON.parse(jsonString);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
   const _handleBarCodeRead = (barCodeData: any) => {
-    console.log("barcodeDetails", barCodeData);
+    console.log("barcodedatappppp", barCodeData?.data);  
     setisLoading(true)
       if (barCodeData?.data === undefined) {
         setisLoading(false)
@@ -197,11 +205,22 @@ const CameraScreen = (props: any) => {
        );
       } else {
         try {
-          let serviceData = JSON.parse(barCodeData.data);
-          console.log("barcodedata", serviceData);
+       
+           const stringWithDoubleBackslashes = barCodeData?.data?.replace(/'/g, '\\"');
+
+          let parsedRequestType = JSON.parse(stringWithDoubleBackslashes)  
+           let isValid =isValidJSON(parsedRequestType.requestType)   
+           if(isValid){
+            parsedRequestType.requestType = JSON.parse(parsedRequestType.requestType);
+           }
+       
+          console.log('stringWithDoubleBackslashesggvicky1234567',parsedRequestType?.requestType)
+          let serviceData =parsedRequestType
+        
+      
           if (!serviceProviderLoading) {
             setbarCodeData(serviceData);
-  
+        //   const parsedRequestType = JSON.parse(serviceData.requestType);
             if (serviceData.requestType === "login") {
               serviceProviderApiCall(serviceData);
             }
@@ -211,9 +230,13 @@ const CameraScreen = (props: any) => {
             if (serviceData.requestType === "document") {
               serviceProviderApiCall(serviceData);
             }
-            if (serviceData.requestType === "shareCredentials") {
-              serviceProviderApiCall(serviceData);
+            if (parsedRequestType?.requestType?.request === "balance") {
+              serviceProviderApiCallForapi(parsedRequestType);
             }
+            if (parsedRequestType?.requestType?.request === "minAge") {
+              serviceProviderApiCallForapi(parsedRequestType);
+            }
+           
             if(!serviceData.requestType){
               setisLoading(false)
               setIsCamerVisible(false);
@@ -247,6 +270,7 @@ const CameraScreen = (props: any) => {
           }
           setIsCamerVisible(false);
         } catch (error) {
+          console.log('errorvicky',error)
           setisLoading(false)
           setIsCamerVisible(false);
           Alert.alert(
@@ -301,6 +325,12 @@ const CameraScreen = (props: any) => {
       } else if (barCodeDataDetails?.requestType === "generateCredentials") {
         setisDocumentModalkyc(true);
       }
+      else if (barCodeDataDetails?.requestType?.request === "minAge") {
+        setisDocumentModalkyc(true);
+      }
+      else if (barCodeDataDetails?.requestType?.request === "balance") {
+        setisDocumentModalkyc(true);
+      }
     }
   }, [serviceProviderResponse]);
 
@@ -311,7 +341,10 @@ const CameraScreen = (props: any) => {
     );
     if (sendDatatoServiceProviderData) {
       //passwordless login flow
-  
+      console.log(
+        "barCodeDataDetails?.requestType?.request==>",
+        barCodeDataDetails?.requestType?.request
+      );
       if (barCodeDataDetails?.requestType === "login") {
         setisDocumentModalkyc(false);
         setisLoading(false)
@@ -330,6 +363,20 @@ const CameraScreen = (props: any) => {
         setIsCamerVisible(true);
         Alert.alert("credential has been shared successfully");
       }
+      if (barCodeDataDetails?.requestType?.request === "balance") {
+        setisDocumentModalkyc(false);
+        setIsCamerVisible(true);
+        setisLoading(false)
+        Alert.alert("shared Successfully");
+        
+      }
+      if (barCodeDataDetails?.requestType?.request === "minAge") {
+        setisDocumentModalkyc(false);
+        setIsCamerVisible(true);
+        setisLoading(false)
+        Alert.alert("shared Successfully");
+        
+      }
       if (barCodeDataDetails?.requestType === "document") {
         setIsCamerVisible(true);
       }
@@ -342,7 +389,102 @@ const CameraScreen = (props: any) => {
       setisDocumentModalkyc(false);
     };
   }, []);
+  const getZKPSignature =(success: any)=>{
+    const fetchData = async () => {
+     console.log('success==>',success)
+      const payload ={
+        dateOfBirth: success,
+        verifyParams: [
+          "dateOfBirth=1990-05-28"
+        ],
+        credentials: {
+          "@context": [
+            "https://www.w3.org/2018/credentials/v1"
+          ],
+          id: "UserAgeSchema:1:3027e0c0-b917-4a71-9c7f-409965c41d4a",
+          type: [
+            "VerifiableCredential",
+            "UserAgeSchema:1",
+            "Encrypted"
+          ],
+          version: "UserAgeSchema:1",
+          credentialSchema: {
+            id: "http://ssi-test.myearth.id/schema/UserAgeSchema",
+            type: "JsonSchemaValidator2018"
+          },
+          issuer: "did:earthid:testnet:H8xsGiJMKq9D3KewDwCMnTo8Xs7PexCivnZyC9EgUkdV;earthid:testnet:fid=0.0.2239011",
+          credentialSubject: [
+            {
+              id: "MzMsMTU1LDg1LDU5LDEzMywzNSwxNzMsNTgsMTA1LDg0LDQ4LDIxNSwxOTAsNDMsMjMsMjA1LDIwMSwxOCwxMzcsMTgxLDEwNCwxNjUsMTgxLDg4LDM4LDIyNywxNTEsMjEwLDE1OSw5NywzNCw2Nw==",
+              earthId: "MjA4LDIwNCw5MSwxNzAsNzMsMTQ5LDI0OCwyMjIsNzQsMjAxLDE4MSw5MiwxNCw4LDg5LDI0LDEyOCw0MCwxNjcsMjMsMTU0LDE2NCwxMiwyMDUsMTc0LDcyLDIyOSwzOSwxMTEsNDUsMTExLDIyNQ==",
+              dateOfBirth: "MTcwLDU1LDExNiwyOCwxMzIsMTQsMTA4LDIzLDE2OCwxNjcsMTI5LDQxLDEwMSw0NCw1MCwxMjAsMTMwLDg0LDIwNywxOTEsMTU4LDc4LDE0LDE3OSwxMzAsMjYsNjksMjMsMTMwLDI0NywxMSwxMjI="
+            }
+          ],
+          issuanceDate: "2023-11-21T06:43:26.344Z",
+          expirationDate: "2024-11-21T06:43:24.588Z",
+          proof: {
+            type: "Ed25519Signature2018",
+            creator: "did:earthid:testnet:H8xsGiJMKq9D3KewDwCMnTo8Xs7PexCivnZyC9EgUkdV;earthid:testnet:fid=0.0.2239011",
+            created: "2023-11-21T06:43:26.344Z",
+            proofPurpose: "assertionMethod",
+            vcVerificationMethod: "did:earthid:testnet:H8xsGiJMKq9D3KewDwCMnTo8Xs7PexCivnZyC9EgUkdV;earthid:testnet:fid=0.0.2239011#did-root-key",
+            jws: "eyJjcml0IjpbImI2NCJdLCJiNjQiOmZhbHNlLCJhbGciOiJFZERTQSJ9..NDllYzQxZTUwZDEwZDA1NDdmNDc2MTg4YmU2YjAzZmMxZTE5MTZmZTNmMTA5NDEzZGU1YmU4NDI2MDExZTIxN2UzMWI4ODJhYjQ0NzBhNzYwMDIyNjhlZjU0YjQ0OWMwN2RkMzQ2OTkxYjcwYThhM2VkYmJkZDY1YWNmZTRkMDE="
+          },
+          biometrics: {
+            face: null,
+            iris: null,
+            finger: null
+          },
+          credentialStatus: ""
+        }
+      }
+      try {
+        
+        // Replace 'YOUR_API_ENDPOINT' with the actual API endpoint
+        const response = await fetch('https://ssi-test.myearth.id/api/issuer/createZkp', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-API-KEY':'01a41742-aa8e-4dd6-8c71-d577ac7d463c'
+            // You may need to include additional headers here, such as authentication headers
+          },
+          body: JSON.stringify(payload),
+        });
+        setisLoading(false)
+        const result = await response.json();
+        console.log('setZkpSignature',result)
+        setZkpSignature(result)
+      
+       const  data = {
+          sessionKey: barCodeDataDetails?.sessionKey,
+          encrypted_object:{earthId: userDetails?.responseData?.earthId,
+            pressed: false,
+            userName: userDetails?.responseData?.username,
+            userEmail: userDetails?.responseData?.email,
+            userMobileNo: userDetails?.responseData?.phone,
+            OrganizationID: userDetails?.responseData?.orgId,...result?.data},
+        };
 
+      console.log('earthid req==>',JSON.stringify(data))
+        sendDatatoServiceProvider(QrcodeApis, data, "POST");
+        // Check if the request was successful
+        if (!response.ok) {
+          setisLoading(false)
+          throw new Error('Network response was not ok');
+        }
+        console.log('setZkpSignature',result)
+       
+        
+        // Set the data in the state
+        //setData(result);
+      } catch (error) {
+        setisLoading(false)
+        console.error('Error fetching data:', error);
+      }
+    };
+  
+    fetchData();
+  }
   useEffect(() => {
     console.log("sharecredientials", shareCredientialData);
     if (shareCredientialData?.status === "success") {
@@ -366,7 +508,7 @@ const CameraScreen = (props: any) => {
 
   const getArrayOfBase64 =()=>{
     let datas: any[] =[]
-      documentsDetailsList?.responseData.map((item,index)=>{
+      documentsDetailsList?.responseData.map((item: { base64: string; isVc: any; selectedForCheckBox: any; isVerifyNeeded: any; },index: any)=>{
         console.log('itemselected',item)
         if(item?.base64 && !item.isVc && item.selectedForCheckBox){
           if(item?.isVerifyNeeded){
@@ -384,7 +526,7 @@ const CameraScreen = (props: any) => {
 
   const getTypesOfDoc =()=>{
     let datas: any[] =[]
-    documentsDetailsList?.responseData.map((item,index)=>{
+    documentsDetailsList?.responseData.map((item: { selectedForCheckBox: any; base64: any; isVc: any; docType: any; },index: any)=>{
       console.log('itemselected',item.selectedForCheckBox)
       if(item?.base64 && !item.isVc && item.selectedForCheckBox){
         datas.push(item.docType)
@@ -395,7 +537,7 @@ const CameraScreen = (props: any) => {
 
   const getArrayOfDocName =()=>{
     let datas: any[] =[]
-      documentsDetailsList?.responseData.map((item,index)=>{
+      documentsDetailsList?.responseData.map((item: { docName: any; isVc: any; selectedForCheckBox: any; },index: any)=>{
         if(item?.docName && !item.isVc && item.selectedForCheckBox){
           datas.push(item.docName)
         }
@@ -491,7 +633,7 @@ const CameraScreen = (props: any) => {
           DocumentList.push(documentDetails);
         }
         if(documentsDetailsList?.responseData?.length>0){
-          documentsDetailsList?.responseData?.map((item,index)=>{
+          documentsDetailsList?.responseData?.map((item: { isVc: any; selectedForCheckBox: any; },index: any)=>{
             if(!item?.isVc && item?.selectedForCheckBox){
               DocumentList.push(documentDetails);
             }
@@ -515,7 +657,11 @@ const CameraScreen = (props: any) => {
     
     } else if (barCodeDataDetails.requestType === "shareCredentials") {
       // getData();
-    } else {
+    } 
+    else if (barCodeDataDetails.requestType === "minAge") {
+      // getData();
+    } 
+    else {
       console.log("thiss", "this is log");
       var date = dateTime();
       var documentDetails: IDocumentProps = {
@@ -574,6 +720,19 @@ const CameraScreen = (props: any) => {
     );
     serviceProviderFetch(
       `${serviceProviderApi}?apikey=${apikey}&reqNo=${reqNo}&requestType=${requestType}`,
+      {},
+      "GET"
+    );
+  };
+
+  const serviceProviderApiCallForapi = (serviceData: any) => {
+    const { apikey, reqNo, requestType } = serviceData;
+    console.log(
+      "getUrl===>>>::::",
+      `${serviceProviderApi}?apikey=${apikey}&reqNo=${reqNo}&requestType=${JSON.stringify(requestType)}`
+    );
+    serviceProviderFetch(
+      `${serviceProviderApi}?apikey=${apikey}&reqNo=${reqNo}&requestType=${JSON.stringify(requestType)}`,
       {},
       "GET"
     );
@@ -691,7 +850,15 @@ const CameraScreen = (props: any) => {
           },
         };
       }
-      console.log("getSignature", data);
+      else if (barCodeDataDetails?.requestType.request === "minAge") {
+        getZKPSignature(barCodeDataDetails?.requestType)
+        return
+      }
+      else if (barCodeDataDetails?.requestType.request === "balance") {
+        getZKPSignature(barCodeDataDetails?.requestType)
+        return
+     
+      }
       sendDatatoServiceProvider(QrcodeApis, data, "POST");
     }
   };
