@@ -87,7 +87,7 @@ const getTransactionDetails =(success)=>{
         setLoading(false)
         throw new Error('Network response was not ok');
       }
-      console.log('setTransactionDetails',result)
+      console.log('setTransactionDetails',JSON.stringify(result))
       setTransactionDetails(result)
       createVerifiableCred(result?.accounts[0]?.balances)
       // Parse the JSON response

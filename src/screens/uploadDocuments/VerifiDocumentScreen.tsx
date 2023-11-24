@@ -163,7 +163,7 @@ if (selectedItem ) {
         name: "Proof of Age",
         path: "filePath",
         documentName: "Proof of Age",
-        categoryType: selectedDocument && selectedDocument?.split("(")[0]?.trim(),
+        categoryType: "ID",
         date: date?.date,
         time: date?.time,
         txId: "data?.result",
@@ -172,7 +172,7 @@ if (selectedItem ) {
         processedDoc: "",
         isVc: true,
         vc: JSON.stringify({
-          name: "Acknowledgement Token",
+          name: "Proof of Age",
           documentName: "Acknowledgement Token",
           path: "filePath",
           date: date?.date,

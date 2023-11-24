@@ -5,7 +5,7 @@ import {
   View,
   StyleSheet,
   Text,
-  FlatList,
+  SectionList,
   Image,
   TouchableOpacity,
   ScrollView,
@@ -135,7 +135,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
     setdocumentsDetailsList(documentsDetailsListData);
   }, [documentsDetailsListData?.responseData]);
 
-  const multiSelect = (item) => {
+  const multiSelect = (item: any) => {
     // console.log(item?.base64, "@@@@@@@@@");
     // setMultipleDucuments(item);
     setCheckBoxEnable(!isCheckBoxEnable);
@@ -171,7 +171,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const getTime = (item: { time: any }) => {
     return convertTimeToAmPmFormat(item?.time);
   };
-  function compareTime(a, b) {
+  function compareTime(a: { time: any; }, b: { time: any; }) {
     const timeA = new Date(`1970-01-01T${a.time}`);
     const timeB = new Date(`1970-01-01T${b.time}`);
     return timeA - timeB;
@@ -194,41 +194,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
                 navigation.navigate("ViewCredential", { documentDetails: item })
         }
       >
-        <View style={{ flexDirection: "row", marginTop: 5 }}>
-          <View style={{ justifyContent: "center", alignItems: "center" }}>
-            <Avatar
-              isCategory={true}
-              isUploaded={false}
-              iconSource={getCategoryImages(item)?.URI}
-              style={{
-                container: [
-                  styles.avatarContainer,
-                  {
-                    backgroundColor: getCategoryImages(item)?.COLOR,
-                    flexDirection: "row",
-                  },
-                ],
-                imgContainer: styles.avatarImageContainer,
-                text: styles.avatarTextContainer,
-              }}
-            />
-          </View>
-          <View
-            style={{
-              justifyContent: "center",
-              alignItems: "center",
-              marginTop: -20,
-            }}
-          >
-            <GenericText
-              style={[
-                { fontSize: 15, fontWeight: "bold", marginHorizontal: 9 },
-              ]}
-            >
-              {item?.isVc ? item.categoryType : item?.categoryType}
-            </GenericText>
-          </View>
-        </View>
+      
 
         <View style={{ marginTop: -20 }}>
           <Card
@@ -260,9 +226,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
               ...styles.cardContainer,
               ...{
                 avatarContainer: {
-                  backgroundColor: item?.isVc
-                    ? "#D7EFFB"
-                    : getCategoryImages(item)?.COLOR,
+                  backgroundColor: getCategoryImages(item)?.COLOR,
                   width: 60,
                   height: 60,
                   borderRadius: 20,
@@ -271,9 +235,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
                   marginRight: 5,
                 },
                 uploadImageStyle: {
-                  backgroundColor: item?.isVc
-                    ? "#D7EFFB"
-                    : getCategoryImages(item)?.COLOR,
+                  backgroundColor: getCategoryImages(item)?.COLOR,
                   borderRadius: 25,
                   borderWidth: 3,
                   bordercolor: "#fff",
@@ -408,7 +370,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
 
   const shareMultipleItem = async () => {
     let temp = [];
-    temp = documentsDetailsList?.responseData.filter((el) => {
+    temp = documentsDetailsList?.responseData.filter((el: { isSelected: boolean; }) => {
       // console.log(i[0].isSelected,'IIII')
       return el.isSelected == true;
     });
@@ -506,22 +468,62 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
         return splittedValue?.trim() === categoryTypes?.trim()?.toLowerCase(); //use the argument here.
       };
       var filter = documentsDetailsList?.responseData?.filter(alter);
-      return filter;
+      return getItemsForSection(filter)
     }
 
     if (searchedData.length > 0) {
       getFilteredData;
       data = searchedData;
-      return data;
+      return getItemsForSection(data)
     }
 
     if (searchedData.length === 0 && searchText != "") {
       return []; // earlier []
     }
-    console.log("searchedData====>{{}}}}}-", data);
-    return data;
+    console.log('data',data)
+  return getItemsForSection(data)
   };
-  const clearData = () => {};
+
+  const getItemsForSection =(data: any[])=>{
+    const idDocuments = data?.filter((item: { categoryType: string; })=>item?.categoryType === "ID" ||item?.categoryType === "id")
+    const idHealthCare = data?.filter((item: { categoryType: string; })=>item?.categoryType === "HEALTHCARE" ||item?.categoryType === "Healthcare")
+    const idTravels = data?.filter((item: { categoryType: string; })=>item?.categoryType === "TRAVEL" ||item?.categoryType === "Travel")
+    const idInsurance = data?.filter((item: { categoryType: string; })=>item?.categoryType === "INSURANCE" ||item?.categoryType === "Insurance")
+    const idEducation = data?.filter((item: { categoryType: string; })=>item?.categoryType === "EDUCATION" ||item?.categoryType === "Education")
+    const idEmployement = data?.filter((item: { categoryType: string; })=>item?.categoryType === "EMPLOYMENT" ||item?.categoryType === "Employment")
+    const idFinanace = data?.filter((item: { categoryType: string; })=>item?.categoryType === "FINANCE" ||item?.categoryType === "Finance")
+    return [{
+      title:idDocuments?.length>0 ? "ID":'',
+      data:idDocuments
+    },
+  
+    {
+      title:idHealthCare?.length>0 ? "HEALTHCARE":'',
+      data:idHealthCare
+    },
+    {
+      title:idTravels?.length>0 ? "TRAVEL":'',
+      data:idTravels
+    },
+    {
+      title:idInsurance?.length>0 ? "INSURANCE":'',
+      data:idInsurance
+    },
+    {
+      title:idEducation?.length>0 ? "EDUCATION":'',
+      data:idEducation
+    },
+    {
+      title:idEmployement?.length>0 ? "EMPLOYMENT":'',
+      data:idEmployement
+    },
+    {
+      title:idFinanace?.length>0 ? "FINANCE":'',
+      data:idFinanace
+    },
+   
+  ];
+  }
 
   const listEmpty = () => {
     return (
@@ -606,9 +608,53 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
 
           {documentsDetailsList?.responseData &&
           documentsDetailsList?.responseData?.length > 0 ? (
-            <FlatList<any>
-              data={getFilteredData()}
+            <SectionList<any>
+              sections={getFilteredData()}
               renderItem={_renderItem}
+              renderSectionHeader={({section})=>(
+                section?.title!='' &&
+                <View style={{ flexDirection: "row", marginTop: 10,marginLeft:20 }}>
+                <View style={{ justifyContent: "center", alignItems: "center" }}>
+                  <Avatar
+                    isCategory={true}
+                    isUploaded={false}
+                    iconSource={getCategoryImages({
+                      categoryType: section?.title,
+                      name: undefined
+                    })?.URI}
+                    style={{
+                      container: [
+                        styles.avatarContainer,
+                        {
+                          backgroundColor: getCategoryImages({
+                            categoryType: section?.title,
+                            name: undefined
+                          })?.COLOR,
+                          flexDirection: "row",
+                        },
+                      ],
+                      imgContainer: styles.avatarImageContainer,
+                      text: styles.avatarTextContainer,
+                    }}
+                  />
+                </View>
+                <View
+                  style={{
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginTop: -20,
+                  }}
+                >
+                  <GenericText
+                    style={[
+                      { fontSize: 15, fontWeight: "bold", marginHorizontal: 9 },
+                    ]}
+                  >
+                    {section?.title}
+                  </GenericText>
+                </View>
+              </View>
+              )}
               ListEmptyComponent={listEmpty}
               
             />
