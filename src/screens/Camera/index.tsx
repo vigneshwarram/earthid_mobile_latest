@@ -359,14 +359,14 @@ const CameraScreen = (props: any) => {
         setisDocumentModalkyc(false);
         setIsCamerVisible(true);
         setisLoading(false)
-        Alert.alert("shared Successfully");
+        Alert.alert("Proof sharing completed successfully");
         
       }
       if (barCodeDataDetails?.requestType?.request === "minAge") {
         setisDocumentModalkyc(false);
         setIsCamerVisible(true);
         setisLoading(false)
-        Alert.alert("shared Successfully");
+        Alert.alert("Proof sharing completed successfully");
         
       }
       if (barCodeDataDetails?.requestType === "document") {
@@ -386,52 +386,54 @@ const CameraScreen = (props: any) => {
       let payload 
    
      if(success?.request === 'balance'){
-      payload ={
-        balance: success,
-        verifyParams: [
-          "balance=56560"
-        ],
-        credentials: {
-          "@context": [
-              "https://www.w3.org/2018/credentials/v1"
-          ],
-          id: "UserBalanceSchema:1:1b4efb3c-f39d-4890-b9c6-c1c2f42517c5",
-          type: [
-              "VerifiableCredential",
-              "UserBalanceSchema:1",
-              "Encrypted"
-          ],
-          version: "UserBalanceSchema:1",
-          credentialSchema: {
-              id: "http://ssi-test.myearth.id/schema/UserBalanceSchema",
-              type: "JsonSchemaValidator2018"
-          },
-          issuer: "did:earthid:testnet:H8xsGiJMKq9D3KewDwCMnTo8Xs7PexCivnZyC9EgUkdV;earthid:testnet:fid=0.0.2239011",
-          credentialSubject: [
-              {
-                  id: "MzMsMTU1LDg1LDU5LDEzMywzNSwxNzMsNTgsMTA1LDg0LDQ4LDIxNSwxOTAsNDMsMjMsMjA1LDIwMSwxOCwxMzcsMTgxLDEwNCwxNjUsMTgxLDg4LDM4LDIyNywxNTEsMjEwLDE1OSw5NywzNCw2Nw==",
-                  earthId: "MjA4LDIwNCw5MSwxNzAsNzMsMTQ5LDI0OCwyMjIsNzQsMjAxLDE4MSw5MiwxNCw4LDg5LDI0LDEyOCw0MCwxNjcsMjMsMTU0LDE2NCwxMiwyMDUsMTc0LDcyLDIyOSwzOSwxMTEsNDUsMTExLDIyNQ==",
-                  balance: "MTM3LDI1LDU1LDIwMyw1MSw4MCwyMiwyMzMsMTk5LDcsNzYsNTUsMTI5LDIyMCwxNzcsNTQsNzgsMTIsMTAyLDcsNTEsMTY4LDEzNiwxNTUsMTkwLDE3NCwxMzEsMjMwLDE3MCwxMTcsMTU1LDIzMA=="
-              }
-          ],
-          issuanceDate: "2023-11-24T07:00:18.993Z",
-          expirationDate: "2024-11-24T07:00:17.504Z",
-          proof: {
-              type: "Ed25519Signature2018",
-              creator: "did:earthid:testnet:H8xsGiJMKq9D3KewDwCMnTo8Xs7PexCivnZyC9EgUkdV;earthid:testnet:fid=0.0.2239011",
-              created: "2023-11-24T07:00:18.993Z",
-              proofPurpose: "assertionMethod",
-              vcVerificationMethod: "did:earthid:testnet:H8xsGiJMKq9D3KewDwCMnTo8Xs7PexCivnZyC9EgUkdV;earthid:testnet:fid=0.0.2239011#did-root-key",
-              jws: "eyJjcml0IjpbImI2NCJdLCJiNjQiOmZhbHNlLCJhbGciOiJFZERTQSJ9..MDQ4YzQzZmYzYmJjMzYxZDI5NTkwNWE2YWMwMWMwNmFkZTdmZmMzMWNiYWI0MjFjNWVhYmY1ZjUzODkxZTIwZDg1YTdlMjA0MWEzNjdkYjhmNjlkYTM1ZWY1ZmM4YmM5OWYzYjQwODFhNWY1N2RlOWUxZWQ0YzRlZjUxMzlhMGM="
-          },
-          biometrics: {
-              face: null,
-              iris: null,
-              finger: null
-          },
-          credentialStatus: ""
-      }
-      }
+      payload ={balance: {
+        type: "number",
+        minimum:parseInt(success?.minimum)
+      },
+      verifyParams: [
+        "balance=30000"
+      ],
+      credentials: {
+                "@context": [
+                    "https://www.w3.org/2018/credentials/v1"
+                ],
+                id: "UserBalanceSchema:1:1b4efb3c-f39d-4890-b9c6-c1c2f42517c5",
+                type: [
+                    "VerifiableCredential",
+                    "UserBalanceSchema:1",
+                    "Encrypted"
+                ],
+                version: "UserBalanceSchema:1",
+                credentialSchema: {
+                    id: "http://ssi-test.myearth.id/schema/UserBalanceSchema",
+                    type: "JsonSchemaValidator2018"
+                },
+                issuer: "did:earthid:testnet:H8xsGiJMKq9D3KewDwCMnTo8Xs7PexCivnZyC9EgUkdV;earthid:testnet:fid=0.0.2239011",
+                credentialSubject: [
+                    {
+                        id: "MzMsMTU1LDg1LDU5LDEzMywzNSwxNzMsNTgsMTA1LDg0LDQ4LDIxNSwxOTAsNDMsMjMsMjA1LDIwMSwxOCwxMzcsMTgxLDEwNCwxNjUsMTgxLDg4LDM4LDIyNywxNTEsMjEwLDE1OSw5NywzNCw2Nw==",
+                        earthId: "MjA4LDIwNCw5MSwxNzAsNzMsMTQ5LDI0OCwyMjIsNzQsMjAxLDE4MSw5MiwxNCw4LDg5LDI0LDEyOCw0MCwxNjcsMjMsMTU0LDE2NCwxMiwyMDUsMTc0LDcyLDIyOSwzOSwxMTEsNDUsMTExLDIyNQ==",
+                        balance: "MTM3LDI1LDU1LDIwMyw1MSw4MCwyMiwyMzMsMTk5LDcsNzYsNTUsMTI5LDIyMCwxNzcsNTQsNzgsMTIsMTAyLDcsNTEsMTY4LDEzNiwxNTUsMTkwLDE3NCwxMzEsMjMwLDE3MCwxMTcsMTU1LDIzMA=="
+                    }
+                ],
+                issuanceDate: "2023-11-24T07:00:18.993Z",
+                expirationDate: "2024-11-24T07:00:17.504Z",
+                proof: {
+                    type: "Ed25519Signature2018",
+                    creator: "did:earthid:testnet:H8xsGiJMKq9D3KewDwCMnTo8Xs7PexCivnZyC9EgUkdV;earthid:testnet:fid=0.0.2239011",
+                    created: "2023-11-24T07:00:18.993Z",
+                    proofPurpose: "assertionMethod",
+                    vcVerificationMethod: "did:earthid:testnet:H8xsGiJMKq9D3KewDwCMnTo8Xs7PexCivnZyC9EgUkdV;earthid:testnet:fid=0.0.2239011#did-root-key",
+                    jws: "eyJjcml0IjpbImI2NCJdLCJiNjQiOmZhbHNlLCJhbGciOiJFZERTQSJ9..MDQ4YzQzZmYzYmJjMzYxZDI5NTkwNWE2YWMwMWMwNmFkZTdmZmMzMWNiYWI0MjFjNWVhYmY1ZjUzODkxZTIwZDg1YTdlMjA0MWEzNjdkYjhmNjlkYTM1ZWY1ZmM4YmM5OWYzYjQwODFhNWY1N2RlOWUxZWQ0YzRlZjUxMzlhMGM="
+                },
+                biometrics: {
+                    face: null,
+                    iris: null,
+                    finger: null
+                },
+                credentialStatus: ""
+            }
+    }
      }else{
        payload ={
         dateOfBirth: success,
@@ -481,7 +483,7 @@ const CameraScreen = (props: any) => {
       }
     }
       try {
-        console.log('payload=====>',payload)
+        console.log('payload=====>',JSON.stringify(payload))
         
         // Replace 'YOUR_API_ENDPOINT' with the actual API endpoint
         const response = await fetch('https://ssi-test.myearth.id/api/issuer/createZkp', {
@@ -493,9 +495,47 @@ const CameraScreen = (props: any) => {
           },
           body: JSON.stringify(payload),
         });
-        setisLoading(false)
+    
         const result = await response.json();
         console.log('setZkpSignature',result)
+        if(result){
+          if(success?.request === 'balance'){
+           
+            if(result?.data){
+              if(result?.data?.certificate?.balance){
+                setTimeout(()=>{    
+                  setisLoading(false)            
+                  Alert.alert('Proof of funds is successfully generated')
+                },5000)
+              }
+              else{
+                setTimeout(()=>{    
+                  setisLoading(false)            
+                  Alert.alert('Proof of funds verification failed')
+                },5000)
+               
+              }
+            }
+          }
+          if(success?.request === 'minAge'){
+           
+            if(result?.data){
+              if(result?.data?.certificate?.dateOfBirth){
+                setTimeout(()=>{    
+                  setisLoading(false)            
+                  Alert.alert('Proof of age is successfully generated')
+                },5000)
+              }
+              else{
+                setTimeout(()=>{    
+                  setisLoading(false)            
+                  Alert.alert('Proof of age verification failed')
+                },5000)
+               
+              }
+            }
+          }
+        }
         setZkpSignature(result)
       
        const  data = {
@@ -706,9 +746,9 @@ const CameraScreen = (props: any) => {
         setisLoading(false)
         setloadingforGentSchemaAPI(false);
         setissuerSchemaDropDown(false);
-        Alert.alert("Proof verified successfully");
+       // Alert.alert("Proof verified successfully");
         props.navigation.navigate("Documents");
-      }, 10000);
+      }, 5000);
     }
   };
 

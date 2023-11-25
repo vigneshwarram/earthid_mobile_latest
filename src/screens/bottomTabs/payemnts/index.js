@@ -27,9 +27,9 @@ const createVerifiableCred=(verifyVcCred)=>{
   setLoading(true)
   var documentDetails: IDocumentProps = {
     id: `ID_VERIFICATION${Math.random()}${"selectedDocument"}${Math.random()}`,
-    name: "Proof of Funds",
+    name: "Proof of funds",
     path: "filePath",
-    documentName: "Proof of Funds",
+    documentName: "Proof of funds",
     categoryType: 'Finance',
     date: date?.date,
     time: date?.time,
@@ -52,7 +52,7 @@ const createVerifiableCred=(verifyVcCred)=>{
   dispatch(saveDocuments(DocumentList)).then(()=>{
   setTimeout(()=>{
     setLoading(false)
-      Alert.alert("Proof of fund generated successfully");
+      Alert.alert("Proof of funds generated successfully");
       props.navigation.navigate("Documents");
   },1000)
   })
@@ -218,7 +218,7 @@ useEffect(() => {
     >
         <View style={{flex:1,justifyContent:'center',alignItems:'center',marginTop:'100%'}}>
         <View style={{width:120,height:50,backgroundColor:'blue',justifyContent:'center',alignItems:"center"}}> 
-        <Text style={{color:'#fff',fontWeight:'bold'}}>Connect  Bank</Text>
+        <Text style={{color:'#fff',fontWeight:'bold'}}>CONNECT TO BANK</Text>
         </View>
         </View>
        

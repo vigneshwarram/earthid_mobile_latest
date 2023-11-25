@@ -160,9 +160,9 @@ if (selectedItem ) {
     : [];
     var documentDetails1: IDocumentProps = {
       id: `ID_VERIFICATION${Math.random()}${"selectedDocument"}${Math.random()}`,
-        name: "Proof of Age",
+        name: "Proof of age",
         path: "filePath",
-        documentName: "Proof of Age",
+        documentName: "Proof of age",
         categoryType: "ID",
         date: date?.date,
         time: date?.time,
@@ -172,7 +172,7 @@ if (selectedItem ) {
         processedDoc: "",
         isVc: true,
         vc: JSON.stringify({
-          name: "Proof of Age",
+          name: "Proof of age",
           documentName: "Acknowledgement Token",
           path: "filePath",
           date: date?.date,

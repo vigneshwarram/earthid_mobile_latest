@@ -20,18 +20,31 @@ const data = [
   { label: " 7", value: "7" },
   { label: " 8", value: "8" },
 ];
-export const QrScannerMaskedWidget = ({createVerifiableCredentials,checkDisable,setValue,navigation,setIsCamerVisible,barCodeDataDetails,selectedCheckBox,setselectedCheckBox,setisDocumentModalkyc,navigateToCamerScreen,isLoading}:any) => {
+export const QrScannerMaskedWidget = ({createVerifiableCredentials,setValue,navigation,setIsCamerVisible,barCodeDataDetails,selectedCheckBox,setselectedCheckBox,setisDocumentModalkyc,navigateToCamerScreen,isLoading}:any) => {
   const documentsDetailsList = useAppSelector((state) => state.Documents);
-  console.log('barCodeDataDetails',barCodeDataDetails)
     const getDropDownList = () => {
         let datas = [];
         datas = documentsDetailsList?.responseData;
-        if (barCodeDataDetails?.requestType === "shareCredentials") {
-          datas = datas?.filter((item: { isVc: any }) => item.isVc);
+        if (barCodeDataDetails?.requestType?.request==='minAge') {
+       
+          datas = datas?.filter((item: { isVc: any }) => item.isVc && item?.documentName === 'Proof of age');
+          return datas;
+        }
+        else if(barCodeDataDetails?.requestType?.request === 'balance'){
+       
+          datas = datas?.filter((item: { isVc: any }) => {
+            console.log('times',item?.documentName)
+           return item.isVc && item?.documentName === 'Proof of funds'
+          });
           return datas;
         }
         return datas;
       };
+      
+
+      const checkDisable =()=>{
+       return getDropDownList().length>0
+      }
     
   return (
     <View style={{flex:1,backgroundColor:'#000',zIndex:100}}>
@@ -96,7 +109,7 @@ export const QrScannerMaskedWidget = ({createVerifiableCredentials,checkDisable,
           >
             {isEarthId() ? "earthidwanttoaccess" : "globalidwanttoaccess"}
           </GenericText>
-          <View style={{height:150,margin:5,borderRadius:10,backgroundColor:'#0e2c26',padding:10}}>
+          <View style={{height:150,margin:5,borderRadius:10,backgroundColor:'#293fee',padding:10}}>
              <View style={{width:30,height:30,borderRadius:15,backgroundColor:'#57c891',justifyContent:'center',alignItems:'center'}}>
              <Image
             resizeMode="contain"
@@ -126,7 +139,7 @@ export const QrScannerMaskedWidget = ({createVerifiableCredentials,checkDisable,
               marginTop: 1,
             }}
           >
-            {barCodeDataDetails?.requestType?.request==='minAge'? 'your exact date of birth will not be disclosed. This system is designed  only confirm whether your age falls within the specified acceptable range':"your exact amount of income will not be disclosed. This verifier can only confirm that your income falls within the acceptable range that they have specified"}
+            {barCodeDataDetails?.requestType?.request==='minAge'? 'Your exact date of birth will not be disclosed. This system is designed only to confirm whether your age falls within the specified acceptable range.':"Your exact amount of income will not be disclosed. This verifier can only confirm that your income falls within the acceptable range that they have specified"}
           </GenericText>
           </View>
           <View style={{ height: 300 }}>
@@ -160,42 +173,16 @@ export const QrScannerMaskedWidget = ({createVerifiableCredentials,checkDisable,
                     ) => {
                       console.log("item", item);
                       return (
-                        <View
+                        <View style={{height:150,borderRadius:20,backgroundColor:'#1f1f21',marginHorizontal:10,padding:10}}>
+                            <View
                           style={{ flexDirection: "row", marginVertical: 10 }}
                         >
-                          <CheckBox
-                            disabled={false}
-                            tintColors={{ true: 'green', false: '#fff' }}
-                            onValueChange={(value) => {
-                              const selectedCheckBoxs = selectedCheckBox?.map(
-                                (
-                                  itemLocal: {
-                                    id: any;
-                                    selectedForCheckBox: boolean;
-                                  },
-                                  index: any
-                                ) => {
-                                  if (itemLocal?.id === item?.id) {
-                                    itemLocal.selectedForCheckBox =
-                                      !itemLocal.selectedForCheckBox;
-                                  }
-
-                                  return itemLocal;
-                                }
-                              );
-                              setselectedCheckBox([...selectedCheckBoxs]);
-                            }}
-                            value={
-                              selectedCheckBox && selectedCheckBox.length > 0
-                                ? selectedCheckBox[index]?.selectedForCheckBox
-                                : false
-                            }
-                          />
+                        
                           <View
                             style={{
                               justifyContent: "center",
                               alignItems: "center",
-                              width:230,
+                              width:120,
                               flexWrap:'wrap'
                             }}
                           >
@@ -212,7 +199,53 @@ export const QrScannerMaskedWidget = ({createVerifiableCredentials,checkDisable,
                               {item?.isVc?item.documentName: item?.docName }
                             </GenericText>
                           </View>
+                          <View style={{width:30,height:30,borderRadius:15,backgroundColor:'#57c891',justifyContent:'center',alignItems:'center'}}>
+             <Image
+            resizeMode="contain"
+            style={{width:10,height:10,tintColor:'#fff'}}
+            source={require('../../../resources/images/tik.png')}
+          ></Image>
+      
+             </View>
+             <GenericText
+                              style={{
+                                textAlign: "center",
+                                padding: 5,
+                                color: "#fff",
+                                fontSize: 14,
+                                fontWeight: "700",
+
+                              }}
+                            >
+                              {'Verified'}
+                            </GenericText>
                         </View>
+                        <GenericText
+                              style={{
+                               
+                                padding: 5,
+                                color: "#fff",
+                                fontSize: 14,
+                                fontWeight: "700",
+
+                              }}
+                            >
+                              {barCodeDataDetails?.requestType?.request==='minAge'?'Date of birth':'Balance'}
+                            </GenericText>
+                            <GenericText
+                              style={{
+                               
+                                padding: 5,
+                                color: "#fff",
+                                fontSize: 25,
+                                fontWeight: 'bold',
+
+                              }}
+                            >
+                             {barCodeDataDetails?.requestType?.request==='minAge'?'.... .. ....':'$.....'}
+                            </GenericText>
+                        </View>
+                      
                       );
                     }
                   )}
@@ -252,17 +285,17 @@ export const QrScannerMaskedWidget = ({createVerifiableCredentials,checkDisable,
       
         </View>}
         <View style={{flex:1,marginTop:400}}>
-               <TouchableOpacity
-              style={{ opacity: checkDisable() ? 1 : 1,backgroundColor:'#0163f7',marginHorizontal:10,padding:15 ,borderRadius:20,justifyContent:'center',alignItems:'center'}}
-              disabled={checkDisable()}
+              {!isLoading &&<TouchableOpacity
+              style={{ opacity: !checkDisable() ? 0.5 : 1,backgroundColor:'#0163f7',marginHorizontal:10,padding:15 ,borderRadius:20,justifyContent:'center',alignItems:'center'}}
+              disabled={!checkDisable()}
               onPress={createVerifiableCredentials}
             >
               <GenericText
                 style={{ color: "#fff", fontSize: 16, fontWeight: "700" }}
               >
-                {"authorize"}
+                {"SHARE"}
               </GenericText>
-            </TouchableOpacity>
+            </TouchableOpacity>}
             {/* <TouchableOpacity
               onPress={() => {
                 setisDocumentModalkyc(false);

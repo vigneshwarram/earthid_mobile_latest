@@ -569,43 +569,6 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
             />
           ) : null}
 
-          {isCheckBoxEnable && (
-            <View
-              style={{ alignItems: "flex-end", marginTop: 20, marginRight: 25 }}
-            >
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  // width: "20%",
-                  alignItems: "center",
-                }}
-              >
-                <TouchableOpacity onPress={() => shareMultipleItem()}>
-                  <Image
-                    source={LocalImages.shareImage}
-                    style={{
-                      height: 18,
-                      width: 18,
-                      marginRight: 15,
-                      tintColor: "#293fee",
-                    }}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => {
-                    setCheckBoxEnable(false);
-                    setIsClear(true);
-                  }}
-                >
-                  <Text style={{ color: "tomato", fontWeight: "500" }}>
-                    CLEAR
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          )}
-
           {documentsDetailsList?.responseData &&
           documentsDetailsList?.responseData?.length > 0 ? (
             <SectionList<any>

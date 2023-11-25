@@ -13,6 +13,7 @@ import {
   AppState,
   Text,
   InteractionManager,
+  SectionList,
 } from "react-native";
 import { EventRegister } from "react-native-event-listeners";
 import il8n, { getUserLanguagePreference } from "../.././../utils/i18n";
@@ -74,6 +75,11 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
   const [createVerifyCondition1, setcreateVerifyCondition1] = useState(true);
   const [signature, setSignature] = useState();
   const [loading, setLoading] = useState(false);
+  let categoryTypes = "";
+
+  if (route?.params && route?.params?.category) {
+    categoryTypes = route?.params?.category;
+  }
   const [createVerify, setCreateVerify] = useState({});
   const keys = useAppSelector((state) => state.user);
   const issurDid = keys?.responseData?.issuerDid;
@@ -114,6 +120,47 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
       appStateListener?.remove();
     };
   }, []);
+
+  const getItemsForSection =(data: any[])=>{
+    const idDocuments = data?.filter((item: { categoryType: string; })=>item?.categoryType === "ID" ||item?.categoryType === "id")
+    const idHealthCare = data?.filter((item: { categoryType: string; })=>item?.categoryType === "HEALTHCARE" ||item?.categoryType === "Healthcare")
+    const idTravels = data?.filter((item: { categoryType: string; })=>item?.categoryType === "TRAVEL" ||item?.categoryType === "Travel")
+    const idInsurance = data?.filter((item: { categoryType: string; })=>item?.categoryType === "INSURANCE" ||item?.categoryType === "Insurance")
+    const idEducation = data?.filter((item: { categoryType: string; })=>item?.categoryType === "EDUCATION" ||item?.categoryType === "Education")
+    const idEmployement = data?.filter((item: { categoryType: string; })=>item?.categoryType === "EMPLOYMENT" ||item?.categoryType === "Employment")
+    const idFinanace = data?.filter((item: { categoryType: string; })=>item?.categoryType === "FINANCE" ||item?.categoryType === "Finance")
+    return [{
+      title:idDocuments?.length>0 ? "ID":'',
+      data:idDocuments ??[]
+    },
+  
+    {
+      title:idHealthCare?.length>0 ? "HEALTHCARE":'',
+      data:idHealthCare??[]
+    },
+    {
+      title:idTravels?.length>0 ? "TRAVEL":'',
+      data:idTravels??[]
+    },
+    {
+      title:idInsurance?.length>0 ? "INSURANCE":'',
+      data:idInsurance??[]
+    },
+    {
+      title:idEducation?.length>0 ? "EDUCATION":'',
+      data:idEducation??[]
+    },
+    {
+      title:idEmployement?.length>0 ? "EMPLOYMENT":'',
+      data:idEmployement??[]
+    },
+    {
+      title:idFinanace?.length>0 ? "FINANCE":'',
+      data:idFinanace??[]
+    },
+   
+  ];
+  }
   const aunthenticateBioMetricInfo = () => {
     TouchID.isSupported(optionalConfigObject)
       .then(async (biometryType) => {
@@ -480,11 +527,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
   const getTime = (item: { time: any }) => {
     return convertTimeToAmPmFormat(item?.time);
   };
-  const getData = (datas: any[]) => {
-    let arrayData = datas?.sort(compareTime);
-    let data = arrayData?.reverse();
-    return data;
-  };
+
   function compareTime(a, b) {
     const timeA = new Date(`1970-01-01T${a.time}`);
     const timeB = new Date(`1970-01-01T${b.time}`);
@@ -494,181 +537,47 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
     const getItems = SCREENS.HOMESCREEN.categoryList.filter(
       (itemFiltered, index) => {
         return (
-          itemFiltered.TITLE.toLowerCase() === item?.categoryType?.toLowerCase()
+          itemFiltered?.TITLE?.toLowerCase() ===
+          item?.categoryType?.toLowerCase()
         );
       }
     );
 
+    if (!getItems[0]) {
+      return "#D7EFFB";
+    }
     return getItems[0];
   };
-  const getImagesColor = (item: any) => {
-    let colors = item?.documentName;
-    let iteName = colors?.trim()?.split("(")[0]?.trim();
-    return getColor(iteName);
-  };
 
-  const _renderItemHistory = ({ item }: any) => {
-    return (
-      <TouchableOpacity
-        onPress={() =>
-          navigation.navigate("ViewCredential", { documentDetails: item })
-        }
-      >
-        {item?.documentName && item?.documentName !== undefined && (
-          <Card
-            leftAvatar={LocalImages.documentsImage}
-            absoluteCircleInnerImage={LocalImages.upImage}
-            // rightIconSrc={LocalImages.menuImage}
-            title={
-              item?.isVc
-                ? item.name
-                : item?.documentName?.split("(")[1]?.split(")")[0] ==
-                  "undefined"
-                ? item?.docName?.replaceAll("%20", "")
-                : item?.docName?.replaceAll("%20", "")
-            }
-            subtitle={`      Uploaded  : ${item.date} `}
-            timeTitle={"   " + `${getTime(item)}`}
-            style={{
-              ...styles.cardContainers,
-              ...{
-                avatarContainer: {
-                  backgroundColor: item.color,
-                  width: 60,
-                  height: 60,
-                  borderRadius: 20,
-                  marginTop: 25,
-                  marginLeft: 10,
-                  marginRight: 5,
-                },
-                uploadImageStyle: {
-                  backgroundColor: item?.color,
-                  borderRadius: 25,
-                  borderWidth: 3,
-                  bordercolor: "#fff",
-                  borderWidthRadius: 25,
-                },
-              },
-              title: {
-                fontSize: 18,
-                marginTop: -10,
-                fontWeight: "bold",
-              },
-              subtitle: {
-                fontSize: 14,
-                marginTop: 5,
-              },
-            }}
-          />
-        )}
-      </TouchableOpacity>
+  const getFilteredData = () => {
+    console.log("getFilteredData");
+    let data =[]
+     data = documentsDetailsList?.responseData?.sort(
+      (a: { date: any }, b: { date: any }) => a.date - b.date
     );
+    //  let data = documentsDetailsList?.responseData?.sort(compareTime);
 
-    // return (
-    //   <TouchableOpacity
-    //   style={{
-    //     height:110,
-    //     borderRadius:25,
-    //     elevation:4,
-    //     marginLeft:20,marginRight:20,
-    //     marginTop:10,
-    //     marginBottom:10,
-    //     backgroundColor:'#fff',
-    //     justifyContent:"center"
-    //   }}
-    //   >
-    //     <View style={{flexDirection:'row'}}>
-    //     <Image
-    //       source={LocalImages.documentsImage}
-    //       style={{alignSelf:"center",height:70,width:60,marginLeft:10}}
-    //     />
+    //
 
-    //   <View style={{alignSelf:"center"}}>
-    //     <Text
-    //     style={{
-    //       color: Screens.black,
-    //       fontSize: 16,
-    //       fontWeight: "500",
-    //       paddingVertical: 1.5,
-    //       marginLeft:15
-    //     }}
-    //     >{item?.isVc ?item.name : item?.documentName?.split("(")[1]?.split(")")[0] == "undefined" ? item?.docName : item?.docName}</Text>
-
-    //     <View style={{flexDirection:"row"}}>
-
-    //     <Text style={{color:Screens.grayShadeColor,marginTop:7}}>{`    Uploaded :${item.date}`}</Text>
-    //     <Text
-    //     style={{marginLeft:10,color:Screens.grayShadeColor,marginTop:7}}
-    //     >{
-    //       item.isVc
-    //       ? item.time.substring(0, item.time.length - 3).split(":")[0] >= 24 ?
-    //       item.time.substring(0, item.time.length - 3)+" AM" :
-    //       item.time.substring(0, item.time.length - 3).split(":")[0] >= 12 ?
-    //       item.time.substring(0, item.time.length - 3)+" PM" :
-    //       item.time.substring(0, item.time.length - 3)+" AM"
-    //       : item.time.substring(0, item.time.length - 3).split(":")[0] >= 24 ?
-    //          item.time.substring(0, item.time.length - 3)+" AM" :
-    //          item.time.substring(0, item.time.length - 3).split(":")[0] >= 12 ?
-    //          item.time.substring(0, item.time.length - 3)+" PM" :
-    //          item.time.substring(0, item.time.length - 3)+" AM"
-    //       }</Text>
-
-    //       <Image
-    //       source={item?.isVc ? LocalImages.vcImage : null}
-    //       style={{height:25,width:40,resizeMode:'cover',alignSelf:"center"}}
-    //       />
-    //     </View>
-    //   </View>
-    //     </View>
-    //   </TouchableOpacity>
-    // );
+    console.log('data',data)
+  return getItemsForSection(data)
   };
 
-  const _renderItemnew = ({ item }: any) => {
+  const _renderItemNew = ({ item, index }: any) => {
+   
     return (
-      // <Card
-      //   leftAvatar={LocalImages.documentsImage}
-      //   absoluteCircleInnerImage={LocalImages.upImage}
-      //   //  rightIconSrc={LocalImages.menuImage}
-      //   title={item.name}
-      //   subtitle={`      Uploaded  : ${item.date}`}
-      //   style={{
-      //     ...styles.cardContainer,
-      //     ...{
-      //       avatarContainer: {
-      //         backgroundColor: "rgba(245, 188, 232, 1)",
-      //         width: 62,
-      //         height: 62,
-      //         borderRadius: 20,
-      //         marginTop: 25,
-      //         marginLeft: 10,
-      //         marginRight: 5,
-      //       },
-      //       uploadImageStyle: {
-      //         backgroundColor: "rgba(245, 188, 232, 1)",
-      //         borderRadius: 25,
-      //         borderWidth: 3,
-      //         bordercolor: "#fff",
-      //         borderWidthRadius: 25,
-      //       },
-      //     },
-      //     title: {
-      //       fontSize: 18,
-      //       marginTop: -10,
-      //       fontWeight: "bold",
-      //     },
-      //     subtitle: {
-      //       fontSize: 14,
-      //       marginTop: 5,
-      //     },
-      //   }}
-      // />
       <TouchableOpacity
-        style={{ marginBottom: 20 }}
-        onPress={() =>
-          navigation.navigate("ViewCredential", { documentDetails: item })
+     
+        style={{
+          marginBottom: 20,
+        }}
+        onPress={()=>
+        
+                navigation.navigate("ViewCredential", { documentDetails: item })
         }
       >
+      
+
         <View style={{ marginTop: -20 }}>
           <Card
             titleIcon={item?.isVc ? LocalImages.vcImage : null}
@@ -677,34 +586,26 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
             title={
               item?.isVc
                 ? item.name
-                : item?.documentName?.split("(")[1]?.split(")")[0] ==
-                  "undefined"
-                ? item?.docName
-                : item?.docName
+                : item?.docName?.split("(")[1]?.split(")")[0] == "undefined"
+                ? item?.docName?.replaceAll("%20", "")
+                : item?.docName?.replaceAll("%20", "")
             }
-            subtitle={`      Uploaded  : ${item.date}`}
-            // timeTitle={
-            //   item.isVc
-            //   ? item.time.substring(0, item.time.length - 3).split(":")[0] >= 24 ?
-            //   item.time.substring(0, item.time.length - 3)+" AM" :
-            //   item.time.substring(0, item.time.length - 3).split(":")[0] >= 12 ?
-            //   item.time.substring(0, item.time.length - 3)+" PM" :
-            //   item.time.substring(0, item.time.length - 3)+" AM"
-            //   : item.time.substring(0, item.time.length - 3).split(":")[0] >= 24 ?
-            //      item.time.substring(0, item.time.length - 3)+" AM" :
-            //      item.time.substring(0, item.time.length - 3).split(":")[0] >= 12 ?
-            //      item.time.substring(0, item.time.length - 3)+" PM" :
-            //      item.time.substring(0, item.time.length - 3)+" AM"
-            // }
-
+            subtitle={
+              item.isVc
+                ? `      Received  : ${item.date}`
+                : `      Uploaded  : ${item.date}`
+            }
             timeTitle={"   " + `${getTime(item)}`}
+            onCheckBoxValueChange={(value: any) => {
+              // item.isSelected = value;
+              //setdocumentsDetailsList({ ...documentsDetailsList });
+            }}
+            checkBoxValue={item.isSelected}
             style={{
-              ...styles.cardContainernew,
+              ...styles.cardContainers,
               ...{
                 avatarContainer: {
-                  backgroundColor: item?.isVc
-                    ? "#D7EFFB"
-                    : getCategoryImages(item)?.COLOR,
+                  backgroundColor: getCategoryImages(item)?.COLOR,
                   width: 60,
                   height: 60,
                   borderRadius: 20,
@@ -713,9 +614,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
                   marginRight: 5,
                 },
                 uploadImageStyle: {
-                  backgroundColor: item?.isVc
-                    ? "#D7EFFB"
-                    : getCategoryImages(item)?.COLOR,
+                  backgroundColor: getCategoryImages(item)?.COLOR,
                   borderRadius: 25,
                   borderWidth: 3,
                   bordercolor: "#fff",
@@ -737,6 +636,9 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
       </TouchableOpacity>
     );
   };
+
+
+
 
   return (
     <View style={styles.sectionContainer}>
@@ -859,19 +761,14 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
             
             renderItem={_renderItemHistory}
           /> */}
-
-          <FlatList<any>
-            showsHorizontalScrollIndicator={false}
-            // data={
-            //   getHistoryReducer && getHistoryReducer?.responseData
-            //     ? getHistoryReducer.responseData
-            //     : []
-            // }
-            data={data}
-            extraData={data}
-            renderItem={_renderItemnew}
-            keyExtractor={(item) => item.id}
-          />
+  <SectionList<any>
+              sections={getFilteredData()}
+              renderItem={_renderItemNew}
+           
+            
+              
+            />
+       
 
           {/* <AnimatedLoader
             isLoaderVisible={getHistoryReducer?.isLoading}
@@ -1018,6 +915,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 20,
     backgroundColor: Screens.pureWhite,
+    // backgroundColor:'red',
     title: {
       color: Screens.black,
     },
