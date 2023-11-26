@@ -129,37 +129,40 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
     const idEducation = data?.filter((item: { categoryType: string; })=>item?.categoryType === "EDUCATION" ||item?.categoryType === "Education")
     const idEmployement = data?.filter((item: { categoryType: string; })=>item?.categoryType === "EMPLOYMENT" ||item?.categoryType === "Employment")
     const idFinanace = data?.filter((item: { categoryType: string; })=>item?.categoryType === "FINANCE" ||item?.categoryType === "Finance")
-    return [{
+    const localArray=[{
       title:idDocuments?.length>0 ? "ID":'',
-      data:idDocuments ??[]
+      data:idDocuments
     },
-  
     {
       title:idHealthCare?.length>0 ? "HEALTHCARE":'',
-      data:idHealthCare??[]
+      data:idHealthCare
     },
     {
       title:idTravels?.length>0 ? "TRAVEL":'',
-      data:idTravels??[]
+      data:idTravels
     },
     {
       title:idInsurance?.length>0 ? "INSURANCE":'',
-      data:idInsurance??[]
+      data:idInsurance
     },
     {
       title:idEducation?.length>0 ? "EDUCATION":'',
-      data:idEducation??[]
+      data:idEducation
     },
     {
       title:idEmployement?.length>0 ? "EMPLOYMENT":'',
-      data:idEmployement??[]
+      data:idEmployement
     },
     {
       title:idFinanace?.length>0 ? "FINANCE":'',
-      data:idFinanace??[]
+      data:idFinanace
     },
    
-  ];
+  ]
+  
+  const filteredLocalArray = localArray?.filter(item => item?.data?.length > 0);
+  console.log('filteredLocalArray==>',filteredLocalArray)
+    return filteredLocalArray ;
   }
   const aunthenticateBioMetricInfo = () => {
     TouchID.isSupported(optionalConfigObject)

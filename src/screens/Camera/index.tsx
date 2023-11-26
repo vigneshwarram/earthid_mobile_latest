@@ -505,7 +505,7 @@ const CameraScreen = (props: any) => {
               if(result?.data?.certificate?.balance){
                 setTimeout(()=>{    
                   setisLoading(false)            
-                  Alert.alert('Proof of funds is successfully generated')
+                  Alert.alert('Proof of funds is verified successfully')
                 },5000)
               }
               else{
@@ -523,7 +523,7 @@ const CameraScreen = (props: any) => {
               if(result?.data?.certificate?.dateOfBirth){
                 setTimeout(()=>{    
                   setisLoading(false)            
-                  Alert.alert('Proof of age is successfully generated')
+                  Alert.alert('Proof of age is verified successfully')
                 },5000)
               }
               else{

@@ -217,7 +217,7 @@ useEffect(() => {
         iOSPresentationStyle={LinkIOSPresentationStyle.MODAL}
     >
         <View style={{flex:1,justifyContent:'center',alignItems:'center',marginTop:'100%'}}>
-        <View style={{width:120,height:50,backgroundColor:'blue',justifyContent:'center',alignItems:"center"}}> 
+        <View style={{width:140,height:50,backgroundColor:'blue',justifyContent:'center',alignItems:"center"}}> 
         <Text style={{color:'#fff',fontWeight:'bold'}}>CONNECT TO BANK</Text>
         </View>
         </View>

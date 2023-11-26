@@ -492,11 +492,10 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
     const idEducation = data?.filter((item: { categoryType: string; })=>item?.categoryType === "EDUCATION" ||item?.categoryType === "Education")
     const idEmployement = data?.filter((item: { categoryType: string; })=>item?.categoryType === "EMPLOYMENT" ||item?.categoryType === "Employment")
     const idFinanace = data?.filter((item: { categoryType: string; })=>item?.categoryType === "FINANCE" ||item?.categoryType === "Finance")
-    return [{
+    const localArray=[{
       title:idDocuments?.length>0 ? "ID":'',
       data:idDocuments
     },
-  
     {
       title:idHealthCare?.length>0 ? "HEALTHCARE":'',
       data:idHealthCare
@@ -522,7 +521,9 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
       data:idFinanace
     },
    
-  ];
+  ]
+  const filteredLocalArray = localArray?.filter(item => item?.data?.length > 0);
+    return filteredLocalArray ;
   }
 
   const listEmpty = () => {
