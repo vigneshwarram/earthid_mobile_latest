@@ -4,13 +4,10 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
-  Text,
   Dimensions,
   ScrollView,
   Alert,
   AsyncStorage,
-  ImageEditor,
-  ImageStore,
   ActivityIndicator,
 } from "react-native";
 import { RNCamera } from "react-native-camera";
@@ -29,14 +26,10 @@ import { Screens } from "../../themes/index";
 import {
   serviceProviderApi,
   QrcodeApis,
-  generateCredientials,
-  ssiApiKey,
-  alertBox,
   newssiApiKey,
 } from "../../utils/earthid_account";
 import QrScannerMaskedWidget from "../Camera/QrScannerMaskedWidget";
 import {
-  createUserSignature,
   saveDocuments,
 } from "../../redux/actions/authenticationAction";
 import { IDocumentProps } from "../uploadDocuments/VerifiDocumentScreen";
@@ -44,12 +37,19 @@ import GenericText from "../../components/Text";
 import Loader from "../../components/Loader";
 import { isEarthId } from "../../utils/PlatFormUtils";
 import { dateTime } from "../../utils/encryption";
-import { ICreateUserSignature } from "../../typings/AccountCreation/ICreateUserSignature";
-import RNFetchBlob from "rn-fetch-blob";
-import { newpostCall } from "../../utils/service";
 import { postApi } from "../../utils/createUserSignaturekey";
 import ZkbScreen from "./ZkbScreen";
 
+const data = [
+  { label: " 1", value: "1" },
+  { label: " 2", value: "2" },
+  { label: " 3", value: "3" },
+  { label: " 4", value: "4" },
+  { label: " 5", value: "5" },
+  { label: " 6", value: "6" },
+  { label: " 7", value: "7" },
+  { label: " 8", value: "8" },
+];
 
 const deviceWidth = Dimensions.get("window").width;
 const CameraScreen = (props: any) => {
@@ -178,6 +178,16 @@ const CameraScreen = (props: any) => {
       return false;
     }
   }
+  const getDropDownList = () => {
+    let datas = [];
+    datas = documentsDetailsList?.responseData;
+    if (barCodeDataDetails?.requestType === "shareCredentials") {
+      datas = datas?.filter((item: { isVc: any }) => item.isVc);
+      return datas;
+    }
+    return datas;
+  };
+
   const _handleBarCodeRead = (barCodeData: any) => {
     console.log("barcodedatappppp", barCodeData?.data);  
     setisLoading(true)
@@ -732,11 +742,6 @@ const CameraScreen = (props: any) => {
 
     
     
-    } else if (barCodeDataDetails.requestType === "shareCredentials") {
-      // getData();
-    } 
-    else if (barCodeDataDetails.requestType === "minAge") {
-      // getData();
     } 
     else {
     
@@ -788,6 +793,7 @@ const CameraScreen = (props: any) => {
   };
 
   const checkDisable = () => {
+    console.log('selectedCheckBox',selectedCheckBox)
     let trap = false;
     if (
       documentsDetailsList?.responseData?.length === 0 ||
@@ -796,10 +802,7 @@ const CameraScreen = (props: any) => {
       trap = true;
     }
     if (
-      selectedCheckBox?.some(
-        (item: { selectedForCheckBox: boolean }) =>
-          item?.selectedForCheckBox === true
-      )
+      selectedCheckBox?.some((item: { selectedForCheckBox: any; }) => item?.selectedForCheckBox)
     ) {
       trap = false;
     }
@@ -1028,7 +1031,7 @@ const CameraScreen = (props: any) => {
           </View>
         </View>
       </ModalView>
-      {isDocumentModalkyc && <ZkbScreen 
+      {isDocumentModalkyc && barCodeDataDetails?.requestType.request === "minAge" || barCodeDataDetails?.requestType.request === "balance" ? <ZkbScreen 
       isLoading={isLoading}
       setisDocumentModalkyc={setisDocumentModalkyc}
        navigateToCamerScreen={navigateToCamerScreen} 
@@ -1038,16 +1041,202 @@ const CameraScreen = (props: any) => {
        setValue={setValue}
        checkDisable={checkDisable}
        createVerifiableCredentials={createVerifiableCredentials}
-       barCodeDataDetails={barCodeDataDetails} navigation={props.navigation}/>}
+       barCodeDataDetails={barCodeDataDetails} navigation={props.navigation}/>
       
-      {/* <ModalView
+       :<ModalView
         left={deviceWidth / 9}
         width={deviceWidth / 1.2}
-        height={800}
-        isModalVisible={true}
+        isModalVisible={isDocumentModalkyc}
+        height={500}
       >
-      
-      </ModalView> */}
+          {isLoading ? <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>        
+          <ActivityIndicator color={'red'} size='large' />
+          </View>:
+        <View style={{ flex: 1, paddingHorizontal: 5 }}>
+          
+          {documentsDetailsList?.responseData?.length === 0 ||
+            (documentsDetailsList?.responseData === undefined && (
+              <TouchableOpacity onPress={() => navigateToCamerScreen()}>
+                <View style={{ paddingHorizontal: 5, marginTop: 10 }}>
+                  <GenericText
+                    style={{
+                      textAlign: "center",
+                      color: Screens.colors.ScanButton.startColor,
+                      fontSize: 14,
+                      fontWeight: "900",
+                    }}
+                  >
+                    {"+ Add Documents"}
+                  </GenericText>
+                </View>
+              </TouchableOpacity>
+            ))}
+          <GenericText
+            style={{
+              textAlign: "center",
+              padding: 5,
+              color: "#000",
+              fontSize: 14,
+              fontWeight: "900",
+              marginTop: 20,
+            }}
+          >
+            {isEarthId() ? "earthidwanttoaccess" : "globalidwanttoaccess"}
+          </GenericText>
+          <View style={{ height: 300 }}>
+            <ScrollView
+              style={{ flexGrow: 1 }}
+              contentContainerStyle={{ flexGrow: 1 }}
+            >
+              <View>
+                {getDropDownList() &&
+                  getDropDownList().length > 0 &&
+                  getDropDownList()?.map(
+                    (
+                      item: {
+                        docName:
+                          | boolean
+                          | React.ReactChild
+                          | React.ReactFragment
+                          | React.ReactPortal
+                          | null
+                          | undefined;
+                        id: any;
+                        name:
+                          | boolean
+                          | React.ReactChild
+                          | React.ReactFragment
+                          | React.ReactPortal
+                          | null
+                          | undefined;
+                      },
+                      index: any
+                    ) => {
+                      console.log("item", item);
+                      return (
+                        <View
+                          style={{ flexDirection: "row", marginVertical: 10 }}
+                        >
+                          <CheckBox
+                            disabled={false}
+                            onValueChange={(value) => {
+                              const selectedCheckBoxs = selectedCheckBox?.map(
+                                (
+                                  itemLocal: {
+                                    id: any;
+                                    selectedForCheckBox: boolean;
+                                  },
+                                  index: any
+                                ) => {
+                                  if (itemLocal?.id === item?.id) {
+                                    itemLocal.selectedForCheckBox =
+                                      !itemLocal.selectedForCheckBox;
+                                  }
+
+                                  return itemLocal;
+                                }
+                              );
+                              setselectedCheckBox([...selectedCheckBoxs]);
+                            }}
+                            value={
+                              selectedCheckBox && selectedCheckBox.length > 0
+                                ? selectedCheckBox[index]?.selectedForCheckBox
+                                : false
+                            }
+                          />
+                          <View
+                            style={{
+                              justifyContent: "center",
+                              alignItems: "center",
+                              width:230,
+                              flexWrap:'wrap'
+                            }}
+                          >
+                            <GenericText
+                              style={{
+                                textAlign: "center",
+                                padding: 5,
+                                color: "#000",
+                                fontSize: 14,
+                                fontWeight: "300",
+
+                              }}
+                            >
+                              {item?.isVc?item.documentName: item?.docName }
+                            </GenericText>
+                          </View>
+                        </View>
+                      );
+                    }
+                  )}
+              </View>
+            </ScrollView>
+
+            <GenericText
+              style={{
+                textAlign: "center",
+                padding: 5,
+                color: "#000",
+                fontSize: 16,
+                fontWeight: "bold",
+              }}
+            >
+              {"Selected Duration"}
+            </GenericText>
+            <Dropdown
+              style={[styles.dropdown]}
+              placeholderStyle={styles.placeholderStyle}
+              selectedTextStyle={styles.selectedTextStyle}
+              inputSearchStyle={styles.inputSearchStyle}
+              iconStyle={styles.iconStyle}
+              data={data}
+              search
+              maxHeight={300}
+              labelField="label"
+              valueField="value"
+              placeholder={"Expiry Time (default 1 day)"}
+              searchPlaceholder="Search..."
+              value={"value"}
+              onChange={(item) => {
+                setValue(item.value);
+              }}
+            />
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              marginVertical: 50,
+              marginHorizontal: 20,
+            }}
+          >
+            <TouchableOpacity
+              onPress={() => {
+                setisDocumentModalkyc(false);
+                setIsCamerVisible(true);
+              }}
+            >
+              <GenericText
+                style={{ color: "red", fontSize: 16, fontWeight: "700" }}
+              >
+                Cancel
+              </GenericText>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{ opacity: checkDisable() ? 0.5 : 1 }}
+              disabled={ checkDisable()}
+              onPress={createVerifiableCredentials}
+            >
+              <GenericText
+                style={{ color: "green", fontSize: 16, fontWeight: "700" }}
+              >
+                {"authorize"}
+              </GenericText>
+            </TouchableOpacity>
+          </View>
+        </View>}
+      </ModalView>}
+
 
       <Loader
         loadingText={
