@@ -30,26 +30,36 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
     setCode(format);
   };
   const _navigateAction = async () => {
-    let oldPin = await AsyncStorage.getItem("passcode");
-   if(oldPin===code){
-      Alert.alert("Enter current passcode as new passcode")
-    }else if (code.length === 6) {
-      navigation.navigate("UpdateConfirmPincode", {
-        setCode: code,
-        type: "pass",
-      });
+    if (code?.length > 5) {
+      let oldPin = await AsyncStorage.getItem("passcode");
+      if (oldPin === code) {
+        Alert.alert("Enter current passcode as new passcode");
+      } else if (code.length === 6) {
+        navigation.navigate("UpdateConfirmPincode", {
+          setCode: code,
+          type: "pass",
+        });
+      }
+    } else {
+      Alert.alert("Oops!", "Please enter valid passcode", [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        { text: "OK", onPress: () => console.log("OK Pressed") },
+      ]);
     }
-
   };
 
   useEffect(() => {
     console.log("savedtype==>", route);
-    getOldPass()
+    getOldPass();
   }, []);
 
-  async function getOldPass(){
-    var oldPass = await AsyncStorage.getItem("passcode")
-    console.log("oldPasscode",oldPass)
+  async function getOldPass() {
+    var oldPass = await AsyncStorage.getItem("passcode");
+    console.log("oldPasscode", oldPass);
   }
 
   return (
@@ -80,9 +90,12 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
         >
           <Image
             source={LocalImages.backImage}
-            style={{ height: 20, width: 20, resizeMode: "contain",
-            tintColor: isEarthId() ? Screens.pureWhite : Screens.black,
-          }}
+            style={{
+              height: 20,
+              width: 20,
+              resizeMode: "contain",
+              tintColor: isEarthId() ? Screens.pureWhite : Screens.black,
+            }}
           />
         </TouchableOpacity>
         <View style={styles.category}>
@@ -131,24 +144,23 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
             </GenericText>
           </View>
 
-          <View style={{alignSelf:"center"}}>
-
-          <SmoothPinCodeInput
-            cellStyle={{
-              borderWidth: 0.5,
-              borderColor: Screens.grayShadeColor,
-              borderRadius: 5,
-            }}
-            cellStyleFocused={{
-              borderColor: Screens.colors.primary,
-              borderWidth: 2,
-            }}
-            password
-            cellSize={50}
-            codeLength={6}
-            value={code}
-            onTextChange={onPinCodeChange}
-          />
+          <View style={{ alignSelf: "center" }}>
+            <SmoothPinCodeInput
+              cellStyle={{
+                borderWidth: 0.5,
+                borderColor: Screens.grayShadeColor,
+                borderRadius: 5,
+              }}
+              cellStyleFocused={{
+                borderColor: Screens.colors.primary,
+                borderWidth: 2,
+              }}
+              password
+              cellSize={50}
+              codeLength={6}
+              value={code}
+              onTextChange={onPinCodeChange}
+            />
           </View>
           <Button
             onPress={_navigateAction}

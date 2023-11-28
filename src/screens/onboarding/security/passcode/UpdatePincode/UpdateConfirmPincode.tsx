@@ -6,6 +6,7 @@ import {
   Image,
   AsyncStorage,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import Header from "../../../../../components/Header";
 import { SCREENS } from "../../../../../constants/Labels";
@@ -36,15 +37,26 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
   };
   const _navigateAction = async () => {
     console.log("savedCode", savedCode);
-    if (savedCode === code?.toString()) {
-      await AsyncStorage.setItem("passcode", code?.toString());
-      setIsLoading(true);
-      setTimeout(() => {
-        setIsLoading(false);
-        navigation.navigate("UpdateAuthentication");
-      }, 3000);
+    if (code?.length > 5) {
+      if (savedCode === code?.toString()) {
+        await AsyncStorage.setItem("passcode", code?.toString());
+        setIsLoading(true);
+        setTimeout(() => {
+          setIsLoading(false);
+          navigation.navigate("UpdateAuthentication");
+        }, 3000);
+      } else {
+        setisError(true);
+      }
     } else {
-      setisError(true);
+      Alert.alert("Oops!", "Please enter valid passcode", [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        { text: "OK", onPress: () => console.log("OK Pressed") },
+      ]);
     }
   };
 
@@ -78,10 +90,13 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
         >
           <Image
             source={LocalImages.backImage}
-            style={{ height: 20, width: 20, resizeMode: "contain" ,
-          
-            tintColor: isEarthId() ? Screens.pureWhite : Screens.black,
-          }}
+            style={{
+              height: 20,
+              width: 20,
+              resizeMode: "contain",
+
+              tintColor: isEarthId() ? Screens.pureWhite : Screens.black,
+            }}
           />
         </TouchableOpacity>
         <View style={styles.category}>

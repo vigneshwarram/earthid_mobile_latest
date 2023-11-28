@@ -17,8 +17,7 @@ import SmoothPinCodeInput from "react-native-smooth-pincode-input";
 import { LocalImages } from "../../../../../constants/imageUrlConstants";
 import GenericText from "../../../../../components/Text";
 import { isEarthId } from "../../../../../utils/PlatFormUtils";
-import NetInfo from '@react-native-community/netinfo';
-
+import NetInfo from "@react-native-community/netinfo";
 
 interface IHomeScreenProps {
   navigation?: any;
@@ -34,26 +33,36 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
   };
   const _navigateAction = async () => {
     let oldPin = await AsyncStorage.getItem("passcode");
-    if (oldPin) {
-      if (oldPin === code) {
+
+    if (code?.length > 5) {
+      if (oldPin) {
+        if (oldPin === code) {
+          navigation.navigate("UpdateNewPin", { setCode: code, type: "new" });
+        } else if (count == 0) {
+          Alert.alert("Oops, Too many attempts!");
+        } else {
+          setCount(count - 1);
+          Alert.alert("Invalid Code", `You have left ${count} attempt`, [
+            {
+              text: "Cancel",
+              onPress: () => console.log("Cancel Pressed"),
+              style: "cancel",
+            },
+            { text: "OK", onPress: () => console.log("OK Pressed") },
+          ]);
+        }
+      } else {
         navigation.navigate("UpdateNewPin", { setCode: code, type: "new" });
       }
-      else if(count==0){
-        Alert.alert("Oops, Too many attempts!")
-      }      
-      else {
-        setCount(count-1)
-        Alert.alert('Invalid Code', `You have left ${count} attempt`, [
-          {
-            text: 'Cancel',
-            onPress: () => console.log('Cancel Pressed'),
-            style: 'cancel',
-          },
-          {text: 'OK', onPress: () => console.log('OK Pressed')},
-        ]);
-      }
     } else {
-      navigation.navigate("UpdateNewPin", { setCode: code, type: "new" });
+      Alert.alert("Oops!", "Please enter valid passcode", [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        { text: "OK", onPress: () => console.log("OK Pressed") },
+      ]);
     }
   };
 
@@ -63,25 +72,22 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
 
   useEffect(() => {
     console.log("route==>", route);
-    isNetworkConnect()
+    isNetworkConnect();
   }, []);
 
-  const isNetworkConnect=()=>{
-    
+  const isNetworkConnect = () => {
     NetInfo.fetch().then((state) => {
       console.log("isconnect", state.isConnected);
       if (!state.isConnected) {
         Alert.alert(
-          'Network not connected',
-          'Please check your internet connection and try again.',
-          [{ text: 'OK' }],
-          { cancelable: false },
+          "Network not connected",
+          "Please check your internet connection and try again.",
+          [{ text: "OK" }],
+          { cancelable: false }
         );
       }
     });
-  }
-
-
+  };
 
   return (
     <View style={styles.sectionContainer}>
@@ -89,7 +95,11 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
         <Header
           isLogoAlone={true}
           headingText={
-            route.name == "OldPincode" ? route.params.type == "pass"? 'Confirm Passcode' :"oldpasscode" : "setpasscord"
+            route.name == "OldPincode"
+              ? route.params.type == "pass"
+                ? "Confirm Passcode"
+                : "oldpasscode"
+              : "setpasscord"
           }
           linearStyle={styles.linearStyle}
           containerStyle={{
@@ -111,10 +121,12 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
         >
           <Image
             source={LocalImages.backImage}
-            style={{ height: 20, width: 20, resizeMode: "contain" ,
-            tintColor: isEarthId() ? Screens.pureWhite : Screens.black,
-
-          }}
+            style={{
+              height: 20,
+              width: 20,
+              resizeMode: "contain",
+              tintColor: isEarthId() ? Screens.pureWhite : Screens.black,
+            }}
           />
         </TouchableOpacity>
         <View style={styles.category}>

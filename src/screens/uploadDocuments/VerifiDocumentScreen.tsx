@@ -21,7 +21,7 @@ import { useFetch } from "../../hooks/use-fetch";
 import {
   getHistory,
   saveDocuments,
-  updateDocuments
+  updateDocuments,
 } from "../../redux/actions/authenticationAction";
 import { Screens } from "../../themes/index";
 import {
@@ -40,9 +40,9 @@ export interface IDocumentProps {
   date: string;
   time: string;
   txId: string;
-  documentName:string;
-  docName:string;
-  isLivenessImage:string;
+  documentName: string;
+  docName: string;
+  isLivenessImage: string;
   docType: string;
   docExt: string;
   processedDoc: string;
@@ -52,16 +52,15 @@ export interface IDocumentProps {
   pdf?: boolean;
   categoryType?: any;
   color?: string;
-  isVerifyNeeded?:boolean
-  signature:any,
-  typePDF:any,
-  verifiableCredential:any
- 
+  isVerifyNeeded?: boolean;
+  signature: any;
+  typePDF: any;
+  verifiableCredential: any;
 }
 const VerifiDocumentScreen = (props: any) => {
   const { uploadedDocuments } = props.route.params;
   const { pic } = props.route.params;
-  const { editDoc ,selectedItem,docname} = props?.route?.params;
+  const { editDoc, selectedItem, docname } = props?.route?.params;
   const { faceImageData, selectedDocument } = props.route.params;
   const { loading, data, error, fetch } = useFetch();
   const userDetails = useAppSelector((state) => state.account);
@@ -76,33 +75,29 @@ const VerifiDocumentScreen = (props: any) => {
   console.log("picLOG", editDoc);
   console.log("picLOG", docname);
 
-
   const [load, setLoad] = useState(false);
   const dispatch = useAppDispatch();
   const [successResponse, setsuccessResponse] = useState(false);
   let documentsDetailsList = useAppSelector((state) => state.Documents);
   var base64Icon = `data:image/png;base64,${faceImageData?.base64}`;
   var uploadedDocumentsBase64 = `data:image/png;base64,${uploadedDocuments?.base64}`;
-  var name:any=""
+  var name: any = "";
   const [verifyVcCred, setverifyVcCred] = useState<any>();
+  const [dis, SetDis] = useState(false);
 
+  useEffect(() => {
+    getVcdata();
+  }, []);
 
-  useEffect(()=>{
-    getVcdata()
-  },[])
+  const getVcdata = async () => {
+    const getvcCred: any = await AsyncStorage.getItem("vcCred");
+    const parseData = JSON.parse(getvcCred);
+    console.log("parseData", parseData);
+    setverifyVcCred(parseData);
+  };
 
-  const getVcdata =async () =>{
-
-    const getvcCred : any = await AsyncStorage.getItem("vcCred")
-    const parseData = JSON.parse(getvcCred)
-    console.log("parseData",parseData);
-    setverifyVcCred(parseData)
-
-  }
-
-  
   const validateImages = () => {
-
+    SetDis(true);
     setLoad(true);
     const payLoad = {
       eventValue: selectedDocument,
@@ -112,148 +107,148 @@ const VerifiDocumentScreen = (props: any) => {
     };
     // AddDocumehtfetch(CreateHistory, payLoad, "POST");
     setTimeout(() => {
-      const index = documentsDetailsList?.responseData?.findIndex(obj => obj?.id === selectedItem?.id);
-      console.log('index',index)
-if (selectedItem ) {
-  console.log('indexData',"index1")
-  setsuccessResponse(true);
+      const index = documentsDetailsList?.responseData?.findIndex(
+        (obj) => obj?.id === selectedItem?.id
+      );
+      console.log("index", index);
+      if (selectedItem) {
+        console.log("indexData", "index1");
+        setsuccessResponse(true);
 
-  const obj = documentsDetailsList?.responseData[index];
-  obj.documentName = selectedDocument
-  obj.categoryType =selectedDocument && selectedDocument?.split("(")[0]?.trim();
-  dispatch(updateDocuments(documentsDetailsList?.responseData,index,obj));
-   setTimeout(async () => {
-    setsuccessResponse(false);
-    const item = await AsyncStorage.getItem("flow");
-    if (item === "documentflow") {
-      props.navigation.navigate("RegisterScreen");
-    } else {
-   //   props.navigation.navigate("Documents");
-    }
-  }, 2000);
+        const obj = documentsDetailsList?.responseData[index];
+        obj.documentName = selectedDocument;
+        obj.categoryType =
+          selectedDocument && selectedDocument?.split("(")[0]?.trim();
+        dispatch(
+          updateDocuments(documentsDetailsList?.responseData, index, obj)
+        );
+        setTimeout(async () => {
+          setsuccessResponse(false);
+          const item = await AsyncStorage.getItem("flow");
+          if (item === "documentflow") {
+            props.navigation.navigate("RegisterScreen");
+          } else {
+            //   props.navigation.navigate("Documents");
+          }
+        }, 2000);
+      } else {
+        console.log("indexData", "index2");
 
-}else{
-  console.log('indexData',"index2")
+        var date = dateTime();
+        const filePath = RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
+        var documentDetails: IDocumentProps = {
+          id: `ID_VERIFICATION${Math.random()}${selectedDocument}${Math.random()}`,
+          // name: selectedDocument,
+          documentName: selectedDocument,
+          path: filePath,
+          date: date?.date,
+          time: date?.time,
+          txId: data?.result,
+          docType: "jpg",
+          docExt: ".jpg",
+          processedDoc: "",
+          base64: uploadedDocumentsBase64,
+          categoryType:
+            selectedDocument && selectedDocument?.split("(")[0]?.trim(),
+          docName: docname,
+          isVerifyNeeded: true,
+          isLivenessImage: "livenessImage",
+        };
 
-  var date = dateTime();
-  const filePath = RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
-  var documentDetails: IDocumentProps = {
-    id: `ID_VERIFICATION${Math.random()}${selectedDocument}${Math.random()}`,
-   // name: selectedDocument,
-    documentName: selectedDocument,
-    path: filePath,
-    date: date?.date,
-    time: date?.time,
-    txId: data?.result,
-    docType: "jpg",
-    docExt: ".jpg",
-    processedDoc: "",
-    base64: uploadedDocumentsBase64,
-    categoryType: selectedDocument && selectedDocument?.split("(")[0]?.trim(),
-    docName:docname,
-    isVerifyNeeded:true,
-    isLivenessImage:"livenessImage",
-  };
-
-  var DocumentList = documentsDetailsList?.responseData
-    ? documentsDetailsList?.responseData
-    : [];
-    var documentDetails1: IDocumentProps = {
-      id: `ID_VERIFICATION${Math.random()}${"selectedDocument"}${Math.random()}`,
-        name: "Proof of age",
-        path: "filePath",
-        documentName: "Proof of age",
-        categoryType: "ID",
-        date: date?.date,
-        time: date?.time,
-        txId: "data?.result",
-        docType: verifyVcCred?.type[1],
-        docExt: ".jpg",
-        processedDoc: "",
-        isVc: true,
-        vc: JSON.stringify({
+        var DocumentList = documentsDetailsList?.responseData
+          ? documentsDetailsList?.responseData
+          : [];
+        var documentDetails1: IDocumentProps = {
+          id: `ID_VERIFICATION${Math.random()}${"selectedDocument"}${Math.random()}`,
           name: "Proof of age",
-          documentName: "Acknowledgement Token",
           path: "filePath",
+          documentName: "Proof of age",
+          categoryType: "ID",
           date: date?.date,
           time: date?.time,
           txId: "data?.result",
-          docType: "pdf",
+          docType: verifyVcCred?.type[1],
           docExt: ".jpg",
           processedDoc: "",
           isVc: true,
-        }),
-        verifiableCredential: verifyVcCred,
-        docName: "",
-        base64: undefined,
-    };
-  
-    var DocumentList = documentsDetailsList?.responseData
-      ? documentsDetailsList?.responseData
-      : [];
-  DocumentList.push(documentDetails);
-  DocumentList.push(documentDetails1);
-  dispatch(saveDocuments(DocumentList));
-  setsuccessResponse(true);
-  getHistoryReducer.isSuccess = false;
-  setTimeout(async () => {
-    setsuccessResponse(false);
-    const item = await AsyncStorage.getItem("flow");
-    if (item === "documentflow") {
-      props.navigation.navigate("RegisterScreen");
-    } else {
-     // generateVc()
-      props.navigation.navigate("Documents");
-    }
-  }, 2000);
-}    
+          vc: JSON.stringify({
+            name: "Proof of age",
+            documentName: "Acknowledgement Token",
+            path: "filePath",
+            date: date?.date,
+            time: date?.time,
+            txId: "data?.result",
+            docType: "pdf",
+            docExt: ".jpg",
+            processedDoc: "",
+            isVc: true,
+          }),
+          verifiableCredential: verifyVcCred,
+          docName: "",
+          base64: undefined,
+        };
+
+        var DocumentList = documentsDetailsList?.responseData
+          ? documentsDetailsList?.responseData
+          : [];
+        DocumentList.push(documentDetails);
+        DocumentList.push(documentDetails1);
+        dispatch(saveDocuments(DocumentList));
+        setsuccessResponse(true);
+        getHistoryReducer.isSuccess = false;
+        setTimeout(async () => {
+          setsuccessResponse(false);
+          const item = await AsyncStorage.getItem("flow");
+          if (item === "documentflow") {
+            props.navigation.navigate("RegisterScreen");
+          } else {
+            // generateVc()
+            props.navigation.navigate("Documents");
+          }
+        }, 2000);
+      }
     }, 200);
     setLoad(false);
   };
 
- 
-
-
-function generateVc(){
-  var date = dateTime();
-  var documentDetails: IDocumentProps = {
-    id: `ID_VERIFICATION${Math.random()}${"selectedDocument"}${Math.random()}`,
-    name: "Acknowledgement Token",
-    path: "filePath",
-    date: date?.date,
-    time: date?.time,
-    txId: "data?.result",
-    docType: verifyVcCred?.type[1],
-    docExt: ".jpg",
-    processedDoc: "",
-    isVc: true,
-    vc: JSON.stringify({
+  function generateVc() {
+    var date = dateTime();
+    var documentDetails: IDocumentProps = {
+      id: `ID_VERIFICATION${Math.random()}${"selectedDocument"}${Math.random()}`,
       name: "Acknowledgement Token",
-      documentName: "Acknowledgement Token",
       path: "filePath",
       date: date?.date,
       time: date?.time,
       txId: "data?.result",
-      docType: "pdf",
+      docType: verifyVcCred?.type[1],
       docExt: ".jpg",
       processedDoc: "",
       isVc: true,
-    }),
-    verifiableCredential:verifyVcCred,
-    documentName: "",
-    docName: "",
-    base64: undefined
-   
-  };
+      vc: JSON.stringify({
+        name: "Acknowledgement Token",
+        documentName: "Acknowledgement Token",
+        path: "filePath",
+        date: date?.date,
+        time: date?.time,
+        txId: "data?.result",
+        docType: "pdf",
+        docExt: ".jpg",
+        processedDoc: "",
+        isVc: true,
+      }),
+      verifiableCredential: verifyVcCred,
+      documentName: "",
+      docName: "",
+      base64: undefined,
+    };
 
-  var DocumentList = documentsDetailsList?.responseData
-    ? documentsDetailsList?.responseData
-    : [];
+    var DocumentList = documentsDetailsList?.responseData
+      ? documentsDetailsList?.responseData
+      : [];
 
-  DocumentList.push(documentDetails);
-  dispatch(saveDocuments(DocumentList));
-}
-
+    DocumentList.push(documentDetails);
+    dispatch(saveDocuments(DocumentList));
+  }
 
   if (getHistoryReducer?.isSuccess) {
     setsuccessResponse(true);
@@ -269,22 +264,22 @@ function generateVc(){
     setLoad(false);
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log("picLOG", docname);
-  })
+  });
 
   // useEffect(()=>{
   //   getItem()
   //   },[])
-  
+
   //   const getItem=async()=>{
   //     const item =await  AsyncStorage.getItem("editDoc");
   //     if(item=='editDoc'){
   //       name =await  AsyncStorage.getItem("userDetails");
-      
+
   //     }
   //   }
-console.log('selectedItem?.base64 ',selectedItem )
+  console.log("selectedItem?.base64 ", selectedItem);
   return (
     <View style={styles.sectionContainer}>
       <Header
@@ -322,37 +317,29 @@ console.log('selectedItem?.base64 ',selectedItem )
       </GenericText>
 
       <View style={styles.dashedLine}>
-
-        {
-        selectedItem &&  selectedItem?.base64 ? (
-
+        {selectedItem && selectedItem?.base64 ? (
           <Image
-          resizeMode={"contain"}
-          style={{
-            width: 330,
-            height: "100%",
-            
-          }}
-          source={{
-            uri: selectedItem?.base64 
-          }}
-        ></Image>
-        )
-
-        :
-
-      ( <Image
-          resizeMode={"contain"}
-          style={{
-            width: 330,
-            height: "100%",
-          }}
-          source={{
-            uri: pic ? pic.uri : uploadedDocumentsBase64 
-          }}
-        ></Image>)
-        }
-
+            resizeMode={"contain"}
+            style={{
+              width: 330,
+              height: "100%",
+            }}
+            source={{
+              uri: selectedItem?.base64,
+            }}
+          ></Image>
+        ) : (
+          <Image
+            resizeMode={"contain"}
+            style={{
+              width: 330,
+              height: "100%",
+            }}
+            source={{
+              uri: pic ? pic.uri : uploadedDocumentsBase64,
+            }}
+          ></Image>
+        )}
       </View>
 
       <View style={styles.dashedLine}>
@@ -404,6 +391,7 @@ console.log('selectedItem?.base64 ',selectedItem )
       >
         <TouchableOpacity
           onPress={validateImages}
+          disabled={dis ? true : false}
           style={{
             elevation: 5,
             margin: 20,
