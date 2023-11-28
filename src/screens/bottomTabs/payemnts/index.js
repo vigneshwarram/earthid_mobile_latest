@@ -52,7 +52,7 @@ const createVerifiableCred=(verifyVcCred)=>{
   dispatch(saveDocuments(DocumentList)).then(()=>{
   setTimeout(()=>{
     setLoading(false)
-      Alert.alert("Proof of funds generated successfully");
+      Alert.alert("Proof of funds is successfully generated");
       props.navigation.navigate("Documents");
   },1000)
   })
