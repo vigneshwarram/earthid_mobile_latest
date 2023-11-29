@@ -448,7 +448,7 @@ const CameraScreen = (props: any) => {
        payload ={
         dateOfBirth: success,
         verifyParams: [
-          "dateOfBirth=1990-05-28"
+          "dateOfBirth=1998-01-09"
         ],
         credentials: {
           "@context": [
@@ -470,7 +470,7 @@ const CameraScreen = (props: any) => {
             {
               id: "MzMsMTU1LDg1LDU5LDEzMywzNSwxNzMsNTgsMTA1LDg0LDQ4LDIxNSwxOTAsNDMsMjMsMjA1LDIwMSwxOCwxMzcsMTgxLDEwNCwxNjUsMTgxLDg4LDM4LDIyNywxNTEsMjEwLDE1OSw5NywzNCw2Nw==",
               earthId: "MjA4LDIwNCw5MSwxNzAsNzMsMTQ5LDI0OCwyMjIsNzQsMjAxLDE4MSw5MiwxNCw4LDg5LDI0LDEyOCw0MCwxNjcsMjMsMTU0LDE2NCwxMiwyMDUsMTc0LDcyLDIyOSwzOSwxMTEsNDUsMTExLDIyNQ==",
-              dateOfBirth: "MTcwLDU1LDExNiwyOCwxMzIsMTQsMTA4LDIzLDE2OCwxNjcsMTI5LDQxLDEwMSw0NCw1MCwxMjAsMTMwLDg0LDIwNywxOTEsMTU4LDc4LDE0LDE3OSwxMzAsMjYsNjksMjMsMTMwLDI0NywxMSwxMjI="
+              dateOfBirth: "MTcxLDIzNiwxNjgsMTcwLDE4MiwxOTQsMTc3LDEyMywzMywxMiwxNTQsNTgsMTM2LDIzMSwxMzcsMTIsMjQxLDkxLDIwMCw2NywyMjksMjMxLDE2LDE3NSwxNDIsMjgsMTU5LDIwMywyNTIsMjMyLDEyNyw1NA=="
             }
           ],
           issuanceDate: "2023-11-21T06:43:26.344Z",
@@ -1031,7 +1031,8 @@ const CameraScreen = (props: any) => {
           </View>
         </View>
       </ModalView>
-      {isDocumentModalkyc && barCodeDataDetails?.requestType.request === "minAge" || barCodeDataDetails?.requestType.request === "balance" ? <ZkbScreen 
+      {isDocumentModalkyc && (barCodeDataDetails?.requestType.request === "balance" || barCodeDataDetails?.requestType.request === "minAge") ? 
+      <ZkbScreen 
       isLoading={isLoading}
       setisDocumentModalkyc={setisDocumentModalkyc}
        navigateToCamerScreen={navigateToCamerScreen} 

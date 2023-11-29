@@ -96,6 +96,37 @@ const VerifiDocumentScreen = (props: any) => {
     setverifyVcCred(parseData);
   };
 
+  const verifiAPICall =()=>{
+    const apiUrl = 'https://stage-apiv2.myearth.id/user/liveness';
+const selfieBase64 = base64Icon; // Replace with your actual base64-encoded selfie data
+
+const docPhotoUrl = 'https://prod.idscan.cloud/IDScanEnterpriseSvc/Journey/GetImage?id=0dfb14df-f0fd-485b-a1cc-b80742865ebe&role=OutputWhiteImage';
+
+const headers = {
+  'Content-Type': 'application/x-www-form-urlencoded',
+};
+
+const formData = new FormData();
+formData.append('selfieBase64', selfieBase64);
+formData.append('docPhotoUrl', docPhotoUrl);
+
+fetch(apiUrl, {
+  method: 'POST',
+  headers: headers,
+  body: formData,
+})
+  .then((response: { json: () => any; }) => response.json())
+  .then((data: any) => {
+    // Handle the response data
+    console.log(data);
+  })
+  .catch((error: any) => {
+    // Handle errors
+    console.error('Error:', error);
+  });
+
+  }
+
   const validateImages = () => {
     SetDis(true);
     setLoad(true);
@@ -105,10 +136,10 @@ const VerifiDocumentScreen = (props: any) => {
       userId: userDetails?.responseData?.Id,
       publicKey: userDetails?.responseData?.publicKey,
     };
-    // AddDocumehtfetch(CreateHistory, payLoad, "POST");
+   // verifiAPICall()
     setTimeout(() => {
       const index = documentsDetailsList?.responseData?.findIndex(
-        (obj) => obj?.id === selectedItem?.id
+        (obj: { id: any; }) => obj?.id === selectedItem?.id
       );
       console.log("index", index);
       if (selectedItem) {
@@ -148,11 +179,16 @@ const VerifiDocumentScreen = (props: any) => {
           docExt: ".jpg",
           processedDoc: "",
           base64: uploadedDocumentsBase64,
-          categoryType:
-            selectedDocument && selectedDocument?.split("(")[0]?.trim(),
+          categoryType: selectedDocument && selectedDocument?.split("(")[0]?.trim(),
           docName: docname,
           isVerifyNeeded: true,
           isLivenessImage: "livenessImage",
+          name: "",
+          vc: undefined,
+          isVc: false,
+          signature: undefined,
+          typePDF: undefined,
+          verifiableCredential: undefined
         };
 
         var DocumentList = documentsDetailsList?.responseData
@@ -186,6 +222,9 @@ const VerifiDocumentScreen = (props: any) => {
           verifiableCredential: verifyVcCred,
           docName: "",
           base64: undefined,
+          isLivenessImage: "",
+          signature: undefined,
+          typePDF: undefined
         };
 
         var DocumentList = documentsDetailsList?.responseData
@@ -240,6 +279,9 @@ const VerifiDocumentScreen = (props: any) => {
       documentName: "",
       docName: "",
       base64: undefined,
+      isLivenessImage: "",
+      signature: undefined,
+      typePDF: undefined
     };
 
     var DocumentList = documentsDetailsList?.responseData

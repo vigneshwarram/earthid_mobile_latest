@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { ActivityIndicator, Dimensions, Image, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Screens } from "../../themes";
 import QrCodeMask from "react-native-qrcode-mask";
@@ -22,6 +22,8 @@ const data = [
 ];
 export const QrScannerMaskedWidget = ({createVerifiableCredentials,setValue,navigation,setIsCamerVisible,barCodeDataDetails,selectedCheckBox,setselectedCheckBox,setisDocumentModalkyc,navigateToCamerScreen,isLoading}:any) => {
   const documentsDetailsList = useAppSelector((state) => state.Documents);
+  const [showVisibleDOB,setshowVisibleDOB] = useState(false)
+  const [showVisibleBalance,setshowVisibleBalance] = useState(false)
     const getDropDownList = () => {
         let datas = [];
         datas = documentsDetailsList?.responseData;
@@ -220,6 +222,7 @@ export const QrScannerMaskedWidget = ({createVerifiableCredentials,setValue,navi
                               {'Verified'}
                             </GenericText>
                         </View>
+                        <View style={{flexDirection:'row'}}>
                         <GenericText
                               style={{
                                
@@ -232,17 +235,48 @@ export const QrScannerMaskedWidget = ({createVerifiableCredentials,setValue,navi
                             >
                               {barCodeDataDetails?.requestType?.request==='minAge'?'Date of birth':'Balance'}
                             </GenericText>
+                            <TouchableOpacity onPress={()=>barCodeDataDetails?.requestType?.request==='minAge'?setshowVisibleDOB(!showVisibleDOB):setshowVisibleBalance(!showVisibleBalance)}>
+
+                              {barCodeDataDetails?.requestType?.request==='minAge' ? <GenericText
+                              style={{
+                               
+                                padding: 5,
+                                color: "#0163f7",
+                                fontSize: 14,
+                                fontWeight: "700",
+
+                              }}
+                            >
+                              {!showVisibleDOB?'Show':'Hide'}
+                            </GenericText>:
+                             <GenericText
+                             style={{
+                              
+                               padding: 5,
+                               color: "#0163f7",
+                               fontSize: 14,
+                               fontWeight: "700",
+
+                             }}
+                           >
+                             {!showVisibleBalance?'Show':'Hide'}
+                           </GenericText>}
+                        
+                            </TouchableOpacity>
+                         
+                        </View>
+                       
                             <GenericText
                               style={{
                                
                                 padding: 5,
                                 color: "#fff",
-                                fontSize: 25,
+                                fontSize:showVisibleDOB?14: 25,
                                 fontWeight: 'bold',
 
                               }}
                             >
-                             {barCodeDataDetails?.requestType?.request==='minAge'?'.... .. ....':'$.....'}
+                             {barCodeDataDetails?.requestType?.request==='minAge'?showVisibleDOB?'09/01/1998':'.. .. ....':showVisibleBalance?'$30,000': '$.....'}
                             </GenericText>
                         </View>
                       
