@@ -29,7 +29,6 @@ const facePlaceHolderWidget = (props: any, route: any) => {
           style={[
             {
               fontSize: 20,
-
               color: Screens.pureWhite,
               fontWeight: "500",
             },

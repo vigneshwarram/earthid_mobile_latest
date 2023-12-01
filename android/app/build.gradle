@@ -225,10 +225,10 @@ android {
         //     keyPassword "globalid"
         // }
          release {
-            storeFile file("myearthid.keystore")
-            storePassword "Rejolut@123"
-            keyAlias "myearthid"
-            keyPassword "Rejolut@123"
+            storeFile file("icca.jks")
+            storePassword "Vicky@1234"
+            keyAlias "iccaKey"
+            keyPassword "Vicky@1234"
           
         }
     }
