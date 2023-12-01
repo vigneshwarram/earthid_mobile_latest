@@ -48,6 +48,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const itemData = route?.params?.itemData;
   const { editDoc, selectedItem } = route?.params;
   const imageName = fileUri?.imageName;
+  const[dis,SetDis]=useState(false);
   // const splitName = imageName.split('.')[0]
   console.log("fileUri=====>", selectedItem);
   // const typeItem=selectedItem?.name?.split('(')[1].split(')')[0];
@@ -93,7 +94,8 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
   }, []);
 
   const onSubmitAction = () => {
-    if (docname == undefined) {
+    SetDis(true)
+    if (docname == undefined&&docname == null) {
       Alert.alert("Please Enter Document Name");
       return;
     }
@@ -546,6 +548,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
                     />
                     <View style={{ backgroundColor: Screens.pureWhite }}>
                       <Button
+                      disabled = {dis ? true:false}
                         onPress={() => onSubmitAction()}
                         style={{
                           buttonContainer: {

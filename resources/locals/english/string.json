@@ -58,7 +58,7 @@
   "capture": "Capture",
   "placethedoc": "Place the document inside the box and Capture!",
   "or": "OR",
-  "uploadgallery": "upload from gallery",
+  "uploadgallery": "UPLOAD FROM GALLERY",
   "authorize": "Authorize",
 
   "drivinglicense": "Driving License",
@@ -87,7 +87,7 @@
   "Passcodeauth": "Passcode Authentication",
   "plsenterpass": "Please enter your passcode",
   "plsentervalid": "Your passcode does not match",
-  "submitt": "Submit",
+  "submitt": "SUBMIT",
   "setpass": "Set Passcode",
   "Passcode": "Passcode",
   "updatemobileno": "Update Mobile Number",

@@ -34,32 +34,43 @@ const PasswordCheck = ({ navigation, route }: IHomeScreenProps) => {
 
   const _navigateAction = async () => {
     const getItem = await AsyncStorage.getItem("passcode");
-    if (getItem === code?.toString()) {
-      setIsLoading(true);
-      navigation.dispatch(StackActions.replace("DrawerNavigator"));
-    }
-    else if(count == 0){
-      Alert.alert('Oops!', `Too many attempts try again after sometimes`, [
+
+    if (code?.length > 5) {
+      if (getItem === code?.toString()) {
+        setIsLoading(true);
+        navigation.dispatch(StackActions.replace("DrawerNavigator"));
+      } else if (count == 0) {
+        Alert.alert("Oops!", `Too many attempts try again after sometimes`, [
+          {
+            text: "Cancel",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel",
+          },
+          { text: "OK", onPress: () => console.log("OK Pressed") },
+        ]);
+      } else {
+        setCount(count - 1);
+        Alert.alert("Invalid Code", `You have left ${count} attempts`, [
+          {
+            text: "Cancel",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel",
+          },
+          { text: "OK", onPress: () => console.log("OK Pressed") },
+        ]);
+      }
+    } else {
+      Alert.alert("Oops!", "Please enter valid passcode", [
         {
-          text: 'Cancel',
-          onPress: () => console.log('Cancel Pressed'),
-          style: 'cancel',
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
         },
-        {text: 'OK', onPress: () => console.log('OK Pressed')},
+        { text: "OK", onPress: () => console.log("OK Pressed") },
       ]);
     }
-    else {
-      setCount(count-1)
-        Alert.alert('Invalid Code', `You have left ${count} attempts`, [
-          {
-            text: 'Cancel',
-            onPress: () => console.log('Cancel Pressed'),
-            style: 'cancel',
-          },
-          {text: 'OK', onPress: () => console.log('OK Pressed')},
-        ]);
-    }
-    console.log("loff",count)
+
+    console.log("loff", count);
   };
 
   return (
@@ -112,8 +123,8 @@ const PasswordCheck = ({ navigation, route }: IHomeScreenProps) => {
           <View style={{ alignSelf: "center" }}>
             <SmoothPinCodeInput
               cellStyle={{
-                  borderWidth: isError ? 1.5 : 0.5,
-                  borderColor: isError ? "red" : Screens.grayShadeColor,
+                borderWidth: isError ? 1.5 : 0.5,
+                borderColor: isError ? "red" : Screens.grayShadeColor,
                 borderRadius: 5,
               }}
               cellStyleFocused={{
@@ -145,7 +156,7 @@ const PasswordCheck = ({ navigation, route }: IHomeScreenProps) => {
           )}
 
           <Button
-          //  disabled={count ==0 ? true : false}
+            //  disabled={count ==0 ? true : false}
             onPress={_navigateAction}
             style={{
               buttonContainer: {
