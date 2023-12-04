@@ -18,6 +18,8 @@ import { ESecurityTypes } from "../../../typings/enums/Security";
 import { SaveSecurityConfiguration } from "../../../redux/actions/LocalSavingActions";
 import { SnackBar } from "../../../components/SnackBar";
 import TouchID from "react-native-touch-id";
+import ReactNativeBiometrics, { BiometryTypes } from "react-native-biometrics";
+import { StackActions } from "@react-navigation/native";
 
 interface IHomeScreenProps {
   navigation?: any;
@@ -28,6 +30,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
   const securityReducer: any = useAppSelector((state) => state.security);
   const [data, setData] = useState();
   const [disableTouchId, setDisableTouchId] = useState(true);
+  const rnBiometrics = new ReactNativeBiometrics();
 
   useEffect(() => {
     setMetrics();
@@ -88,7 +91,42 @@ const Register = ({ navigation }: IHomeScreenProps) => {
     return selected;
   };
 
- 
+  const actionToNavigate = () => {
+    if (securityReducer && securityReducer?.securityData) {
+      console.log(
+        "securityReducer?.securityData",
+        securityReducer?.securityData
+      );
+      if (
+        securityReducer?.securityData?.length === 2 &&
+        securityReducer?.securityData?.some(
+          (item: { types: any }) => item.types === ESecurityTypes.PASSCORD
+        ) &&
+        securityReducer?.securityData?.every(
+          (item: { enabled: boolean }) => item.enabled
+        )
+      ) {
+        navigation.dispatch(
+          StackActions.replace("DrawerNavigator", { type: "Faceid" })
+        );
+      } else {
+        // navigation.navigate("Security");
+      }
+    } else {
+      //navigation.navigate("Security");
+    }
+  };
+  const saveSelectionSecuritiess = async() => {
+    let payLoad = [];
+    payLoad.push({
+      types: ESecurityTypes.FACE,
+      enabled: true,
+    });
+    await AsyncStorage.setItem("FaceID", ESecurityTypes.FACE);
+    dispatch(SaveSecurityConfiguration(payLoad)).then(() => {
+      actionToNavigate();
+    });
+  };
   const showAlert = () => {
     SnackBar({
       indicationMessage: "FingerPrint not supported on this device !",
@@ -130,7 +168,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
             iconContainer: styles.alignCenter,
           }}
         ></Header>
-        
+
         <View style={styles.category}>
           <View>
             <View
@@ -208,11 +246,36 @@ const Register = ({ navigation }: IHomeScreenProps) => {
                 selected={getSelectedDState(ESecurityTypes.FACE)}
                 disabled={getSelectedDState(ESecurityTypes.FACE)}
                 onPress={() => {
-                  saveSelectionSecurities(
-                    ESecurityTypes.FACE,
-                    false,
-                    "RegisterFace"
-                  );
+                  rnBiometrics.isSensorAvailable().then((resultObject) => {
+                    let epochTimeSeconds = Math.round(
+                      new Date().getTime() / 1000
+                    ).toString();
+                    let payload = epochTimeSeconds + "some message";
+                    const { available, biometryType } = resultObject;
+                    if (available && biometryType === BiometryTypes.FaceID) {
+                      rnBiometrics
+                        .simplePrompt({ promptMessage: "Confirm fingerprint" })
+                        .then((resultObject) => {
+                          const { success } = resultObject;
+                          console.log("resultObject===>", resultObject);
+                          if (success) {
+                            saveSelectionSecuritiess();
+                            console.log("successful biometrics provided");
+                          } else {
+                            console.log("user cancelled biometric prompt");
+                          }
+                        })
+                        .catch(() => {
+                          console.log("biometrics failed");
+                        });
+                    } else {
+                      saveSelectionSecurities(
+                        ESecurityTypes.FACE,
+                        false,
+                        "RegisterFace"
+                      );
+                    }
+                  });
                 }}
                 style={{
                   buttonContainer: {

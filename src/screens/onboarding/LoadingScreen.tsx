@@ -9,6 +9,7 @@ import {
 import TouchID from "react-native-touch-id";
 import { useAppSelector } from "../../hooks/hooks";
 import SplashScreen from "react-native-splash-screen";
+import ReactNativeBiometrics, { BiometryTypes } from "react-native-biometrics";
 import { isEmpty } from "lodash";
 
 interface ILoadingScreen {
@@ -28,13 +29,14 @@ const optionalConfigObject = {
 const LoadingScreen = ({ navigation }: ILoadingScreen) => {
   const userDetails = useAppSelector((state) => state.account);
   const securityReducer: any = useAppSelector((state) => state.security);
-  console.log("securityReducer", securityReducer.securityData);
-
+  console.log("securityReducer====>", securityReducer.securityData);
+  const rnBiometrics = new ReactNativeBiometrics();
   const aunthenticateBioMetricInfo = () => {
     TouchID.isSupported(optionalConfigObject)
       .then(async (biometryType) => {
         // Success code
         if (biometryType === "FaceID") {
+
         } else {
           TouchID.authenticate("", optionalConfigObject)
             .then(async (success: any) => {
@@ -65,7 +67,35 @@ const LoadingScreen = ({ navigation }: ILoadingScreen) => {
     if (fingerPrint && passcode) {
       aunthenticateBioMetricInfo();
     } else if (FaceID && passcode) {
-      navigation.dispatch(StackActions.replace("FaceCheck"));
+      rnBiometrics.isSensorAvailable().then((resultObject) => {
+        let epochTimeSeconds = Math.round(
+          new Date().getTime() / 1000
+        ).toString();
+        let payload = epochTimeSeconds + "some message";
+        const { available, biometryType } = resultObject;
+        if (available && biometryType === BiometryTypes.FaceID) {
+          rnBiometrics
+            .simplePrompt({ promptMessage: "Confirm fingerprint" })
+            .then((resultObject) => {
+              const { success } = resultObject;
+              console.log("resultObject===>", resultObject);
+              if (success) {
+                
+                navigation.dispatch(StackActions.replace("PasswordCheck"));
+              } else {
+                console.log("user cancelled biometric prompt");
+              }
+            })
+            .catch(() => {
+              console.log("biometrics failed");
+            });
+        } 
+        else {
+          navigation.dispatch(StackActions.replace("FaceCheck"));
+        }
+      });
+     // navigation.dispatch(StackActions.replace("FaceCheck"));
+
     } else if (passcode) {
       navigation.dispatch(StackActions.replace("PasswordCheck"));
     } else {

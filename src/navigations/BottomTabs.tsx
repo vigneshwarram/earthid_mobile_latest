@@ -127,6 +127,15 @@ export const BottomMenus = (propss: any) => {
         options={{
           tabBarLabel:t("history"),
           tabBarLabelStyle: styles.tabBarLabelStyle,
+          tabBarButton: (props) => (
+            <TouchableOpacity
+              {...props}
+              onPress={() => {
+                EventRegister.emit("OpenDrawer");
+              }}
+            />
+          ),
+
           tabBarIcon: ({ focused }: any) => (
             <View
               style={[
@@ -154,12 +163,21 @@ export const BottomMenus = (propss: any) => {
         }}
       />
       <Tab.Screen
-        name="Bank"
+        name="More"
         component={PaymentScreen}
+      
         options={{
-          tabBarLabel:'Bank',
+          tabBarLabel:'More',
           tabBarLabelStyle: styles.tabBarLabelStyle,
-  
+          tabBarButton: (props) => (
+            <TouchableOpacity
+              {...props}
+              onPress={() => {
+                EventRegister.emit("OpenDrawer");
+              }}
+            />
+          ),
+
           tabBarIcon: ({ focused }: any) => (
             <View
               style={[
