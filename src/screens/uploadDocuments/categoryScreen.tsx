@@ -48,7 +48,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const pic = route?.params?.fileUri;
   const itemData = route?.params?.itemData;
   const { editDoc, selectedItem } = route?.params;
-  const itemVerify  = route?.params?.itemVerify
+  const itemVerify = route?.params?.itemVerify;
   const imageName = fileUri?.imageName;
   // const splitName = imageName.split('.')[0]
 
@@ -70,15 +70,14 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
       : null
   );
 
-  console.log("selectedItem",selectedItem)
-const[button,setButton]=useState(false);
+  console.log("selectedItem", selectedItem);
+  const [button, setButton] = useState(false);
   const [selectedParentIndex, setSelectedParentIndex] = useState(0);
   const documentsDetailsList = useAppSelector((state) => state.Documents);
   const [successResponse, setsuccessResponse] = useState(false);
   const dispatch = useAppDispatch();
 
-  console.log("itemVerify",itemVerify)
-
+  console.log("itemVerify", itemVerify);
 
   const {
     loading: isCategoryLoading,
@@ -95,115 +94,44 @@ const[button,setButton]=useState(false);
   }, []);
 
   const onSubmitAction = () => {
-    setButton(true)
-    if (docname == undefined) {
-      Alert.alert("Please Enter Document Name");
-      return;
-    }
+    if (docname?.length > 0) {
+      setButton(true);
 
-    if (fileUri?.flow === "deeplink") {
-      if (fileUri?.type === "application/pdf") {
-        var date = dateTime();
-        const filePath = RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
-        const document: any[0] = categoryList[
-          selectedParentIndex
-        ]?.value?.filter((data: any) => data.isSelected);
-        var documentDetails: IDocumentProps = {
-          id: `ID_VERIFICATION${Math.random()}${selectedDocument}${Math.random()}`,
-          documentName: `${categoryList[selectedParentIndex].key} (${document[0]?.title})`,
-          //  name: `${categoryList[selectedParentIndex].key} (${document[0]?.title})`,
-          path: filePath,
-          date: date?.date,
-          time: date?.time,
-          txId: "e4343434343434443",
-          docType: "pdf",
-          docExt: ".jpg",
-          processedDoc: "",
-          base64: fileUri?.base64,
-          categoryType: categoryList[selectedParentIndex].key,
-          pdf: true,
-          docName: docname,
-          typePDF: fileUri?.typePDF,
-        };
-        var DocumentList = documentsDetailsList?.responseData
-          ? documentsDetailsList?.responseData
-          : [];
-        DocumentList.push(documentDetails);
-        dispatch(saveDocuments(DocumentList));
-        setsuccessResponse(true);
-        setTimeout(() => {
-          setsuccessResponse(false);
-          navigation.navigate("Documents");
-        }, 2000);
-      } else {
-        var date = dateTime();
-        const document: any[0] = categoryList[
-          selectedParentIndex
-        ]?.value?.filter((data: any) => data.isSelected);
-        const filePath = RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
-        var documentDetails: IDocumentProps = {
-          id: `ID_VERIFICATION${Math.random()}${selectedDocument}${Math.random()}`,
-          documentName: `${categoryList[selectedParentIndex].key} (${document[0]?.title})`,
-          //  name: `${categoryList[selectedParentIndex].key} (${document[0]?.title})`,
-          path: filePath,
-          date: date?.date,
-          time: date?.time,
-          txId: "e4343434343434443",
-          docType: "jpg",
-          docExt: ".jpg",
-          processedDoc: "",
-          base64: fileUri?.base64,
-          type: "deeplink",
-          categoryType: categoryList[selectedParentIndex].key,
-          docName: docname,
-        };
-        var DocumentList = documentsDetailsList?.responseData
-          ? documentsDetailsList?.responseData
-          : [];
-        DocumentList.push(documentDetails);
-        dispatch(saveDocuments(DocumentList));
-        setsuccessResponse(true);
-        setTimeout(() => {
-          setsuccessResponse(false);
-          navigation.navigate("Documents");
-        }, 2000);
-      }
-    } else {
-      if (fileUri?.type === "application/pdf") {
-        var date = dateTime();
-
-        const filePath = RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
-        var documentDetails: IDocumentProps = {
-          //    name: fileUri?.file?.name,
-          documentName: fileUri?.file?.name,
-          id: `ID_VERIFICATION${Math.random()}${"random"}${Math.random()}`,
-          path: filePath,
-          date: date?.date,
-          time: date?.time,
-          txId: "e4343434343434443",
-          docType: "pdf",
-          docExt: ".jpg",
-          processedDoc: "",
-          base64: fileUri?.base64,
-          categoryType: categoryList[selectedParentIndex].key,
-          pdf: true,
-          docName: docname,
-          isVerifyNeeded: false,
-          typePDF: fileUri?.typePDF,
-        };
-        var DocumentList = documentsDetailsList?.responseData
-          ? documentsDetailsList?.responseData
-          : [];
-        DocumentList.push(documentDetails);
-        dispatch(saveDocuments(DocumentList));
-        setsuccessResponse(true);
-        setTimeout(() => {
-          setsuccessResponse(false);
-          navigation.navigate("Documents");
-        }, 2000);
-      } else {
-        const { selfAttested } = route.params;
-        if (selfAttested === "no") {
+      if (fileUri?.flow === "deeplink") {
+        if (fileUri?.type === "application/pdf") {
+          var date = dateTime();
+          const filePath = RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
+          const document: any[0] = categoryList[
+            selectedParentIndex
+          ]?.value?.filter((data: any) => data.isSelected);
+          var documentDetails: IDocumentProps = {
+            id: `ID_VERIFICATION${Math.random()}${selectedDocument}${Math.random()}`,
+            documentName: `${categoryList[selectedParentIndex].key} (${document[0]?.title})`,
+            //  name: `${categoryList[selectedParentIndex].key} (${document[0]?.title})`,
+            path: filePath,
+            date: date?.date,
+            time: date?.time,
+            txId: "e4343434343434443",
+            docType: "pdf",
+            docExt: ".jpg",
+            processedDoc: "",
+            base64: fileUri?.base64,
+            categoryType: categoryList[selectedParentIndex].key,
+            pdf: true,
+            docName: docname,
+            typePDF: fileUri?.typePDF,
+          };
+          var DocumentList = documentsDetailsList?.responseData
+            ? documentsDetailsList?.responseData
+            : [];
+          DocumentList.push(documentDetails);
+          dispatch(saveDocuments(DocumentList));
+          setsuccessResponse(true);
+          setTimeout(() => {
+            setsuccessResponse(false);
+            navigation.navigate("Documents");
+          }, 2000);
+        } else {
           var date = dateTime();
           const document: any[0] = categoryList[
             selectedParentIndex
@@ -221,9 +149,43 @@ const[button,setButton]=useState(false);
             docExt: ".jpg",
             processedDoc: "",
             base64: fileUri?.base64,
+            type: "deeplink",
             categoryType: categoryList[selectedParentIndex].key,
             docName: docname,
+          };
+          var DocumentList = documentsDetailsList?.responseData
+            ? documentsDetailsList?.responseData
+            : [];
+          DocumentList.push(documentDetails);
+          dispatch(saveDocuments(DocumentList));
+          setsuccessResponse(true);
+          setTimeout(() => {
+            setsuccessResponse(false);
+            navigation.navigate("Documents");
+          }, 2000);
+        }
+      } else {
+        if (fileUri?.type === "application/pdf") {
+          var date = dateTime();
+
+          const filePath = RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
+          var documentDetails: IDocumentProps = {
+            //    name: fileUri?.file?.name,
+            documentName: fileUri?.file?.name,
+            id: `ID_VERIFICATION${Math.random()}${"random"}${Math.random()}`,
+            path: filePath,
+            date: date?.date,
+            time: date?.time,
+            txId: "e4343434343434443",
+            docType: "pdf",
+            docExt: ".jpg",
+            processedDoc: "",
+            base64: fileUri?.base64,
+            categoryType: categoryList[selectedParentIndex].key,
+            pdf: true,
+            docName: docname,
             isVerifyNeeded: false,
+            typePDF: fileUri?.typePDF,
           };
           var DocumentList = documentsDetailsList?.responseData
             ? documentsDetailsList?.responseData
@@ -236,114 +198,179 @@ const[button,setButton]=useState(false);
             navigation.navigate("Documents");
           }, 2000);
         } else {
-          if (editDoc) {
-            console.log("here","here1");
-            const index = documentsDetailsList?.responseData?.findIndex(
-              (obj) => obj?.id === selectedItem?.id
-            );
-            if (selectedItem) {
-              console.log("here","here2");
-              console.log("testing","pass1");
+          const { selfAttested } = route.params;
+          if (selfAttested === "no") {
+            var date = dateTime();
+            const document: any[0] = categoryList[
+              selectedParentIndex
+            ]?.value?.filter((data: any) => data.isSelected);
+            const filePath = RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
+            var documentDetails: IDocumentProps = {
+              id: `ID_VERIFICATION${Math.random()}${selectedDocument}${Math.random()}`,
+              documentName: `${categoryList[selectedParentIndex].key} (${document[0]?.title})`,
+              //  name: `${categoryList[selectedParentIndex].key} (${document[0]?.title})`,
+              path: filePath,
+              date: date?.date,
+              time: date?.time,
+              txId: "e4343434343434443",
+              docType: "jpg",
+              docExt: ".jpg",
+              processedDoc: "",
+              base64: fileUri?.base64,
+              categoryType: categoryList[selectedParentIndex].key,
+              docName: docname,
+              isVerifyNeeded: false,
+            };
+            var DocumentList = documentsDetailsList?.responseData
+              ? documentsDetailsList?.responseData
+              : [];
+            DocumentList.push(documentDetails);
+            dispatch(saveDocuments(DocumentList));
+            setsuccessResponse(true);
+            setTimeout(() => {
+              setsuccessResponse(false);
+              navigation.navigate("Documents");
+            }, 2000);
+          } else {
+            if (editDoc) {
+              console.log("here", "here1");
+              const index = documentsDetailsList?.responseData?.findIndex(
+                (obj) => obj?.id === selectedItem?.id
+              );
+              if (selectedItem) {
+                console.log("here", "here2");
+                console.log("testing", "pass1");
 
-              if (itemVerify) {
-                console.log("here","here3");
-                console.log("testing","pass2");
+                if (itemVerify) {
+                  console.log("here", "here3");
+                  console.log("testing", "pass2");
 
-                setsuccessResponse(true);
-                const document: any[0] = categoryList[
-                  selectedParentIndex
-                ]?.value?.filter((data: any) => data.isSelected);
-                const obj = documentsDetailsList?.responseData[index];
-                obj.docName = docname;
-                obj.documentName = `${categoryList[selectedParentIndex].key} (${document[0]?.title})`;
-                obj.categoryType = categoryList[selectedParentIndex].key;
-                console.log("index===>", obj.categoryType);
-                dispatch(
-                  updateDocuments(
-                    documentsDetailsList?.responseData,
-                    index,
-                    obj
-                  )
-                );
-                setTimeout(async () => {
-                  setsuccessResponse(false);
-                  const item = await AsyncStorage.getItem("flow");
-                  if (item === "documentflow") {
-                    navigation.navigate("RegisterScreen");
-                  } else {
-                    setIsPrceedForLivenessTest(false)
-                    navigation.navigate("Documents");
-                  }
-                }, 2000);
+                  setsuccessResponse(true);
+                  const document: any[0] = categoryList[
+                    selectedParentIndex
+                  ]?.value?.filter((data: any) => data.isSelected);
+                  const obj = documentsDetailsList?.responseData[index];
+                  obj.docName = docname;
+                  obj.documentName = `${categoryList[selectedParentIndex].key} (${document[0]?.title})`;
+                  obj.categoryType = categoryList[selectedParentIndex].key;
+                  console.log("index===>", obj.categoryType);
+                  dispatch(
+                    updateDocuments(
+                      documentsDetailsList?.responseData,
+                      index,
+                      obj
+                    )
+                  );
+                  setTimeout(async () => {
+                    setsuccessResponse(false);
+                    const item = await AsyncStorage.getItem("flow");
+                    if (item === "documentflow") {
+                      navigation.navigate("RegisterScreen");
+                    } else {
+                      setIsPrceedForLivenessTest(false);
+                      navigation.navigate("Documents");
+                    }
+                  }, 2000);
 
-
-                setIsPrceedForLivenessTest(true);
-
+                  setIsPrceedForLivenessTest(true);
+                } else {
+                  console.log("here", "here4");
+                  console.log("testing", "pass3");
+                  setsuccessResponse(true);
+                  const document: any[0] = categoryList[
+                    selectedParentIndex
+                  ]?.value?.filter((data: any) => data.isSelected);
+                  const obj = documentsDetailsList?.responseData[index];
+                  obj.docName = docname;
+                  obj.documentName = `${categoryList[selectedParentIndex].key} (${document[0]?.title})`;
+                  obj.categoryType = categoryList[selectedParentIndex].key;
+                  console.log("index===>", obj.categoryType);
+                  dispatch(
+                    updateDocuments(
+                      documentsDetailsList?.responseData,
+                      index,
+                      obj
+                    )
+                  );
+                  setTimeout(async () => {
+                    setsuccessResponse(false);
+                    const item = await AsyncStorage.getItem("flow");
+                    if (item === "documentflow") {
+                      navigation.navigate("RegisterScreen");
+                    } else {
+                      setIsPrceedForLivenessTest(false);
+                      navigation.navigate("Documents");
+                    }
+                  }, 2000);
+                }
+                setLoading(false);
               } else {
-                console.log("here","here4");
-                console.log("testing","pass3");
-                setsuccessResponse(true);
-                const document: any[0] = categoryList[
-                  selectedParentIndex
-                ]?.value?.filter((data: any) => data.isSelected);
-                const obj = documentsDetailsList?.responseData[index];
-                obj.docName = docname;
-                obj.documentName = `${categoryList[selectedParentIndex].key} (${document[0]?.title})`;
-                obj.categoryType = categoryList[selectedParentIndex].key;
-                console.log("index===>", obj.categoryType);
-                dispatch(
-                  updateDocuments(
-                    documentsDetailsList?.responseData,
-                    index,
-                    obj
-                  )
-                );
-                setTimeout(async () => {
-                  setsuccessResponse(false);
-                  const item = await AsyncStorage.getItem("flow");
-                  if (item === "documentflow") {
-                    navigation.navigate("RegisterScreen");
-                  } else {
-                    setIsPrceedForLivenessTest(false)
-                    navigation.navigate("Documents");
-                  }
-                }, 2000);
+                setIsPrceedForLivenessTest(true);
+                return;
               }
-              setLoading(false);
+              console.log("testing", "pass4");
+
+              setIsPrceedForLivenessTest(false);
             } else {
+              console.log("here", "here5");
+
               setIsPrceedForLivenessTest(true);
-              return;
             }
-            console.log("testing","pass4");
-
-          setIsPrceedForLivenessTest(false);
+            // setIsPrceedForLivenessTest(true)
           }
-
-          else{
-            console.log("here","here5");
-            
-            setIsPrceedForLivenessTest(true)
-          }
-         // setIsPrceedForLivenessTest(true)
-         
         }
       }
+    } else {
+      Alert.alert("OOPS!", "Please enter document name", [
+        {
+          text: "Cancel",
+          onPress: () => {
+            console.log("Cancel Pressed");
+          },
+          style: "cancel",
+        },
+        {
+          text: "OK",
+          onPress: () => {
+            console.log("OK Pressed");
+          },
+        },
+      ]);
     }
   };
+
+  // const onpress = () => {
+  //   if (docname?.length > 0) {
+  //     setButton(true);
+  //   } else {
+  //     Alert.alert("OOPS!", "Please enter document name", [
+  //       {
+  //         text: "Cancel",
+  //         onPress: () => {
+  //           console.log("Cancel Pressed");
+  //         },
+  //         style: "cancel",
+  //       },
+  //       {
+  //         text: "OK",
+  //         onPress: () => {
+  //           console.log("OK Pressed");
+  //         },
+  //       },
+  //     ]);
+  //   }
+  // };
 
   useEffect(() => {
     getCategories(getCategoriesApi, {}, "GET");
     console.log("itemData", itemData);
     console.log("doc", docname);
   }, []);
-  const getCategoryImages = (itemKey: string ) => {
-    console.log('categoryType+++++educate',itemKey)
+  const getCategoryImages = (itemKey: string) => {
+    console.log("categoryType+++++educate", itemKey);
     const getItems = SCREENS.HOMESCREEN.categoryList.filter(
       (itemFiltered, index) => {
-        return (
-          itemFiltered.TITLE?.toLowerCase() ===
-          itemKey?.toLowerCase()
-        );
+        return itemFiltered.TITLE?.toLowerCase() === itemKey?.toLowerCase();
       }
     );
     if (!getItems[0]) {
@@ -502,7 +529,7 @@ const[button,setButton]=useState(false);
 
   return (
     <View style={styles.sectionContainer}>
-      <ScrollView style={{flex:1}} contentContainerStyle={{ flexGrow: 1 }}>
+      <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>
         <View style={{ flex: 1 }}>
           <View style={{ flex: 0.37 }}>
             <Header
@@ -609,8 +636,9 @@ const[button,setButton]=useState(false);
                     />
                     <View style={{ backgroundColor: Screens.pureWhite }}>
                       <Button
-                        onPress={() => onSubmitAction()}
-                        disabled={button ? true:false}
+                         onPress={() => onSubmitAction()}
+                        // onPress={() => onpress()}
+                        disabled={button === "true" ? true : false}
                         style={{
                           buttonContainer: {
                             elevation: 5,
