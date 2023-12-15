@@ -437,7 +437,7 @@ console.log('medialList=============>,',medialList)
             />
           </View>
           <Loader
-            loadingText="Your Profile Details Updated successfully."
+            loadingText="Your profile details has been updated successfully."
             Status="Success !"
             isLoaderVisible={isLoading}
           ></Loader>

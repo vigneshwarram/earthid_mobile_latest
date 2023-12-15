@@ -352,7 +352,7 @@ const CameraScreen = (props: any) => {
         setisLoading(false)
         setIsCamerVisible(true);
         generateUserSignature();
-        Alert.alert("Login Successfully");
+        Alert.alert("Login is successful");
       }
       if (barCodeDataDetails?.requestType === "generateCredentials") {
         setisDocumentModalkyc(false);

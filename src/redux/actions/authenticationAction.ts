@@ -219,7 +219,7 @@ export const  approveOTP =
         },
       });
       SnackBar({
-        indicationMessage: "please enter a correct OTP",
+        indicationMessage: "Please enter a correct OTP",
       });
     }
   };
