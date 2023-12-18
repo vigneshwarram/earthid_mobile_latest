@@ -39,6 +39,7 @@ import {
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import RNFetchBlob from "rn-fetch-blob";
 import { _s3responseHandler } from "../../../redux/actions/authenticationAction";
+import { useIsFocused } from "@react-navigation/native";
 
 interface IHomeScreenProps {
   navigation?: any;
@@ -68,10 +69,10 @@ const AuthBackupIdentity = ({ navigation, route }: IHomeScreenProps) => {
   const dwFile = async (file_url: any) => {
     await Share.open({ url: `data:image/png;base64,${file_url}` });
   };
-
+  const isFocused = useIsFocused();
   useEffect(() => {
     getQRCode();
-  }, []);
+  }, [isFocused]);
 
   const getQRCode = async () => {
     //SW3
@@ -406,7 +407,7 @@ const AuthBackupIdentity = ({ navigation, route }: IHomeScreenProps) => {
                 tintColor: Screens.pureWhite,
               },
             }}
-            title={"Share QR code"}
+            title={"SHARE QR CODE"}
           ></Button>
         </View>
       </ScrollView>

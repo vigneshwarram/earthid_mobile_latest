@@ -206,7 +206,7 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
                 tintColor: Screens.pureWhite,
               },
             }}
-            title={"Submit"}
+            title={"SUBMIT"}
           ></Button>
         </View>
       </ScrollView>

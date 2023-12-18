@@ -33,7 +33,7 @@ const Register = ({ navigation, route }: IHomeScreenProps) => {
     if (code?.length > 5) {
       let oldPin = await AsyncStorage.getItem("passcode");
       if (oldPin === code) {
-        Alert.alert("Enter current passcode as new passcode");
+        Alert.alert("Your new passcode cannot be the same as your current passcode.");
       } else if (code.length === 6) {
         navigation.navigate("UpdateConfirmPincode", {
           setCode: code,

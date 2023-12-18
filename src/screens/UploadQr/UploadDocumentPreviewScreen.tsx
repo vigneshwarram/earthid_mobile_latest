@@ -134,7 +134,7 @@ const UploadDocumentPreviewScreen = (props: any) => {
  const getDetailsForBucket = async()=>{
     const bucketName = `idv-sessions-${getUserResponse.username.toLowerCase()}`;
     SnackBar({
-      indicationMessage: "QR image should be successfully uploaded",
+      indicationMessage: "The QR code is successfully uploaded",
     });
 
     dispatch(byPassUserDetailsRedux(getUserResponse,bucketName)).then(() => {
