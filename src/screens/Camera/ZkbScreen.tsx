@@ -10,6 +10,7 @@ import CheckBox from "@react-native-community/checkbox";
 import { Dropdown } from "react-native-element-dropdown";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import { LocalImages } from "../../constants/imageUrlConstants";
+import { SCREENS } from "../../constants/Labels";
 const data = [
   { label: " 1", value: "1" },
   { label: " 2", value: "2" },
@@ -49,7 +50,7 @@ export const QrScannerMaskedWidget = ({createVerifiableCredentials,setValue,navi
       }
     
   return (
-    <View style={{flex:1,backgroundColor:'#000',zIndex:100}}>
+    <View style={{flex:1,backgroundColor:'#fff',zIndex:100}}>
       <View style={{margin:20}}>
       <TouchableOpacity
           onPress={() =>{
@@ -60,7 +61,7 @@ export const QrScannerMaskedWidget = ({createVerifiableCredentials,setValue,navi
         >
           <Image
             resizeMode="contain"
-            style={{width:15,height:15,tintColor:'#fff'}}
+            style={{width:15,height:15,tintColor:'#000'}}
             source={LocalImages.closeImage}
           ></Image>
         </TouchableOpacity>
@@ -92,8 +93,8 @@ export const QrScannerMaskedWidget = ({createVerifiableCredentials,setValue,navi
             style={{
               
               padding: 5,
-              color: "#fff",
-              fontSize: 14,
+              color: "#000",
+              fontSize: 16,
               fontWeight: "900",
               marginTop: 20,
             }}
@@ -104,14 +105,14 @@ export const QrScannerMaskedWidget = ({createVerifiableCredentials,setValue,navi
             style={{
               
               padding: 5,
-              color: "#fff",
-              fontSize: 14,
+              color: "#000",
+              fontSize: 16,
               marginTop: 1,
             }}
           >
             {isEarthId() ? "earthidwanttoaccess" : "globalidwanttoaccess"}
           </GenericText>
-          <View style={{height:150,margin:5,borderRadius:10,backgroundColor:'#293fee',padding:10}}>
+          <View style={{height:170,margin:5,borderRadius:10,backgroundColor:'#293fee',padding:10}}>
              <View style={{width:30,height:30,borderRadius:15,backgroundColor:'#57c891',justifyContent:'center',alignItems:'center'}}>
              <Image
             resizeMode="contain"
@@ -137,11 +138,12 @@ export const QrScannerMaskedWidget = ({createVerifiableCredentials,setValue,navi
               
               padding: 5,
               color:'#85b0a5' ,
-              fontSize: 12,
+              fontWeight:'bold',
+              fontSize: 15,
               marginTop: 1,
             }}
           >
-            {barCodeDataDetails?.requestType?.request==='minAge'? 'Your exact date of birth will not be disclosed. This system is designed only to confirm whether your age falls within the specified acceptable range.':"Your exact amount of income will not be disclosed. This verifier can only confirm that your income falls within the acceptable range that they have specified"}
+            {barCodeDataDetails?.requestType?.request==='minAge'? 'Your exact date of birth will not be disclosed. This system is designed only to confirm whether your age falls within the specified acceptable range.':"Your exact amount of income will not be disclosed. This verifier can only confirm that your balance falls within the acceptable range that they have specified"}
           </GenericText>
           </View>
           <View style={{ height: 300 }}>
@@ -175,7 +177,7 @@ export const QrScannerMaskedWidget = ({createVerifiableCredentials,setValue,navi
                     ) => {
                       console.log("item", item);
                       return (
-                        <View style={{height:150,borderRadius:20,backgroundColor:'#1f1f21',marginHorizontal:10,padding:10}}>
+                        <View style={{height:150,borderRadius:20,backgroundColor:'#9EDCF0' ,marginHorizontal:10,padding:10}}>
                             <View
                           style={{ flexDirection: "row", marginVertical: 10 }}
                         >
@@ -192,7 +194,7 @@ export const QrScannerMaskedWidget = ({createVerifiableCredentials,setValue,navi
                               style={{
                                 textAlign: "center",
                                 padding: 5,
-                                color: "#fff",
+                                color: "#000",
                                 fontSize: 14,
                                 fontWeight: "700",
 
@@ -213,7 +215,7 @@ export const QrScannerMaskedWidget = ({createVerifiableCredentials,setValue,navi
                               style={{
                                 textAlign: "center",
                                 padding: 5,
-                                color: "#fff",
+                                color: "#000",
                                 fontSize: 14,
                                 fontWeight: "700",
 
@@ -227,7 +229,7 @@ export const QrScannerMaskedWidget = ({createVerifiableCredentials,setValue,navi
                               style={{
                                
                                 padding: 5,
-                                color: "#fff",
+                                color: "#000",
                                 fontSize: 14,
                                 fontWeight: "700",
 
@@ -270,7 +272,7 @@ export const QrScannerMaskedWidget = ({createVerifiableCredentials,setValue,navi
                               style={{
                                
                                 padding: 5,
-                                color: "#fff",
+                                color: "#000",
                                 fontSize:showVisibleDOB?14: 25,
                                 fontWeight: 'bold',
 
