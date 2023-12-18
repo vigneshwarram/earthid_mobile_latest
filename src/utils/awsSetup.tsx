@@ -15,6 +15,7 @@ AWS.config.update({
 
 
 export async function createUserSpecificBucket(username:any) {
+
     try {
       const s3 = new AWS.S3();
       

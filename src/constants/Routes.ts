@@ -62,14 +62,14 @@ export const ABOUT_ROUTES = {
     SCREEN: "AuthBackupIdentity",
     COLOR: "#FFDD9B",
   },
-  // PAYMENT: {
-  //   RIGHT_ICON: LocalImages.sideArrowImage,
-  //   URI: LocalImages.backupicon,
-  //   CARD: "Payment",
-  //   TITLE: SCREENS.DRAWERMENUTITLES.PAYMENT,
-  //   SCREEN: "Payment",
-  //   COLOR: "#FFDD9B",
-  // },
+  PAYMENT: {
+    RIGHT_ICON: LocalImages.sideArrowImage,
+    URI: LocalImages.backupicon,
+    CARD: "Payment",
+    TITLE: SCREENS.DRAWERMENUTITLES.PAYMENT,
+    SCREEN: "Payment",
+    COLOR: "#FFDD9B",
+  },
   DELETE: {
     URI: LocalImages.deleteImage,
     CARD: "AcceptableUsePolicy",

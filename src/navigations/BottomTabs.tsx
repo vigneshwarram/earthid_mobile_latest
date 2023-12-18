@@ -10,7 +10,7 @@ import { Screens } from "../themes/index";
 import HomeScreen from "../screens/bottomTabs/homeTab/index";
 import DocumentScreen from "../screens/bottomTabs/documentTab";
 import HistoryScreen from "../screens/bottomTabs/historyTab";
-import PaymentScreen from "../screens/bottomTabs/payemnts";
+import PaymentScreen from "../screens/bottomTabs/payemnts/index";
 import CameraScreen from "../screens/Camera";
 import { EventRegister } from "react-native-event-listeners";
 import { useTranslation } from "react-i18next";
@@ -127,14 +127,7 @@ export const BottomMenus = (propss: any) => {
         options={{
           tabBarLabel:t("history"),
           tabBarLabelStyle: styles.tabBarLabelStyle,
-          tabBarButton: (props) => (
-            <TouchableOpacity
-              {...props}
-              onPress={() => {
-                EventRegister.emit("OpenDrawer");
-              }}
-            />
-          ),
+     
 
           tabBarIcon: ({ focused }: any) => (
             <View

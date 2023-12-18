@@ -423,7 +423,7 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
                 alignItems: "center",
                 marginBottom: 15,
                 borderRadius: 20,
-                backgroundColor: "#BBC1F6",
+                backgroundColor:isEarthId()? "#BBC1F6":Screens.colors.primary,
                 flexDirection: "row",
                 elevation: 5,
                 shadowColor: "#000",

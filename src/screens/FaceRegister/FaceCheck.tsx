@@ -124,10 +124,16 @@ const LivenessCameraScreen = (props: any) => {
     }
   };
 
-  const saveSelectionSecurities = () => {
-    props.navigation.dispatch(
-      StackActions.replace("DrawerNavigator", { type: "Faceid" })
-    );
+  const saveSelectionSecurities = async() => {
+    const passcode = await AsyncStorage.getItem("passcode");
+    if(passcode){
+      props.navigation.dispatch(StackActions.replace("PasswordCheck"));
+    }else{
+      props.navigation.dispatch(
+        StackActions.replace("DrawerNavigator", { type: "Faceid" })
+      );
+    }
+   
   };
 
   const { colors } = useTheme();

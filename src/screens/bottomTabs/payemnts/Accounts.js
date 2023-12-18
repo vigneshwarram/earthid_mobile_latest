@@ -5,9 +5,9 @@ import {
   View,
   ActivityIndicator,
   Alert,
-  StyleSheet
+  StyleSheet,
+  TouchableOpacity
 } from "react-native";
-import ShareMenu, { ShareMenuReactView } from "react-native-share-menu";
 import { Screens } from "../../../themes";
 import { dateTime } from "../../../utils/encryption";
 import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
@@ -24,8 +24,7 @@ import {
   LinkLogLevel,
   LinkIOSPresentationStyle,
 } from "react-native-plaid-link-sdk";
-import { TouchableOpacity } from "react-native-gesture-handler";
-const Payment = (props) => {
+const Accounts = (props) => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState(null);
   const dispatch = useAppDispatch();
@@ -33,7 +32,8 @@ const Payment = (props) => {
   const [accessToken, setAccessToken] = useState(null);
   const [accessTokenNew, setAccessTokenNew] = useState(null);
   const documentsDetailsList = useAppSelector((state) => state.Documents);
-  const [accounts, setAccounts] = useState([]);
+  const { accounts } = props.route.params;
+
 
   const createVerifiableCred = (verifyVcCred) => {
     var date = dateTime();
@@ -65,140 +65,13 @@ const Payment = (props) => {
     dispatch(saveDocuments(DocumentList)).then(() => {
       setTimeout(() => {
         setLoading(false);
-        Alert.alert("Proof of funds is successfully generated");
+        Alert.alert("Proof of funds successfully generated");
         props.navigation.navigate("Documents");
       }, 1000);
     });
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        // Replace 'YOUR_API_ENDPOINT' with the actual API endpoint
-        const response = await fetch("https://api.4wrd.tech:8243/token", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-            Authorization:
-              "Basic NWpGQTRFOGM4Rjhqb1kwbGFhc1VtU0NUSnJVYTpuQTFFSXJJNFp6aVpvZXRhakxRa3B2QTFJTkFh",
-            // You may need to include additional headers here, such as authentication headers
-          },
-          body: "grant_type=client_credentials",
-        });
-        console.log("Response Status:", response.status);
-        // Check if the request was successful
-        if (!response.ok) {
-          setLoading(false);
-          throw new Error("Network response was not ok");
-        }
-
-        // Get the response text directly
-        const result = await response.json();
-        console.log("result:::::", result);
-        createAccessToken(result?.access_token);
-        setAccessToken(result?.access_token)
-
-        setLoading(false);
-        // Set the data in the state
-        // Depending on your use case, you may handle the result here
-      } catch (error) {
-        setLoading(false);
-        console.error("Error fetching data:1234", error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  const createAccessToken = async (token) => {
-    setLoading(true);
-    try {
-      const username = "SandboxUser1";
-      const password = "SandboxUser1";
-      const body = new URLSearchParams();
-      body.append("grant_type", "password");
-      body.append("username", encodeURIComponent(username));
-      body.append("password", encodeURIComponent(password));
-
-      // Replace 'YOUR_API_ENDPOINT' with the actual API endpoint
-      const response = await fetch(
-        "https://api.4wrd.tech:8243/authorize/2.0/token?provider=AB4WRD",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-            Authorization: `Bearer ${token}`,
-            // You may need to include additional headers here, such as authentication headers
-          },
-          body: body.toString(),
-        }
-      );
-      console.log("Response Status:", response.status);
-      // Check if the request was successful
-      if (!response.ok) {
-        setLoading(false);
-        throw new Error("Network response was not ok");
-      }
-
-      // Get the response text directly
-      const result = await response.json();
-      setAccessTokenNew(result?.access_token)
-  
-
-      setLoading(false);
-      // Set the data in the state
-      // Depending on your use case, you may handle the result here
-    } catch (error) {
-      setLoading(false);
-      console.error("Error fetching data:1234", error);
-    }
-  };
-
-  useEffect(()=>{
-    if(accessTokenNew){
-      getAccounts()
-    }
-  
-  },[accessTokenNew])
-   
-  const getAccounts = async () => {
-    console.log('token====>',`Bearer ${accessToken}`)
-    setLoading(true);
-    try {
-  
-      // Replace 'YOUR_API_ENDPOINT' with the actual API endpoint
-      const response = await fetch(
-        "https://api.4wrd.tech:8243/manage-accounts/api/2.0/accounts?provider=AB4WRD",
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            "token-id":accessTokenNew
-            // You may need to include additional headers here, such as authentication headers
-          },
-      
-        }
-      );
-      console.log("Response Status:123", response.status);
-      // Check if the request was successful
-      if (!response.ok) {
-        setLoading(false);
-        throw new Error("Network response was not ok");
-      }
-
-      // Get the response text directly
-      const result = await response.json();
-      setAccounts(result?.Data?.Account)
-
-      setLoading(false);
-      // Set the data in the state
-      // Depending on your use case, you may handle the result here
-    } catch (error) {
-      setLoading(false);
-      console.error("Error fetching data:1234", error);
-    }
-  };
+ 
   const renderItem = ({ item }) => (
     <View style={{ borderBottomWidth: 1, borderBottomColor: '#000', padding: 10 }}>
       <Text>{`Account ID: ${item.AccountId}`}</Text>
@@ -206,13 +79,13 @@ const Payment = (props) => {
       <Text>{`Currency: ${item.Currency}`}</Text>
       {/* Add more fields as needed */}
       {item.Account && (
-        <View style={{ marginVertical: 10 ,backgroundColor:Screens.colors.header.middleColor,padding:10,borderRadius:20}}>
-          <Text style={{ fontWeight: 'bold',color:'#fff' }}>Account Details:</Text>
+        <View style={{ marginVertical: 10 ,backgroundColor:'#9EDCF0',padding:10,borderRadius:20}}>
+          <Text style={{ fontWeight: 'bold',color:'#000' }}>Account Details:</Text>
           {item.Account.map((subAccount, index) => (
             <View key={index}>
-              <Text style={{color:'#fff',fontSize:10}}>{`Scheme Name: ${subAccount.SchemeName}`}</Text>
-              <Text style={{color:'#fff',fontSize:10}}>{`Identification: ${subAccount.Identification}`}</Text>
-              <Text style={{color:'#fff',fontSize:10}}>{`Secondary Identification: ${subAccount.SecondaryIdentification}`}</Text>
+              <Text style={{color:'#000',fontSize:10}}>{`Scheme Name: ${subAccount.SchemeName}`}</Text>
+              <Text style={{color:'#000',fontSize:10}}>{`Identification: ${subAccount.Identification}`}</Text>
+              <Text style={{color:'#000',fontSize:10}}>{`Secondary Identification: ${subAccount.SecondaryIdentification}`}</Text>
             </View>
           ))}
         </View>
@@ -234,16 +107,21 @@ const Payment = (props) => {
           >
             <View
               style={{
-                width: 140,
+                width: 200,
                 height: 50,
                 backgroundColor: Screens.colors.primary,
                 justifyContent: "center",
                 alignItems: "center",
-                borderRadius:30
+                borderRadius:30,
+                shadowColor: 'rgba(0, 0, 0, 0.1)',
+                shadowOpacity: 0.8,
+                elevation: 6,
+                shadowRadius: 15 ,
+                shadowOffset : { width: 1, height: 13},
               }}
             >
               <Text style={{ color: "#fff", fontWeight: "bold" }}>
-               Create VC
+              Generate Proof of Funds
               </Text>
             </View>
           </View>
@@ -268,34 +146,11 @@ const Payment = (props) => {
           <ActivityIndicator size={"large"} color={"red"}></ActivityIndicator>
         </View>
       ) : (
-        <View style={{justifyContent:'center',alignItems:'center',marginTop:40,padding:5}}>
-           <Text>
-      Please connect with bank In order to acces the account details Thanks!
-    </Text>
-    <TouchableOpacity onPress={()=>props.navigation.navigate('BankLoginScreen',{accounts:accounts})}>
-          <View
-      
-          >
-            <View
-              style={{
-                width: 170,
-                height: 50,
-                marginTop:100,
-                backgroundColor: Screens.colors.primary,
-                justifyContent: "center",
-                alignItems: "center",
-                borderRadius:30,
-                alignSelf:'center'
-              }}
-            >
-              <Text style={{ color: "#fff", fontWeight: "bold" }}>
-             Connect with bank
-              </Text>
-            </View>
-          </View>
-        </TouchableOpacity>
-        </View>
-   
+        <FlatList
+        data={accounts}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={renderItem}
+      />
       )}
     </View>
   );
@@ -409,4 +264,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Payment;
+export default Accounts;
