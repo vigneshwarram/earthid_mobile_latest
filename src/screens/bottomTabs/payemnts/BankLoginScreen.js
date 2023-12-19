@@ -17,18 +17,23 @@ const BankLoginScreen = (props) => {
       alert('Please enter password')
     }
     else{
+      console.log('accounts',accounts)
       props.navigation.navigate('Accountszzz',{accounts:accounts})
     }
   
     // Add logic to validate credentials and navigate to the next screen if successful
   };
-
+  const _toggleDrawer = () => {
+    props.navigation.openDrawer();
+  };
   return (
     <View style={{flex:1,backgroundColor:'#fff'}}>
         <Header
             // rightIconPress={onPressNavigateTo}
             leftIconSource={LocalImages.logoImage}
-            rightIconSource={LocalImages.addImage}
+            onpress={() => {
+              _toggleDrawer();
+            }}
             linearStyle={styles.linearStyle}
           ></Header>
     <View style={styles.container}>
@@ -59,7 +64,7 @@ const BankLoginScreen = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+  marginTop:30,
     paddingHorizontal: 16,
   },
   input: {

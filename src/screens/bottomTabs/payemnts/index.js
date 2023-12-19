@@ -99,7 +99,6 @@ const Payment = (props) => {
         createAccessToken(result?.access_token);
         setAccessToken(result?.access_token)
 
-        setLoading(false);
         // Set the data in the state
         // Depending on your use case, you may handle the result here
       } catch (error) {
@@ -110,7 +109,9 @@ const Payment = (props) => {
 
     fetchData();
   }, []);
-
+  const _toggleDrawer = () => {
+    props.navigation.openDrawer();
+  };
   const createAccessToken = async (token) => {
     setLoading(true);
     try {
@@ -255,7 +256,7 @@ const Payment = (props) => {
        <Header
             // rightIconPress={onPressNavigateTo}
             leftIconSource={LocalImages.logoImage}
-            rightIconSource={LocalImages.addImage}
+           
             onpress={() => {
               _toggleDrawer();
             }}
@@ -268,9 +269,9 @@ const Payment = (props) => {
           <ActivityIndicator size={"large"} color={"red"}></ActivityIndicator>
         </View>
       ) : (
-        <View style={{justifyContent:'center',alignItems:'center',marginTop:40,padding:5}}>
+        <View style={{justifyContent:'center',alignItems:'center',marginTop:40,padding:5,paddingHorizontal:20}}>
            <Text>
-      Please connect with bank In order to acces the account details Thanks!
+           Please connect with bank in order to access the account details. Thanks!
     </Text>
     <TouchableOpacity onPress={()=>props.navigation.navigate('BankLoginScreen',{accounts:accounts})}>
           <View

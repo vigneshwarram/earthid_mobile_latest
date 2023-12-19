@@ -71,7 +71,9 @@ const Accounts = (props) => {
     });
   };
 
- 
+  const _toggleDrawer = () => {
+    props.navigation.openDrawer();
+  };
   const renderItem = ({ item }) => (
     <View style={{ borderBottomWidth: 1, borderBottomColor: '#000', padding: 10 }}>
       <Text>{`Account ID: ${item.AccountId}`}</Text>
@@ -133,7 +135,6 @@ const Accounts = (props) => {
        <Header
             // rightIconPress={onPressNavigateTo}
             leftIconSource={LocalImages.logoImage}
-            rightIconSource={LocalImages.addImage}
             onpress={() => {
               _toggleDrawer();
             }}

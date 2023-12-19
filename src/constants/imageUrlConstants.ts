@@ -51,6 +51,7 @@ export const LocalImages = {
   editIcon: require("../../resources/images/editIcon.png"),
   backupicon: require("../../resources/images/backupicon.png"),
   uploadqrimage: require("../../resources/images/uploadqrimage.png"),
+  paymentshand: require("../../resources/images/paymentshand.png"),
   cam: require("../../resources/images/cam.png"),
   settingpic: require("../../resources/images/settingpic.png"),
   settingimage: require("../../resources/images/settingimage.png"),

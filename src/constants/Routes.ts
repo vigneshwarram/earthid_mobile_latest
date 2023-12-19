@@ -64,11 +64,11 @@ export const ABOUT_ROUTES = {
   },
   PAYMENT: {
     RIGHT_ICON: LocalImages.sideArrowImage,
-    URI: LocalImages.backupicon,
+    URI: LocalImages.paymentshand,
     CARD: "Payment",
     TITLE: SCREENS.DRAWERMENUTITLES.PAYMENT,
     SCREEN: "Payment",
-    COLOR: "#FFDD9B",
+    COLOR: "#90EE90",
   },
   DELETE: {
     URI: LocalImages.deleteImage,
