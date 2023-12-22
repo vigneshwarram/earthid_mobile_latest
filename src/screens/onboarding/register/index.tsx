@@ -271,12 +271,12 @@ const Register = ({ navigation }: IRegister) => {
   const Footer = () => (
     <View style={{ marginHorizontal: 20, backgroundColor: "#fff" }}>
       <Button
-        disabled={!isValidMobileNumber}
+        disabled={!isValidMobileNumber || isfirstNameError || isemailError || firstName==='' || email==='' }
         onPress={_navigateAction}
         style={{
           buttonContainer: {
             elevation: 5,
-            opacity:isValidMobileNumber?1:0.5
+            opacity:isValidMobileNumber && !isfirstNameError && !isemailError && firstName!=='' && email !=='' ?1:0.5
           },
           text: {
             color: Screens.pureWhite,
@@ -603,12 +603,12 @@ const Register = ({ navigation }: IRegister) => {
               }}
               containerStyle={{
                 borderColor: isValidMobileNumber
-                  ? Screens.darkGray
+                  ?mobileNumber.length != 0?Screens.colors.primary: Screens.darkGray
                   : 
                   mobileNumber.length != 0?  Screens.red:Screens.darkGray
                ,
                 borderWidth: isValidMobileNumber
-                  ? 1
+                  ? mobileNumber.length != 0?2.2: 1
                   : mobileNumber.length != 0
                   ? 2.2
                   : 2,

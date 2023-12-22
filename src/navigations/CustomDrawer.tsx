@@ -65,6 +65,12 @@ const CustomDrawer = (props: any) => {
         props.navigation.dispatch(StackActions.replace("AuthStack"));
       });
     } else if (item.route === "delete") {
+      await AsyncStorage.removeItem("passcode");
+      await AsyncStorage.removeItem("fingerprint");
+      await AsyncStorage.removeItem("FaceId");
+      await AsyncStorage.removeItem("pageName");
+      await AsyncStorage.removeItem("profilePic");
+      await AsyncStorage.removeItem("vcCred");
       // const bucketName = `idv-sessions-${userDetails?.username.toLowerCase()}`;
       // deleteSingleBucket(bucketName)
       await AsyncStorage.removeItem('apiCalled');

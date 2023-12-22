@@ -59,9 +59,15 @@ const Register = ({ navigation }: IHomeScreenProps) => {
       securityMode !== ESecurityTypes.PASSCORD &&
       payLoad[0]?.enabled
     ) {
-      SnackBar({
-        indicationMessage: "Please choose password security as mandotory",
-      });
+      if (payLoad.length === 0) {
+        payLoad.push({
+          types: securityMode,
+          enabled,
+        });
+      }
+
+      dispatch(SaveSecurityConfiguration(payLoad));
+      navigation.navigate(re_Direct);
     } else {
       if (payLoad.length === 0) {
         payLoad.push({
@@ -90,19 +96,15 @@ const Register = ({ navigation }: IHomeScreenProps) => {
     }
     return selected;
   };
-
-  const actionToNavigate = () => {
+   useEffect(()=>{
     if (securityReducer && securityReducer?.securityData) {
       console.log(
         "securityReducer?.securityData",
         securityReducer?.securityData
       );
       if (
-        securityReducer?.securityData?.length === 2 &&
+        securityReducer?.securityData?.length === 1 &&
         securityReducer?.securityData?.some(
-          (item: { types: any }) => item.types === ESecurityTypes.PASSCORD
-        ) &&
-        securityReducer?.securityData?.every(
           (item: { enabled: boolean }) => item.enabled
         )
       ) {
@@ -115,7 +117,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
     } else {
       //navigation.navigate("Security");
     }
-  };
+   },[securityReducer])
   const saveSelectionSecuritiess = async() => {
     let payLoad = [];
     payLoad.push({
@@ -124,7 +126,6 @@ const Register = ({ navigation }: IHomeScreenProps) => {
     });
     await AsyncStorage.setItem("FaceID", ESecurityTypes.FACE);
     dispatch(SaveSecurityConfiguration(payLoad)).then(() => {
-      actionToNavigate();
     });
   };
   const showAlert = () => {
@@ -244,13 +245,10 @@ const Register = ({ navigation }: IHomeScreenProps) => {
             <View style={{ marginTop: -20 }}>
               <Button
                 selected={getSelectedDState(ESecurityTypes.FACE)}
-                disabled={getSelectedDState(ESecurityTypes.FACE)}
+                 disabled={getSelectedDState(ESecurityTypes.FACE)}
                 onPress={() => {
                   rnBiometrics.isSensorAvailable().then((resultObject) => {
-                    let epochTimeSeconds = Math.round(
-                      new Date().getTime() / 1000
-                    ).toString();
-                    let payload = epochTimeSeconds + "some message";
+        
                     const { available, biometryType } = resultObject;
                     if (available && biometryType === BiometryTypes.FaceID) {
                       rnBiometrics

@@ -63,10 +63,10 @@ const LoadingScreen = ({ navigation }: ILoadingScreen) => {
     const fingerPrint = await AsyncStorage.getItem("fingerprint");
     const passcode = await AsyncStorage.getItem("passcode");
     const FaceID = await AsyncStorage.getItem("FaceID");
-    console.log("FaceID===>", FaceID);
+    console.log("FaceID===>123", FaceID);
     if (fingerPrint && passcode) {
       aunthenticateBioMetricInfo();
-    } else if (FaceID && passcode) {
+    } else if (FaceID && !passcode) {
       rnBiometrics.isSensorAvailable().then((resultObject) => {
         let epochTimeSeconds = Math.round(
           new Date().getTime() / 1000
@@ -81,7 +81,7 @@ const LoadingScreen = ({ navigation }: ILoadingScreen) => {
               console.log("resultObject===>", resultObject);
               if (success) {
                 
-                navigation.dispatch(StackActions.replace("PasswordCheck"));
+                navigation.dispatch(StackActions.replace("DrawerNavigator"));
               } else {
                 console.log("user cancelled biometric prompt");
               }
