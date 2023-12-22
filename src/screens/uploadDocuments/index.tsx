@@ -167,7 +167,8 @@ const UploadScreen = (props: any) => {
         resp[0]?.type === "image/jpeg" ||
         resp[0]?.type === "image/jpg" ||
         resp[0]?.type === "image/png" ||
-        resp[0]?.type === "application/pdf"
+        resp[0]?.type === "application/pdf"||
+        resp[0]?.type === 'application/msword' 
       ) {
         RNFS.readFile(decodedFileName, "base64")
           .then(async (res) => {

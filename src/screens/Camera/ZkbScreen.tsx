@@ -278,7 +278,7 @@ export const QrScannerMaskedWidget = ({createVerifiableCredentials,setValue,navi
 
                               }}
                             >
-                             {barCodeDataDetails?.requestType?.request==='minAge'?showVisibleDOB?'09/01/1998':'.. .. ....':showVisibleBalance?'$30,000': '$.....'}
+                             {barCodeDataDetails?.requestType?.request==='minAge'?showVisibleDOB?'09/01/1998':'.. .. ....':showVisibleBalance?"$ "+item?.amount: '$.....'}
                             </GenericText>
                         </View>
                       

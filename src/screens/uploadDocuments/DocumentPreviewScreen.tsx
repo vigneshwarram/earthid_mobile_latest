@@ -235,7 +235,7 @@ const DocumentPreviewScreen = (props: any) => {
         </TouchableOpacity>
       </View>
 
-      {fileUri?.type === "application/pdf" ? (
+      {fileUri?.type === "application/pdf" || fileUri?.type === 'application/msword' ? (
          
         <View style={{ flex: 1, marginTop: 70 }}>
        

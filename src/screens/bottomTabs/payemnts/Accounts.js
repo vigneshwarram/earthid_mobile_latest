@@ -35,7 +35,7 @@ const Accounts = (props) => {
   const { accounts } = props.route.params;
 
 
-  const createVerifiableCred = (verifyVcCred) => {
+  const createVerifiableCred = (balance) => {
     var date = dateTime();
     setLoading(true);
     var documentDetails: IDocumentProps = {
@@ -47,12 +47,13 @@ const Accounts = (props) => {
       date: date?.date,
       time: date?.time,
       txId: "data?.result",
+      amount:balance[0]?.Amount?.Amount+"",
       // docType: verifyVcCred?.type[1],
       docExt: ".jpg",
       processedDoc: "",
       isVc: true,
-      vc: JSON.stringify(verifyVcCred),
-      verifiableCredential: verifyVcCred,
+      vc: JSON.stringify(balance),
+      verifiableCredential: balance,
       docName: "",
       base64: undefined,
     };
@@ -103,7 +104,7 @@ const Accounts = (props) => {
           ))}
         </View>
       )}
-      <TouchableOpacity onPress={()=>createVerifiableCred()}>
+      <TouchableOpacity onPress={()=>createVerifiableCred(item.Balance)}>
           <View
       
           >

@@ -479,6 +479,10 @@ const Register = ({ navigation }: IRegister) => {
     }
   }
 
+  useEffect(()=>{
+    setValidMobileNumber(phoneInput.current?.isValidNumber(mobileNumber));
+  },[countryCode])
+
   return (
     <KeyboardAvoidingScrollView
       style={{ flex: 1, backgroundColor: Screens.colors.background }}
@@ -580,7 +584,7 @@ const Register = ({ navigation }: IRegister) => {
               onChangeCountry={(code) => {
                 console.log("code======>", code);
                 const { callingCode, cca2 } = code;
-                setValidMobileNumber(phoneInput.current?.isValidNumber(mobileNumber));
+               
                 setcountryCode(cca2);
                 setcallingCode(callingCode[0]);
                 console.log("code==>", callingCode[0]);
