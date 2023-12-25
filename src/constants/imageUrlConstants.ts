@@ -11,6 +11,7 @@ export const LocalImages = {
     : require("../../resources/images/logo.png"),
   recent: require("../../resources/images/norecentactivity.png"),
   closeImage: require("../../resources/images/close.png"),
+  wordImage: require("../../resources/images/word.png"),
   logoutImage: require("../../resources/images/logout.png"),
   sideArrowImage: require("../../resources/images/sidearrow.png"),
   down: require("../../resources/images/down.png"),

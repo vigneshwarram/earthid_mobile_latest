@@ -10,6 +10,7 @@ import {
   AsyncStorage,
   Dimensions,
 } from "react-native";
+import OpenFile from 'react-native-doc-viewer';
 import NetInfo from "@react-native-community/netinfo";
 import Button from "../../components/Button";
 import { LocalImages } from "../../constants/imageUrlConstants";
@@ -23,7 +24,7 @@ import PDFView from "react-native-view-pdf";
 import Spinner from "react-native-loading-spinner-overlay/lib";
 import Loader from "../../components/Loader/AnimatedLoader";
 import { isEarthId } from "../../utils/PlatFormUtils";
-
+import GenericText from "../../components/Text";
 
 const DocumentPreviewScreen = (props: any) => {
   const { fileUri } = props?.route?.params;
@@ -60,6 +61,7 @@ const DocumentPreviewScreen = (props: any) => {
   }, [error]);
 
   function alertUploadDoc() {
+    console.log('fileUri?.type===',fileUri?.type)
     if (type == "regDoc") {
       uploadDocumentImage();
     } else {
@@ -90,7 +92,7 @@ const DocumentPreviewScreen = (props: any) => {
                 } else {
                   isNetworkConnect();
                 }
-              //  props.navigation.navigate("uploadDocumentsScreen")
+                //  props.navigation.navigate("uploadDocumentsScreen")
               },
             },
           ],
@@ -142,11 +144,12 @@ const DocumentPreviewScreen = (props: any) => {
         props.navigation.navigate("DrawerNavigator", { fileUri });
       }
     } else {
-      console.log("fileUri==>", fileUri);
+      console.log("fileUri==>123vicky", fileUri?.type);
       const imageName = props?.route?.params?.imageName;
       props.navigation.navigate("categoryScreen", {
         fileUri,
         editDoc,
+        fileType:fileUri?.type,
         selfAttested,
         imageName: imageName,
       });
@@ -193,7 +196,35 @@ const DocumentPreviewScreen = (props: any) => {
       }
     }
   }, [data]);
-
+  const handlePressb64 = (type: string) => {
+    if(Platform.OS === 'ios'){
+      OpenFile.openDocb64([{
+        base64:fileUri?.base64,
+        fileName:fileUri?.imageName,
+        fileType:type==='application/msword'?"doc":'docx'
+      }], (error: any, url: any) => {
+          if (error) {
+            console.error(error);
+          } else {
+            console.log(url)
+          }
+        })
+    }else{
+      //Android
+      OpenFile.openDocb64([{
+        base64:fileUri?.base64,
+        fileName:fileUri?.imageName,
+        fileType:type==='application/msword'?"doc":'docx',
+        cache:true /*Use Cache Folder Android*/
+      }], (error: any, url: any) => {
+          if (error) {
+            console.error(error);
+          } else {
+            console.log(url)
+          }
+        })
+    }
+  }
   const createPayLoadFromDocumentData = async (documentResponseData: any) => {
     console.log(
       "slsls",
@@ -235,22 +266,61 @@ const DocumentPreviewScreen = (props: any) => {
         </TouchableOpacity>
       </View>
 
-      {fileUri?.type === "application/pdf" || fileUri?.type === 'application/msword' ? (
-         
+      {fileUri?.type === "application/pdf" ? (
         <View style={{ flex: 1, marginTop: 70 }}>
-       
           <PDFView
             fadeInDuration={100.0}
-            style={{ flex: 1,height:Dimensions.get('window').height - 20 }}
+            style={{ flex: 1, height: Dimensions.get("window").height - 20 }}
             resource={resources[resourceType]}
             resourceType={resourceType}
             onLoad={() => console.log(`PDF rendered from ${resourceType}`)}
             onError={() => console.log("Cannot render PDF", error)}
           />
-        
-   
         </View>
-  
+      ) : fileUri?.type === "application/msword" || fileUri?.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ? (
+        <View style={{ flex: 0.8 }}>
+            <View style={{alignSelf: "center",justifyContent:'center'}}>
+              
+          <Image
+            resizeMode={"contain"}
+            style={{
+              width: 100,
+              height: "50%",
+            }}
+            source={LocalImages.wordImage}
+          ></Image>
+       
+        </View>
+        <GenericText
+        style={{
+          textAlign: "center",
+          paddingVertical: 5,
+          fontWeight: "bold",
+          fontSize: 16,
+          color: "#fff",
+        }}
+      >
+        {"To preview the .doc, .docx file please click on the preview button!"}
+      </GenericText>
+      <View style={{justifyContent:'center',alignItems:'center'}}>
+      <Button
+          onPress={()=>handlePressb64(fileUri?.type)}
+          style={{
+            buttonContainer: {
+              elevation: 5,
+              width: 150,
+            },
+            text: {
+              color: Screens.pureWhite,
+            },
+            iconStyle: {
+              tintColor: Screens.pureWhite,
+            },
+          }}
+          title={"Preview"}
+        ></Button>
+      </View>
+        </View>
       ) : (
         <View style={{ flex: 0.8, alignSelf: "center" }}>
           <Image

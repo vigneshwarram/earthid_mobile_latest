@@ -11,6 +11,7 @@ import {
   Text,
 } from "react-native";
 import PDFView from "react-native-view-pdf";
+import OpenFile from 'react-native-doc-viewer';
 import SuccessPopUp from "../../../components/Loader";
 import AnimatedLoader from "../../../components/Loader/AnimatedLoader";
 import GenericText from "../../../components/Text";
@@ -25,6 +26,7 @@ import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
 import { saveDocuments } from "../../../redux/actions/authenticationAction";
 import Header from "../../../components/Header";
 import LinearGradients from "../../../components/GradientsPanel/LinearGradient";
+import Button from "../../../components/Button";
 
 const DocumentPreviewScreen = (props: any) => {
   const dispatch = useAppDispatch();
@@ -59,7 +61,7 @@ const DocumentPreviewScreen = (props: any) => {
     url: documentDetails?.base64,
     base64: documentDetails?.base64,
   };
-
+   console.log('documentDetails====>',documentDetails)
   const resourceType = "base64";
   const shareItem = async () => {
     console.log("selectedItem?.base64===>", selectedItem?.base64);
@@ -121,6 +123,36 @@ const DocumentPreviewScreen = (props: any) => {
 
   //   props.navigation.navigate("Documents");
   // };
+
+  const handlePressb64 = (type: string) => {
+    if(Platform.OS === 'ios'){
+      OpenFile.openDocb64([{
+        base64: documentDetails.base64 ,
+        fileName:documentDetails?.docName,
+        fileType:type==='application/msword'?"doc":'docx'
+      }], (error: any, url: any) => {
+          if (error) {
+            console.error(error);
+          } else {
+            console.log(url)
+          }
+        })
+    }else{
+      //Android
+      OpenFile.openDocb64([{
+        base64: documentDetails.base64 ,
+        fileName:documentDetails?.docName,
+        fileType:type==='application/msword'?"doc":'docx',
+        cache:true /*Use Cache Folder Android*/
+      }], (error: any, url: any) => {
+          if (error) {
+            console.error(error);
+          } else {
+            console.log(url)
+          }
+        })
+    }
+  }
 
   const deleteItem = () => {
     console.log("selectedItem?.id", selectedItem);
@@ -324,6 +356,51 @@ console.log('documentDetails',documentDetails)
             onError={() => console.log("Cannot render PDF", error)}
           />
         ) : documentDetails.base64 ? (
+
+          documentDetails?.fileType === 'application/msword' || documentDetails?.fileType ==='application/vnd.openxmlformats-officedocument.wordprocessingml.document'?
+          <View style={{ flex: 0.8 }}>
+          <View style={{alignSelf: "center",justifyContent:'center'}}>
+            
+        <Image
+          resizeMode={"contain"}
+          style={{
+            width: 100,
+            height: "50%",
+          }}
+          source={LocalImages.wordImage}
+        ></Image>
+     
+      </View>
+      <GenericText
+        style={{
+          textAlign: "center",
+          paddingVertical: 5,
+          fontWeight: "bold",
+          fontSize: 16,
+          color: "#000",
+        }}
+      >
+        {"To preview the .doc, .docx file please click on the preview button!"}
+      </GenericText>
+      <View style={{justifyContent:'center',alignItems:'center'}}>
+      <Button
+          onPress={()=>handlePressb64(documentDetails?.fileType)}
+          style={{
+            buttonContainer: {
+              elevation: 5,
+              width: 150,
+            },
+            text: {
+              color: Screens.pureWhite,
+            },
+            iconStyle: {
+              tintColor: Screens.pureWhite,
+            },
+          }}
+          title={"Preview"}
+        ></Button>
+      </View>
+      </View>:
           <Image
             resizeMode={"contain"}
             style={{

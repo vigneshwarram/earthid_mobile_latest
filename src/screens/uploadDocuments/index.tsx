@@ -168,7 +168,8 @@ const UploadScreen = (props: any) => {
         resp[0]?.type === "image/jpg" ||
         resp[0]?.type === "image/png" ||
         resp[0]?.type === "application/pdf"||
-        resp[0]?.type === 'application/msword' 
+        resp[0]?.type === 'application/msword' ||
+        resp[0]?.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
       ) {
         RNFS.readFile(decodedFileName, "base64")
           .then(async (res) => {
@@ -187,7 +188,33 @@ const UploadScreen = (props: any) => {
                   typePDF: resp[0].uri,
                 },
               });
-            } else {
+            }else if(resp[0].type == "application/msword"){
+              props.navigation.navigate("DocumentPreviewScreen", {
+                fileUri: {
+                  uri: `data:image/png;base64,${res}`,
+                  base64: res,
+                  file: resp[0],
+                  type: "application/msword",
+                  imageName: resp[0]?.name,
+                  route: "gallery",
+                  typePDF: resp[0].uri,
+                },
+              }); 
+            }
+            else if(resp[0].type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'){
+              props.navigation.navigate("DocumentPreviewScreen", {
+                fileUri: {
+                  uri: `data:image/png;base64,${res}`,
+                  base64: res,
+                  file: resp[0],
+                  type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                  imageName: resp[0]?.name,
+                  route: "gallery",
+                  typePDF: resp[0].uri,
+                },
+              }); 
+            }
+             else {
               console.log("check==>####", resp[0]);
               props.navigation.navigate("DocumentPreviewScreen", {
                 fileUri: {

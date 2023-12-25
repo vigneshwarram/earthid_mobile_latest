@@ -35,6 +35,7 @@ import {
   uploadImageToS3,
   uploadJSONToS3,
   uploadPDFToS3,
+  uploadDocToS3
 } from "../../../utils/awsSetup";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import RNFetchBlob from "rn-fetch-blob";
@@ -179,7 +180,50 @@ const AuthBackupIdentity = ({ navigation, route }: IHomeScreenProps) => {
         setActivityLoad(false);
         // Code to handle the exception
       }
-    } else if (selectedItem?.isLivenessImage) {
+    }
+    else if(selectedItem?.fileType ==='application/msword' || selectedItem?.fileType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'){
+      const imageName: any =
+        selectedItem?.docName + "." + selectedItem?.fileType==='application/msword'?'doc':'docx';
+      try {
+        const objectKey = imageName; // Replace with your desired object key
+        const uploadedKey: any = await uploadDocToS3(
+          bucketName,
+          `images/${objectKey}`,
+          selectedItem?.base64,
+          selectedItem?.fileType
+        );
+
+        if (uploadedKey) {
+          const objectKeys = `images/${imageName}`;
+          const preSignedURL = await generatePreSignedURL(
+            bucketName,
+            objectKeys
+          );
+
+          if (preSignedURL) {
+            setPreSignedUrl(preSignedURL);
+          } else {
+            setActivityLoad(false);
+            Alert.alert(
+              "Error",
+              "There is a technical issue, please try again later."
+            );
+          }
+        } else {
+          setActivityLoad(false);
+          Alert.alert(
+            "Error",
+            "There is a technical issue, please try again later."
+          );
+        }
+      } catch (error) {
+        console.log("erro----->++++", error);
+        setActivityLoad(false);
+        // Code to handle the exception
+      }
+    }
+    
+    else if (selectedItem?.isLivenessImage) {
       console.log("neww", "this is Liveness image type");
       const imageName: any =
         selectedItem?.docName + "." + selectedItem?.docType;

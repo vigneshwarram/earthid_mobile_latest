@@ -45,6 +45,7 @@ interface IDocumentScreenProps {
 
 const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const fileUri = route?.params?.fileUri;
+  const fileType =route?.params?.fileType;
   const pic = route?.params?.fileUri;
   const itemData = route?.params?.itemData;
   const { editDoc, selectedItem } = route?.params;
@@ -147,6 +148,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
             txId: "e4343434343434443",
             docType: "jpg",
             docExt: ".jpg",
+            fileType:fileType,
             processedDoc: "",
             base64: fileUri?.base64,
             type: "deeplink",
@@ -214,6 +216,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
               time: date?.time,
               txId: "e4343434343434443",
               docType: "jpg",
+              fileType:fileType,
               docExt: ".jpg",
               processedDoc: "",
               base64: fileUri?.base64,

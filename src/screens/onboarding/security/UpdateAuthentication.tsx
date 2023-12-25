@@ -6,6 +6,7 @@ import {
   Image,
   FlatList,
   AsyncStorage,
+  Linking,
   Alert
 } from "react-native";
 import { Screens } from "../../../themes/index";
@@ -38,7 +39,9 @@ const UpdateAuthentication = (props: any) => {
   //     console.log(error);
   //   }
   // };
-
+  const openSettings = () => {
+    Linking.openURL('app-settings:');
+  };
   const _navigateAction = (item: any) => {
     if (item.CARD === "language") {
       setLanguageVisible(true);
@@ -51,13 +54,30 @@ const UpdateAuthentication = (props: any) => {
     else {
       if(item.card=="UpdateFaceId"){
         console.log("UpdateFaceId==>","UpdateFaceId");
-        props.navigation.navigate("PasswordCheck1",{passingType:"UpdateFaceId"})
+        Alert.alert(
+          'Biometric Authentication',
+          'Please Update Face ID in your device settings and try again.',
+          [
+            { text: 'OK', onPress: () => console.log('OK pressed') },
+            { text: 'Open Settings', onPress: openSettings },
+          ],
+          { cancelable: false }
+        );
+    
+       // props.navigation.navigate("PasswordCheck1",{passingType:"UpdateFaceId"})
       }else if(item.card=="OldPincode"){
         console.log("OldPincode==>","OldPincode");
         props.navigation.navigate("PasswordCheck1",{passingType1:"OldPincode"})
       }else if(item.card=="UpdateTouchId"){
-        console.log("UpdateTouchId==>","UpdateTouchId");
-        props.navigation.navigate("PasswordCheck1",{passingType2:"UpdateTouchId"})
+        Alert.alert(
+          'Biometric Authentication',
+          'Please Update Touch ID in your device settings and try again.',
+          [
+            { text: 'OK', onPress: () => console.log('OK pressed') },
+            { text: 'Open Settings', onPress: openSettings },
+          ],
+          { cancelable: false }
+        );
       }
     //  props.navigation.navigate(item.card,{type:"pass"});
     }
