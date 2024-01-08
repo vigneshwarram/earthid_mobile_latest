@@ -50,6 +50,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const [documentsDetailsList, setdocumentsDetailsList] = useState(
     documentsDetailsListData
   );
+  console.log('documentsDetailsListData===>',documentsDetailsListData)
   const [selectedDocuments, setselectedDocuments] = useState();
   const [isModalVisible, setModalVisible] = useState(false);
   let [qrBase64, setBase64] = useState("");
@@ -262,7 +263,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
 
   const handleUploadImage = async () => {
     setisBottomSheetForSideOptionVisible(false);
-    navigation.navigate("ShareQr", { selectedItem: selectedItem });
+   navigation.navigate("ShareQr", { selectedItem: selectedItem });
   };
 
   const RowOption = ({ icon, title, rowAction }: any) => (
