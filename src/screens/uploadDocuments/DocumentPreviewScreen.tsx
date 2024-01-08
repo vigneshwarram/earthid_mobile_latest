@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -10,7 +10,7 @@ import {
   AsyncStorage,
   Dimensions,
 } from "react-native";
-import OpenFile from 'react-native-doc-viewer';
+import OpenFile from "react-native-doc-viewer";
 import NetInfo from "@react-native-community/netinfo";
 import Button from "../../components/Button";
 import { LocalImages } from "../../constants/imageUrlConstants";
@@ -25,6 +25,7 @@ import Spinner from "react-native-loading-spinner-overlay/lib";
 import Loader from "../../components/Loader/AnimatedLoader";
 import { isEarthId } from "../../utils/PlatFormUtils";
 import GenericText from "../../components/Text";
+import { useIsFocused } from "@react-navigation/native";
 
 const DocumentPreviewScreen = (props: any) => {
   const { fileUri } = props?.route?.params;
@@ -37,10 +38,10 @@ const DocumentPreviewScreen = (props: any) => {
   const { fetch: getSuperAdminApiCall } = useFetch();
   const [loginLoading, setLoginLoading] = useState(false);
   const [successResponse, setsuccessResponse] = useState(false);
-  const [message, Setmessage] = useState("ooo");
-  const [datas, SetData] = useState(null);
-  const [source, setSource] = useState({});
+  const [key, setKey] = useState(Date.now());
   const [filePath, setFilePath] = useState();
+  const pdfRef = useRef(null);
+  const isFocused = useIsFocused();
 
   const resources = {
     file:
@@ -61,7 +62,7 @@ const DocumentPreviewScreen = (props: any) => {
   }, [error]);
 
   function alertUploadDoc() {
-    console.log('fileUri?.type===',fileUri?.type)
+    console.log("fileUri?.type===", fileUri?.type);
     if (type == "regDoc") {
       uploadDocumentImage();
     } else {
@@ -149,7 +150,7 @@ const DocumentPreviewScreen = (props: any) => {
       props.navigation.navigate("categoryScreen", {
         fileUri,
         editDoc,
-        fileType:fileUri?.type,
+        fileType: fileUri?.type,
         selfAttested,
         imageName: imageName,
       });
@@ -197,34 +198,44 @@ const DocumentPreviewScreen = (props: any) => {
     }
   }, [data]);
   const handlePressb64 = (type: string) => {
-    if(Platform.OS === 'ios'){
-      OpenFile.openDocb64([{
-        base64:fileUri?.base64,
-        fileName:fileUri?.imageName,
-        fileType:type==='application/msword'?"doc":'docx'
-      }], (error: any, url: any) => {
+    if (Platform.OS === "ios") {
+      OpenFile.openDocb64(
+        [
+          {
+            base64: fileUri?.base64,
+            fileName: fileUri?.imageName,
+            fileType: type === "application/msword" ? "doc" : "docx",
+          },
+        ],
+        (error: any, url: any) => {
           if (error) {
             console.error(error);
           } else {
-            console.log(url)
+            console.log(url);
           }
-        })
-    }else{
+        }
+      );
+    } else {
       //Android
-      OpenFile.openDocb64([{
-        base64:fileUri?.base64,
-        fileName:fileUri?.imageName,
-        fileType:type==='application/msword'?"doc":'docx',
-        cache:true /*Use Cache Folder Android*/
-      }], (error: any, url: any) => {
+      OpenFile.openDocb64(
+        [
+          {
+            base64: fileUri?.base64,
+            fileName: fileUri?.imageName,
+            fileType: type === "application/msword" ? "doc" : "docx",
+            cache: true /*Use Cache Folder Android*/,
+          },
+        ],
+        (error: any, url: any) => {
           if (error) {
             console.error(error);
           } else {
-            console.log(url)
+            console.log(url);
           }
-        })
+        }
+      );
     }
-  }
+  };
   const createPayLoadFromDocumentData = async (documentResponseData: any) => {
     console.log(
       "slsls",
@@ -249,10 +260,8 @@ const DocumentPreviewScreen = (props: any) => {
   };
 
   useEffect(() => {
-    // console.log("RegisterType",fileUri)
-    console.log("Document preview screen", editDoc);
-  }, []);
-  console.log("Document preview screen", fileUri.uri);
+    setKey(Date.now());
+    }, [isFocused]);
 
   return (
     <View style={styles.sectionContainer}>
@@ -270,6 +279,8 @@ const DocumentPreviewScreen = (props: any) => {
         <View style={{ flex: 1, marginTop: 70 }}>
           <PDFView
             fadeInDuration={100.0}
+            ref={pdfRef}
+            key={key}
             style={{ flex: 1, height: Dimensions.get("window").height - 20 }}
             resource={resources[resourceType]}
             resourceType={resourceType}
@@ -277,49 +288,51 @@ const DocumentPreviewScreen = (props: any) => {
             onError={() => console.log("Cannot render PDF", error)}
           />
         </View>
-      ) : fileUri?.type === "application/msword" || fileUri?.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ? (
+      ) : fileUri?.type === "application/msword" ||
+        fileUri?.type ===
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ? (
         <View style={{ flex: 0.8 }}>
-            <View style={{alignSelf: "center",justifyContent:'center'}}>
-              
-          <Image
-            resizeMode={"contain"}
+          <View style={{ alignSelf: "center", justifyContent: "center" }}>
+            <Image
+              resizeMode={"contain"}
+              style={{
+                width: 100,
+                height: "50%",
+              }}
+              source={LocalImages.wordImage}
+            ></Image>
+          </View>
+          <GenericText
             style={{
-              width: 100,
-              height: "50%",
+              textAlign: "center",
+              paddingVertical: 5,
+              fontWeight: "bold",
+              fontSize: 16,
+              color: "#fff",
             }}
-            source={LocalImages.wordImage}
-          ></Image>
-       
-        </View>
-        <GenericText
-        style={{
-          textAlign: "center",
-          paddingVertical: 5,
-          fontWeight: "bold",
-          fontSize: 16,
-          color: "#fff",
-        }}
-      >
-        {"To preview the .doc, .docx file please click on the preview button!"}
-      </GenericText>
-      <View style={{justifyContent:'center',alignItems:'center'}}>
-      <Button
-          onPress={()=>handlePressb64(fileUri?.type)}
-          style={{
-            buttonContainer: {
-              elevation: 5,
-              width: 150,
-            },
-            text: {
-              color: Screens.pureWhite,
-            },
-            iconStyle: {
-              tintColor: Screens.pureWhite,
-            },
-          }}
-          title={"Preview"}
-        ></Button>
-      </View>
+          >
+            {
+              "To preview the .doc, .docx file please click on the preview button!"
+            }
+          </GenericText>
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <Button
+              onPress={() => handlePressb64(fileUri?.type)}
+              style={{
+                buttonContainer: {
+                  elevation: 5,
+                  width: 150,
+                },
+                text: {
+                  color: Screens.pureWhite,
+                },
+                iconStyle: {
+                  tintColor: Screens.pureWhite,
+                },
+              }}
+              title={"Preview"}
+            ></Button>
+          </View>
         </View>
       ) : (
         <View style={{ flex: 0.8, alignSelf: "center" }}>

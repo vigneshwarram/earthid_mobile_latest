@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -11,7 +11,7 @@ import {
   Text,
 } from "react-native";
 import PDFView from "react-native-view-pdf";
-import OpenFile from 'react-native-doc-viewer';
+import OpenFile from "react-native-doc-viewer";
 import SuccessPopUp from "../../../components/Loader";
 import AnimatedLoader from "../../../components/Loader/AnimatedLoader";
 import GenericText from "../../../components/Text";
@@ -27,27 +27,27 @@ import { saveDocuments } from "../../../redux/actions/authenticationAction";
 import Header from "../../../components/Header";
 import LinearGradients from "../../../components/GradientsPanel/LinearGradient";
 import Button from "../../../components/Button";
+import { useIsFocused } from "@react-navigation/native";
 
 const DocumentPreviewScreen = (props: any) => {
   const dispatch = useAppDispatch();
   const { fileUri, type } = props.route.params;
   const { documentDetails } = props?.route?.params;
   // console.log("documentDetails============>", documentDetails);
+  const pdfRef = useRef(null);
   const HistoryParams = props?.route?.params?.history;
-
-  console.log("HistoryParams=========>", HistoryParams);
-
   let documentsDetailsList = useAppSelector((state) => state.Documents);
   const { loading, data, error, fetch: postFormfetch } = useFetch();
   const [successResponse, setsuccessResponse] = useState(false);
   const [message, Setmessage] = useState("ooo");
   const [datas, SetData] = useState(null);
   const [source, setSource] = useState({});
-  const [filePath, setFilePath] = useState();
+  const [key, setKey] = useState(Date.now());
   const [
     isBottomSheetForSideOptionVisible,
     setisBottomSheetForSideOptionVisible,
   ] = useState<boolean>(false);
+  const isFocused = useIsFocused();
   const [selectedItem, setselectedItem] = useState(documentDetails);
   // console.log("documentDetails?.base64", documentDetails?.base64);
   // console.log("documentDetails?.base64", documentDetails?.docName);
@@ -61,7 +61,7 @@ const DocumentPreviewScreen = (props: any) => {
     url: documentDetails?.base64,
     base64: documentDetails?.base64,
   };
-   console.log('documentDetails====>',documentDetails)
+  console.log("documentDetails====>", documentDetails);
   const resourceType = "base64";
   const shareItem = async () => {
     console.log("selectedItem?.base64===>", selectedItem?.base64);
@@ -125,34 +125,44 @@ const DocumentPreviewScreen = (props: any) => {
   // };
 
   const handlePressb64 = (type: string) => {
-    if(Platform.OS === 'ios'){
-      OpenFile.openDocb64([{
-        base64: documentDetails.base64 ,
-        fileName:documentDetails?.docName,
-        fileType:type==='application/msword'?"doc":'docx'
-      }], (error: any, url: any) => {
+    if (Platform.OS === "ios") {
+      OpenFile.openDocb64(
+        [
+          {
+            base64: documentDetails.base64,
+            fileName: documentDetails?.docName,
+            fileType: type === "application/msword" ? "doc" : "docx",
+          },
+        ],
+        (error: any, url: any) => {
           if (error) {
             console.error(error);
           } else {
-            console.log(url)
+            console.log(url);
           }
-        })
-    }else{
+        }
+      );
+    } else {
       //Android
-      OpenFile.openDocb64([{
-        base64: documentDetails.base64 ,
-        fileName:documentDetails?.docName,
-        fileType:type==='application/msword'?"doc":'docx',
-        cache:true /*Use Cache Folder Android*/
-      }], (error: any, url: any) => {
+      OpenFile.openDocb64(
+        [
+          {
+            base64: documentDetails.base64,
+            fileName: documentDetails?.docName,
+            fileType: type === "application/msword" ? "doc" : "docx",
+            cache: true /*Use Cache Folder Android*/,
+          },
+        ],
+        (error: any, url: any) => {
           if (error) {
             console.error(error);
           } else {
-            console.log(url)
+            console.log(url);
           }
-        })
+        }
+      );
     }
-  }
+  };
 
   const deleteItem = () => {
     console.log("selectedItem?.id", selectedItem);
@@ -240,7 +250,11 @@ const DocumentPreviewScreen = (props: any) => {
       </View>
     </TouchableOpacity>
   );
-console.log('documentDetails',documentDetails)
+
+  useEffect(() => {
+    setKey(Date.now()); // Change the key to force a re-render
+  }, [isFocused]);
+
   return (
     <View style={styles.sectionContainer}>
       <LinearGradients
@@ -345,10 +359,13 @@ console.log('documentDetails',documentDetails)
           ></Image>
         </TouchableOpacity>
       </View> */}
+
       <View style={{ flex: 1, marginTop: 30 }}>
         {documentDetails.pdf ? (
           <PDFView
             fadeInDuration={100.0}
+            ref={pdfRef}
+            key={key}
             style={{ flex: 1 }}
             resource={resources[resourceType]}
             resourceType={resourceType}
@@ -356,72 +373,77 @@ console.log('documentDetails',documentDetails)
             onError={() => console.log("Cannot render PDF", error)}
           />
         ) : documentDetails.base64 ? (
-
-          documentDetails?.fileType === 'application/msword' || documentDetails?.fileType ==='application/vnd.openxmlformats-officedocument.wordprocessingml.document'?
-          <View style={{ flex: 0.8 }}>
-          <View style={{alignSelf: "center",justifyContent:'center'}}>
-            
-        <Image
-          resizeMode={"contain"}
-          style={{
-            width: 100,
-            height: "50%",
-          }}
-          source={LocalImages.wordImage}
-        ></Image>
-     
-      </View>
-      <GenericText
-        style={{
-          textAlign: "center",
-          paddingVertical: 5,
-          fontWeight: "bold",
-          fontSize: 16,
-          color: "#000",
-        }}
-      >
-        {"To preview the .doc, .docx file please click on the preview button!"}
-      </GenericText>
-      <View style={{justifyContent:'center',alignItems:'center'}}>
-      <Button
-          onPress={()=>handlePressb64(documentDetails?.fileType)}
-          style={{
-            buttonContainer: {
-              elevation: 5,
-              width: 150,
-            },
-            text: {
-              color: Screens.pureWhite,
-            },
-            iconStyle: {
-              tintColor: Screens.pureWhite,
-            },
-          }}
-          title={"Preview"}
-        ></Button>
-      </View>
-      </View>:
-          <Image
-            resizeMode={"contain"}
-            style={{
-              flex: 1,
-            }}
-            //   source={{ uri:documentDetails?.type === 'deeplink' ? `${documentDetails?.base64}`: documentDetails?.docType == "jpg"? `data:image/jpeg;base64,${documentDetails?.base64}`
-            //   : documentDetails?.isLivenessImage === 'livenessImage' ? documentDetails?.base64  : `data:image/png;base64,${documentDetails?.base64}`
-            // }}
-            source={{
-              uri:
-                documentDetails?.type === "deeplink"
-                  ? `${documentDetails?.base64}`
-                  : documentDetails?.isLivenessImage === "livenessImage"
-                  ? documentDetails?.base64
-                  : documentDetails?.docType == "jpg"
-                  ? `data:image/jpeg;base64,${documentDetails?.base64}`
-                  : `data:image/png;base64,${documentDetails?.base64}`,
-            }}
-          ></Image>
+          documentDetails?.fileType === "application/msword" ||
+          documentDetails?.fileType ===
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ? (
+            <View style={{ flex: 0.8 }}>
+              <View style={{ alignSelf: "center", justifyContent: "center" }}>
+                <Image
+                  resizeMode={"contain"}
+                  style={{
+                    width: 100,
+                    height: "50%",
+                  }}
+                  source={LocalImages.wordImage}
+                ></Image>
+              </View>
+              <GenericText
+                style={{
+                  textAlign: "center",
+                  paddingVertical: 5,
+                  fontWeight: "bold",
+                  fontSize: 16,
+                  color: "#000",
+                }}
+              >
+                {
+                  "To preview the .doc, .docx file please click on the preview button!"
+                }
+              </GenericText>
+              <View style={{ justifyContent: "center", alignItems: "center" }}>
+                <Button
+                  onPress={() => handlePressb64(documentDetails?.fileType)}
+                  style={{
+                    buttonContainer: {
+                      elevation: 5,
+                      width: 150,
+                    },
+                    text: {
+                      color: Screens.pureWhite,
+                    },
+                    iconStyle: {
+                      tintColor: Screens.pureWhite,
+                    },
+                  }}
+                  title={"Preview"}
+                ></Button>
+              </View>
+            </View>
+          ) : (
+            <Image
+              resizeMode={"contain"}
+              style={{
+                flex: 1,
+              }}
+              //   source={{ uri:documentDetails?.type === 'deeplink' ? `${documentDetails?.base64}`: documentDetails?.docType == "jpg"? `data:image/jpeg;base64,${documentDetails?.base64}`
+              //   : documentDetails?.isLivenessImage === 'livenessImage' ? documentDetails?.base64  : `data:image/png;base64,${documentDetails?.base64}`
+              // }}
+              source={{
+                uri:
+                  documentDetails?.type === "deeplink"
+                    ? `${documentDetails?.base64}`
+                    : documentDetails?.isLivenessImage === "livenessImage"
+                    ? documentDetails?.base64
+                    : documentDetails?.docType == "jpg"
+                    ? `data:image/jpeg;base64,${documentDetails?.base64}`
+                    : `data:image/png;base64,${documentDetails?.base64}`,
+              }}
+            ></Image>
+          )
         ) : (
-          <GenericText style={{ color: "#000", marginVertical:50,paddingHorizontal:5 }}>
+          <GenericText
+            style={{ color: "#000", marginVertical: 50, paddingHorizontal: 5 }}
+          >
             {JSON.stringify(documentDetails)}
           </GenericText>
         )}
