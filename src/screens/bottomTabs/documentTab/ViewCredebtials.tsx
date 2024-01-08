@@ -61,10 +61,10 @@ const DocumentPreviewScreen = (props: any) => {
     url: documentDetails?.base64,
     base64: documentDetails?.base64,
   };
-  console.log("documentDetails====>", documentDetails);
+  console.log("selectedItem?.base64===>123",`data:image/jpeg;base64,${documentDetails?.base64}`);
   const resourceType = "base64";
   const shareItem = async () => {
-    console.log("selectedItem?.base64===>", selectedItem?.base64);
+
     if (selectedItem?.isLivenessImage === "livenessImage") {
       await Share.open({
         url: selectedItem?.base64,
@@ -431,7 +431,7 @@ const DocumentPreviewScreen = (props: any) => {
               source={{
                 uri:
                   documentDetails?.type === "deeplink"
-                    ? `${documentDetails?.base64}`
+                    ? `data:image/jpeg;base64,${documentDetails?.base64}`
                     : documentDetails?.isLivenessImage === "livenessImage"
                     ? documentDetails?.base64
                     : documentDetails?.docType == "jpg"

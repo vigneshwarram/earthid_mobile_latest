@@ -133,38 +133,45 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
             navigation.navigate("Documents");
           }, 2000);
         } else {
-          var date = dateTime();
-          const document: any[0] = categoryList[
-            selectedParentIndex
-          ]?.value?.filter((data: any) => data.isSelected);
-          const filePath = RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
-          var documentDetails: IDocumentProps = {
-            id: `ID_VERIFICATION${Math.random()}${selectedDocument}${Math.random()}`,
-            documentName: `${categoryList[selectedParentIndex].key} (${document[0]?.title})`,
-            //  name: `${categoryList[selectedParentIndex].key} (${document[0]?.title})`,
-            path: filePath,
-            date: date?.date,
-            time: date?.time,
-            txId: "e4343434343434443",
-            docType: "jpg",
-            docExt: ".jpg",
-            fileType:fileType,
-            processedDoc: "",
-            base64: fileUri?.base64,
-            type: "deeplink",
-            categoryType: categoryList[selectedParentIndex].key,
-            docName: docname,
-          };
-          var DocumentList = documentsDetailsList?.responseData
-            ? documentsDetailsList?.responseData
-            : [];
-          DocumentList.push(documentDetails);
-          dispatch(saveDocuments(DocumentList));
-          setsuccessResponse(true);
-          setTimeout(() => {
-            setsuccessResponse(false);
-            navigation.navigate("Documents");
-          }, 2000);
+          const { selfAttested } = route.params;
+          if(selfAttested === 'no'){
+            var date = dateTime();
+            const document: any[0] = categoryList[
+              selectedParentIndex
+            ]?.value?.filter((data: any) => data.isSelected);
+            const filePath = RNFetchBlob.fs.dirs.DocumentDir + "/" + "Adhaar";
+            var documentDetails: IDocumentProps = {
+              id: `ID_VERIFICATION${Math.random()}${selectedDocument}${Math.random()}`,
+              documentName: `${categoryList[selectedParentIndex].key} (${document[0]?.title})`,
+              //  name: `${categoryList[selectedParentIndex].key} (${document[0]?.title})`,
+              path: filePath,
+              date: date?.date,
+              time: date?.time,
+              txId: "e4343434343434443",
+              docType: "jpg",
+              docExt: ".jpg",
+              fileType:fileType,
+              processedDoc: "",
+              base64: fileUri?.base64,
+              type: "deeplink",
+              categoryType: categoryList[selectedParentIndex].key,
+              docName: docname,
+            };
+            var DocumentList = documentsDetailsList?.responseData
+              ? documentsDetailsList?.responseData
+              : [];
+            DocumentList.push(documentDetails);
+            dispatch(saveDocuments(DocumentList));
+            setsuccessResponse(true);
+            setTimeout(() => {
+              setsuccessResponse(false);
+              navigation.navigate("Documents");
+            }, 2000);
+          }
+          else{
+            setIsPrceedForLivenessTest(true);
+          }
+        
         }
       } else {
         if (fileUri?.type === "application/pdf") {

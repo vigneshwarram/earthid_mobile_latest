@@ -272,28 +272,12 @@ const AuthBackupIdentity = ({ navigation, route }: IHomeScreenProps) => {
       console.log("neww", "this is image type");
       const imageName: any =
         selectedItem?.docName + "." + selectedItem?.docType;
-        let base =selectedItem?.base64
-        if(selectedItem?.type === 'deeplink'){
-         base = await RNFS.readFile(selectedItem.base64, "base64");
-        }
-
-      const base64Images = await ImageResizer.createResizedImage(
-        `data:image/jpeg;base64,${base}`,
-        800, // target width
-        800, // target height
-        "JPEG", // format (you can adjust this)
-        80 // quality (adjust this)
-      );
-
-      const base64Image = await RNFS.readFile(base64Images.uri, "base64");
-
-      // console.log("base64Images",base64Images);
-
+      
       const objectKey = imageName; // Replace with your desired object key
       const uploadedKey: any = await uploadImageToS3(
         bucketName,
         `images/${objectKey}`,
-        base64Image,
+        selectedItem?.base64,
         ""
       );
 

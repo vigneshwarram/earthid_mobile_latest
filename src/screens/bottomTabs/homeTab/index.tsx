@@ -259,7 +259,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
         mimeType === "image/png"
       ) {
         const imagePath = data;
-        const base64 = await convertToBase64(imagePath);
+        const base64 = await RNFS.readFile(imagePath, "base64");
         const fileUri = {
           base64: base64,
           type: mimeType,
@@ -305,10 +305,10 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
       ) {
         const imagePath = extraData?.data?.replaceAll("%20", " ");
     
-        const base64 = await convertToBase64(imagePath);
+        const base64 = await RNFS.readFile(imagePath, "base64");
         console.log("imagePath123", base64);
         const fileUri = {
-          base64: imagePath,
+          base64: base64,
           type: extraData?.mimeType,
           uri: imagePath,
           flow: "deeplink",
