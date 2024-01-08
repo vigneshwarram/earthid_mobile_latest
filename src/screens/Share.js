@@ -14,7 +14,17 @@ console.log('sharedMimeType',sharedData)
     });
  
   }, []);
-
+  const generateRandomString = (length) => {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      result += characters.charAt(randomIndex);
+    }
+  
+    return result;
+  };
   return (
     <View style={{ flex: 1 }}>
       <View style={{ justifyContent: "center", alignItems: "center" }}>
@@ -42,9 +52,13 @@ console.log('sharedMimeType',sharedData)
               ShareMenuReactView.dismissExtension();
             }, 500);
             console.log('sharedData===>',sharedData)
+        
+            
+            // Example: Generate a random string of length 8
             ShareMenuReactView.continueInApp({
               data: sharedData.toString(),
               mimeType: sharedMimeType,
+              shareButton: generateRandomString(20)
             });
           
           }}

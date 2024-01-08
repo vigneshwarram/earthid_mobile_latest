@@ -81,6 +81,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
     categoryTypes = route?.params?.category;
   }
   const [createVerify, setCreateVerify] = useState({});
+  const [randomString,setRandomString] =useState('')
   const keys = useAppSelector((state) => state.user);
   const issurDid = keys?.responseData?.issuerDid;
   const UserDid = keys?.responseData?.newUserDid;
@@ -231,14 +232,23 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
     return `data:image/png;base64,${result}`;
   }
 
-  useEffect(() => {
-    ShareMenu.getInitialShare(handleShare);
-  }, []);
-
   const handleShare = useCallback(async (item: SharedItem | null) => {
+    console.log(' item?.extraData?.shareButton', item?.extraData?.shareButton)
+    console.log(' item?.extraData?.shareButton', randomString)
+ const  getData  = await AsyncStorage.getItem('shareButton')
+ if(getData === item?.extraData?.shareButton){
+  return
+ }
+ else{
+  await AsyncStorage.setItem('shareButton',item?.extraData?.shareButton)
+ }
+   
+
+    
     if (!item) {
       return;
     }
+    
     if (Platform.OS === "android") {
       const { mimeType, data, extraData } = item;
       console.log("datamimeType::homepage", data);
@@ -292,6 +302,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
       const { mimeType, data, extraData } = item;
       console.log("datamimeType", extraData);
       console.log("extraData?.mimeType", extraData?.mimeType);
+      setRandomString(extraData?.shareButton)
     
       const imageName1 = extraData?.data?.split("/").pop();
       const imageName =imageName1?.replaceAll("%20", " ")
