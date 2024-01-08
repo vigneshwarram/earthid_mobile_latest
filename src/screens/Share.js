@@ -4,7 +4,7 @@ import ShareMenu, { ShareMenuReactView } from "react-native-share-menu";
 const Share = () => {
   const [sharedData, setSharedData] = useState("");
   const [sharedMimeType, setSharedMimeType] = useState("");
-console.log('ist coming')
+console.log('sharedMimeType',sharedData)
   useEffect(() => {
 
     ShareMenuReactView.data().then(async ({ mimeType, data }) => {
@@ -18,12 +18,17 @@ console.log('ist coming')
   return (
     <View style={{ flex: 1 }}>
       <View style={{ justifyContent: "center", alignItems: "center" }}>
-        {sharedMimeType === "application/pdf" ? (
+        {sharedMimeType === "application/pdf"  ? (
           <Image
             style={{ width: 300, height: 600, resizeMode: "contain" }}
             source={require("../../resources/images/pdf.svg.png")}
           />
         ) : (
+          sharedMimeType ==='application/msword' || sharedMimeType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'?
+          <Image
+          style={{ width: 300, height: 600, resizeMode: "contain" }}
+          source={require("../../resources/images/word.png")}
+        />:
           <Image
             style={{ width: 400, height: 600, resizeMode: "contain" }}
             source={{ uri: sharedData }}

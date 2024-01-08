@@ -243,7 +243,8 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
       const { mimeType, data, extraData } = item;
       console.log("datamimeType::homepage", data);
       console.log("datamimeType", mimeType);
-      const imageName = data.split("/").pop();
+      const imageName1 = extraData?.data?.split("/").pop();
+      const imageName =imageName1?.replaceAll("%20", " ")
 
       // const fileStat = await RNFS.stat(data);
       // console.log("imageName",fileStat)
@@ -291,8 +292,10 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
       const { mimeType, data, extraData } = item;
       console.log("datamimeType", extraData);
       console.log("extraData?.mimeType", extraData?.mimeType);
-
-      const imageName = data.split("/").pop();
+    
+      const imageName1 = extraData?.data?.split("/").pop();
+      const imageName =imageName1?.replaceAll("%20", " ")
+  
 
       if (
         extraData?.mimeType === "image/*" ||
@@ -301,8 +304,9 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
         extraData?.mimeType === "text/plain"
       ) {
         const imagePath = extraData?.data?.replaceAll("%20", " ");
+    
         const base64 = await convertToBase64(imagePath);
-
+        console.log("imagePath123", base64);
         const fileUri = {
           base64: imagePath,
           type: extraData?.mimeType,

@@ -231,7 +231,7 @@ fetch(apiUrl, {
           ? documentsDetailsList?.responseData
           : [];
         DocumentList.push(documentDetails);
-        DocumentList.push(documentDetails1);
+      //  DocumentList.push(documentDetails1);
         dispatch(saveDocuments(DocumentList));
         setsuccessResponse(true);
         getHistoryReducer.isSuccess = false;

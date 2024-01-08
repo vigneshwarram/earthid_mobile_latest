@@ -42,7 +42,7 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
   const saveFeaturesForVc = useAppSelector((state) => state.saveFeatures);
   const [languageVisible, setLanguageVisible] = useState(false);
   const [selectedLanguage, setselectedLanguage] = useState(AppLanguage.ENGLISH);
-  const [flag, setflag] = useState(59);
+  const [flag, setflag] = useState(61);
   const [loading, setLoading] = useState(true);
   console.log("flag==>", flag);
 
