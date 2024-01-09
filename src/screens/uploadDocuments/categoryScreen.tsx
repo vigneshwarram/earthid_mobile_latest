@@ -63,7 +63,7 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const [loader, setLoading] = useState(false);
   const [docname, setDocname] = useState(
     fileUri?.route === "gallery"
-      ? imageName.split(".")[0]
+      ? imageName
       : editDoc === "editDoc"
       ? selectedItem?.docName
       : fileUri?.flow === "deeplink"
@@ -71,7 +71,21 @@ const categoryScreen = ({ navigation, route }: IDocumentScreenProps) => {
       : null
   );
 
-  console.log("selectedItem", selectedItem);
+
+
+  console.log("imageName************", imageName);
+  console.log("editDoc************", editDoc);
+  console.log("selectedItem?.docName************", selectedItem?.docName);
+  console.log("fileUri?.docName************", fileUri?.docName);
+
+
+
+
+
+
+
+
+
   const [button, setButton] = useState(false);
   const [selectedParentIndex, setSelectedParentIndex] = useState(0);
   const documentsDetailsList = useAppSelector((state) => state.Documents);
