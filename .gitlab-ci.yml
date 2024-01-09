@@ -1,0 +1,40 @@
+image: reactnativecommunity/react-native-android:v12.0
+
+
+stages:
+  - build_app
+  # Add more stages for testing, deployment, etc.
+
+
+cache:
+  paths:
+    - node_modules/
+    - android/.gradle/
+
+
+before_script:
+  - npm install -g react-native-cli
+  - npm install --legacy-peer-deps
+
+
+build_app:
+  stage: build_app
+  script:
+    - apt update -y && apt install -y curl
+    - curl --silent "https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer" | bash
+    - mv .secure_files android/app/
+    - chmod -R 777 android/app/src/main/assets/
+    - cd android && ./gradlew clean && cd ..
+    - rm -rf android/app/src/main/assets/index.android.bundle
+    - touch android/app/src/main/assets/index.android.bundle
+    - chmod -R 777 android/app/src/main/assets/index.android.bundle
+    - npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
+    - rm -rf android/app/src/main/res/drawable-hdpi android/app/src/main/res/drawable-mdpi android/app/src/main/res/drawable-xhdpi android/app/src/main/res/drawable-xxhdpi android/app/src/main/res/drawable-xxxhdpi
+    - cd android
+    - ./gradlew assembleRelease
+    - cd ..
+  only:
+    - build-release-apk
+  artifacts:
+    paths:  
+      - android/app/build/outputs/apk/release/app-universal-release.apk
