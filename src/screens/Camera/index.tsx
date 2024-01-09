@@ -38,7 +38,7 @@ import Loader from "../../components/Loader";
 import { isEarthId } from "../../utils/PlatFormUtils";
 import { dateTime } from "../../utils/encryption";
 import { postApi } from "../../utils/createUserSignaturekey";
-import ZkbScreen from "./ZkbScreen";
+import ZkbScreen from "./DisclosureScreen";
 
 const data = [
   { label: " 1", value: "1" },
@@ -113,6 +113,7 @@ const CameraScreen = (props: any) => {
   const issurDid = keys?.responseData?.issuerDid;
   const UserDid = keys?.responseData?.newUserDid;
   const privateKey = keys?.responseData?.generateKeyPair?.privateKey;
+  const publicKey = keys?.responseData?.generateKeyPair?.publicKey;
 
   console.log("issuerDid", keys?.responseData);
   console.log("issuerDid", keys?.responseData?.issuerDid);
@@ -142,6 +143,343 @@ const CameraScreen = (props: any) => {
     console.log("parseData", parseData);
     setverifyVcCred(parseData);
   };
+  const getZKBAge =async(success: any)=>{
+    const fetchData = async () => {
+  
+    let   payload ={
+        dateOfBirth: success,
+        verifyParams: [
+          "dateOfBirth=1998-01-09"
+        ],
+        credentials: {
+          "@context": [
+            "https://www.w3.org/2018/credentials/v1"
+          ],
+          id: "UserAgeSchema:1:3027e0c0-b917-4a71-9c7f-409965c41d4a",
+          type: [
+            "VerifiableCredential",
+            "UserAgeSchema:1",
+            "Encrypted"
+          ],
+          version: "UserAgeSchema:1",
+          credentialSchema: {
+            id: "http://ssi-test.myearth.id/schema/UserAgeSchema",
+            type: "JsonSchemaValidator2018"
+          },
+          issuer: "did:earthid:testnet:H8xsGiJMKq9D3KewDwCMnTo8Xs7PexCivnZyC9EgUkdV;earthid:testnet:fid=0.0.2239011",
+          credentialSubject: [
+            {
+              id: "MzMsMTU1LDg1LDU5LDEzMywzNSwxNzMsNTgsMTA1LDg0LDQ4LDIxNSwxOTAsNDMsMjMsMjA1LDIwMSwxOCwxMzcsMTgxLDEwNCwxNjUsMTgxLDg4LDM4LDIyNywxNTEsMjEwLDE1OSw5NywzNCw2Nw==",
+              earthId: "MjA4LDIwNCw5MSwxNzAsNzMsMTQ5LDI0OCwyMjIsNzQsMjAxLDE4MSw5MiwxNCw4LDg5LDI0LDEyOCw0MCwxNjcsMjMsMTU0LDE2NCwxMiwyMDUsMTc0LDcyLDIyOSwzOSwxMTEsNDUsMTExLDIyNQ==",
+              dateOfBirth: "MTcxLDIzNiwxNjgsMTcwLDE4MiwxOTQsMTc3LDEyMywzMywxMiwxNTQsNTgsMTM2LDIzMSwxMzcsMTIsMjQxLDkxLDIwMCw2NywyMjksMjMxLDE2LDE3NSwxNDIsMjgsMTU5LDIwMywyNTIsMjMyLDEyNyw1NA=="
+            }
+          ],
+          issuanceDate: "2023-11-21T06:43:26.344Z",
+          expirationDate: "2024-11-21T06:43:24.588Z",
+          proof: {
+            type: "Ed25519Signature2018",
+            creator: "did:earthid:testnet:H8xsGiJMKq9D3KewDwCMnTo8Xs7PexCivnZyC9EgUkdV;earthid:testnet:fid=0.0.2239011",
+            created: "2023-11-21T06:43:26.344Z",
+            proofPurpose: "assertionMethod",
+            vcVerificationMethod: "did:earthid:testnet:H8xsGiJMKq9D3KewDwCMnTo8Xs7PexCivnZyC9EgUkdV;earthid:testnet:fid=0.0.2239011#did-root-key",
+            jws: "eyJjcml0IjpbImI2NCJdLCJiNjQiOmZhbHNlLCJhbGciOiJFZERTQSJ9..NDllYzQxZTUwZDEwZDA1NDdmNDc2MTg4YmU2YjAzZmMxZTE5MTZmZTNmMTA5NDEzZGU1YmU4NDI2MDExZTIxN2UzMWI4ODJhYjQ0NzBhNzYwMDIyNjhlZjU0YjQ0OWMwN2RkMzQ2OTkxYjcwYThhM2VkYmJkZDY1YWNmZTRkMDE="
+          },
+          biometrics: {
+            face: null,
+            iris: null,
+            finger: null
+          },
+          credentialStatus: ""
+        }
+      }
+    }
+      try {
+        console.log('payload=====>',JSON.stringify(payload))
+        
+        // Replace 'YOUR_API_ENDPOINT' with the actual API endpoint
+        const response = await fetch('https://ssi-test.myearth.id/api/issuer/createZkp', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-API-KEY':'01a41742-aa8e-4dd6-8c71-d577ac7d463c'
+            // You may need to include additional headers here, such as authentication headers
+          },
+          body: JSON.stringify(payload),
+        });
+    
+        const result = await response.json();
+        console.log('setZkpSignature',result)
+        if(result){
+          if(success?.request === 'balance'){
+           
+            if(result?.data){
+              if(result?.data?.certificate?.balance){
+                setTimeout(()=>{    
+                  setisLoading(false)            
+                  Alert.alert('Proof of funds is verified successfully')
+                },5000)
+              }
+              else{
+                setTimeout(()=>{    
+                  setisLoading(false)            
+                  Alert.alert('Proof of funds verification failed')
+                },5000)
+               
+              }
+            }
+          }
+          if(success?.request === 'minAge'){
+           
+            if(result?.data){
+              if(result?.data?.certificate?.dateOfBirth){
+                setTimeout(()=>{    
+                  setisLoading(false)            
+                  Alert.alert('Proof of age is verified successfully')
+                },5000)
+              }
+              else{
+                setTimeout(()=>{    
+                  setisLoading(false)            
+                  Alert.alert('Proof of age verification failed')
+                },5000)
+               
+              }
+            }
+          }
+        }
+        setZkpSignature(result)
+      
+       const  data = {
+          sessionKey: barCodeDataDetails?.sessionKey,
+          encrypted_object:{
+            earthId: userDetails?.responseData?.earthId,
+            pressed: false,
+            userName: userDetails?.responseData?.username,
+            userEmail: userDetails?.responseData?.email,
+            userMobileNo: userDetails?.responseData?.phone,
+            OrganizationID: userDetails?.responseData?.orgId,...result?.data},
+            zkbType:success?.request
+        };
+
+      console.log('earthid req==>',JSON.stringify(data))
+        sendDatatoServiceProvider(QrcodeApis, data, "POST");
+        // Check if the request was successful
+        if (!response.ok) {
+          setisLoading(false)
+          throw new Error('Network response was not ok');
+        }
+        console.log('setZkpSignature',result)
+       
+        
+        // Set the data in the state
+        //setData(result);
+      } catch (error) {
+        setisLoading(false)
+        console.error('Error fetching data:', error);
+      }
+    
+  
+    fetchData();
+  }
+  const generateBalanceVC = async (success: { request: string; minimum: string; } | undefined) => {
+    const amount =  documentsDetailsList?.responseData?.filter((item: { amount: any; })=>item?.amount)[0]?.amount
+    console.log('datapayload===>12345',JSON.stringify({
+      "Content-Type": "application/json",
+      "publicKey": publicKey,
+      "did":UserDid,
+      "X-API-KEY": '01a41742-aa8e-4dd6-8c71-d577ac7d463c',
+    }))
+    try {
+      // Replace 'YOUR_API_ENDPOINT' with the actual API endpoint
+      const response = await fetch("https://ssi-test.myearth.id/api/issuer/verifiableCredential", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "publicKey": publicKey,
+          "did":UserDid,
+          "X-API-KEY": '01a41742-aa8e-4dd6-8c71-d577ac7d463c',
+        },
+        body:JSON.stringify({"schemaName": "UserBalanceSchema:1",
+        "isEncrypted": true,
+        "dependantVerifiableCredential": [
+        ],
+        "credentialSubject": {
+          "earthId":userDetails?.responseData?.earthId,
+          "balance": `${Math.round(amount)}`
+        }
+      }),
+      });
+   
+      console.log("Response Status:", response.status);
+      // Check if the request was successful
+      if (!response.ok) {
+       
+        throw new Error("Network response was not ok");
+      }
+
+      // Get the response text directly
+      const resulst = await response.json();
+
+      console.log('response?.data?.verifiableCredential',resulst?.data?.verifiableCredential)
+      let payload 
+   
+     if(success?.request === 'balance'){
+
+      payload ={balance: {
+        type: "number",
+        minimum:parseInt(success?.minimum)
+      },
+      verifyParams: [
+        `balance=${Math.round(amount)}`
+      ],
+      credentials:resulst?.data?.verifiableCredential
+    }
+     }else{
+       payload ={
+        dateOfBirth: success,
+        verifyParams: [
+          "dateOfBirth=1998-01-09"
+        ],
+        credentials:  {
+          "@context": [
+              "https://www.w3.org/2018/credentials/v1"
+          ],
+          id: "UserBalanceSchema:1:1b4efb3c-f39d-4890-b9c6-c1c2f42517c5",
+          type: [
+              "VerifiableCredential",
+              "UserBalanceSchema:1",
+              "Encrypted"
+          ],
+          version: "UserBalanceSchema:1",
+          credentialSchema: {
+              id: "http://ssi-test.myearth.id/schema/UserBalanceSchema",
+              type: "JsonSchemaValidator2018"
+          },
+          issuer: "did:earthid:testnet:H8xsGiJMKq9D3KewDwCMnTo8Xs7PexCivnZyC9EgUkdV;earthid:testnet:fid=0.0.2239011",
+          credentialSubject: [
+              {
+                  id: "MzMsMTU1LDg1LDU5LDEzMywzNSwxNzMsNTgsMTA1LDg0LDQ4LDIxNSwxOTAsNDMsMjMsMjA1LDIwMSwxOCwxMzcsMTgxLDEwNCwxNjUsMTgxLDg4LDM4LDIyNywxNTEsMjEwLDE1OSw5NywzNCw2Nw==",
+                  earthId: "MjA4LDIwNCw5MSwxNzAsNzMsMTQ5LDI0OCwyMjIsNzQsMjAxLDE4MSw5MiwxNCw4LDg5LDI0LDEyOCw0MCwxNjcsMjMsMTU0LDE2NCwxMiwyMDUsMTc0LDcyLDIyOSwzOSwxMTEsNDUsMTExLDIyNQ==",
+                  balance: "MTM3LDI1LDU1LDIwMyw1MSw4MCwyMiwyMzMsMTk5LDcsNzYsNTUsMTI5LDIyMCwxNzcsNTQsNzgsMTIsMTAyLDcsNTEsMTY4LDEzNiwxNTUsMTkwLDE3NCwxMzEsMjMwLDE3MCwxMTcsMTU1LDIzMA=="
+              }
+          ],
+          issuanceDate: "2023-11-24T07:00:18.993Z",
+          expirationDate: "2024-11-24T07:00:17.504Z",
+          proof: {
+              type: "Ed25519Signature2018",
+              creator: "did:earthid:testnet:H8xsGiJMKq9D3KewDwCMnTo8Xs7PexCivnZyC9EgUkdV;earthid:testnet:fid=0.0.2239011",
+              created: "2023-11-24T07:00:18.993Z",
+              proofPurpose: "assertionMethod",
+              vcVerificationMethod: "did:earthid:testnet:H8xsGiJMKq9D3KewDwCMnTo8Xs7PexCivnZyC9EgUkdV;earthid:testnet:fid=0.0.2239011#did-root-key",
+              jws: "eyJjcml0IjpbImI2NCJdLCJiNjQiOmZhbHNlLCJhbGciOiJFZERTQSJ9..MDQ4YzQzZmYzYmJjMzYxZDI5NTkwNWE2YWMwMWMwNmFkZTdmZmMzMWNiYWI0MjFjNWVhYmY1ZjUzODkxZTIwZDg1YTdlMjA0MWEzNjdkYjhmNjlkYTM1ZWY1ZmM4YmM5OWYzYjQwODFhNWY1N2RlOWUxZWQ0YzRlZjUxMzlhMGM="
+          },
+          biometrics: {
+              face: null,
+              iris: null,
+              finger: null
+          },
+          credentialStatus: ""
+      }
+      }
+    }
+      try {
+        console.log('payload=====>',JSON.stringify(payload))
+        
+        // Replace 'YOUR_API_ENDPOINT' with the actual API endpoint
+        const response = await fetch('https://ssi-test.myearth.id/api/issuer/createZkp', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-API-KEY':'01a41742-aa8e-4dd6-8c71-d577ac7d463c'
+            // You may need to include additional headers here, such as authentication headers
+          },
+          body: JSON.stringify(payload),
+        });
+    
+        const result = await response.json();
+        console.log('setZkpSignature',result)
+        if(result){
+          if(success?.request === 'balance'){
+            documentsDetailsList?.responseData?.filter((item: { amount: any; })=>item?.amount)[0]?.amount
+            
+            if(result?.data){
+              if(result?.data?.certificate?.balance){
+                setTimeout(()=>{    
+                  setisLoading(false)            
+                  Alert.alert('Proof of funds is verified successfully')
+                },5000)
+              }
+              else{
+                setTimeout(()=>{    
+                  setisLoading(false)            
+                  Alert.alert('Proof of funds verification failed')
+                },5000)
+               
+              }
+            }
+          }
+          if(success?.request === 'minAge'){
+            if(result?.data){
+              if(result?.data?.certificate?.dateOfBirth){
+                setTimeout(()=>{    
+                  setisLoading(false)            
+                  Alert.alert('Proof of age is verified successfully')
+                },5000)
+              }
+              else{
+                setTimeout(()=>{    
+                  setisLoading(false)            
+                  Alert.alert('Proof of age verification failed')
+                },5000)
+               
+              }
+            }
+          }
+        }
+        setZkpSignature(result)
+      
+       const  data = {
+          sessionKey: barCodeDataDetails?.sessionKey,
+          encrypted_object:{
+            earthId: userDetails?.responseData?.earthId,
+            pressed: false,
+            userName: userDetails?.responseData?.username,
+            userEmail: userDetails?.responseData?.email,
+            userMobileNo: userDetails?.responseData?.phone,
+            OrganizationID: userDetails?.responseData?.orgId,...result?.data},
+            zkbType:success?.request
+        };
+
+      console.log('earthid req==>',JSON.stringify(data))
+        sendDatatoServiceProvider(QrcodeApis, data, "POST");
+        // Check if the request was successful
+        if (!response.ok) {
+          setisLoading(false)
+          throw new Error('Network response was not ok');
+        }
+        console.log('setZkpSignature',result)
+       
+        
+        // Set the data in the state
+        //setData(result);
+      } catch (error) {
+        setisLoading(false)
+        console.error('Error fetching data:', error);
+      }
+      console.log("result:::::", result);
+      
+
+      // Set the data in the state
+      // Depending on your use case, you may handle the result here
+    } catch (error) {
+  
+      console.error("Error fetching data:1234", error);
+    }
+
+
+   
+      
+  };
 
   const generateUserSignature = async () => {
     const data = {
@@ -170,7 +508,7 @@ const CameraScreen = (props: any) => {
         console.error("Error:", error);
       });
   };
-  function isValidJSON(jsonString) {
+  function isValidJSON(jsonString: string) {
     try {
       JSON.parse(jsonString);
       return true;
@@ -392,193 +730,8 @@ const CameraScreen = (props: any) => {
     };
   }, []);
   const getZKPSignature =(success: any)=>{
-    const fetchData = async () => {
-      let payload 
-   
-     if(success?.request === 'balance'){
-      payload ={balance: {
-        type: "number",
-        minimum:parseInt(success?.minimum)
-      },
-      verifyParams: [
-        "balance=30000"
-      ],
-      credentials: {
-                "@context": [
-                    "https://www.w3.org/2018/credentials/v1"
-                ],
-                id: "UserBalanceSchema:1:1b4efb3c-f39d-4890-b9c6-c1c2f42517c5",
-                type: [
-                    "VerifiableCredential",
-                    "UserBalanceSchema:1",
-                    "Encrypted"
-                ],
-                version: "UserBalanceSchema:1",
-                credentialSchema: {
-                    id: "http://ssi-test.myearth.id/schema/UserBalanceSchema",
-                    type: "JsonSchemaValidator2018"
-                },
-                issuer: "did:earthid:testnet:H8xsGiJMKq9D3KewDwCMnTo8Xs7PexCivnZyC9EgUkdV;earthid:testnet:fid=0.0.2239011",
-                credentialSubject: [
-                    {
-                        id: "MzMsMTU1LDg1LDU5LDEzMywzNSwxNzMsNTgsMTA1LDg0LDQ4LDIxNSwxOTAsNDMsMjMsMjA1LDIwMSwxOCwxMzcsMTgxLDEwNCwxNjUsMTgxLDg4LDM4LDIyNywxNTEsMjEwLDE1OSw5NywzNCw2Nw==",
-                        earthId: "MjA4LDIwNCw5MSwxNzAsNzMsMTQ5LDI0OCwyMjIsNzQsMjAxLDE4MSw5MiwxNCw4LDg5LDI0LDEyOCw0MCwxNjcsMjMsMTU0LDE2NCwxMiwyMDUsMTc0LDcyLDIyOSwzOSwxMTEsNDUsMTExLDIyNQ==",
-                        balance: "MTM3LDI1LDU1LDIwMyw1MSw4MCwyMiwyMzMsMTk5LDcsNzYsNTUsMTI5LDIyMCwxNzcsNTQsNzgsMTIsMTAyLDcsNTEsMTY4LDEzNiwxNTUsMTkwLDE3NCwxMzEsMjMwLDE3MCwxMTcsMTU1LDIzMA=="
-                    }
-                ],
-                issuanceDate: "2023-11-24T07:00:18.993Z",
-                expirationDate: "2024-11-24T07:00:17.504Z",
-                proof: {
-                    type: "Ed25519Signature2018",
-                    creator: "did:earthid:testnet:H8xsGiJMKq9D3KewDwCMnTo8Xs7PexCivnZyC9EgUkdV;earthid:testnet:fid=0.0.2239011",
-                    created: "2023-11-24T07:00:18.993Z",
-                    proofPurpose: "assertionMethod",
-                    vcVerificationMethod: "did:earthid:testnet:H8xsGiJMKq9D3KewDwCMnTo8Xs7PexCivnZyC9EgUkdV;earthid:testnet:fid=0.0.2239011#did-root-key",
-                    jws: "eyJjcml0IjpbImI2NCJdLCJiNjQiOmZhbHNlLCJhbGciOiJFZERTQSJ9..MDQ4YzQzZmYzYmJjMzYxZDI5NTkwNWE2YWMwMWMwNmFkZTdmZmMzMWNiYWI0MjFjNWVhYmY1ZjUzODkxZTIwZDg1YTdlMjA0MWEzNjdkYjhmNjlkYTM1ZWY1ZmM4YmM5OWYzYjQwODFhNWY1N2RlOWUxZWQ0YzRlZjUxMzlhMGM="
-                },
-                biometrics: {
-                    face: null,
-                    iris: null,
-                    finger: null
-                },
-                credentialStatus: ""
-            }
-    }
-     }else{
-       payload ={
-        dateOfBirth: success,
-        verifyParams: [
-          "dateOfBirth=1998-01-09"
-        ],
-        credentials: {
-          "@context": [
-            "https://www.w3.org/2018/credentials/v1"
-          ],
-          id: "UserAgeSchema:1:3027e0c0-b917-4a71-9c7f-409965c41d4a",
-          type: [
-            "VerifiableCredential",
-            "UserAgeSchema:1",
-            "Encrypted"
-          ],
-          version: "UserAgeSchema:1",
-          credentialSchema: {
-            id: "http://ssi-test.myearth.id/schema/UserAgeSchema",
-            type: "JsonSchemaValidator2018"
-          },
-          issuer: "did:earthid:testnet:H8xsGiJMKq9D3KewDwCMnTo8Xs7PexCivnZyC9EgUkdV;earthid:testnet:fid=0.0.2239011",
-          credentialSubject: [
-            {
-              id: "MzMsMTU1LDg1LDU5LDEzMywzNSwxNzMsNTgsMTA1LDg0LDQ4LDIxNSwxOTAsNDMsMjMsMjA1LDIwMSwxOCwxMzcsMTgxLDEwNCwxNjUsMTgxLDg4LDM4LDIyNywxNTEsMjEwLDE1OSw5NywzNCw2Nw==",
-              earthId: "MjA4LDIwNCw5MSwxNzAsNzMsMTQ5LDI0OCwyMjIsNzQsMjAxLDE4MSw5MiwxNCw4LDg5LDI0LDEyOCw0MCwxNjcsMjMsMTU0LDE2NCwxMiwyMDUsMTc0LDcyLDIyOSwzOSwxMTEsNDUsMTExLDIyNQ==",
-              dateOfBirth: "MTcxLDIzNiwxNjgsMTcwLDE4MiwxOTQsMTc3LDEyMywzMywxMiwxNTQsNTgsMTM2LDIzMSwxMzcsMTIsMjQxLDkxLDIwMCw2NywyMjksMjMxLDE2LDE3NSwxNDIsMjgsMTU5LDIwMywyNTIsMjMyLDEyNyw1NA=="
-            }
-          ],
-          issuanceDate: "2023-11-21T06:43:26.344Z",
-          expirationDate: "2024-11-21T06:43:24.588Z",
-          proof: {
-            type: "Ed25519Signature2018",
-            creator: "did:earthid:testnet:H8xsGiJMKq9D3KewDwCMnTo8Xs7PexCivnZyC9EgUkdV;earthid:testnet:fid=0.0.2239011",
-            created: "2023-11-21T06:43:26.344Z",
-            proofPurpose: "assertionMethod",
-            vcVerificationMethod: "did:earthid:testnet:H8xsGiJMKq9D3KewDwCMnTo8Xs7PexCivnZyC9EgUkdV;earthid:testnet:fid=0.0.2239011#did-root-key",
-            jws: "eyJjcml0IjpbImI2NCJdLCJiNjQiOmZhbHNlLCJhbGciOiJFZERTQSJ9..NDllYzQxZTUwZDEwZDA1NDdmNDc2MTg4YmU2YjAzZmMxZTE5MTZmZTNmMTA5NDEzZGU1YmU4NDI2MDExZTIxN2UzMWI4ODJhYjQ0NzBhNzYwMDIyNjhlZjU0YjQ0OWMwN2RkMzQ2OTkxYjcwYThhM2VkYmJkZDY1YWNmZTRkMDE="
-          },
-          biometrics: {
-            face: null,
-            iris: null,
-            finger: null
-          },
-          credentialStatus: ""
-        }
-      }
-    }
-      try {
-        console.log('payload=====>',JSON.stringify(payload))
-        
-        // Replace 'YOUR_API_ENDPOINT' with the actual API endpoint
-        const response = await fetch('https://ssi-test.myearth.id/api/issuer/createZkp', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-API-KEY':'01a41742-aa8e-4dd6-8c71-d577ac7d463c'
-            // You may need to include additional headers here, such as authentication headers
-          },
-          body: JSON.stringify(payload),
-        });
-    
-        const result = await response.json();
-        console.log('setZkpSignature',result)
-        if(result){
-          if(success?.request === 'balance'){
-           
-            if(result?.data){
-              if(result?.data?.certificate?.balance){
-                setTimeout(()=>{    
-                  setisLoading(false)            
-                  Alert.alert('Proof of funds is verified successfully')
-                },5000)
-              }
-              else{
-                setTimeout(()=>{    
-                  setisLoading(false)            
-                  Alert.alert('Proof of funds verification failed')
-                },5000)
-               
-              }
-            }
-          }
-          if(success?.request === 'minAge'){
-           
-            if(result?.data){
-              if(result?.data?.certificate?.dateOfBirth){
-                setTimeout(()=>{    
-                  setisLoading(false)            
-                  Alert.alert('Proof of age is verified successfully')
-                },5000)
-              }
-              else{
-                setTimeout(()=>{    
-                  setisLoading(false)            
-                  Alert.alert('Proof of age verification failed')
-                },5000)
-               
-              }
-            }
-          }
-        }
-        setZkpSignature(result)
-      
-       const  data = {
-          sessionKey: barCodeDataDetails?.sessionKey,
-          encrypted_object:{
-            earthId: userDetails?.responseData?.earthId,
-            pressed: false,
-            userName: userDetails?.responseData?.username,
-            userEmail: userDetails?.responseData?.email,
-            userMobileNo: userDetails?.responseData?.phone,
-            OrganizationID: userDetails?.responseData?.orgId,...result?.data},
-            zkbType:success?.request
-        };
+    generateBalanceVC(success)
 
-      console.log('earthid req==>',JSON.stringify(data))
-        sendDatatoServiceProvider(QrcodeApis, data, "POST");
-        // Check if the request was successful
-        if (!response.ok) {
-          setisLoading(false)
-          throw new Error('Network response was not ok');
-        }
-        console.log('setZkpSignature',result)
-       
-        
-        // Set the data in the state
-        //setData(result);
-      } catch (error) {
-        setisLoading(false)
-        console.error('Error fetching data:', error);
-      }
-    };
-  
-    fetchData();
   }
   useEffect(() => {
     console.log("sharecredientials", shareCredientialData);
@@ -894,7 +1047,7 @@ const CameraScreen = (props: any) => {
         };
       }
       else if (barCodeDataDetails?.requestType.request === "minAge") {
-        getZKPSignature(barCodeDataDetails?.requestType)
+        getZKBAge(barCodeDataDetails?.requestType)
         return
       }
       else if (barCodeDataDetails?.requestType.request === "balance") {
