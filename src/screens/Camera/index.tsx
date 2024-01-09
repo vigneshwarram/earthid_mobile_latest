@@ -144,7 +144,6 @@ const CameraScreen = (props: any) => {
     setverifyVcCred(parseData);
   };
   const getZKBAge =async(success: any)=>{
-    const fetchData = async () => {
   
     let   payload ={
         dateOfBirth: success,
@@ -192,7 +191,7 @@ const CameraScreen = (props: any) => {
           credentialStatus: ""
         }
       }
-    }
+    
       try {
         console.log('payload=====>',JSON.stringify(payload))
         
