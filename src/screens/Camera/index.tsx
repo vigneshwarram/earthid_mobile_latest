@@ -1243,7 +1243,7 @@ const CameraScreen = (props: any) => {
         loadingText={
           barCodeDataDetails?.requestType === "generateCredentials"
             ? "credential generated successfully"
-            : "Login successfully"
+            : "Login is successful"
         }
         Status="Success !"
         isLoaderVisible={false}
