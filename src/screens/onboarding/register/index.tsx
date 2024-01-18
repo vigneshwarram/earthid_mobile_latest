@@ -271,12 +271,25 @@ const Register = ({ navigation }: IRegister) => {
   const Footer = () => (
     <View style={{ marginHorizontal: 20, backgroundColor: "#fff" }}>
       <Button
-        disabled={!isValidMobileNumber || isfirstNameError || isemailError || firstName==='' || email==='' }
+        disabled={
+          !isValidMobileNumber ||
+          isfirstNameError ||
+          isemailError ||
+          firstName === "" ||
+          email === ""
+        }
         onPress={_navigateAction}
         style={{
           buttonContainer: {
             elevation: 5,
-            opacity:isValidMobileNumber && !isfirstNameError && !isemailError && firstName!=='' && email !=='' ?1:0.5
+            opacity:
+              isValidMobileNumber &&
+              !isfirstNameError &&
+              !isemailError &&
+              firstName !== "" &&
+              email !== ""
+                ? 1
+                : 0.5,
           },
           text: {
             color: Screens.pureWhite,
@@ -479,9 +492,9 @@ const Register = ({ navigation }: IRegister) => {
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     setValidMobileNumber(phoneInput.current?.isValidNumber(mobileNumber));
-  },[countryCode])
+  }, [countryCode]);
 
   return (
     <KeyboardAvoidingScrollView
@@ -584,7 +597,7 @@ const Register = ({ navigation }: IRegister) => {
               onChangeCountry={(code) => {
                 console.log("code======>", code);
                 const { callingCode, cca2 } = code;
-               
+
                 setcountryCode(cca2);
                 setcallingCode(callingCode[0]);
                 console.log("code==>", callingCode[0]);
@@ -594,7 +607,6 @@ const Register = ({ navigation }: IRegister) => {
               ref={phoneInput}
               defaultCode="US"
               layout="first"
-             
               onChangeText={(text: any) => {
                 setValidMobileNumber(phoneInput.current?.isValidNumber(text));
                 setmobileNumber(text);
@@ -603,12 +615,16 @@ const Register = ({ navigation }: IRegister) => {
               }}
               containerStyle={{
                 borderColor: isValidMobileNumber
-                  ?mobileNumber.length != 0?Screens.colors.primary: Screens.darkGray
-                  : 
-                  mobileNumber.length != 0?  Screens.red:Screens.darkGray
-               ,
+                  ? mobileNumber.length != 0
+                    ? Screens.colors.primary
+                    : Screens.darkGray
+                  : mobileNumber.length != 0
+                  ? Screens.red
+                  : Screens.darkGray,
                 borderWidth: isValidMobileNumber
-                  ? mobileNumber.length != 0?2.2: 1
+                  ? mobileNumber.length != 0
+                    ? 2.2
+                    : 1
                   : mobileNumber.length != 0
                   ? 2.2
                   : 2,
@@ -634,10 +650,10 @@ const Register = ({ navigation }: IRegister) => {
               filterProps={{ placeholder: "Search country" }}
             />
             {!isValidMobileNumber && mobileNumber.length != 0 && (
-                  <Text allowFontScaling={false} style={styles.errorText}>
-                    {"Please enter Valid mobile number"}
-                  </Text>
-                )}
+              <Text allowFontScaling={false} style={styles.errorText}>
+                {"Please enter Valid mobile number"}
+              </Text>
+            )}
             <View style={{ flexDirection: "row" }}>
               <Info
                 title={"email"}

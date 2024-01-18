@@ -50,7 +50,6 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const [documentsDetailsList, setdocumentsDetailsList] = useState(
     documentsDetailsListData
   );
-  console.log('documentsDetailsListData===>',documentsDetailsListData)
   const [selectedDocuments, setselectedDocuments] = useState();
   const [isModalVisible, setModalVisible] = useState(false);
   let [qrBase64, setBase64] = useState("");
@@ -87,14 +86,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const userDetails = useAppSelector((state) => state.account);
 
   const bucketName: any = userDetails?.responseUserSpecificBucket;
-  // const base64Image: any = selectedItem?.base64;
   const imageName: any = selectedItem?.docName + "." + selectedItem?.docType;
-
-  // useEffect(() => {
-  //   console.log("DOCUMENTS=====>>>>>>>>>>>", route?.params?.category);
-  //   const chek = route?.params?.category;
-  //   chek === undefined ? console.log("All posts") : console.log("filtrd");
-  // }, [route?.params?.category]);
 
   const [isBottomSheetForFilterVisible, setisBottomSheetForFilterVisible] =
     useState<boolean>(false);
@@ -172,14 +164,13 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const getTime = (item: { time: any }) => {
     return convertTimeToAmPmFormat(item?.time);
   };
-  function compareTime(a: { time: any; }, b: { time: any; }) {
+  function compareTime(a: { time: any }, b: { time: any }) {
     const timeA = new Date(`1970-01-01T${a.time}`);
     const timeB = new Date(`1970-01-01T${b.time}`);
     return timeA - timeB;
   }
 
   const _renderItem = ({ item, index }: any) => {
-   
     return (
       <TouchableOpacity
         onLongPress={() => {
@@ -195,14 +186,12 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
                 navigation.navigate("ViewCredential", { documentDetails: item })
         }
       >
-      
-
         <View style={{ marginTop: -20 }}>
           <Card
             titleIcon={item?.isVc ? LocalImages.vcImage : null}
             leftAvatar={LocalImages.documentsImage}
             absoluteCircleInnerImage={LocalImages.upImage}
-            rightIconSrc={  item?.isVc?null: LocalImages.menuImage}
+            rightIconSrc={item?.isVc ? null : LocalImages.menuImage}
             rightIconOnPress={() => _rightIconOnPress(item)}
             title={
               item?.isVc
@@ -263,7 +252,7 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
 
   const handleUploadImage = async () => {
     setisBottomSheetForSideOptionVisible(false);
-   navigation.navigate("ShareQr", { selectedItem: selectedItem });
+    navigation.navigate("ShareQr", { selectedItem: selectedItem });
   };
 
   const RowOption = ({ icon, title, rowAction }: any) => (
@@ -308,34 +297,6 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
     setsearchText(text);
 
     setSearchedData(filteredData);
-
-    // if (text) {
-    //   // Inserted text is not blank
-    //   // Filter the masterDataSource
-    //   // Update FilteredDataSource
-    //   if(documentsDetailsList?.responseData==undefined){
-
-    //     setSearchedData(data);
-    //     setsearchText(text);
-    //   }else{
-
-    //     const newData = documentsDetailsList?.responseData.filter(
-    //       function (item:any) {
-    //         const itemData = item.documentName ? item?.documentName.toUpperCase() : "".toUpperCase();
-    //         const textData = text.toUpperCase();
-    //         return itemData.indexOf(textData) > -1;
-    //     });
-    //     setsearchText(text);
-
-    //     setSearchedData(newData);
-    //   }
-    // } else {
-    //   // Inserted text is blank
-    //   // Update FilteredDataSource with masterDataSource
-    //   setSearchedData(itemdata);
-    //   setsearchText(text);
-
-    // }
   };
 
   const shareItem = async () => {
@@ -371,10 +332,12 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
 
   const shareMultipleItem = async () => {
     let temp = [];
-    temp = documentsDetailsList?.responseData.filter((el: { isSelected: boolean; }) => {
-      // console.log(i[0].isSelected,'IIII')
-      return el.isSelected == true;
-    });
+    temp = documentsDetailsList?.responseData.filter(
+      (el: { isSelected: boolean }) => {
+        // console.log(i[0].isSelected,'IIII')
+        return el.isSelected == true;
+      }
+    );
     console.log(temp, "IIII");
     let ShareBase64Array: string[] = [];
     temp.map(async (item: any, index: number) => {
@@ -423,7 +386,6 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
               (item) => item.id === selectedItem?.id
             );
             findIndex >= -1 && helpArra?.splice(findIndex, 1);
-            // console.log('helpArra',helpArra)
             dispatch(saveDocuments(helpArra));
           },
         },
@@ -453,11 +415,8 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
   const getFilteredData = () => {
     console.log("getFilteredData");
     let data = documentsDetailsList?.responseData.sort(
-      (a: { date: any }, b: { date: any }) => a.date - b.date
+      (b: { date: any }, a: { date: any }) => b.date - a.date
     );
-    //  let data = documentsDetailsList?.responseData?.sort(compareTime);
-
-    //
 
     if (categoryTypes !== "") {
       var alter = function (item: any) {
@@ -469,63 +428,88 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
         return splittedValue?.trim() === categoryTypes?.trim()?.toLowerCase(); //use the argument here.
       };
       var filter = documentsDetailsList?.responseData?.filter(alter);
-      return getItemsForSection(filter)
+      return getItemsForSection(filter);
     }
 
     if (searchedData.length > 0) {
       getFilteredData;
       data = searchedData;
-      return getItemsForSection(data)
+      return getItemsForSection(data);
     }
 
     if (searchedData.length === 0 && searchText != "") {
       return []; // earlier []
     }
-    console.log('data',data)
-  return getItemsForSection(data)
+    console.log("data", data);
+    return getItemsForSection(data);
   };
 
-  const getItemsForSection =(data: any[])=>{
-    const idDocuments = data?.filter((item: { categoryType: string; })=>item?.categoryType === "ID" ||item?.categoryType === "id")
-    const idHealthCare = data?.filter((item: { categoryType: string; })=>item?.categoryType === "HEALTHCARE" ||item?.categoryType === "Healthcare")
-    const idTravels = data?.filter((item: { categoryType: string; })=>item?.categoryType === "TRAVEL" ||item?.categoryType === "Travel")
-    const idInsurance = data?.filter((item: { categoryType: string; })=>item?.categoryType === "INSURANCE" ||item?.categoryType === "Insurance")
-    const idEducation = data?.filter((item: { categoryType: string; })=>item?.categoryType === "EDUCATION" ||item?.categoryType === "Education")
-    const idEmployement = data?.filter((item: { categoryType: string; })=>item?.categoryType === "EMPLOYMENT" ||item?.categoryType === "Employment")
-    const idFinanace = data?.filter((item: { categoryType: string; })=>item?.categoryType === "FINANCE" ||item?.categoryType === "Finance")
-    const localArray=[{
-      title:idDocuments?.length>0 ? "ID":'',
-      data:idDocuments
-    },
-    {
-      title:idHealthCare?.length>0 ? "HEALTHCARE":'',
-      data:idHealthCare
-    },
-    {
-      title:idTravels?.length>0 ? "TRAVEL":'',
-      data:idTravels
-    },
-    {
-      title:idInsurance?.length>0 ? "INSURANCE":'',
-      data:idInsurance
-    },
-    {
-      title:idEducation?.length>0 ? "EDUCATION":'',
-      data:idEducation
-    },
-    {
-      title:idEmployement?.length>0 ? "EMPLOYMENT":'',
-      data:idEmployement
-    },
-    {
-      title:idFinanace?.length>0 ? "FINANCE":'',
-      data:idFinanace
-    },
-   
-  ]
-  const filteredLocalArray = localArray?.filter(item => item?.data?.length > 0);
-    return filteredLocalArray ;
-  }
+  const getItemsForSection = (data: any[]) => {
+    const idDocuments = data?.filter(
+      (item: { categoryType: string }) =>
+        item?.categoryType === "ID" || item?.categoryType === "id"
+    );
+    const idHealthCare = data?.filter(
+      (item: { categoryType: string }) =>
+        item?.categoryType === "HEALTHCARE" ||
+        item?.categoryType === "Healthcare"
+    );
+    const idTravels = data?.filter(
+      (item: { categoryType: string }) =>
+        item?.categoryType === "TRAVEL" || item?.categoryType === "Travel"
+    );
+    const idInsurance = data?.filter(
+      (item: { categoryType: string }) =>
+        item?.categoryType === "INSURANCE" || item?.categoryType === "Insurance"
+    );
+    const idEducation = data?.filter(
+      (item: { categoryType: string }) =>
+        item?.categoryType === "EDUCATION" || item?.categoryType === "Education"
+    );
+    const idEmployement = data?.filter(
+      (item: { categoryType: string }) =>
+        item?.categoryType === "EMPLOYMENT" ||
+        item?.categoryType === "Employment"
+    );
+    const idFinanace = data?.filter(
+      (item: { categoryType: string }) =>
+        item?.categoryType === "FINANCE" || item?.categoryType === "Finance"
+    );
+    const localArray = [
+      {
+        title: idDocuments?.length > 0 ? "ID" : "",
+        data: idDocuments,
+      },
+      {
+        title: idHealthCare?.length > 0 ? "HEALTHCARE" : "",
+        data: idHealthCare,
+      },
+      {
+        title: idTravels?.length > 0 ? "TRAVEL" : "",
+        data: idTravels,
+      },
+      {
+        title: idInsurance?.length > 0 ? "INSURANCE" : "",
+        data: idInsurance,
+      },
+      {
+        title: idEducation?.length > 0 ? "EDUCATION" : "",
+        data: idEducation,
+      },
+      {
+        title: idEmployement?.length > 0 ? "EMPLOYMENT" : "",
+        data: idEmployement,
+      },
+      {
+        title: idFinanace?.length > 0 ? "FINANCE" : "",
+        data: idFinanace,
+      },
+    ];
+    const filteredLocalArray = localArray?.filter(
+      (item) => item?.data?.length > 0
+    );
+    return filteredLocalArray;
+  };
 
   const listEmpty = () => {
     return (
@@ -576,52 +560,66 @@ const DocumentScreen = ({ navigation, route }: IDocumentScreenProps) => {
             <SectionList<any>
               sections={getFilteredData()}
               renderItem={_renderItem}
-              renderSectionHeader={({section})=>(
-                section?.title!='' &&
-                <View style={{ flexDirection: "row", marginTop: 10,marginLeft:20 }}>
-                <View style={{ justifyContent: "center", alignItems: "center" }}>
-                  <Avatar
-                    isCategory={true}
-                    isUploaded={false}
-                    iconSource={getCategoryImages({
-                      categoryType: section?.title,
-                      name: undefined
-                    })?.URI}
+              renderSectionHeader={({ section }) =>
+                section?.title != "" && (
+                  <View
                     style={{
-                      container: [
-                        styles.avatarContainer,
-                        {
-                          backgroundColor: getCategoryImages({
-                            categoryType: section?.title,
-                            name: undefined
-                          })?.COLOR,
-                          flexDirection: "row",
-                        },
-                      ],
-                      imgContainer: styles.avatarImageContainer,
-                      text: styles.avatarTextContainer,
+                      flexDirection: "row",
+                      marginTop: 10,
+                      marginLeft: 20,
                     }}
-                  />
-                </View>
-                <View
-                  style={{
-                    justifyContent: "center",
-                    alignItems: "center",
-                    marginTop: -20,
-                  }}
-                >
-                  <GenericText
-                    style={[
-                      { fontSize: 15, fontWeight: "bold", marginHorizontal: 9 },
-                    ]}
                   >
-                    {section?.title}
-                  </GenericText>
-                </View>
-              </View>
-              )}
+                    <View
+                      style={{ justifyContent: "center", alignItems: "center" }}
+                    >
+                      <Avatar
+                        isCategory={true}
+                        isUploaded={false}
+                        iconSource={
+                          getCategoryImages({
+                            categoryType: section?.title,
+                            name: undefined,
+                          })?.URI
+                        }
+                        style={{
+                          container: [
+                            styles.avatarContainer,
+                            {
+                              backgroundColor: getCategoryImages({
+                                categoryType: section?.title,
+                                name: undefined,
+                              })?.COLOR,
+                              flexDirection: "row",
+                            },
+                          ],
+                          imgContainer: styles.avatarImageContainer,
+                          text: styles.avatarTextContainer,
+                        }}
+                      />
+                    </View>
+                    <View
+                      style={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                        marginTop: -20,
+                      }}
+                    >
+                      <GenericText
+                        style={[
+                          {
+                            fontSize: 15,
+                            fontWeight: "bold",
+                            marginHorizontal: 9,
+                          },
+                        ]}
+                      >
+                        {section?.title}
+                      </GenericText>
+                    </View>
+                  </View>
+                )
+              }
               ListEmptyComponent={listEmpty}
-              
             />
           ) : (
             // <GenericText

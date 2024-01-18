@@ -46,32 +46,32 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
   const [loading, setLoading] = useState(true);
   console.log("flag==>", flag);
 
-  useEffect(()=>{
-    defaultVcFeature()
-  },[])
+  useEffect(() => {
+    defaultVcFeature();
+  }, []);
 
-  const defaultVcFeature =()=>{
+  const defaultVcFeature = () => {
     dispatch(saveFeature(false));
-  }
+  };
 
   const [langugeList, setLanguageList] = useState([
     {
       flag: LocalImages.englishflag,
       label: "English",
       value: AppLanguage.ENGLISH,
-      display:'ENG',
+      display: "ENG",
       selection: true,
     },
     {
       flag: LocalImages.spainflag,
       label: "Spanish",
-      display:'SPA',
+      display: "SPA",
       value: AppLanguage.SPANISH,
     },
     {
       flag: LocalImages.portugalflag,
       label: "Portuguese",
-      display:'POR',
+      display: "POR",
       value: AppLanguage.PORTUGUESE,
     },
   ]);
@@ -382,33 +382,35 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
             </BottomSheet>
           </View>
           <View>
-            {!__DEV__ &&<View
-              style={{
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "row",
-              }}
-            >
-              <GenericText
-                style={[
-                  {
-                    fontSize: 18,
-                    marginHorizontal: 20,
-                    color: Screens.black,
-                    fontWeight: "500",
-                  },
-                ]}
+            {!__DEV__ && (
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flexDirection: "row",
+                }}
               >
-                {"VC Features"}
-              </GenericText>
-              <ToggleSwitch
-                onToggle={(value) => onToggelchange(value)}
-                isOn={saveFeaturesForVc?.isVCFeatureEnabled}
-                size={"small"}
-                onColor={Screens.colors.primary}
-                offColor={Screens.darkGray}
-              />
-            </View>}
+                <GenericText
+                  style={[
+                    {
+                      fontSize: 18,
+                      marginHorizontal: 20,
+                      color: Screens.black,
+                      fontWeight: "500",
+                    },
+                  ]}
+                >
+                  {"VC Features"}
+                </GenericText>
+                <ToggleSwitch
+                  onToggle={(value) => onToggelchange(value)}
+                  isOn={saveFeaturesForVc?.isVCFeatureEnabled}
+                  size={"small"}
+                  onColor={Screens.colors.primary}
+                  offColor={Screens.darkGray}
+                />
+              </View>
+            )}
           </View>
           <TouchableOpacity
             style={{ marginTop: 20 }}
@@ -423,7 +425,9 @@ const landingPage = ({ navigation }: IHomeScreenProps) => {
                 alignItems: "center",
                 marginBottom: 15,
                 borderRadius: 20,
-                backgroundColor:isEarthId()? "#BBC1F6":Screens.colors.primary,
+                backgroundColor: isEarthId()
+                  ? "#BBC1F6"
+                  : Screens.colors.primary,
                 flexDirection: "row",
                 elevation: 5,
                 shadowColor: "#000",

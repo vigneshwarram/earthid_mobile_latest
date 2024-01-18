@@ -61,10 +61,12 @@ const DocumentPreviewScreen = (props: any) => {
     url: documentDetails?.base64,
     base64: documentDetails?.base64,
   };
-  console.log("selectedItem?.base64===>123",`data:image/jpeg;base64,${documentDetails?.base64}`);
+  console.log(
+    "selectedItem?.base64===>123",
+    `data:image/jpeg;base64,${documentDetails?.base64}`
+  );
   const resourceType = "base64";
   const shareItem = async () => {
-
     if (selectedItem?.isLivenessImage === "livenessImage") {
       await Share.open({
         url: selectedItem?.base64,
@@ -267,16 +269,18 @@ const DocumentPreviewScreen = (props: any) => {
         <View style={{ flex: 1 }}>
           <View style={{ flex: 0.4 }}></View>
           <View style={{ flex: 0.6, flexDirection: "row" }}>
-            <View style={{ flex: 0.2 }}>
+            <Pressable style={{ flex: 0.2 }}
+             onPress={() => props.navigation.goBack()}
+            >
               <View
-                style={{ position: "absolute", top: 30, left: 25, zIndex: 100 }}
+                style={{ position: "absolute", top: 26, left: 30, zIndex: 100 }}
               >
                 <Pressable onPress={() => props.navigation.goBack()}>
                   <Image
                     resizeMode="contain"
                     style={{
-                      width: 15,
-                      height: 15,
+                      width: 18,
+                      height: 18,
                       resizeMode: "contain",
                       tintColor: isEarthId()
                         ? Screens.pureWhite
@@ -286,10 +290,10 @@ const DocumentPreviewScreen = (props: any) => {
                   ></Image>
                 </Pressable>
               </View>
-            </View>
+            </Pressable>
             <View style={{ flex: 0.6, justifyContent: "center" }}>
               <GenericText
-                style={{ color: "#fff", fontSize: 18, alignSelf: "center" }}
+                style={{ color: "#fff", fontSize: 20, alignSelf: "center" }}
               >
                 Details
               </GenericText>
@@ -297,7 +301,7 @@ const DocumentPreviewScreen = (props: any) => {
 
             <View style={{ flex: 0.2, justifyContent: "center" }}>
               <View
-                style={{ position: "absolute", top: 30, left: 25, zIndex: 100 }}
+                style={{ position: "absolute", top: 28, left: 30, zIndex: 100 }}
               >
                 <Pressable
                   onPress={() => setisBottomSheetForSideOptionVisible(true)}
@@ -305,8 +309,8 @@ const DocumentPreviewScreen = (props: any) => {
                   <Image
                     resizeMode="contain"
                     style={{
-                      width: 15,
-                      height: 15,
+                      width: 20,
+                      height: 20,
                       resizeMode: "contain",
                       tintColor: isEarthId()
                         ? Screens.pureWhite

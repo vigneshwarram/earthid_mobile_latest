@@ -87,16 +87,18 @@ const Register = ({ navigation }: IHomeScreenProps) => {
       securityReducer?.securityData &&
       securityReducer?.securityData?.length > 0
     ) {
-      securityReducer?.securityData?.map((item) => {
-        if (item.types === type && item.enabled === true) {
-          selected = true;
-          return;
+      securityReducer?.securityData?.map(
+        (item: { types: any; enabled: boolean }) => {
+          if (item.types === type && item.enabled === true) {
+            selected = true;
+            return;
+          }
         }
-      });
+      );
     }
     return selected;
   };
-   useEffect(()=>{
+  useEffect(() => {
     if (securityReducer && securityReducer?.securityData) {
       console.log(
         "securityReducer?.securityData",
@@ -117,16 +119,15 @@ const Register = ({ navigation }: IHomeScreenProps) => {
     } else {
       //navigation.navigate("Security");
     }
-   },[securityReducer])
-  const saveSelectionSecuritiess = async() => {
+  }, [securityReducer]);
+  const saveSelectionSecuritiess = async () => {
     let payLoad = [];
     payLoad.push({
       types: ESecurityTypes.FACE,
       enabled: true,
     });
     await AsyncStorage.setItem("FaceID", ESecurityTypes.FACE);
-    dispatch(SaveSecurityConfiguration(payLoad)).then(() => {
-    });
+    dispatch(SaveSecurityConfiguration(payLoad)).then(() => {});
   };
   const showAlert = () => {
     SnackBar({
@@ -245,10 +246,9 @@ const Register = ({ navigation }: IHomeScreenProps) => {
             <View style={{ marginTop: -20 }}>
               <Button
                 selected={getSelectedDState(ESecurityTypes.FACE)}
-                 disabled={getSelectedDState(ESecurityTypes.FACE)}
+                disabled={getSelectedDState(ESecurityTypes.FACE)}
                 onPress={() => {
                   rnBiometrics.isSensorAvailable().then((resultObject) => {
-        
                     const { available, biometryType } = resultObject;
                     if (available && biometryType === BiometryTypes.FaceID) {
                       rnBiometrics
