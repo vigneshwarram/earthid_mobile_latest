@@ -39,6 +39,7 @@ import { isEarthId } from "../../utils/PlatFormUtils";
 import { dateTime } from "../../utils/encryption";
 import { postApi } from "../../utils/createUserSignaturekey";
 import ZkbScreen from "./DisclosureScreen";
+import SelctiveDisclosure from "./ZkbScreen";
 
 const data = [
   { label: " 1", value: "1" },
@@ -569,6 +570,9 @@ const CameraScreen = (props: any) => {
             if (serviceData.requestType === "document") {
               serviceProviderApiCall(serviceData);
             }
+            if (serviceData.requestType === "selectiveData") {
+              serviceProviderApiCall(serviceData);
+            }
             if (parsedRequestType?.requestType?.request === "balance") {
               serviceProviderApiCallForapi(parsedRequestType);
             }
@@ -637,7 +641,7 @@ const CameraScreen = (props: any) => {
 
   useEffect(() => {
     const selectedCheckBoxs = documentsDetailsList?.responseData?.map(
-      (item: { selectedForCheckBox: boolean }, index: any) => {
+      (item: { selectedForCheckBox: boolean }, _index: any) => {
         item.selectedForCheckBox = true;
         return item;
       }
@@ -696,6 +700,11 @@ const CameraScreen = (props: any) => {
         setisLoading(false)
         setIsCamerVisible(true);
       }
+      if (barCodeDataDetails?.requestType === "selectiveData") {
+        setisDocumentModalkyc(false);
+        setisLoading(false)
+        setIsCamerVisible(true);
+      }
       if (barCodeDataDetails?.requestType === "shareCredentials") {
         setisDocumentModalkyc(false);
         setisLoading(false)
@@ -746,7 +755,7 @@ const CameraScreen = (props: any) => {
 
   const getArrayOfBase64 =()=>{
     let datas: any[] =[]
-      documentsDetailsList?.responseData.map((item: { base64: string; isVc: any; selectedForCheckBox: any; isVerifyNeeded: any; },index: any)=>{
+      documentsDetailsList?.responseData.map((item: { base64: string; isVc: any; selectedForCheckBox: any; isVerifyNeeded: any; },_index: any)=>{
         console.log('itemselected',item)
         if(item?.base64 && !item.isVc && item.selectedForCheckBox){
           if(item?.isVerifyNeeded){
@@ -764,7 +773,7 @@ const CameraScreen = (props: any) => {
 
   const getTypesOfDoc =()=>{
     let datas: any[] =[]
-    documentsDetailsList?.responseData.map((item: { selectedForCheckBox: any; base64: any; isVc: any; docType: any; },index: any)=>{
+    documentsDetailsList?.responseData.map((item: { selectedForCheckBox: any; base64: any; isVc: any; docType: any; },_index: any)=>{
       console.log('itemselected',item.selectedForCheckBox)
       if(item?.base64 && !item.isVc && item.selectedForCheckBox){
         datas.push(item.docType)
@@ -775,7 +784,7 @@ const CameraScreen = (props: any) => {
 
   const getArrayOfDocName =()=>{
     let datas: any[] =[]
-      documentsDetailsList?.responseData.map((item: { docName: any; isVc: any; selectedForCheckBox: any; },index: any)=>{
+      documentsDetailsList?.responseData.map((item: { docName: any; isVc: any; selectedForCheckBox: any; },_index: any)=>{
         if(item?.docName && !item.isVc && item.selectedForCheckBox){
           datas.push(item.docName)
         }
@@ -872,7 +881,7 @@ const CameraScreen = (props: any) => {
           DocumentList.push(documentDetails);
         }
         if(documentsDetailsList?.responseData?.length>0){
-          documentsDetailsList?.responseData?.map((item: { isVc: any; selectedForCheckBox: any; },index: any)=>{
+          documentsDetailsList?.responseData?.map((item: { isVc: any; selectedForCheckBox: any; },_index: any)=>{
             if(!item?.isVc && item?.selectedForCheckBox){
               DocumentList.push(documentDetails);
             }
@@ -1045,6 +1054,32 @@ const CameraScreen = (props: any) => {
           },
         };
       }
+      else if (barCodeDataDetails.requestType === "selectiveData") {
+        console.log("type===>", "shareCredentials");
+        data = {
+          sessionKey: barCodeDataDetails?.sessionKey,
+          encrypted_object: {
+            earthId: userDetails?.responseData?.earthId,
+            pressed: false,
+            userName: userDetails?.responseData?.username,
+            userEmail: userDetails?.responseData?.email,
+            userMobileNo: userDetails?.responseData?.phone,
+            OrganizationID: userDetails?.responseData?.orgId,
+            // countryCode: userDetails?.responseData?.countryCode,
+            // emailVerified: userDetails?.responseData?.emailVerified,
+            // mobileVerified: userDetails?.responseData?.mobileVerified,
+            //documents: documentsDetailsList?.responseData,
+            requestType: barCodeDataDetails?.requestType,
+            reqNo: barCodeDataDetails?.reqNo,
+            signature: createSignatureKey,
+            base64: getArrayOfBase64(),
+            docName:getArrayOfDocName(),
+            type:getTypesOfDoc(),
+            kycToken:
+              "6hrFDATxrG9w14QY9wwnmVhLE0Wg6LIvwOwUaxz761m1JfRp4rs8Mzozk5xhSkw0_MQz6bpcJnrFUDwp5lPPFC157dHxbkKlDiQ9XY3ZIP8zAGCsS8ruN2uKjIaIargX",
+          },
+        };
+      }
       else if (barCodeDataDetails?.requestType.request === "minAge") {
         getZKBAge(barCodeDataDetails?.requestType)
         return
@@ -1078,11 +1113,12 @@ const CameraScreen = (props: any) => {
    
       {isCameraVisible &&!isLoading && (
         <RNCamera
+
           style={styles.preview}
           androidCameraPermissionOptions={null}
           type={RNCamera.Constants.Type.back}
           captureAudio={false}
-          onBarCodeRead={(data) =>barcodeScanned && _handleBarCodeRead(data)}
+          onBarCodeRead={(data) =>_handleBarCodeRead(data)}
         >
           <QrScannerMaskedWidget />
         </RNCamera>
@@ -1196,7 +1232,22 @@ const CameraScreen = (props: any) => {
        createVerifiableCredentials={createVerifiableCredentials}
        barCodeDataDetails={barCodeDataDetails} navigation={props.navigation}/>
       
-       :<ModalView
+       :
+
+       barCodeDataDetails?.requestType === "selectiveData" ?
+       <SelctiveDisclosure      
+       isLoading={isLoading}
+       setisDocumentModalkyc={setisDocumentModalkyc}
+        navigateToCamerScreen={navigateToCamerScreen} 
+        setIsCamerVisible={setIsCamerVisible}
+        selectedCheckBox={selectedCheckBox}
+        setselectedCheckBox={setselectedCheckBox}
+        setValue={setValue}
+        checkDisable={checkDisable}
+        createVerifiableCredentials={createVerifiableCredentials}
+        barCodeDataDetails={barCodeDataDetails} navigation={props.navigation}></SelctiveDisclosure>:
+       
+       <ModalView
         left={deviceWidth / 9}
         width={deviceWidth / 1.2}
         isModalVisible={isDocumentModalkyc}
@@ -1272,14 +1323,14 @@ const CameraScreen = (props: any) => {
                         >
                           <CheckBox
                             disabled={false}
-                            onValueChange={(value) => {
+                            onValueChange={(_value) => {
                               const selectedCheckBoxs = selectedCheckBox?.map(
                                 (
                                   itemLocal: {
                                     id: any;
                                     selectedForCheckBox: boolean;
                                   },
-                                  index: any
+                                  _index: any
                                 ) => {
                                   if (itemLocal?.id === item?.id) {
                                     itemLocal.selectedForCheckBox =

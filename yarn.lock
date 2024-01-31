@@ -1511,6 +1511,13 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
+"@react-native-async-storage/async-storage@^1.13.4":
+  version "1.21.0"
+  resolved "https://registry.npmjs.org/@react-native-async-storage/async-storage/-/async-storage-1.21.0.tgz"
+  integrity sha512-JL0w36KuFHFCvnbOXRekqVAUplmOyT/OuCQkogo6X98MtpSaJOKEAeZnYO8JB0U/RIEixZaGI5px73YbRm/oag==
+  dependencies:
+    merge-options "^3.0.4"
+
 "@react-native-community/cameraroll@^4.1.2":
   version "4.1.2"
   resolved "https://registry.npmjs.org/@react-native-community/cameraroll/-/cameraroll-4.1.2.tgz"
@@ -5915,6 +5922,11 @@ is-object@~0.1.2:
   resolved "https://registry.npmjs.org/is-object/-/is-object-0.1.2.tgz"
   integrity sha512-GkfZZlIZtpkFrqyAXPQSRBMsaHAw+CgoKe2HXAkjd/sfoI9+hS8PT4wg2rJxdQyUKr7N2vHJbg7/jQtE5l5vBQ==
 
+is-plain-obj@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.npmjs.org/is-plain-obj/-/is-plain-obj-2.1.0.tgz"
+  integrity sha512-YWnfyRwxL/+SsrWYfOpUtz5b3YD+nyfkHvjbcanzk8zgyO4ASD67uVMRt8k5bM4lLMDnXfriRhOpemw+NfT1eA==
+
 is-plain-object@^2.0.3, is-plain-object@^2.0.4:
   version "2.0.4"
   resolved "https://registry.npmjs.org/is-plain-object/-/is-plain-object-2.0.4.tgz"
@@ -7133,6 +7145,13 @@ memoize-one@^5.0.0:
   version "5.2.1"
   resolved "https://registry.npmjs.org/memoize-one/-/memoize-one-5.2.1.tgz"
   integrity sha512-zYiwtZUcYyXKo/np96AGZAckk+FWWsUdJ3cHGGmld7+AhvcWmQyGCYUh1hc4Q/pkOhb65dQR/pqCyK0cOaHz4Q==
+
+merge-options@^3.0.4:
+  version "3.0.4"
+  resolved "https://registry.npmjs.org/merge-options/-/merge-options-3.0.4.tgz"
+  integrity sha512-2Sug1+knBjkaMsMgf1ctR1Ujx+Ayku4EdJN4Z+C2+JzoeF7A3OZ9KM2GY0CpQS51NR61LTurMJrRKPhSs3ZRTQ==
+  dependencies:
+    is-plain-obj "^2.1.0"
 
 merge-stream@^2.0.0:
   version "2.0.0"
@@ -8679,7 +8698,7 @@ react-native-biometrics@^3.0.1:
   resolved "https://registry.npmjs.org/react-native-biometrics/-/react-native-biometrics-3.0.1.tgz"
   integrity sha512-Ru80gXRa9KG04sl5AB9HyjLjVbduhqZVjA+AiOSGqr+fNqCDmCu9y5WEksnjbnniNLmq1yGcw+qcLXmR1ddLDQ==
 
-react-native-camera@^4.2.1:
+react-native-camera@^4.2.1, react-native-camera@>=1.0.2:
   version "4.2.1"
   resolved "https://registry.npmjs.org/react-native-camera/-/react-native-camera-4.2.1.tgz"
   integrity sha512-+Vkql24PFYQfsPRznJCvPwJQfyzCnjlcww/iZ4Ej80bgivKjL9eU0IMQIXp4yi6XCrKi4voWXxIDPMupQZKeIQ==
@@ -8815,9 +8834,8 @@ react-native-html-to-pdf@^0.12.0:
   integrity sha512-Yb5WO9SfF86s5Yv9PqXQ7fZDr9zZOJ+6jtweT9zFLraPNHWX7pSxe2dSkeg3cGiNrib65ZXGN6ksHymfYLFSSg==
 
 "react-native-http@github:tradle/react-native-http#834492d":
-  version "2.0.1"
-  resolved "git+ssh://git@github.com/tradle/react-native-http.git"
-  integrity sha512-FTQq9h1epDNDoOJXcpCSTP9I1rQ8CozdD87Svr/dW5dsa/eL75++u0sv84fIyBhFgI6riybKMpJDZh+hG3yqKg==
+  version "1.0.0"
+  resolved "git+ssh://git@github.com/tradle/react-native-http.git#834492dbc792b1dec8ec8f0a1c9671f640339f01"
   dependencies:
     Base64 "~0.2.0"
     inherits "~2.0.1"
@@ -8883,6 +8901,16 @@ react-native-os@^1.2.2:
   resolved "https://registry.npmjs.org/react-native-os/-/react-native-os-1.2.6.tgz"
   integrity sha512-OlT+xQAcvkcnf7imgXiu+myMkqDt4xw2bP5SlVo19hEn5XHBkPMLX7dk3sSGxxncH/ToMDsf1KLyrPabNVtadA==
 
+react-native-permissions@^2.0.2:
+  version "2.2.2"
+  resolved "https://registry.npmjs.org/react-native-permissions/-/react-native-permissions-2.2.2.tgz"
+  integrity sha512-ihf4shQDSX5Oo9ChQXb9kr13mmyyNem5MaEvOpr3dCjhBOBWyEMztXm9/uPK1Qg5PsNpaYLa1KpcPZDCw87LXg==
+
+react-native-permissions@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.npmjs.org/react-native-permissions/-/react-native-permissions-4.1.1.tgz"
+  integrity sha512-wdIHMwmDZ6pRVsgAgF7mn/pJEuJd5wJDGENqvFDJs2lW4BSZeN++ZFsA6FgOqUs/2276Oj7rslQgVaxdOsi6yw==
+
 react-native-phone-number-input@^2.1.0:
   version "2.1.0"
   resolved "https://registry.npmjs.org/react-native-phone-number-input/-/react-native-phone-number-input-2.1.0.tgz"
@@ -8910,6 +8938,15 @@ react-native-qrcode-mask@^1.0.0:
   integrity sha512-GpbVigvvXYenvrW5RsA7CBgUuATrQwYk/uWMvooqNci7dtivqXg24YFQo8MCYPd1plrdZM47mc+Xf11z/VDj4Q==
   dependencies:
     react-fast-compare "*"
+
+react-native-qrcode-scanner@^1.5.5:
+  version "1.5.5"
+  resolved "https://registry.npmjs.org/react-native-qrcode-scanner/-/react-native-qrcode-scanner-1.5.5.tgz"
+  integrity sha512-il79uStkFqUvofqXJQfOL30qgQyU17MUKxj7IGHv6oT2OxIY/vutTwuPPDbsivtv0yTMHP4dGx/79oys4eAuNw==
+  dependencies:
+    "@react-native-async-storage/async-storage" "^1.13.4"
+    prop-types "^15.5.10"
+    react-native-permissions "^2.0.2"
 
 react-native-qrcode-svg@^6.1.2:
   version "6.2.0"
@@ -9121,7 +9158,7 @@ react-native-web@*, react-native-web@0.9.x:
     prop-types "^15.6.0"
     react-timer-mixin "^0.13.4"
 
-react-native@*, "react-native@>= 0.62", "react-native@>= 0.64.3", react-native@>=0.40.0, react-native@>=0.46, react-native@>=0.47.1, react-native@>=0.48.0, react-native@>=0.50.0, react-native@>=0.55, react-native@>=0.57.0, react-native@>=0.59, react-native@>=0.59.0, react-native@>=0.60, react-native@>=0.60.0, react-native@>=0.63.4, react-native@>=0.65.0, react-native@>=v0.40.0, react-native@0.54.3, react-native@0.70.4:
+react-native@*, "react-native@^0.0.0-0 || >=0.60 <1.0", "react-native@>= 0.62", "react-native@>= 0.64.3", react-native@>=0.40.0, react-native@>=0.46, react-native@>=0.47.1, react-native@>=0.48.0, react-native@>=0.50.0, react-native@>=0.55, react-native@>=0.57.0, react-native@>=0.59, react-native@>=0.59.0, react-native@>=0.60, react-native@>=0.60.0, react-native@>=0.63.4, react-native@>=0.65.0, react-native@>=0.70.0, react-native@>=v0.40.0, react-native@0.54.3, react-native@0.70.4:
   version "0.70.4"
   resolved "https://registry.npmjs.org/react-native/-/react-native-0.70.4.tgz"
   integrity sha512-1e4jWotS20AJ/4lGVkZQs2wE0PvCpIRmPQEQ1FyH7wdyuewFFIxbUHqy6vAj1JWVFfAzbDakOQofrIkkHWLqNA==
@@ -9199,7 +9236,7 @@ react-timer-mixin@^0.13.4:
   resolved "https://registry.npmjs.org/react-timer-mixin/-/react-timer-mixin-0.13.4.tgz"
   integrity sha512-4+ow23tp/Tv7hBM5Az5/Be/eKKF7DIvJ09voz5LyHGQaqqz9WV8YMs31eFvcYQs7d451LSg7kDJV70XYN/Ug/Q==
 
-react@*, "react@^16.0.0 || ^17.0.0 || ^18.0.0", react@^16.13.1, react@^16.14.0, react@^16.3.0, react@^16.3.0-alpha.1, "react@^16.8 || ^17.0 || ^18.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^16.9.0 || ^17.0.0 || ^18", "react@>= 16.8.0", "react@>= 17.0.1", react@>=16, react@>=16.5.1, react@>=16.8, react@>=16.8.0, react@>=16.8.6, react@>=17.0.0, "react@16 || 17", react@16.x.x, react@17.0.2, react@18.1.0:
+react@*, "react@^16.0.0 || ^17.0.0 || ^18.0.0", react@^16.13.1, react@^16.14.0, react@^16.3.0, react@^16.3.0-alpha.1, "react@^16.8 || ^17.0 || ^18.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^16.9.0 || ^17.0.0 || ^18", "react@>= 16.8.0", "react@>= 17.0.1", react@>=16, react@>=16.5.1, react@>=16.8, react@>=16.8.0, react@>=16.8.6, react@>=17.0.0, react@>=18.1.0, "react@16 || 17", react@16.x.x, react@17.0.2, react@18.1.0:
   version "18.1.0"
   resolved "https://registry.npmjs.org/react/-/react-18.1.0.tgz"
   integrity sha512-4oL8ivCz5ZEPyclFQXaNksK3adutVS8l2xzZU0cqEFrE9Sb7fC0EFK5uEk74wIreL1DERyjvsU915j1pcT2uEQ==
@@ -9604,8 +9641,7 @@ rn-fetch-blob@^0.12.0:
 
 "rn-nodeify@github:mvayngrib/rn-nodeify":
   version "8.2.0"
-  resolved "git+ssh://git@github.com/mvayngrib/rn-nodeify.git"
-  integrity sha512-Fg6rN+Oi/TDBHeYSjGMaMlSVKWTgEIrApAVjJLvrCpMrWuBMPKCBYN+M1oLedeZ6KiGkXddtvbIhHkLi0sTdKw==
+  resolved "git+ssh://git@github.com/mvayngrib/rn-nodeify.git#f95b220e05c3f06e64351169e20997a7743263ef"
   dependencies:
     "@yarnpkg/lockfile" "^1.0.0"
     deep-equal "^1.0.0"

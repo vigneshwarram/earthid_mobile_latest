@@ -233,8 +233,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
   }
 
   const handleShare = useCallback(async (item: SharedItem | null) => {
-    console.log(' item?.extraData?.shareButton', item?.extraData?.shareButton)
-    console.log(' item?.extraData?.shareButton', randomString)
+
  const  getData  = await AsyncStorage.getItem('shareButton')
  if(getData === item?.extraData?.shareButton){
   return

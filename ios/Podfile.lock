@@ -515,6 +515,8 @@ PODS:
     - React-Core
   - RNPDF (0.14.0):
     - React
+  - RNPermissions (4.1.1):
+    - React-Core
   - RNQrGenerator (1.4.0):
     - React
     - ZXingObjC
@@ -657,6 +659,7 @@ DEPENDENCIES:
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNLocalize (from `../node_modules/react-native-localize`)
   - RNPDF (from `../node_modules/react-native-view-pdf`)
+  - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNQrGenerator (from `../node_modules/rn-qr-generator`)
   - RNReactNativeDocViewer (from `../node_modules/react-native-doc-viewer`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
@@ -832,6 +835,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-localize"
   RNPDF:
     :path: "../node_modules/react-native-view-pdf"
+  RNPermissions:
+    :path: "../node_modules/react-native-permissions"
   RNQrGenerator:
     :path: "../node_modules/rn-qr-generator"
   RNReactNativeDocViewer:
@@ -948,6 +953,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: 4279931048471f17faf46d912b2e96e10f1da99b
   RNLocalize: d4b8af4e442d4bcca54e68fc687a2129b4d71a81
   RNPDF: 8526c7210ff375c29d2461c51945e2f5480f7b60
+  RNPermissions: 250047ffa01a1fa65e870fcae3e2b87786acf0d8
   RNQrGenerator: 1676221c08bfabec978242989c733810dad20959
   RNReactNativeDocViewer: 571c6ac38483531b8fb521d02a6ba54652ed10a7
   RNReanimated: bec7736122a268883bdede07f1bf9cf4b40158db
@@ -963,6 +969,6 @@ SPEC CHECKSUMS:
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
-PODFILE CHECKSUM: 325c749b51a6c00ac5dbbe32dfb3d201dc9a9e87
+PODFILE CHECKSUM: 4d71e488fdd901a5be89142ff3a3f67328f7cc6b
 
 COCOAPODS: 1.14.3
