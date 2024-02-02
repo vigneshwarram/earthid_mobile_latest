@@ -235,11 +235,11 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
   const handleShare = useCallback(async (item: SharedItem | null) => {
 
  const  getData  = await AsyncStorage.getItem('shareButton')
- if(getData === item?.extraData?.shareButton){
+ if(getData ===item?.extraData &&  item?.extraData?.shareButton && item?.extraData?.shareButton){
   return
  }
  else{
-  await AsyncStorage.setItem('shareButton',item?.extraData?.shareButton)
+  await AsyncStorage.setItem('shareButton',item?.extraData?.shareButton??"")
  }
    
 
@@ -301,7 +301,7 @@ const HomeScreen = ({ navigation, route }: IHomeScreenProps) => {
       const { mimeType, data, extraData } = item;
       console.log("datamimeType", extraData);
       console.log("extraData?.mimeType", extraData?.mimeType);
-      setRandomString(extraData?.shareButton)
+      setRandomString(extraData?.shareButton??"")
     
       const imageName1 = extraData?.data?.split("/").pop();
       const imageName =imageName1?.replaceAll("%20", " ")

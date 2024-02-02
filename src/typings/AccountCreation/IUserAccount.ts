@@ -1,5 +1,6 @@
 export interface IUserAccountRequest {
-  username: string;
+  firstname: string;
+  lastname:string,
   orgId: string;
   deviceID: string;
   deviceIMEI: string;
@@ -9,4 +10,5 @@ export interface IUserAccountRequest {
   countryCode: string;
   deviceOS: string;
   publicKey: string;
+  username:string;
 }

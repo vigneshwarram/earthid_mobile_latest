@@ -62,22 +62,12 @@ const ProfileScreen = ({ navigation }: IHomeScreenProps) => {
   };
 
   const _navigateEditMobile = () => {
-    if(userDetails?.responseData?.mobileApproved){
-      navigation.navigate("EditMobileNumber");
-    }else{
-      Alert.alert('Please verify the Mobile Number first !')
-    }
+    navigation.navigate("EditMobileNumber");
    
   };
 
   const _navigateEditEmail = () => {
-    if(userDetails?.responseData?.emailApproved){
-      navigation.navigate("EditEmailAddress");
-    }else{
-      Alert.alert('Please verify the email first !')
-    }
-  
-   
+    navigation.navigate("EditEmailAddress");
   };
 
 

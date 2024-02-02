@@ -20,7 +20,7 @@ import Info from "../../../components/Info";
 import TextInput from "../../../components/TextInput";
 import PhoneInput from "react-native-phone-number-input";
 import useFormInput from "../../../hooks/use-text-input";
-import { emailValidator, nameValidator } from "../../../utils/inputValidations";
+import { emailValidator, nameValidator ,nameValidators} from "../../../utils/inputValidations";
 import Loader from "../../../components/Loader";
 import {
   createAccount,
@@ -103,9 +103,22 @@ const Register = ({ navigation }: IRegister) => {
   } = useFormInput("", true, nameValidator);
 
   const {
+    value: lastName,
+    isFocused: lastNameFocus,
+    validationResult: {
+      hasError: islastNameError,
+      errorMessage: islastNameErrorMessage,
+    },
+    valueChangeHandler: lastNameChangeHandler,
+    inputFocusHandler: lastNameFocusHandlur,
+    inputBlurHandler: lastNameBlurHandler,
+  } = useFormInput("", true, nameValidators);
+
+
+  const {
     valueChangeHandler: dateOfBirthChangeHandler,
     inputBlurHandler: dateOfBirthlurHandler,
-  } = useFormInput("", true, nameValidator);
+  } = useFormInput("", true, nameValidators);
   const {
     value: email,
     isFocused: emailFocus,
@@ -119,6 +132,7 @@ const Register = ({ navigation }: IRegister) => {
   } = useFormInput("", false, emailValidator);
 
   useEffect(() => {
+    console.log('superAdminApi',superAdminApi)
     getSuperAdminApiCall(superAdminApi, {}, "GET");
   }, []);
 
@@ -200,9 +214,12 @@ const Register = ({ navigation }: IRegister) => {
   const _registerAction = async ({ publicKey }: any) => {
     const token = await getDeviceId();
     const deviceName = await getDeviceName();
+    console.log('superAdminResponse',superAdminResponse)
     if (superAdminResponse && superAdminResponse[0]?.Id) {
       const payLoad: IUserAccountRequest = {
-        username: firstName,
+        firstname: firstName,
+        username:firstName,
+        lastname: firstName,
         deviceID: token + Math.random(),
         deviceIMEI: token,
         deviceName: deviceName,
@@ -213,7 +230,7 @@ const Register = ({ navigation }: IRegister) => {
         publicKey,
         deviceOS: Platform.OS === "android" ? "android" : "ios",
       };
-
+      console.log('payLoad',JSON.stringify(payLoad))
       dispatch(createAccount(payLoad)).then(async () => {
         await AsyncStorage.setItem("flow", "loginflow");
       });
@@ -271,12 +288,12 @@ const Register = ({ navigation }: IRegister) => {
   const Footer = () => (
     <View style={{ marginHorizontal: 20, backgroundColor: "#fff" }}>
       <Button
-        disabled={!isValidMobileNumber || isfirstNameError || isemailError || firstName==='' || email==='' }
+        disabled={!isValidMobileNumber || islastNameError || isfirstNameError || isemailError || firstName==='' || email==='' || lastName === '' }
         onPress={_navigateAction}
         style={{
           buttonContainer: {
             elevation: 5,
-            opacity:isValidMobileNumber && !isfirstNameError && !isemailError && firstName!=='' && email !=='' ?1:0.5
+            opacity:isValidMobileNumber && !islastNameError && !isfirstNameError && !isemailError &&  lastName!==''&& firstName!=='' && email !=='' ?1:0.5
           },
           text: {
             color: Screens.pureWhite,
@@ -323,6 +340,14 @@ const Register = ({ navigation }: IRegister) => {
   const onBlurFirstName = () => {
     setKeyboardVisible(false);
     firstNameBlurHandler();
+  };
+  const onchangelastNameHandler = () => {
+    setKeyboardVisible(true);
+    lastNameFocusHandlur();
+  };
+  const onBlurlastName = () => {
+    setKeyboardVisible(false);
+    lastNameBlurHandler();
   };
   const onchangeEmailHandler = () => {
     setKeyboardVisible(true);
@@ -520,7 +545,7 @@ const Register = ({ navigation }: IRegister) => {
 
             <View style={{ flexDirection: "row" }}>
               <Info
-                title={"username"}
+                title={"First Name"}
                 style={{
                   title: styles.title,
                   subtitle: styles.subtitle,
@@ -543,7 +568,7 @@ const Register = ({ navigation }: IRegister) => {
               style={{
                 container: styles.textInputContainer,
               }}
-              placeholder={"Enter Username"}
+              placeholder={"Enter First Name"}
               isError={isfirstNameError}
               errorText={isfirstNameErrorMessage}
               onFocus={onchangeFirstNameHandler}
@@ -552,6 +577,42 @@ const Register = ({ navigation }: IRegister) => {
               isFocused={firstNameFocus}
               value={firstName}
               onChangeText={firstNameChangeHandler}
+            />
+
+<View style={{ flexDirection: "row" }}>
+              <Info
+                title={"Last Name"}
+                style={{
+                  title: styles.title,
+                  subtitle: styles.subtitle,
+                  container: styles.textContainer,
+                }}
+              />
+
+              <GenericText
+                style={{
+                  color: "red",
+                  position: "absolute",
+                  alignSelf: "center",
+                  left: 75,
+                }}
+              >
+                {"*"}
+              </GenericText>
+            </View>
+            <TextInput
+              style={{
+                container: styles.textInputContainer,
+              }}
+              placeholder={"Enter Last Name"}
+              isError={islastNameError}
+              errorText={islastNameErrorMessage}
+              onFocus={onchangelastNameHandler}
+              onBlur={onBlurlastName}
+              maxLength={60}
+              isFocused={lastNameFocus}
+              value={lastName}
+              onChangeText={lastNameChangeHandler}
             />
             <View style={{ flexDirection: "row" }}>
               <Info

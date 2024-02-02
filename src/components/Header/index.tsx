@@ -270,8 +270,8 @@ const styles = StyleSheet.create({
     height: 120,
   },
   close: {
-    width: 25,
-    height: 25,
+    width: 30,
+    height: 30,
     tintColor: isEarthId() ? Screens.pureWhite : Screens.black,
   },
 });

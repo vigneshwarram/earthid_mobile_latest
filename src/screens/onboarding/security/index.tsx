@@ -257,7 +257,12 @@ const Register = ({ navigation }: IHomeScreenProps) => {
                           const { success } = resultObject;
                           console.log("resultObject===>", resultObject);
                           if (success) {
-                            saveSelectionSecuritiess();
+                            saveSelectionSecurities(
+                              ESecurityTypes.PASSCORD,
+                              false,
+                              "SetPin"
+                            );
+                            
                             console.log("successful biometrics provided");
                           } else {
                             console.log("user cancelled biometric prompt");

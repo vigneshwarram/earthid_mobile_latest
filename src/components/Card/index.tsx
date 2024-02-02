@@ -101,7 +101,7 @@ const Card = ({
           src={rightIconSrc}
           style={{
             container: [styles.rightIconContainer, style.rightIconStyle],
-            image: { width: 15, height: 15 },
+            image: { width:18, height: 18,tintColor:'#000' },
           }}
         />
       )}

@@ -20,7 +20,40 @@ export const nameValidator = (
   if (isEmpty(value) || value===' ' && isRequired) {
     return {
       hasError: true,
-      errorMessage: "Please enter your username",
+      errorMessage: "Please enter your First Name",
+    };
+  }
+ else if(!REGEX.USERNAME.test(value)){
+  return {
+    hasError: true,
+    errorMessage: "Special or Numeric characters are not allowed",
+  };
+ }
+//  else if(!REGEX.USERNAMENUMERIC.test(value)){
+//   return {
+//     hasError: true,
+//     errorMessage: "Numeric characters are not allowed",
+//   };
+//  }
+
+  if (REGEX.ADDRESS_LINE.test(value)) {
+    return { hasError: false, errorMessage: "" };
+  } else {
+    return {
+      hasError: true,
+      errorMessage: "Special characters are not allowed",
+    };
+  }
+};
+
+export const nameValidators = (
+  value: string,
+  isRequired: boolean
+): IInputValidationResult => {
+  if (isEmpty(value) || value===' ' && isRequired) {
+    return {
+      hasError: true,
+      errorMessage: "Please enter your Last Name",
     };
   }
  else if(!REGEX.USERNAME.test(value)){

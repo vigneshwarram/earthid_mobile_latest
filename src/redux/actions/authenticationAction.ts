@@ -33,6 +33,7 @@ export const GeneratedKeysAction = () => async (dispatch: any): Promise<any> => 
       "https://api-stage.myearth.id/contract/generateKeys"
     );
     const responseData = await _responseHandler(response);
+    console.log('responseData',responseData)
 
     // Use Promise.all to parallelize the API calls
     const [responseIssuerDid, responseGenerateKeyPair, responseNewUserDid] = await Promise.all([
@@ -78,7 +79,7 @@ export const createAccount = (requestPayload: IUserAccountRequest) => async (dis
     dispatch({
       type: ACTION_TYPES.CREATEDACCOUNT,
     });
-
+    console.log('requestPayload',JSON.stringify(requestPayload))
     // Define the array of promises for parallel execution
     const promises = [
       postCall(createAccountUrl, requestPayload),
@@ -87,6 +88,7 @@ export const createAccount = (requestPayload: IUserAccountRequest) => async (dis
 
     // Execute the promises in parallel
     const [response] = await Promise.all(promises);
+    console.log('response-===>',response)
 
     // Handle the response
     const responseData = await _responseHandler(response);
