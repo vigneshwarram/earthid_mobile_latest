@@ -42,7 +42,8 @@ const Register = ({ navigation }: IHomeScreenProps) => {
   const saveSelectionSecurities = (
     securityMode: any,
     enabled = false,
-    re_Direct: string
+    re_Direct: string,
+    isHide = false
   ) => {
     let payLoad = [];
 
@@ -67,7 +68,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
       }
 
       dispatch(SaveSecurityConfiguration(payLoad));
-      navigation.navigate(re_Direct);
+      navigation.navigate(re_Direct,{isHide});
     } else {
       if (payLoad.length === 0) {
         payLoad.push({
@@ -77,7 +78,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
       }
 
       dispatch(SaveSecurityConfiguration(payLoad));
-      navigation.navigate(re_Direct);
+      navigation.navigate(re_Direct,{isHide});
     }
   };
   const getSelectedDState = (type: any) => {
@@ -108,9 +109,7 @@ const Register = ({ navigation }: IHomeScreenProps) => {
           (item: { enabled: boolean }) => item.enabled
         )
       ) {
-        navigation.dispatch(
-          StackActions.replace("DrawerNavigator", { type: "Faceid" })
-        );
+        navigation.navigate('SetPin',{isHide:true});
       } else {
         // navigation.navigate("Security");
       }
@@ -126,6 +125,13 @@ const Register = ({ navigation }: IHomeScreenProps) => {
     });
     await AsyncStorage.setItem("FaceID", ESecurityTypes.FACE);
     dispatch(SaveSecurityConfiguration(payLoad)).then(() => {
+      saveSelectionSecurities(
+        ESecurityTypes.PASSCORD,
+        false,
+        "SetPin",
+        true
+      );
+
     });
   };
   const showAlert = () => {
@@ -257,10 +263,8 @@ const Register = ({ navigation }: IHomeScreenProps) => {
                           const { success } = resultObject;
                           console.log("resultObject===>", resultObject);
                           if (success) {
-                            saveSelectionSecurities(
-                              ESecurityTypes.PASSCORD,
-                              false,
-                              "SetPin"
+                            saveSelectionSecuritiess(
+                        
                             );
                             
                             console.log("successful biometrics provided");
@@ -306,7 +310,8 @@ const Register = ({ navigation }: IHomeScreenProps) => {
                   saveSelectionSecurities(
                     ESecurityTypes.PASSCORD,
                     false,
-                    "SetPin"
+                    "SetPin",
+                  false
                   );
                 }}
                 style={{

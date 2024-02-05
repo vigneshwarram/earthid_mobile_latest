@@ -14,13 +14,16 @@ import Button from "../../../../components/Button";
 import SmoothPinCodeInput from "react-native-smooth-pincode-input";
 import { LocalImages } from "../../../../constants/imageUrlConstants";
 import GenericText from "../../../../components/Text";
+import { StackActions } from "@react-navigation/native";
+import { isEarthId } from "../../../../utils/PlatFormUtils";
 
 interface IHomeScreenProps {
   navigation?: any;
 }
 
-const Register = ({ navigation }: IHomeScreenProps) => {
+const Register = ({ navigation,route }: IHomeScreenProps) => {
   const [code, setCode] = useState();
+  const { isHide } = route.params || {};
   const onPinCodeChange = (code: any) => {
     var format = code.replace(/[^0-9]/g, "");
     setCode(format);
@@ -29,6 +32,9 @@ const Register = ({ navigation }: IHomeScreenProps) => {
     if (code.length === 6) {
       navigation.navigate("ConfirmPincode", { setCode: code });
     }
+  };
+  const actionToNavigate = () => {
+    navigation.dispatch(StackActions.replace("DrawerNavigator"));
   };
   return (
     <View style={styles.sectionContainer}>
@@ -109,8 +115,8 @@ const Register = ({ navigation }: IHomeScreenProps) => {
               onTextChange={onPinCodeChange}
             />
           </View>
-
-          <Button
+        <View style={{marginTop:30}}>
+        <Button
             onPress={_navigateAction}
             style={{
               buttonContainer: {
@@ -125,6 +131,26 @@ const Register = ({ navigation }: IHomeScreenProps) => {
             }}
             title={"createpasscord"}
           ></Button>
+
+{isHide && <Button
+            onPress={actionToNavigate}
+            style={{
+              buttonContainer: {
+                elevation: 5,
+                backgroundColor:'transparent'
+              },
+              text: {
+                color :isEarthId() ? "#293fee" : "#2AA2DE",
+              },
+              iconStyle: {
+                tintColor: Screens.pureWhite,
+              },
+            }}
+            title={"SKIP PASSCODE"}
+          ></Button>
+}
+        </View>
+     
         </View>
       </ScrollView>
     </View>

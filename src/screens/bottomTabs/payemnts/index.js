@@ -5,12 +5,14 @@ import {
   View,
   ActivityIndicator,
   Alert,
-  StyleSheet
+  StyleSheet,
+  Image
 } from "react-native";
 import ShareMenu, { ShareMenuReactView } from "react-native-share-menu";
 import { Screens } from "../../../themes";
 import { dateTime } from "../../../utils/encryption";
 import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
+import { isEarthId } from "../../../utils/PlatFormUtils";
 import { LocalImages } from "../../../constants/imageUrlConstants";
 import Header from "../../../components/Header";
 import {
@@ -253,15 +255,38 @@ const Payment = (props) => {
   );
   return (
     <View style={{ flex: 1, backgroundColor: "#fff" }}>
-       <Header
-            // rightIconPress={onPressNavigateTo}
-            leftIconSource={LocalImages.logoImage}
-           
-            onpress={() => {
-              _toggleDrawer();
+            <Header
+          letfIconPress={() => getBack()}
+          isLogoAlone={true}
+          headingText={"Payments"}
+          linearStyle={styles.linearStyle}
+          containerStyle={{
+            iconStyle: {
+              width: 205,
+              height: 72,
+              marginTop: 30,
+            },
+            iconContainer: styles.alignCenter,
+          }}
+        ></Header>
+            <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={{
+            position: "absolute",
+            marginTop: 38,
+            marginLeft: 20,
+          }}
+        >
+          <Image
+            source={LocalImages.backImage}
+            style={{
+              height: 20,
+              width: 20,
+              resizeMode: "contain",
+              tintColor: isEarthId() ? Screens.pureWhite : Screens.black,
             }}
-            linearStyle={styles.linearStyle}
-          ></Header>
+          />
+        </TouchableOpacity>
       {loading ? (
         <View
           style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
