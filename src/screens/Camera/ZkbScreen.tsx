@@ -98,7 +98,7 @@ export const QrScannerMaskedWidget = ({
             </View>
           </View>
 
-          <CheckBox disabled={false} value={index === 0 ? false : true} />
+          <CheckBox  disabled={false} value={index === 0 ? false : true} />
         </View>
 
         {expandedItem === item.id && (
@@ -113,7 +113,7 @@ export const QrScannerMaskedWidget = ({
               }}
             >
               <Text>Name: vicky</Text>
-              <CheckBox disabled={false} value={true} />
+              <CheckBox  disabled={false} value={true} />
             </View>
             <View style={{ marginTop: 8 }}>
               <View

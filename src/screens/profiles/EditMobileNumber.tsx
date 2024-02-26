@@ -14,26 +14,32 @@ import PhoneInput from "react-native-phone-number-input";
 import Button from "../../components/Button";
 import AnimatedLoader from "../../components/Loader/AnimatedLoader";
 import GenericText from "../../components/Text";
-import { useAppSelector } from "../../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { useFetch } from "../../hooks/use-fetch";
-import { updatephoneOtp } from "../../utils/earthid_account";
+import { updatephoneOtp,unVerifiedPhone } from "../../utils/earthid_account";
 import { KeyboardAvoidingScrollView } from "react-native-keyboard-avoiding-scroll-view";
 import Header from "../../components/Header";
+import Loader from "../../components/Loader";
+import { byPassUserDetailsRedux, saveProfileDetails } from "../../redux/actions/authenticationAction";
 
 const EditMobileNumber = (props: any) => {
   const [callingCode, setcallingCode] = useState<string>("1");
   const phoneInput: any = useRef();
+  const disPatch = useAppDispatch();
   const userDetails = useAppSelector((state) => state.account);
   const [code, setCode] = useState();
-
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+  const [successResponse, setsuccessResponse] = useState(false);
+  const [isMobileEmpty, setMobileEmpty] = useState<boolean>(false);
+  const [countryCode, setcountryCode] = useState("US");
   const { loading, data, error, fetch } = useFetch();
-  const [phone, setPhone] = useState<string>("");
+  const [mobileNumber, setmobileNumber] = useState<string>("");
   const [isValidMobileNumber, setValidMobileNumber] = useState<boolean>(false);
   var codename:any=""
   const sentOtp = () => {
     var postData = {
       oldPhone: userDetails?.responseData?.phone,
-      newPhone: phone,
+      newPhone: mobileNumber,
       newCountryCode: "+" + callingCode,
       earthId: userDetails?.responseData?.earthId,
       publicKey: userDetails?.responseData?.publicKey,
@@ -43,13 +49,37 @@ const EditMobileNumber = (props: any) => {
     fetch(updatephoneOtp, postData, "POST");
   };
 
+  const unverifiedMobileUpdate =()=>{
+    var postData = {
+      username: userDetails?.responseData?.username,
+      firstname: userDetails?.responseData?.firstname,
+      lastname: userDetails?.responseData?.lastname,
+      phone: mobileNumber,
+      countryCode: "+" + callingCode,
+      earthId: userDetails?.responseData?.earthId,
+      publicKey: userDetails?.responseData?.publicKey,
+     // email: userDetails?.responseData?.email,
+    };
+    console.log("postData", postData);
+    fetch(unVerifiedPhone, postData, "POST");
+  }
+
+  const onMobileNumberFocus = () => {
+    setKeyboardVisible(true);
+  };
+  const onMobileNumberBlur = () => {
+    setKeyboardVisible(false);
+
+  };
+
   const navigateAction = () => {
-    if (phone.length === 10) {
+    if( userDetails?.responseData?.mobileApproved){
       sentOtp();
-    } else {
-      // Alert.alert("Invalid mobile number");
-      setValidMobileNumber(true)
     }
+    else{
+      unverifiedMobileUpdate()
+    }
+ 
   };
 
   useEffect(() => {
@@ -58,10 +88,26 @@ const EditMobileNumber = (props: any) => {
     console.log("userdetails", userDetails.responseData.countryCode);
 
     if (data) {
-      props.navigation.navigate("EditMobileNumOtp", {
-        newPhone: phone,
-        callingCode,
-      });
+      if(userDetails?.responseData?.mobileApproved){
+        props.navigation.navigate("EditMobileNumOtp", {
+          newPhone: mobileNumber,
+          callingCode,
+        });
+       
+      }
+      else{
+        setsuccessResponse(true);
+        let overallResponseData = {
+          ...userDetails.responseData,
+          ...{phone:mobileNumber },
+        };
+          disPatch(byPassUserDetailsRedux(overallResponseData)).then(() => {
+            setTimeout(() => {
+              setsuccessResponse(false);
+              props.navigation.goBack(null)
+            }, 7000);
+          });
+        } 
     }
   }, [data]);
 
@@ -136,59 +182,83 @@ const EditMobileNumber = (props: any) => {
               fontSize: 13,
               marginTop: 20,
               paddingHorizontal: 15,
+              marginBottom:20
             },
           ]}
         >
           {"mobileno"}
         </GenericText>
-
         <PhoneInput
-          onChangeCountry={(code) => {
-            const { callingCode } = code;
-            setcallingCode(callingCode[0]);
-            console.log("code==>", callingCode[0]);
-          }}
-          autoFocus={false}
-          ref={phoneInput}
-          defaultValue={""}
-          placeholder="Mobile Number"
-         // defaultCode={code}
-         defaultCode="US"
-          layout="first"
-          onChangeText={(text: any) => {
-            var format = text.replace(/[^0-9]/g, "");
-            setPhone(format);
-            setValidMobileNumber(false)
-          }}
-          containerStyle={{
-            borderColor: Screens.darkGray,
-            width: "90%",
-            borderWidth: 2,
-            borderRadius: 5,
-            height: 60,
-            marginLeft: 15,
-            marginEnd: 15,
-            marginTop: 12,
-          }}
-          filterProps={{placeholder:"Search country"}}
-          flagButtonStyle={{ backgroundColor: Screens.thickGray }}
-          textInputStyle={{ fontSize: 16, padding: 0, margin: 0 }}
-          codeTextStyle={{ fontSize: 16, padding: 0, margin: 0 }}
-          textContainerStyle={{
-            height: 55,
-            padding: 0,
-            margin: 0,
-          }}
-          withShadow
-          value={code}
-          
-        />
-            {isValidMobileNumber  && (
-      <Text allowFontScaling={false} style={styles.errorText}>
-        {'Please enter valid mobile number'}
-      </Text>
-    )}
+              textInputProps={{
+                onFocus: onMobileNumberFocus,
+                onBlur: onMobileNumberBlur,
+                allowFontScaling: false,
+              }}
+              onChangeCountry={(code) => {
+                console.log("code======>", code);
+                const { callingCode, cca2 } = code;
+               
+                setcountryCode(cca2);
+                setcallingCode(callingCode[0]);
+                console.log("code==>", callingCode[0]);
+              }}
+              autoFocus={false}
+              placeholder="Mobile number"
+              ref={phoneInput}
+              defaultCode="US"
+              layout="first"
+             
+              onChangeText={(text: any) => {
+                setValidMobileNumber(phoneInput.current?.isValidNumber(text));
+                setmobileNumber(text);
+                setMobileEmpty(false);
+              }}
+              containerStyle={{
+                borderColor: isValidMobileNumber
+                  ?mobileNumber.length != 0?Screens.colors.primary: Screens.darkGray
+                  : 
+                  mobileNumber.length != 0?  Screens.red:Screens.darkGray
+               ,
+                borderWidth: isValidMobileNumber
+                  ? mobileNumber.length != 0?2.2: 1
+                  : mobileNumber.length != 0
+                  ? 2.2
+                  : 2,
+                borderRadius: 10,
+                height: 60,
+                width:'90%',
+                marginHorizontal: 10,
+              }}
+              flagButtonStyle={{
+                backgroundColor: Screens.thickGray,
+                borderBottomLeftRadius: 9,
+                borderTopLeftRadius: 9,
+              }}
+              textInputStyle={{ fontSize: 16, padding: 0, margin: 0 }}
+              codeTextStyle={{ fontSize: 16, padding: 0, margin: 0 }}
+              textContainerStyle={{
+                height: 55,
+                padding: 0,
+                margin: 0,
+                borderBottomEndRadius: 9,
+                borderTopRightRadius: 9,
+                backgroundColor: "#fff",
+              }}
+              filterProps={{ placeholder: "Search country" }}
+            />
+            {!isValidMobileNumber && mobileNumber.length != 0 && (
+                  <Text allowFontScaling={false} style={styles.errorText}>
+                    {"Please enter Valid mobile number"}
+                  </Text>
+                )}
         <AnimatedLoader isLoaderVisible={loading} loadingText="Loading..." />
+        <Loader
+            loadingText={
+             'Phone Number Updated SuccessFully'
+            }
+            Status="status"
+            isLoaderVisible={successResponse}
+          ></Loader>
       </View>
     </KeyboardAvoidingScrollView>
   );

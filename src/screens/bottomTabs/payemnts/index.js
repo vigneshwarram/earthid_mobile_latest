@@ -19,13 +19,7 @@ import {
   createUserSignature,
   saveDocuments,
 } from "../../../redux/actions/authenticationAction";
-import {
-  PlaidLink,
-  LinkSuccess,
-  LinkExit,
-  LinkLogLevel,
-  LinkIOSPresentationStyle,
-} from "react-native-plaid-link-sdk";
+
 import { TouchableOpacity } from "react-native-gesture-handler";
 const Payment = (props) => {
   const [loading, setLoading] = useState(false);
@@ -141,6 +135,7 @@ const Payment = (props) => {
       // Check if the request was successful
       if (!response.ok) {
         setLoading(false);
+        console.log('response',response)
         throw new Error("Network response was not ok");
       }
 
@@ -172,7 +167,7 @@ const Payment = (props) => {
   
       // Replace 'YOUR_API_ENDPOINT' with the actual API endpoint
       const response = await fetch(
-        "https://api.4wrd.tech:8243/manage-accounts/api/2.0/accounts?provider=AB4WRD",
+        "https:/api.4wrd.tech:8243/manage-accounts/api/2.0/accounts?provider=AB4WRD",
         {
           method: "GET",
           headers: {
@@ -289,12 +284,12 @@ const Payment = (props) => {
         </TouchableOpacity>
       {loading ? (
         <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          style={{ flex: 1, justifyContent: "center", alignItems: "center",marginTop:40 }}
         >
           <ActivityIndicator size={"large"} color={"red"}></ActivityIndicator>
         </View>
       ) : (
-        <View style={{justifyContent:'center',alignItems:'center',marginTop:40,padding:5,paddingHorizontal:20}}>
+        <View style={{justifyContent:'center',alignItems:'center',marginTop:100,padding:5,paddingHorizontal:20}}>
            <Text>
            Please connect with bank in order to access the account details. Thanks!
     </Text>
